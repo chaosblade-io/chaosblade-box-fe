@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "data": {
+    "data": {
+      "total": 10,
+      "basics": 20,
+      "applications": 30,
+      "containers": 59
+    },
+    "requestId": "xxxx",
+    "success": true
+  }
+}

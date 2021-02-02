@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "data": {
+    "code": 2000,
+    "message": null,
+    "success": true,
+    "data": {
+      "original": "host",
+      "data": {
+        "machineId": "4",
+        "hostname": "host1",
+        "ip": "192.168.1.1",
+        "version": "centos x86_64",
+        "createTime": "2020-12-29 06:22:16",
+        "modifyTime": "2020-12-29 06:22:16",
+        "status": 2,
+        "chaosed": false,
+        "chaosTime": "2020-12-29 06:22:16"
+      }
+    }
+  }
+}

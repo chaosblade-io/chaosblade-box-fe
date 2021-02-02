@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "data": {
+    "code": 2000,
+    "original": null,
+    "message": null,
+    "success": true,
+    "data": [
+      {
+        "categoryId": "1",
+        "parentId": null,
+        "level": 0,
+        "name": "阿里云监控",
+        "code": "metric.aliyun",
+        "params": [],
+        "children": [
+          {
+            "categoryId": "3",
+            "parentId": "1",
+            "level": 1,
+            "name": "CPU 使用率",
+            "code": "cpu_total",
+            "params": [],
+            "children": null
+          }
+        ]
+      },
+      {
+        "categoryId": "2",
+        "parentId": null,
+        "level": 0,
+        "name": "Prometheus 监控",
+        "code": "metric.prometheus",
+        "params": [
+          {
+            "name": "url",
+            "value": null,
+            "type": "text",
+            "desc": "prometheus url"
+          },
+          {
+            "name": "query",
+            "value": null,
+            "type": "text",
+            "desc": "prometheus query"
+          }
+        ],
+        "children": null
+      }
+    ],
+    "requestId": "fe4c7fd536f74025872ea93f2f58563d"
+  }
+}

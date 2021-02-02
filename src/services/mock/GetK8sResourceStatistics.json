@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "ssss",
+    "success": true,
+    "data": {
+      "nodes": 10,
+      "namespaces": 5,
+      "pods": 300
+    }
+  }
+}

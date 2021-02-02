@@ -1,0 +1,12 @@
+{
+  "hostname": "bp1fou8csbn",
+  "ip": "192.168.0.32",
+  "osVersion": "centos7 x86_64",
+  "cpuCore": 4,
+  "memSize": 1024,
+  "uptime": "5 days",
+  "type": "host",
+  "installModel": "manual",
+  "appInstance": "buy2",
+  "appGroup": "buy2_pre"
+}

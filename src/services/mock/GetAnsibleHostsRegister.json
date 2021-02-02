@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "yyyy",
+    "success": true,
+    "data": [
+      {
+        "host": "1.1.11.1",
+        "status": 2,
+        "success": true,
+        "error": ""
+      },
+      {
+        "host": "1.1.11.1",
+        "status": 0,
+        "success": false,
+        "error": "cannot connect"
+      }
+    ]
+  }
+}

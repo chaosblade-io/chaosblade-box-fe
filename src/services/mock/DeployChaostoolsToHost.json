@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": {
+      "machineId": "1348846426242637825",
+      "hostname": "L-J2VDLVDL-1524.local",
+      "ip": "30.11.189.13",
+      "version": "centos x86_64",
+      "createTime": "2021-01-12 12:17:03",
+      "modifyTime": "2021-01-12 12:17:03",
+      "status": 2,
+      "chaosed": false,
+      "chaosTime": "2020-12-29 06:22:16",
+      "chaosRunning": false,
+      "chaostools": [
+        {
+          "name": "chaosblade",
+          "version": "1.9.0"
+        }
+      ]
+    }
+  }
+}

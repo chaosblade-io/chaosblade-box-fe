@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": {
+      "phase": "ATTACK",
+      "startTime": "2021-01-11 10:00:00",
+      "endTime": "2021-01-11 10:00:00",
+      "status": 1,
+      "resultStatus": null,
+      "success": true,
+      "error": "xxxx",
+      "machines": [
+        {
+          "ip": "xxxx",
+          "success": true,
+          "error": "",
+          "uid": "xxxxx"
+        }
+      ]
+    }
+  }
+}
+

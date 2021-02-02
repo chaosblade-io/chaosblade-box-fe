@@ -1,0 +1,180 @@
+{
+  "ok": true,
+  "data": {
+    "code": 2000,
+    "original": null,
+    "message": null,
+    "success": true,
+    "data": [
+      {
+        "categoryId": "1216606260205703169",
+        "parentId": null,
+        "name": "系统资源",
+        "level": 1,
+        "supportScopeTypes": [
+          "host",
+          "kubernetes"
+        ],
+        "children": [
+          {
+            "categoryId": "1216606329818566658",
+            "parentId": "1216606260205703169",
+            "name": "CPU资源",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1216606392489857026",
+            "parentId": "1216606260205703169",
+            "name": "内存资源",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1216606480226308098",
+            "parentId": "1216606260205703169",
+            "name": "磁盘资源",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1216672245176541185",
+            "parentId": "1216606260205703169",
+            "name": "网络资源",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1217020049010950145",
+            "parentId": "1216606260205703169",
+            "name": "应用进程",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1217716899703644162",
+            "parentId": "1216606260205703169",
+            "name": "容器资源",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          }
+        ]
+      },
+      {
+        "categoryId": "1216606670115033089",
+        "parentId": null,
+        "name": "JAVA应用",
+        "level": 1,
+        "supportScopeTypes": [
+          "host",
+          "kubernetes"
+        ],
+        "children": [
+          {
+            "categoryId": "1216606744870113281",
+            "parentId": "1216606670115033089",
+            "name": "延迟",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1216606820073984002",
+            "parentId": "1216606670115033089",
+            "name": "抛异常",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1216606920988938241",
+            "parentId": "1216606670115033089",
+            "name": "自定义故障",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1216669321109118978",
+            "parentId": "1216606670115033089",
+            "name": "篡改数据",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": null
+          },
+          {
+            "categoryId": "1217022989201276929",
+            "parentId": "1216606670115033089",
+            "name": "资源占用",
+            "level": 2,
+            "supportScopeTypes": [
+              "host",
+              "kubernetes"
+            ],
+            "children": [
+              {
+                "categoryId": "1217023924078092289",
+                "parentId": "1217022989201276929",
+                "name": "CPU资源",
+                "level": 3,
+                "supportScopeTypes": [
+                  "host",
+                  "kubernetes"
+                ],
+                "children": null
+              },
+              {
+                "categoryId": "1217023981502308353",
+                "parentId": "1217022989201276929",
+                "name": "内存资源",
+                "level": 3,
+                "supportScopeTypes": [
+                  "host",
+                  "kubernetes"
+                ],
+                "children": null
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "requestId": "16bd8e4800fb443ea07f4bb83dfce17b"
+  }
+}

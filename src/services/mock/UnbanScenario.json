@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "data": {
+    "scenarioId": "11111113",
+    "name": "CPU满载2",
+    "code": "chaosblade.cpu.code2",
+    "status": 2,
+    "version": "1.9.0",
+    "original": "chaosblade",
+    "count": 12,
+    "categories": [
+      {
+        "categoryName": "xxxx",
+        "categoryId": "xxxx"
+      }
+    ],
+    "createTime": "2021-01-22 10:00:00",
+    "modifyTime": "2021-01-22 11:00:00"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": [
+      {
+        "probeId": "11111",
+        "host": "1.1.1.1",
+        "ip": "1.1.1.1",
+        "success": true,
+        "status": 2
+      },
+      {
+        "probeId": "22222",
+        "host": "1.1.1.1",
+        "success": false,
+        "status": -1,
+        "error": "no device left"
+      }
+    ]
+  }
+}

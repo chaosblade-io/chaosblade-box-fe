@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": [
+      {
+        "host": "1.1.1.1",
+        "status": 0
+      },
+      {
+        "host": "1.1.1.2",
+        "status": 2
+      },
+      {
+        "host": "1.1.1.3",
+        "status": 1
+      },
+      {
+        "host": "1.1.1.4",
+        "status": 0
+      },
+      {
+        "host": "1.1.1.5",
+        "status": 0
+      },
+      {
+        "host": "1.1.1.6",
+        "status": 2
+      }
+    ]
+  }
+}

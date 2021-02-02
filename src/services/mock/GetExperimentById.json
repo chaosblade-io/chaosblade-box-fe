@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": {
+      "name": "POD-CPU-1611071072333",
+      "taskCount": 5,
+      "lastTaskCreateTime": "2021-01-19 00:00:00",
+      "lastTaskStatus": 2,
+      "createTime": "2021-01-19 00:00:00",
+      "dimension": "Pod",
+      "machines": [
+        {
+          "machineType": "host",
+          "machineId": "xxxx",
+          "machineIp": "1.11.1.1",
+          "name": "xxx"
+        }
+      ],
+      "scenarios": [
+        {
+          "name": "主机CPU满载",
+          "category": "CPU资源",
+          "parameters": [
+            {
+              "name": "cpu-count",
+              "value": "1"
+            }
+          ]
+        }
+      ],
+      "monitor": {
+        "name": "交易成功率",
+        "component": {
+          "chart": "line"
+        },
+        "url": "http://www.baidu.com",
+        "metrics": {
+        }
+      }
+    }
+  }
+}

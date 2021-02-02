@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": {
+      "taskId": "111111",
+      "taskName": "POD-CPU-1111111",
+      "taskStatus": 2,
+      "monitor": {
+        "name": "交易成功率",
+        "component": {
+          "chart": "line"
+        },
+        "url": "http://www.baidu.com",
+        "metrics": {
+
+        }
+      },
+      "machines": [
+        {
+          "name": "xxxx",
+          "status": 2
+        }
+      ],
+      "createTime": "2021-01-21 10:00:00",
+      "stopTime": "2021-01-21 11:00:00"
+    }
+  }
+}

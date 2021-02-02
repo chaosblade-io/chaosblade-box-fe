@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "data": {
+    "data": [
+      {
+        "target": "cpu",
+        "scope": "host",
+        "actions": [
+          {
+            "name": "burn",
+            "desc": "cpu burn",
+            "matchers": [
+              {
+                "name": "cpu-count",
+                "desc": "cpu count",
+                "type": "number",
+                "required": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

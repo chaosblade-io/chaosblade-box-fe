@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "data": {
+    "data": [
+      {
+        "app": "x1",
+        "group": [
+          "x1_p1",
+          "x1_p2",
+          "x1_p3"
+        ]
+      },
+      {
+        "app": "x2",
+        "group": [
+          "x2_p1",
+          "x2_p2",
+          "x2_p3"
+        ]
+      },
+      {
+        "app": "x3",
+        "group": [
+          "x3_p1",
+          "x3_p2",
+          "x3_p3"
+        ]
+      }
+    ],
+    "requestId": "",
+    "success": true
+  }
+}

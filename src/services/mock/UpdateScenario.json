@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxxx",
+    "success": true,
+    "data": {
+      "scenarioId": "xxxx",
+      "name": "CPU满载",
+      "code": "chaosblade.cpu.fullload",
+      "description": "cpu fullload",
+      "status": 1,
+      "version": "1.9.0",
+      "original": "chaosblade",
+      "supportScopeTypes": [
+        2
+      ],
+      "categoryIds": [
+        "111111111111"
+      ],
+      "parameters": [
+        {
+          "parameterId": "111111111",
+          "alias": "cpu-cout",
+          "name": "指定CPU个数",
+          "description": "cpu count",
+          "component": {
+            "type": "number",
+            "required": false
+          }
+        }
+      ],
+      "createTime": "2021-11-11 10:00:00",
+      "modifyTime": "2021-11-11 10:00:00"
+    }
+  }
+}

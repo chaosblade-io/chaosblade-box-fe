@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "data": {
+    "data": {
+      "apps": 100,
+      "groups": 200,
+      "machines": 300
+    },
+    "requestId": "7f00000115613748249572381d3db0",
+    "success": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "data": {
+    "requestId": "xxx",
+    "success": true,
+    "data": {
+      "component": {
+        "chart": "xxxx",
+        "metrics": [
+          {
+            "time": "xxx",
+            "value": ""
+          }
+        ]
+      }
+    }
+  }
+}
