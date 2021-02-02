@@ -19,7 +19,9 @@ import React from "react";
 import HelmRegister from "./HelmRegister";
 import SshRegister from "./SshRegister";
 import ManualRegister from "./ManualRegister";
-import ansibleLogo from '../../../../../assets/images/machine/ansible-logo.png'
+import ansibleLogo from '../../../../../assets/images/machine/ansible.svg'
+import sshLogo from '../../../../../assets/images/machine/ssh.svg'
+import manualLogo from '../../../../../assets/images/machine/command-line.svg'
 
 const AnsibleRegisterConfig = {
     id: "page.machine.register.ansible",
@@ -32,14 +34,14 @@ const SshRegisterConfig = {
     id: "page.machine.register.ssh",
     key: "ssh",
     imgAlt: "ssh",
-    imgSrc: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    imgSrc: sshLogo,
     content: <SshRegister/>,
 };
 const ManualRegisterConfig = {
     id: "page.machine.register.manual",
     key: "manual",
     imgAlt: "manual",
-    imgSrc: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+    imgSrc: manualLogo,
     content: <ManualRegister/>,
 };
 const HelmRegisterConfig = {

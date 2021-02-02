@@ -28,9 +28,6 @@ class MachinesSelection extends React.Component {
         return option.description.indexOf(inputValue) > -1;
     };
 
-    handleSearch = (dir, value) => {
-    };
-
     render() {
         const {titles, machines, targetKeys, handleChange} = this.props
         return (
@@ -40,7 +37,6 @@ class MachinesSelection extends React.Component {
                     showSearch
                     targetKeys={targetKeys}
                     onChange={handleChange}
-                    onSearch={this.handleSearch}
                     filterOption={this.filterOption}
                     render={item => item.ip}
                     pagination={{pageSize: 24}}

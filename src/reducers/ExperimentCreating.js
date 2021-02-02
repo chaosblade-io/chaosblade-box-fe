@@ -18,6 +18,7 @@ import {Map} from "immutable";
 import Types from "../actions/Types";
 import createReducer from "./createReducer";
 import _ from "lodash";
+import MachineConstants from "../constants/MachineConstants";
 
 export const INITIAL_STATE = Map({
     loading: false,
@@ -49,7 +50,8 @@ export const INITIAL_STATE = Map({
 });
 
 const handleMachinesFetchingResult = (state, action) => {
-    const {machines, pageSize, page, pages, total} = action.pageableData
+    const {machines, pageSize, page, pages, total} = action.pageableData;
+    console.log("h: ", machines);
     let items = [];
     if (!_.isEmpty(machines)) {
         let _machines = _.orderBy(machines, ['status'], ['desc'])
@@ -60,7 +62,7 @@ const handleMachinesFetchingResult = (state, action) => {
                 ip: machine.ip,
                 hostname: machine.hostname,
                 description: machine.hostname + "-" + machine.ip,
-                // disabled: machine.status !== MachineConstants.MACHINE_STATUS_ONLINE.code,
+                disabled: machine.status !== MachineConstants.MACHINE_STATUS_ONLINE.code,
             })
         })
     }

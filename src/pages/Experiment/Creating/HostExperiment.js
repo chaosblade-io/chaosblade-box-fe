@@ -43,11 +43,6 @@ class HostExperiment extends React.Component {
         this.setState({creatingStepCurrent: value});
     }
 
-    scenariosRender = () => {
-        return (
-            <span>选择演练场景</span>
-        );
-    }
     handleChange = (targetKeys) => {
         this.setState({targetKeys});
     }
@@ -122,8 +117,7 @@ class HostExperiment extends React.Component {
                                 [<a onClick={() => {
                                     console.log("遇到问题点我查看？")
                                 }}>切换成主机名称</a>]}/>
-                    </div>,
-                    this.scenariosRender()
+                    </div>
                 ]}
             />
         );

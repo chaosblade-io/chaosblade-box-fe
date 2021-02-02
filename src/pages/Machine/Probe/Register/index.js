@@ -20,6 +20,7 @@ import {FormattedMessage} from "react-intl";
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import KubernetesRegister from "./Kubernetes/KubernetesRegister";
 import HostRegister from "./Host/HostRegister";
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs;
 const {Paragraph} = Typography
@@ -37,7 +38,7 @@ class Register extends React.Component {
     render() {
         const {active} = this.state
         return (
-            <div>
+            <div className={styles.registerHeader}>
                 <Tabs defaultActiveKey={active ? active : "host"} onChange={(key) => {
                     this.setState({active: key})
                 }}>

@@ -29,9 +29,9 @@ module.exports = function (app) {
         target: "https://chaosblade.oss-cn-hangzhou.aliyuncs.com/",
         changeOrigin: true,
     }));
-    // app.use('/api/', proxy.createProxyMiddleware({
-    //     pathRewrite: {'^/api': '/'},
-    //     target: "http://127.0.01:8080/",
-    //     changeOrigin: true
-    // }));
+    app.use('/api/', proxy.createProxyMiddleware({
+        pathRewrite: {'^/api': '/'},
+        target: "http://101.133.239.202:8080/",
+        changeOrigin: true
+    }));
 };

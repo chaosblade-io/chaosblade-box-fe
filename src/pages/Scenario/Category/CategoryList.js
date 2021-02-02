@@ -47,9 +47,11 @@ class CategoryList extends React.Component {
         const {categories, getScenarioCategories} = this.props;
         return (
             <div>
-                <Tree defaultExpandAll={true} showLine={true}>
-                    {this.treeNode(categories)}
-                </Tree>
+                {
+                    categories.length > 0 && <Tree defaultExpandAll={true} showLine={true}>
+                        {this.treeNode(categories)}
+                    </Tree>
+                }
             </div>
         );
     }

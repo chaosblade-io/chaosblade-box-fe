@@ -25,6 +25,10 @@ import _ from 'lodash'
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
 import queryString from "query-string";
+import linuxLogo from '../../../assets/images/experiment/linux.svg'
+import kubernetesLogo from '../../../assets/images/experiment/kubernetes.svg'
+import applicationLogo from '../../../assets/images/experiment/application.svg'
+import styles from './index.module.scss';
 
 const {Step} = Steps
 const {TabPane} = Tabs
@@ -34,21 +38,21 @@ const ExperimentDimensions = [
         title: "page.experiment.creating.host.dimension.name",
         key: "host",
         imgAlt: "host",
-        imgSrc: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        imgSrc: linuxLogo,
         content: <HostExperiment/>,
     },
     {
         title: "page.experiment.creating.kubernetes.dimension.name",
         key: "kubernetes",
         imgAlt: "kubernetes",
-        imgSrc: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        imgSrc: kubernetesLogo,
         content: <KubernetesExperiment/>,
     },
     {
         title: "page.experiment.creating.application.dimension.name",
         key: "application",
         imgAlt: "application",
-        imgSrc: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+        imgSrc: applicationLogo,
         content: <ApplicationExperiment/>,
     },
 ]
@@ -71,9 +75,10 @@ class ExperimentCreating extends React.Component {
     }
 
     creatingFromExperiment() {
-        const {getExperimentById} = this.props;
+        const {getExperimentById, clearResult} = this.props;
         const id = ExperimentCreating.getExperimentId();
         if (!_.isEmpty(id)) {
+            clearResult();
             getExperimentById(id)
             return true;
         }
@@ -82,8 +87,9 @@ class ExperimentCreating extends React.Component {
 
     creatingFromMachine() {
         const {dimension, machineId, machineIp} = this.props.location;
-        const {creatingFromMachine} = this.props;
+        const {creatingFromMachine, clearResult} = this.props;
         if (dimension && machineId && machineIp) {
+            clearResult();
             creatingFromMachine({dimension, machineIp, machineId});
             return true;
         }
@@ -95,8 +101,6 @@ class ExperimentCreating extends React.Component {
     }
 
     componentDidMount() {
-        const {clearResult} = this.props;
-        clearResult();
         this.creatingFromExperiment() ||
         this.creatingFromMachine() ||
         this.creatingFromScenario();
@@ -124,7 +128,7 @@ class ExperimentCreating extends React.Component {
         return (
             <div>
                 <h1>选择演练维度</h1>
-                <div>
+                <div className={styles.experimentHeader}>
                     <Row>
                         <Tabs defaultActiveKey={dimension} card={"card"} onChange={(key) => {
                             this.setState({dimension: key})
@@ -135,7 +139,7 @@ class ExperimentCreating extends React.Component {
                                             tab={
                                                 <Col span={4}>
                                                     <Card
-                                                        style={{width: 330}}
+                                                        style={{width: 300}}
                                                         bordered={true}
                                                         hoverable={true}
                                                         title={
@@ -143,7 +147,11 @@ class ExperimentCreating extends React.Component {
                                                                 <FormattedMessage id={item.title}/>
                                                             </>
                                                         }
-                                                        cover={<img alt={item.imgAlt} src={item.imgSrc}/>}
+                                                        cover={<img alt={item.imgAlt} src={item.imgSrc}
+                                                                    style={{
+                                                                        width: 296,
+                                                                        height: 182
+                                                                    }}/>}
                                                     />
                                                 </Col>
                                             }

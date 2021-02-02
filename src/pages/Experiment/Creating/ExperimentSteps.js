@@ -49,7 +49,7 @@ const StepsConfig = [
 
 const FormLayout = {
     labelCol: {span: 4},
-    wrapperCol: {span: 8},
+    wrapperCol: {span: 16},
 };
 
 class ExperimentSteps extends React.Component {
@@ -101,9 +101,9 @@ class ExperimentSteps extends React.Component {
         }
     }
 
-
     onCategorySelect = (selectedKeys) => {
-        const {getScenariosPageable, dimension} = this.props;
+        const {getScenariosPageable, dimension, scenarioSelected} = this.props;
+        this.setState({scenarioSelected: null});
         const categoryId = selectedKeys[0]
         getScenariosPageable({
             categoryId: categoryId,
@@ -133,7 +133,7 @@ class ExperimentSteps extends React.Component {
     }
 
     onMetricCategorySelect(selectedKeys, info) {
-        const metricSelected = info.selectedNodes[0].dataRef;
+        const metricSelected = info.selectedNodes.length > 0 ? info.selectedNodes[0].dataRef : null;
         if (metricSelected) {
             this.setState({metricSelected});
         }
@@ -176,15 +176,17 @@ class ExperimentSteps extends React.Component {
         const {metricCategories} = this.props;
         const {metricSelected} = this.state;
         return (
-            <Layout className={styles.stepSider}>
+            <Layout className={styles.stepLayout}>
                 <Sider>
-                    <Tree
-                        defaultExpandAll={true}
-                        defaultSelectedKeys={this.getMetricSelectedKey()}
-                        onSelect={this.onMetricCategorySelect.bind(this)}
-                    >
-                        {this.metricCategoryTreeRender(metricCategories)}
-                    </Tree>
+                    {
+                        metricCategories.length > 0 && <Tree
+                            defaultExpandAll={true}
+                            defaultSelectedKeys={this.getMetricSelectedKey()}
+                            onSelect={this.onMetricCategorySelect.bind(this)}
+                        >
+                            {this.metricCategoryTreeRender(metricCategories)}
+                        </Tree>
+                    }
                 </Sider>
                 <Divider dashed type={"vertical"}/>
                 <Content>
@@ -270,46 +272,61 @@ class ExperimentSteps extends React.Component {
         };
         return (
             <Layout>
-                <Layout className={styles.stepSider}>
+                <Layout className={styles.stepLayout}>
                     <Sider>
-                        <Tree
-                            defaultExpandAll={true}
-                            defaultSelectedKeys={this.getScenarioSelectedKey()}
-                            onSelect={this.onCategorySelect}
-                        >
-                            {this.scenarioCategoryTreeRender(categories)}
-                        </Tree>
+                        {
+                            categories.length > 0 && <Tree
+                                defaultExpandAll={true}
+                                defaultSelectedKeys={this.getScenarioSelectedKey()}
+                                onSelect={this.onCategorySelect.bind(this)}
+                            >
+                                {this.scenarioCategoryTreeRender(categories)}
+                            </Tree>
+                        }
                     </Sider>
-                    <Divider dashed type={"vertical"}/>
-                    <Content>
-                        <List
-                            grid={{gutter: 16, column: 4}}
-                            dataSource={scenarios}
-                            renderItem={item => (
-                                <List.Item>
-                                    <Card hoverable
-                                          onClick={this.onScenarioClick.bind(this, item)}>{item.name}</Card>
-                                </List.Item>
-                            )}
-                        />
-                    </Content>
+                    <Layout>
+                        <Content>
+                            <List
+                                grid={{gutter: 8, column: 4}}
+                                dataSource={scenarios}
+                                renderItem={item => (
+                                    <List.Item>
+                                        <Card
+                                            className={scenarioSelected && item.scenarioId === scenarioSelected.scenarioId ?
+                                                styles.stepCardSelected
+                                                :
+                                                styles.stepCardNoSelected}
+                                            hoverable
+                                            onClick={this.onScenarioClick.bind(this, item)}
+                                            style={{textAlign: 'center', height: 64}}
+                                        >
+                                            {item.name}
+                                        </Card>
+                                    </List.Item>
+                                )}
+                            />
+                        </Content>
+                        <Divider dashed/>
+                        <Footer>
+                            <Card title={<span>场景参数</span>}>
+                                {
+                                    _.isEmpty(scenarioSelected) ? <div></div> :
+                                        _.isEmpty(scenarioSelected.parameters) ? '无参数' :
+                                            <Form {...FormLayout} ref={this.scenarioForm}
+                                                  onFinish={this.onScenarioFormFinish}
+                                                  initialValues={scenarioSelected.parameters}>
+                                                {scenarioSelected.parameters.map(param =>
+                                                    <Form.Item label={param.paramName} name={param.paramName}
+                                                               help={param.description}>
+                                                        <Input/>
+                                                    </Form.Item>
+                                                )}
+                                            </Form>
+                                }
+                            </Card>
+                        </Footer>
+                    </Layout>
                 </Layout>
-                <Divider dashed/>
-                <Footer>
-                    {
-                        _.isEmpty(scenarioSelected) ? <div></div> :
-                            _.isEmpty(scenarioSelected.parameters) ? '无参数' :
-                                <Form {...FormLayout} ref={this.scenarioForm}
-                                      onFinish={this.onScenarioFormFinish}
-                                      initialValues={scenarioSelected.parameters}>
-                                    {scenarioSelected.parameters.map(param =>
-                                        <Form.Item label={param.paramName} name={param.paramName}>
-                                            <Input/>
-                                        </Form.Item>
-                                    )}
-                                </Form>
-                    }
-                </Footer>
             </Layout>
         );
     }

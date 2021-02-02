@@ -62,7 +62,7 @@ const createApi = (key = 'default', config = {}) => {
     });
 
     console.log(process.env.NODE_ENV)
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development__') {
         const {mock} = queryString.parse(window.location.search);
         // if (mock) {
             const {mockApi} = require('./mockApi');

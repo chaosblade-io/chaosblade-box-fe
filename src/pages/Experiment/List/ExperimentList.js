@@ -83,7 +83,6 @@ class ExperimentList extends React.Component {
             <div className="application-machine-table">
                 {getSearchForm(this)}
                 <Table columns={this.TableColumns}
-                    // dataSource={[]}
                        dataSource={loading ? [] : experiments}
                        primaryKey="experimentId"
                        locale={{
