@@ -109,6 +109,42 @@ class AnsibleRegister extends React.Component {
         return this.installProbe(selectedRowKeys);
     }
 
+    TableColumns = [
+        {title: '主机信息', dataIndex: "host", key: "host"},
+        {
+            title: '注册状态', dataIndex: "status", key: "status", render: text => {
+                switch (text) {
+                    case 0:
+                        return '未安装';
+                    case 1:
+                        return '安装中';
+                    case -1:
+                        return '安装失败';
+                    case 2:
+                        return '已安装';
+                    case 3:
+                        return '离线';
+                    case 9:
+                        return '已禁用';
+                }
+            }
+        },
+        {
+            title: '操作', dataIndex: "operation", key: "operation", render: (text, record) => {
+                const {status} = record
+                return (
+                    <Space size="middle">
+                        <span>
+                            {status === 1 || status === 2 || status === 9 ? '--' :
+                                <a onClick={this.triggerProbe.bind(this, record)}>安装</a>
+                            }
+                        </span>
+                    </Space>
+                );
+            }
+        },
+    ]
+
     onFormVisibleChange = (visible) => {
         this.setState({formVisible: visible})
     }
@@ -186,42 +222,6 @@ class AnsibleRegister extends React.Component {
         );
     }
 
-    TableColumns = [
-        {title: '主机信息', dataIndex: "host", key: "host"},
-        {
-            title: '注册状态', dataIndex: "status", key: "status", render: text => {
-                switch (text) {
-                    case 0:
-                        return '未安装';
-                    case 1:
-                        return '安装中';
-                    case -1:
-                        return '安装失败';
-                    case 2:
-                        return '已安装';
-                    case 3:
-                        return '离线';
-                    case 9:
-                        return '已禁用';
-                }
-            }
-        },
-        {
-            title: '操作', dataIndex: "operation", key: "operation", render: (text, record) => {
-                const {status} = record
-                return (
-                    <Space size="middle">
-                        <span>
-                            {status === 1 || status === 2 || status === 9 ? '--' :
-                                <a onClick={this.triggerProbe.bind(this, record)}>安装</a>
-                            }
-                        </span>
-                    </Space>
-                );
-            }
-        },
-    ]
-
 }
 
 const TableColumnsResult = [
@@ -258,7 +258,7 @@ const mapDispatchToProps = dispatch => {
         getAnsibleHosts: () => dispatch(Actions.getAnsibleHosts()),
         installProbeByAnsible: (values) => dispatch(Actions.installProbeByAnsible(values)),
         queryProbesInstallation: (probeIds) => dispatch(Actions.queryProbesInstallation(probeIds)),
-        clearAnsibleRegister: ()=>dispatch(Actions.clearAnsibleRegisterResult())
+        clearAnsibleRegister: () => dispatch(Actions.clearAnsibleRegisterResult())
     }
 }
 

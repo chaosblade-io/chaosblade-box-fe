@@ -16,7 +16,7 @@
 
 import React from "react";
 
-class SshRegister extends React.Component{
+class SshRegister extends React.Component {
     render() {
         return (
             <div>

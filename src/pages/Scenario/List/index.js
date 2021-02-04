@@ -16,8 +16,6 @@
 
 import React from "react";
 import ScenarioList from "./ScenarioList";
-import ScenarioStatistics from "./ScenarioStatistics";
-import {Divider} from "antd";
 
 export default class Scenario extends React.Component {
 

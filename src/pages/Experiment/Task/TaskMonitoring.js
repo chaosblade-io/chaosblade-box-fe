@@ -15,7 +15,7 @@
  */
 
 import React from "react";
-import {Spin, Typography} from "antd";
+import {Typography} from "antd";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
 import {Line} from '@antv/g2plot';

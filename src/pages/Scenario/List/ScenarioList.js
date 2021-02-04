@@ -57,12 +57,11 @@ const InputSearchFields = [
 
 class ScenarioList extends React.Component {
 
-    formRef = React.createRef()
-
     static defaultProps = {
         InputSearchFields: InputSearchFields,
         SelectSearchFields: SelectSearchFields,
     }
+    formRef = React.createRef()
 
     constructor(props) {
         super(props);
@@ -95,27 +94,6 @@ class ScenarioList extends React.Component {
     edit = (scenarioId) => {
         const {history} = this.props;
         history.push(`/scenario/detail/?${request.generateUrlSearch({id: scenarioId})}`);
-    }
-
-
-    render() {
-        const {loading, scenarios, page, total, pageSize, query, getScenariosPageable} = this.props;
-        return (
-            <div className="application-machine-table">
-                {getSearchForm(this)}
-                <Table columns={this.TableColumns}
-                       dataSource={loading ? [] : scenarios}
-                       primaryKey="scenarioId"
-                       loading={loading}
-                       rowKey={record => record.code}
-                       pagination={GenPagination(page, pageSize, total, (page, pageSize) => getScenariosPageable({
-                           ...query,
-                           page,
-                           pageSize
-                       }))}
-                />
-            </div>
-        )
     }
 
     TableColumns = [
@@ -203,6 +181,26 @@ class ScenarioList extends React.Component {
             },
         },
     ]
+
+    render() {
+        const {loading, scenarios, page, total, pageSize, query, getScenariosPageable} = this.props;
+        return (
+            <div className="application-machine-table">
+                {getSearchForm(this)}
+                <Table columns={this.TableColumns}
+                       dataSource={loading ? [] : scenarios}
+                       primaryKey="scenarioId"
+                       loading={loading}
+                       rowKey={record => record.code}
+                       pagination={GenPagination(page, pageSize, total, (page, pageSize) => getScenariosPageable({
+                           ...query,
+                           page,
+                           pageSize
+                       }))}
+                />
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = state => {

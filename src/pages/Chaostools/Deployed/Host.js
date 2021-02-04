@@ -57,12 +57,11 @@ const SelectSearchFields = [
 
 class Host extends React.Component {
 
-    formRef = React.createRef()
-
     static defaultProps = {
         InputSearchFields: InputSearchFields,
         SelectSearchFields: SelectSearchFields,
     }
+    formRef = React.createRef()
 
     constructor(props) {
         super(props);
@@ -94,31 +93,6 @@ class Host extends React.Component {
         const toolsName = "chaosblade";
         const toolsVersion = "0.9.0";
         undeployChaostoolsForHost({name: toolsName, version: toolsVersion, machineId: machineId});
-    }
-
-
-    render() {
-        const {loading, machines, page, total, pageSize, query, getMachinesForHostPageable} = this.props;
-        return (
-            <div>
-                {getSearchForm(this)}
-                <Table columns={this.TableColumns}
-                       rowKey={record => record.machineId}
-                       dataSource={loading ? [] : machines}
-                       locale={{
-                           emptyText: getEmptyContent(
-                               <span>没有机器数据，请先在
-                                   <Link to={{pathname: '/machine/register', active: 'host'}}>&nbsp;机器注册&nbsp;</Link>页面注册机器
-                               </span>,
-                               "查找不到机器", query)
-                       }}
-                       loading={loading}
-                       pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getMachinesForHostPageable({...query, page, pageSize})
-                       )}
-                />
-            </div>
-        );
     }
 
     TableColumns = [
@@ -187,6 +161,30 @@ class Host extends React.Component {
             }
         }
     ];
+
+    render() {
+        const {loading, machines, page, total, pageSize, query, getMachinesForHostPageable} = this.props;
+        return (
+            <div>
+                {getSearchForm(this)}
+                <Table columns={this.TableColumns}
+                       rowKey={record => record.machineId}
+                       dataSource={loading ? [] : machines}
+                       locale={{
+                           emptyText: getEmptyContent(
+                               <span>没有机器数据，请先在
+                                   <Link to={{pathname: '/machine/register', active: 'host'}}>&nbsp;机器注册&nbsp;</Link>页面注册机器
+                               </span>,
+                               "查找不到机器", query)
+                       }}
+                       loading={loading}
+                       pagination={GenPagination(page, pageSize, total,
+                           (page, pageSize) => getMachinesForHostPageable({...query, page, pageSize})
+                       )}
+                />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = state => {

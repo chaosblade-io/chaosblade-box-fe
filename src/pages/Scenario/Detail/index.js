@@ -25,14 +25,14 @@ import {Divider, Spin} from "antd";
 
 class ScenarioDetail extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     static getScenarioId() {
         const parsed = queryString.parse(window.location.search);
         const {id} = parsed;
         return id;
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     componentDidMount() {

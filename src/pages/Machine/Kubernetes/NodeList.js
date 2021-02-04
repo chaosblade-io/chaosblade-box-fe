@@ -54,48 +54,11 @@ const SelectSearchField = [
 ]
 
 class NodeList extends React.Component {
-    formRef = React.createRef()
     static defaultProps = {
         InputSearchFields: NodeInputSearchField,
         SelectSearchFields: SelectSearchField,
     }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            query: props.query || {},
-        };
-    }
-
-    componentDidMount() {
-        const {query, page, pageSize, getMachinesForNodePageable} = this.props;
-        getMachinesForNodePageable({...query, page: page, pageSize: pageSize})
-    }
-
-
-    onFinish = (values) => {
-        const {query, page, pageSize, getMachinesForNodePageable} = this.props;
-        getMachinesForNodePageable({...query, page: page, pageSize: pageSize, ...values})
-    };
-
-    render() {
-        const {loading, page, pageSize, total, machines, query, getMachinesForNodePageable} = this.props
-        return (
-            <div>
-                {getSearchForm(this)}
-                <Table columns={this.NodeColumns}
-                       dataSource={loading ? [] : machines}
-                       rowKey="machineId"
-                    // emptyContent={this.getEmptyContent(query)}
-                       loading={loading}
-                       pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getMachinesForNodePageable({...query, page, pageSize}))}
-                />
-            </div>
-        );
-    }
-
-
+    formRef = React.createRef()
     NodeColumns = [
         {
             title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
@@ -152,6 +115,40 @@ class NodeList extends React.Component {
             },
         },
     ]
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            query: props.query || {},
+        };
+    }
+
+    componentDidMount() {
+        const {query, page, pageSize, getMachinesForNodePageable} = this.props;
+        getMachinesForNodePageable({...query, page: page, pageSize: pageSize})
+    }
+
+    onFinish = (values) => {
+        const {query, page, pageSize, getMachinesForNodePageable} = this.props;
+        getMachinesForNodePageable({...query, page: page, pageSize: pageSize, ...values})
+    };
+
+    render() {
+        const {loading, page, pageSize, total, machines, query, getMachinesForNodePageable} = this.props
+        return (
+            <div>
+                {getSearchForm(this)}
+                <Table columns={this.NodeColumns}
+                       dataSource={loading ? [] : machines}
+                       rowKey="machineId"
+                    // emptyContent={this.getEmptyContent(query)}
+                       loading={loading}
+                       pagination={GenPagination(page, pageSize, total,
+                           (page, pageSize) => getMachinesForNodePageable({...query, page, pageSize}))}
+                />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = state => {

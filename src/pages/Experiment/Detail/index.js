@@ -15,7 +15,7 @@
  */
 
 import React from "react";
-import {Affix, Badge, Button, Col, Descriptions, Divider, Row, Space, Table, Tag} from "antd";
+import {Affix, Button, Col, Descriptions, Divider, Row, Space, Table} from "antd";
 import {GenPagination} from "../../../libs/Pagination";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
@@ -29,14 +29,22 @@ import TaskInfo from "../Task/TaskInfo";
 
 class ExperimentDetail extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     static getExperimentId() {
         const parsed = queryString.parse(window.location.search);
         const {id} = parsed;
         return id;
     }
 
-    constructor(props) {
-        super(props);
+    static getDerivedStateFromProps(nextProps) {
+        const {history, taskId, clearExperimentDetailResult} = nextProps;
+        if (!_.isEmpty(taskId)) {
+            clearExperimentDetailResult();
+            history.push(`/experiment/task/?${request.generateUrlSearch({id: taskId})}`)
+        }
     }
 
     componentDidMount() {
@@ -57,14 +65,6 @@ class ExperimentDetail extends React.Component {
         const experimentId = ExperimentDetail.getExperimentId();
         const {startExperiment} = this.props;
         startExperiment(experimentId);
-    }
-
-    static getDerivedStateFromProps(nextProps) {
-        const {history, taskId, clearExperimentDetailResult} = nextProps;
-        if (!_.isEmpty(taskId)) {
-            clearExperimentDetailResult();
-            history.push(`/experiment/task/?${request.generateUrlSearch({id: taskId})}`)
-        }
     }
 
     experimentOperationRender = () => {
@@ -159,7 +159,7 @@ class ExperimentDetail extends React.Component {
         if (_.isEmpty(metrics)) {
             return (
                 <Descriptions title="实验监控" bordered column={4}>
-                        <Descriptions.Item span={4}>无数据</Descriptions.Item>
+                    <Descriptions.Item span={4}>无数据</Descriptions.Item>
                 </Descriptions>
             );
         }

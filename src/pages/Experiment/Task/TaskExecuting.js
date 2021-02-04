@@ -45,6 +45,11 @@ class TaskExecuting extends React.Component {
         retryExperiment({taskId, status, resultStatus});
     }
 
+    Operations = {
+        RETRY: <Button onClick={this.retryExperiment.bind(this)} key="retry">重试</Button>,
+        END: <Button onClick={this.endExperiment.bind(this)} key="end">终止</Button>
+    }
+
     prepareRender = () => {
         return (
             <Result
@@ -180,11 +185,6 @@ class TaskExecuting extends React.Component {
     render() {
         const {executeLoading} = this.props
         return (<Spin spinning={executeLoading}>{this.statusRender()}</Spin>);
-    }
-
-    Operations = {
-        RETRY: <Button onClick={this.retryExperiment.bind(this)} key="retry">重试</Button>,
-        END: <Button onClick={this.endExperiment.bind(this)} key="end">终止</Button>
     }
 }
 

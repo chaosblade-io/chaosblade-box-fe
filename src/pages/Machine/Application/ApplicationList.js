@@ -79,51 +79,11 @@ const SelectSearchFields = [
 ]
 
 class ApplicationList extends React.Component {
-    formRef = React.createRef()
-
     static defaultProps = {
         InputSearchFields: InputSearchFields,
         SelectSearchFields: SelectSearchFields,
     }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            query: props.query || {},
-        };
-    }
-
-    componentDidMount() {
-        const {query, page, pageSize, getMachinesForApplicationPageable} = this.props
-        getMachinesForApplicationPageable({...query, page: page, pageSize: pageSize})
-    }
-
-    onFinish = (values) => {
-        const {query, page, pageSize, getMachinesForApplicationPageable} = this.props
-        getMachinesForApplicationPageable({...query, page: page, pageSize: pageSize, ...values})
-    };
-
-    render() {
-        const {loading, machines, page, total, pageSize, query, getMachinesForApplicationPageable} = this.props;
-
-        return (
-            <div className="application-machine-table">
-                {getSearchForm(this)}
-                <Table columns={this.TableColumns}
-                       rowKey="machineId"
-                       dataSource={loading ? [] : machines}
-                       primaryKey="machineId"
-                       locale={{
-                           emptyText: getEmptyContent("机器不存在", "查找不到机器", query)
-                       }}
-                       loading={loading}
-                       pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getMachinesForApplicationPageable({...query, page, pageSize}))}
-                />
-            </div>
-        )
-    }
-
+    formRef = React.createRef()
     TableColumns = [
         {
             title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
@@ -200,6 +160,44 @@ class ApplicationList extends React.Component {
             }
         },
     ];
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            query: props.query || {},
+        };
+    }
+
+    componentDidMount() {
+        const {query, page, pageSize, getMachinesForApplicationPageable} = this.props
+        getMachinesForApplicationPageable({...query, page: page, pageSize: pageSize})
+    }
+
+    onFinish = (values) => {
+        const {query, page, pageSize, getMachinesForApplicationPageable} = this.props
+        getMachinesForApplicationPageable({...query, page: page, pageSize: pageSize, ...values})
+    };
+
+    render() {
+        const {loading, machines, page, total, pageSize, query, getMachinesForApplicationPageable} = this.props;
+
+        return (
+            <div className="application-machine-table">
+                {getSearchForm(this)}
+                <Table columns={this.TableColumns}
+                       rowKey="machineId"
+                       dataSource={loading ? [] : machines}
+                       primaryKey="machineId"
+                       locale={{
+                           emptyText: getEmptyContent("机器不存在", "查找不到机器", query)
+                       }}
+                       loading={loading}
+                       pagination={GenPagination(page, pageSize, total,
+                           (page, pageSize) => getMachinesForApplicationPageable({...query, page, pageSize}))}
+                />
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = state => {

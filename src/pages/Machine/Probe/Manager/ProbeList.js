@@ -66,12 +66,11 @@ const SelectSearchFields = [
 
 class ProbeList extends React.Component {
 
-    formRef = React.createRef()
-
     static defaultProps = {
         InputSearchFields: InputSearchFields,
         SelectSearchFields: SelectSearchFields,
     }
+    formRef = React.createRef()
 
     constructor(props) {
         super(props);
@@ -121,29 +120,6 @@ class ProbeList extends React.Component {
             >
                 <a>{text}</a>
             </Popconfirm>
-        );
-    }
-
-
-    render() {
-        const {loading, probes, page, total, pageSize, query, getProbesPageable} = this.props;
-        return (
-            <div>
-                {getSearchForm(this)}
-                <Table columns={this.TableColumns}
-                       dataSource={loading ? [] : probes}
-                       locale={{
-                           emptyText: getEmptyContent(<span>探针不存在，请先<Link to={
-                               {pathname: '/machine/register'}
-                           }>安装探针</Link></span>, "查找不到探针", query)
-                       }}
-                       rowKey={record => record.probeId}
-                       loading={loading}
-                       pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getProbesPageable({...query, page, pageSize})
-                       )}
-                />
-            </div>
         );
     }
 
@@ -209,6 +185,28 @@ class ProbeList extends React.Component {
             },
         },
     ]
+
+    render() {
+        const {loading, probes, page, total, pageSize, query, getProbesPageable} = this.props;
+        return (
+            <div>
+                {getSearchForm(this)}
+                <Table columns={this.TableColumns}
+                       dataSource={loading ? [] : probes}
+                       locale={{
+                           emptyText: getEmptyContent(<span>探针不存在，请先<Link to={
+                               {pathname: '/machine/register'}
+                           }>安装探针</Link></span>, "查找不到探针", query)
+                       }}
+                       rowKey={record => record.probeId}
+                       loading={loading}
+                       pagination={GenPagination(page, pageSize, total,
+                           (page, pageSize) => getProbesPageable({...query, page, pageSize})
+                       )}
+                />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = state => {

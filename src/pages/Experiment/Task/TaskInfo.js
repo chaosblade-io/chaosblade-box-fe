@@ -37,6 +37,26 @@ class TaskInfo extends React.Component {
         }
     }
 
+    static statusRender = (status, resultStatus) => {
+        const _status = Task.getTaskStatus(status, resultStatus);
+        let statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_UNKNOWN.desc}</Tag>;
+        switch (_status) {
+            case ExperimentConstants.TASK_SUCCESS:
+                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_SUCCESS.desc}</Tag>;
+                break;
+            case ExperimentConstants.TASK_FAILED:
+                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_FAILED.desc}</Tag>;
+                break;
+            case ExperimentConstants.TASK_RUNNING:
+                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_RUNNING.desc}/>;
+                break;
+            case ExperimentConstants.TASK_WAIT:
+                statusTag = <Tag color={"geekblue"}>{ExperimentConstants.TASK_WAIT.desc}</Tag>;
+                break;
+        }
+        return statusTag;
+    }
+
     componentDidMount() {
         const {queryTaskResult} = this.props;
         const taskId = Task.getTaskId();
@@ -81,26 +101,6 @@ class TaskInfo extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.infoTime);
-    }
-
-    static statusRender = (status, resultStatus) => {
-        const _status = Task.getTaskStatus(status, resultStatus);
-        let statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_UNKNOWN.desc}</Tag>;
-        switch (_status) {
-            case ExperimentConstants.TASK_SUCCESS:
-                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_SUCCESS.desc}</Tag>;
-                break;
-            case ExperimentConstants.TASK_FAILED:
-                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_FAILED.desc}</Tag>;
-                break;
-            case ExperimentConstants.TASK_RUNNING:
-                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_RUNNING.desc}/>;
-                break;
-            case ExperimentConstants.TASK_WAIT:
-                statusTag = <Tag color={"geekblue"}>{ExperimentConstants.TASK_WAIT.desc}</Tag>;
-                break;
-        }
-        return statusTag;
     }
 
     render() {

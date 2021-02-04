@@ -33,23 +33,6 @@ class ParameterList extends React.Component {
         // 弹框
     }
 
-    render() {
-        const {loading, parameters} = this.props;
-        return (
-            <div>
-                <Table columns={this.TableColumns}
-                       rowKey={record => record.parameterId}
-                       dataSource={loading ? [] : parameters}
-                       locale={{
-                           emptyText: getEmptyContent(<span>无参数</span>)
-                       }}
-                       loading={loading}
-                       pagination={false}
-                />
-            </div>
-        );
-    }
-
     TableColumns = [
         {
             title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
@@ -98,6 +81,23 @@ class ParameterList extends React.Component {
             }
         },
     ]
+
+    render() {
+        const {loading, parameters} = this.props;
+        return (
+            <div>
+                <Table columns={this.TableColumns}
+                       rowKey={record => record.parameterId}
+                       dataSource={loading ? [] : parameters}
+                       locale={{
+                           emptyText: getEmptyContent(<span>无参数</span>)
+                       }}
+                       loading={loading}
+                       pagination={false}
+                />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = state => {

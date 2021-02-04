@@ -47,7 +47,7 @@ class TaskLogging extends React.Component {
         logging.map(log => {
             logs.push(
                 <Timeline.Item>
-                    <div dangerouslySetInnerHTML={{__html: ansi_up.ansi_to_html(log)}} />
+                    <div dangerouslySetInnerHTML={{__html: ansi_up.ansi_to_html(log)}}/>
                 </Timeline.Item>
             )
         });

@@ -53,49 +53,11 @@ const SelectSearchFields = [
 
 class ExperimentList extends React.Component {
 
-    formRef = React.createRef()
-
     static defaultProps = {
         InputSearchFields: InputSearchFields,
         SelectSearchFields: SelectSearchFields,
     }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            query: props.query || {},
-        };
-    }
-
-    componentDidMount() {
-        const {query, page, pageSize, getExperimentsPageable} = this.props
-        getExperimentsPageable({...query, page: page, pageSize: pageSize})
-    }
-
-    onFinish = (values) => {
-        const {query, page, pageSize, getExperimentsPageable} = this.props
-        getExperimentsPageable({...query, page: page, pageSize: pageSize, ...values})
-    };
-
-    render() {
-        const {loading, experiments, page, total, pageSize, query, getExperimentsPageable} = this.props;
-        return (
-            <div className="application-machine-table">
-                {getSearchForm(this)}
-                <Table columns={this.TableColumns}
-                       dataSource={loading ? [] : experiments}
-                       primaryKey="experimentId"
-                       locale={{
-                           emptyText: getEmptyContent("实验不存在", "查找不到实验", query)
-                       }}
-                       loading={loading}
-                       pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getExperimentsPageable({...query, page, pageSize}))}
-                />
-            </div>
-        )
-    }
-
+    formRef = React.createRef()
     TableColumns = [
         {
             title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
@@ -171,6 +133,42 @@ class ExperimentList extends React.Component {
             ),
         },
     ];
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            query: props.query || {},
+        };
+    }
+
+    componentDidMount() {
+        const {query, page, pageSize, getExperimentsPageable} = this.props
+        getExperimentsPageable({...query, page: page, pageSize: pageSize})
+    }
+
+    onFinish = (values) => {
+        const {query, page, pageSize, getExperimentsPageable} = this.props
+        getExperimentsPageable({...query, page: page, pageSize: pageSize, ...values})
+    };
+
+    render() {
+        const {loading, experiments, page, total, pageSize, query, getExperimentsPageable} = this.props;
+        return (
+            <div className="application-machine-table">
+                {getSearchForm(this)}
+                <Table columns={this.TableColumns}
+                       dataSource={loading ? [] : experiments}
+                       primaryKey="experimentId"
+                       locale={{
+                           emptyText: getEmptyContent("实验不存在", "查找不到实验", query)
+                       }}
+                       loading={loading}
+                       pagination={GenPagination(page, pageSize, total,
+                           (page, pageSize) => getExperimentsPageable({...query, page, pageSize}))}
+                />
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = state => {

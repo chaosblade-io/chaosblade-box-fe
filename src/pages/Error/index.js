@@ -35,6 +35,16 @@ class Error extends Component {
         };
     }
 
+    static getDerivedStateFromProps(nextProps) {
+        const {requestId, errorCode, errorMessage, clearError} = nextProps;
+        if (errorCode > -1 && !_.isEmpty(errorMessage)) {
+            message.error(errorMessage, 2, onclose);
+            clearError && clearError();
+            return {requestId, errorCode, errorMessage};
+        }
+        return null;
+    }
+
     componentDidCatch(error, errorInfo) {
         const {handlerCriticalError} = this.props;
         handlerCriticalError && handlerCriticalError(error.stack);
@@ -52,16 +62,6 @@ class Error extends Component {
             && !_.isUndefined(parsed.debug)
             && !_.isNull(parsed.debug)
             && (parsed.debug === '1' || parsed.debug === 1);
-    }
-
-    static getDerivedStateFromProps(nextProps) {
-        const {requestId, errorCode, errorMessage, clearError} = nextProps;
-        if (errorCode > -1 && !_.isEmpty(errorMessage)) {
-            message.error(errorMessage, 2, onclose);
-            clearError && clearError();
-            return {requestId, errorCode, errorMessage};
-        }
-        return null;
     }
 
     render() {

@@ -60,18 +60,27 @@ const ExperimentDimensions = [
 
 class ExperimentCreating extends React.Component {
 
-    static getExperimentId() {
-        const parsed = queryString.parse(window.location.search);
-        const {id} = parsed;
-        return id;
-    }
-
     constructor(props) {
         super(props);
         this.state = {
             current: 0,
             stepCurrent: 0,
         };
+    }
+
+    static getExperimentId() {
+        const parsed = queryString.parse(window.location.search);
+        const {id} = parsed;
+        return id;
+    }
+
+    static getDerivedStateFromProps(nextProps) {
+        const {history, experimentId, clearResult} = nextProps;
+        // update 返回 experimentId
+        if (!_.isEmpty(experimentId)) {
+            clearResult();
+            history.push(`/experiment/detail/?${request.generateUrlSearch({id: experimentId})}`);
+        }
     }
 
     creatingFromExperiment() {
@@ -112,15 +121,6 @@ class ExperimentCreating extends React.Component {
 
     stepOnChange = current => {
         this.setState({stepCurrent: current})
-    }
-
-    static getDerivedStateFromProps(nextProps) {
-        const {history, experimentId, clearResult} = nextProps;
-        // update 返回 experimentId
-        if (!_.isEmpty(experimentId)) {
-            clearResult();
-            history.push(`/experiment/detail/?${request.generateUrlSearch({id: experimentId})}`);
-        }
     }
 
     render() {

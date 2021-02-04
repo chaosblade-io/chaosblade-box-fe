@@ -26,6 +26,24 @@ const {TabPane} = Tabs;
 
 class Scenarios extends React.Component {
 
+    TableColumns = [
+        {
+            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
+            key: "index",
+            render: (text, record, index) => `${index + 1}`
+        },
+        {
+            title: 'name',
+            key: "name",
+            dataIndex: 'name',
+        },
+        {
+            title: 'longDesc',
+            key: "longDesc",
+            dataIndex: 'longDesc',
+        },
+    ]
+
     constructor(props) {
         super(props);
     }
@@ -77,24 +95,6 @@ class Scenarios extends React.Component {
             </div>
         );
     }
-
-    TableColumns = [
-        {
-            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
-            key: "index",
-            render: (text, record, index) => `${index + 1}`
-        },
-        {
-            title: 'name',
-            key: "name",
-            dataIndex: 'name',
-        },
-        {
-            title: 'longDesc',
-            key: "longDesc",
-            dataIndex: 'longDesc',
-        },
-    ]
 }
 
 const mapStateToProps = state => {

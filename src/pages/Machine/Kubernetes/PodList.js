@@ -65,45 +65,11 @@ const SelectSearchField = [
 ]
 
 class PodList extends React.Component {
-    formRef = React.createRef()
     static defaultProps = {
         InputSearchFields: PodInputSearchField,
         SelectSearchFields: SelectSearchField,
     }
-
-    componentDidMount() {
-        const {query, page, pageSize, getMachinesForPodPageable} = this.props;
-        getMachinesForPodPageable({...query, page: page, pageSize: pageSize})
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            query: props.query || {},
-        };
-    }
-
-    onFinish = (values) => {
-        const {query, page, pageSize, getMachinesForPodPageable} = this.props
-        getMachinesForPodPageable({...query, page: page, pageSize: pageSize, ...values})
-    };
-
-    render() {
-        const {loading, page, pageSize, total, machines, query, getMachinesForPodPageable} = this.props
-        return (
-            <div>
-                {getSearchForm(this)}
-                <Table columns={this.PodColumns}
-                       dataSource={loading ? [] : machines}
-                       rowKey="machineId"
-                       loading={loading}
-                       pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getMachinesForPodPageable({...query, page, pageSize}))}
-                />
-            </div>
-        );
-    }
-
+    formRef = React.createRef()
     PodColumns = [
         {
             title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
@@ -182,6 +148,39 @@ class PodList extends React.Component {
             }
         },
     ]
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            query: props.query || {},
+        };
+    }
+
+    componentDidMount() {
+        const {query, page, pageSize, getMachinesForPodPageable} = this.props;
+        getMachinesForPodPageable({...query, page: page, pageSize: pageSize})
+    }
+
+    onFinish = (values) => {
+        const {query, page, pageSize, getMachinesForPodPageable} = this.props
+        getMachinesForPodPageable({...query, page: page, pageSize: pageSize, ...values})
+    };
+
+    render() {
+        const {loading, page, pageSize, total, machines, query, getMachinesForPodPageable} = this.props
+        return (
+            <div>
+                {getSearchForm(this)}
+                <Table columns={this.PodColumns}
+                       dataSource={loading ? [] : machines}
+                       rowKey="machineId"
+                       loading={loading}
+                       pagination={GenPagination(page, pageSize, total,
+                           (page, pageSize) => getMachinesForPodPageable({...query, page, pageSize}))}
+                />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = state => {

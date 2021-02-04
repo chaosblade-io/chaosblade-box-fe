@@ -41,6 +41,10 @@ const Content = ({children, extraContent}) => (
 );
 
 class ChaostoolsDetail extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     static getToolsName() {
         const parsed = queryString.parse(window.location.search);
         const {name} = parsed;
@@ -51,10 +55,6 @@ class ChaostoolsDetail extends React.Component {
         const parsed = queryString.parse(window.location.search);
         const {version} = parsed;
         return version;
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     componentWillMount() {

@@ -19,17 +19,6 @@ import {Space, Table} from "antd";
 import Task from "./index";
 
 class TaskList extends React.Component {
-    render() {
-        return (
-            <div><span>演练任务列表</span>
-                <Table columns={this.TableColumns}
-                       dataSource={[]}
-                />
-            </div>
-
-        );
-    }
-
     TableColumns = [
         {
             title: "开始时间",
@@ -62,6 +51,17 @@ class TaskList extends React.Component {
             )
         }
     ]
+
+    render() {
+        return (
+            <div><span>演练任务列表</span>
+                <Table columns={this.TableColumns}
+                       dataSource={[]}
+                />
+            </div>
+
+        );
+    }
 }
 
 export default TaskList;
