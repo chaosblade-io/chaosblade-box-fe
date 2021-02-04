@@ -17,7 +17,6 @@
 import {Map} from "immutable";
 import Types from "../actions/Types";
 import createReducer from "./createReducer";
-import {ExperimentConstants} from "../constants/ExperimentConstants";
 import _ from 'lodash';
 
 export const INITIAL_STATE = Map({
@@ -25,7 +24,7 @@ export const INITIAL_STATE = Map({
     startTime: "",
     endTime: "",
     status: 0,
-    resultStatus: ExperimentConstants.TASK_RESULT_STATUS_NULL.code,
+    resultStatus: null,
     executeLoading: false,
     execute: {},
     metrics: [],
@@ -39,8 +38,7 @@ const queryTaskResult = (state, action) => {
     if (_.isEmpty(taskName)) {
         return state;
     }
-    const rs = resultStatus === null ? ExperimentConstants.TASK_RESULT_STATUS_NULL.code : resultStatus;
-    return state.merge({taskName, startTime, endTime, status, resultStatus: rs});
+    return state.merge({taskName, startTime, endTime, status, resultStatus});
 }
 
 const failRetryExperiment = (state, action) => {

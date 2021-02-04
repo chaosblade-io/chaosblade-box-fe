@@ -18,7 +18,7 @@ import createApi from './createApi';
 
 const api = createApi();
 
-// 应用，获取
+const getHostTotalStatistics = () => api.post('GetHostTotalStatistics');
 const getMachinesForHostPageable = query => api.post('GetMachinesForHost', query);
 const getAnsibleHosts = () => api.post('GetAnsibleHosts');
 const getAnsibleHostsRegister = (hosts) => api.post('GetAnsibleHostsRegister', hosts);
@@ -27,6 +27,7 @@ const banMachine = machineId => api.post('BanMachine', machineId);
 const unbanMachine = machineId => api.post('UnbanMachine', machineId);
 
 export default {
+    getHostTotalStatistics,
     getMachinesForHostPageable,
     getAnsibleHosts,
     getAnsibleHostsRegister,

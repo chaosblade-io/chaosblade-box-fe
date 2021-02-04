@@ -21,7 +21,7 @@ export const NavigationConfig = [
     {
         id: "menu.machine",
         key: "/machine",
-        path: "/machine",
+        path: "/machine/list",
         name: "机器管理",
         icon: <DesktopOutlined/>,
         subs: [
@@ -48,7 +48,7 @@ export const NavigationConfig = [
     {
         id: "menu.chaostools",
         key: "/chaostools",
-        path: "/chaostools",
+        path: "/chaostools/market",
         name: "实验工具",
         icon: <ProjectOutlined/>,
         subs: [
@@ -63,7 +63,7 @@ export const NavigationConfig = [
     {
         id: "menu.scenario",
         key: "/scenario",
-        path: "/scenario",
+        path: "/scenario/list",
         name: "场景管理",
         icon: <FileOutlined/>,
         subs: [
@@ -84,7 +84,7 @@ export const NavigationConfig = [
     {
         id: "menu.experiment",
         key: "/experiment",
-        path: "/experiment",
+        path: "/experiment/list",
         name: "实验管理",
         icon: <ProjectOutlined/>,
         subs: [

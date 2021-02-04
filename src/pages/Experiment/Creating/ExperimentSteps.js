@@ -445,6 +445,7 @@ class ExperimentSteps extends React.Component {
 const mapStateToProps = state => {
     const experiment = state.experimentCreating.toJS();
     return {
+        loading: experiment.loading,
         experimentName: experiment.experimentName,
         categories: experiment.categories || [],
         scenarios: experiment.scenarios.scenarios || [],

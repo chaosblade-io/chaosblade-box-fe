@@ -26,6 +26,7 @@ import {fork} from "redux-saga/effects";
 export default function* root() {
     yield fork(application().watchApplicationTotalStatisticFetching);
     yield fork(application().watchMachinesForApplicationFetching);
+    yield fork(host().watchGetHostTotalStatistics);
     yield fork(host().watchMachinesForHostFetching);
     yield fork(host().watchAnsibleHostsFetching);
     yield fork(host().watchAnsibleHostsRegisterFetching);
@@ -42,6 +43,7 @@ export default function* root() {
     yield fork(kubernetes().watchGetK8sResourceStatistics);
     yield fork(kubernetes().watchGetMachinesForPod);
     yield fork(kubernetes().watchGetMachinesForNode);
+    yield fork(kubernetes().watchQueryCollectStatus);
     yield fork(experiment().watchExperimentStatisticFetching);
     yield fork(experiment().watchExperimentsFetching);
     yield fork(experiment().watchCreateExperiment);

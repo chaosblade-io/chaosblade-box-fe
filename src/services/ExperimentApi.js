@@ -19,7 +19,7 @@ import createApi from './createApi';
 const api = createApi();
 
 // 获取实验统计
-const getExperimentStatistics = () => api.post('GetExperimentStatistics');
+const getExperimentStatistics = () => api.post('GetExperimentTotalStatistics');
 
 // 获取实验列表
 const getExperimentsPageable = query => api.post('GetExperimentsPageable', query);

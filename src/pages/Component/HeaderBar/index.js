@@ -35,9 +35,13 @@ const NavigationMap = NavigationConfig.reduce((map, obj) => {
 
 const HeaderBar = withRouter(props => {
     const {location} = props;
+    console.log(location)
     const pathSnippets = location.pathname.split('/').filter(i => i);
+    console.log(pathSnippets);
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+        console.log({url})
+
         return (
             <Breadcrumb.Item key={url}>
                 <Link to={url}>{NavigationMap[url]}</Link>

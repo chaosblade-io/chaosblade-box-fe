@@ -24,6 +24,7 @@ import {FormattedMessage} from "react-intl";
 import MachineOperation from "../libs/MachineOperation";
 import MachineConstants from "../../../constants/MachineConstants";
 import styles from "./index.module.scss";
+import _ from 'lodash';
 
 const PodInputSearchField = [
     {
@@ -69,6 +70,30 @@ class PodList extends React.Component {
         InputSearchFields: PodInputSearchField,
         SelectSearchFields: SelectSearchField,
     }
+
+    // chaosRunning: false
+    // chaosTime: null
+    // chaosed: false
+    // chaostools: null
+    // clusterName: null
+    // containers: null
+    // createTime: "2021-02-05 09:32:56"
+    // heartbeatTime: "2021-02-05 10:15:38"
+    // hostname: null
+    // ip: null
+    // machineId: "1357502432392765442"
+    // machineType: null
+    // nodeIp: null
+    // nodeName: "izuf6gjchf1lak9iqeugunz"
+    // nodeVersion: null
+    // original: null
+    // podIp: "172.19.128.192"
+    // podName: "storage-provisioner"
+    // status: 2
+    // taskId: null
+    // taskStatus: null
+
+
     formRef = React.createRef()
     PodColumns = [
         {
@@ -115,6 +140,9 @@ class PodList extends React.Component {
             dataIndex: 'containers',
             key: 'containers',
             render: text => {
+                if (_.isEmpty(text)) {
+                    return;
+                }
                 return (
                     text.map(container => {
                         return (<Row><Col span={12}>{container}</Col></Row>);
@@ -126,9 +154,9 @@ class PodList extends React.Component {
             title: '是否演练过',
             dataIndex: 'chaosed',
             key: 'chaosed',
-            render: text => {
-                return text ? '是' : '否'
-            },
+            render: (text) => {
+                return text ? (<span>是</span>) : <span>否</span>
+            }
         },
         {
             title: '最近演练时间',
@@ -137,10 +165,12 @@ class PodList extends React.Component {
         },
         {
             title: '操作',
-            key: 'action',
+            dataIndex: 'operation',
+            key: 'operation',
             render: (text, record) => {
                 return (
                     <MachineOperation
+                        dimension={"pod"}
                         unbanMachine={this.props.unbanMachine.bind(this)}
                         banMachine={this.props.banMachine.bind(this)}
                         record={record}/>
@@ -187,19 +217,17 @@ const mapStateToProps = state => {
     const machine = state.machine.toJS();
     let {pods} = machine
     return {
-        loading: pods.loading,
-        refreshing: pods.refreshing,
+        loading: machine.loading,
         machines: pods.machines,
         pageSize: pods.pageSize,
         page: pods.page,
-        pages: pods.pages,
         total: pods.total,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getMachinesForPodPageable: query => dispatch(Actions.getMachinesForPodPageable(query)),
+        getMachinesForPodPageable: query => dispatch(Actions.getMachinesForPodPageable({...query, original: "pod"})),
         banMachine: machineId => dispatch(Actions.banMachine(machineId)),
         unbanMachine: machineId => dispatch(Actions.unbanMachine(machineId)),
     }

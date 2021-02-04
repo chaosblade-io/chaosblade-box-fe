@@ -15,7 +15,7 @@
  */
 
 import React from "react";
-import {Transfer} from "antd";
+import {Spin, Transfer} from "antd";
 import styles from "./index.module.scss";
 
 class MachinesSelection extends React.Component {
@@ -29,21 +29,23 @@ class MachinesSelection extends React.Component {
     };
 
     render() {
-        const {titles, machines, targetKeys, handleChange} = this.props
+        const {titles, machines, targetKeys, handleChange, loading} = this.props
         return (
             <div className={styles.stepMachineContent}>
-                <Transfer
-                    dataSource={machines}
-                    showSearch
-                    targetKeys={targetKeys}
-                    onChange={handleChange}
-                    filterOption={this.filterOption}
-                    render={item => item.ip}
-                    pagination={{pageSize: 24}}
-                    oneWay
-                    listStyle={{width: 510}}
-                    titles={titles}
-                />
+                <Spin spinning={loading}>
+                    <Transfer
+                        dataSource={machines}
+                        showSearch
+                        targetKeys={targetKeys}
+                        onChange={handleChange}
+                        filterOption={this.filterOption}
+                        render={item => item.ip}
+                        pagination={{pageSize: 24}}
+                        oneWay
+                        listStyle={{width: 510}}
+                        titles={titles}
+                    />
+                </Spin>
             </div>
         );
     }

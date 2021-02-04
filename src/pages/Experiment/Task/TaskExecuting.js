@@ -47,139 +47,97 @@ class TaskExecuting extends React.Component {
 
     Operations = {
         RETRY: <Button onClick={this.retryExperiment.bind(this)} key="retry">重试</Button>,
-        END: <Button onClick={this.endExperiment.bind(this)} key="end">终止</Button>
-    }
-
-    prepareRender = () => {
-        return (
-            <Result
-                className={styles.executeStatus}
-                status="info"
-                title={<>实验准备中&nbsp;<SyncOutlined spin/></>}
-            />
-        );
-    }
-
-    runningRender = () => {
-        const {status, resultStatus, queryTaskResult} = this.props;
-        const taskId = Task.getTaskId();
-        if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_NULL.code) {
-            if (this.executeTime === undefined) {
-                this.executeTime = setInterval((taskId) => {
-                    queryTaskResult(taskId)
-                }, 3000, taskId)
-            }
-            return (
-                <Result
-                    className={styles.executeStatus}
-                    status="info"
-                    title={<>实验执行中&nbsp;<SyncOutlined spin/></>}
-                />
-            );
-        }
-
-        if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_SUCCESS.code) {
-            return (
-                <Result
-                    className={styles.executeStatus}
-                    status="success"
-                    title="实验执行成功"
-                    extra={
-                        <Space>
-                            {this.Operations.END}
-                        </Space>
-                    }
-                />
-            );
-        }
-        if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_FAILED.code) {
-            return <Result
-                className={styles.executeStatus}
-                status="error"
-                title='实验执行失败'
-                extra={
-                    <Space>
-                        {this.Operations.RETRY}
-                        {this.Operations.END}
-                    </Space>
-                }
-            />
-        }
-        return <Result
-            className={styles.executeStatus}
-            status="warning"
-            title={'未知状态： ' + status + "," + resultStatus}
-        />
-    }
-
-    endRender = () => {
-        const {status, resultStatus} = this.props;
-        if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_SUCCESS.code) {
-            return <Result
-                className={styles.executeStatus}
-                status="success"
-                title='实验已结束'
-            />
-        }
-        if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_FAILED.code) {
-            return <Result
-                className={styles.executeStatus}
-                status="error"
-                title='实验终止失败'
-                extra={
-                    <Space>
-                        {this.Operations.RETRY}
-                    </Space>
-                }
-            />
-        }
-        return <Result
-            className={styles.executeStatus}
-            status="warning"
-            title={'未知状态： ' + status + "," + resultStatus}
-        />
-    }
-
-    stoppingRender = () => {
-        const {status, resultStatus} = this.props;
-        if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_NULL.code) {
-            return (
-                <Result
-                    className={styles.executeStatus}
-                    status="info"
-                    title={<>实验终止中&nbsp;<SyncOutlined spin/></>}
-                />
-            );
-        }
-        return <Result
-            className={styles.executeStatus}
-            status="warning"
-            title={'未知状态： ' + status + "," + resultStatus}
-        />
+        END: <Button onClick={this.endExperiment.bind(this)} key="end" type={"primary"}>终止</Button>,
+        END_DANGER: <Button onClick={this.endExperiment.bind(this)} key="end" type={"danger"}>终止</Button>
     }
 
     statusRender = () => {
         const {status, resultStatus} = this.props;
-        if (status === ExperimentConstants.TASK_STATUS_READY.code) {
-            return this.prepareRender();
+        let taskStatus = Task.getTaskStatus(status, resultStatus);
+        switch (taskStatus) {
+            case ExperimentConstants.TASK_WAIT:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="warning"
+                        title={<>实验准备中&nbsp;<SyncOutlined spin/></>}
+                    />
+                );
+            case ExperimentConstants.TASK_START_RUNNING:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="info"
+                        title={<>实验执行中&nbsp;<SyncOutlined spin/></>}
+                        extra={
+                            <Space>
+                                {this.Operations.END_DANGER}
+                            </Space>
+                        }
+                    />
+                );
+            case ExperimentConstants.TASK_START_SUCCESS:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="success"
+                        title="实验执行成功"
+                        extra={
+                            <Space>
+                                {this.Operations.END}
+                            </Space>
+                        }
+                    />
+                );
+            case ExperimentConstants.TASK_START_FAILED:
+                return <Result
+                    className={styles.executeStatus}
+                    status="error"
+                    title='实验执行失败'
+                    extra={
+                        <Space>
+                            {this.Operations.RETRY}
+                            {this.Operations.END}
+                        </Space>
+                    }
+                />
+            case ExperimentConstants.TASK_END_RUNNING:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="info"
+                        title={<>实验终止中&nbsp;<SyncOutlined spin/></>}
+                    />
+                );
+            case ExperimentConstants.TASK_END_SUCCESS:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="success"
+                        title='实验已结束'
+                    />);
+            case ExperimentConstants.TASK_END_FAILED:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="error"
+                        title='实验终止失败'
+                        extra={
+                            <Space>
+                                {this.Operations.RETRY}
+                            </Space>
+                        }
+                    />
+                );
+            default:
+                return (
+                    <Result
+                        className={styles.executeStatus}
+                        status="warning"
+                        title={'未知状态： ' + status + "," + resultStatus}
+                    />
+                );
         }
-        if (status === ExperimentConstants.TASK_STATUS_RUNNING.code) {
-            return this.runningRender();
-        }
-        if (status === ExperimentConstants.TASK_STATUS_STOPPING.code) {
-            return this.stoppingRender();
-        }
-        if (status === ExperimentConstants.TASK_STATUS_END.code) {
-            return this.endRender();
-        }
-
-        return (
-            <Result
-                className={styles.executeStatus}
-                status="warning"
-                title={'未知状态： ' + status + "," + resultStatus}
-            />
-        );
     }
 
     render() {

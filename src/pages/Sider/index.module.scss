@@ -14,26 +14,14 @@
  * limitations under the License.
  */
 
-.header {
-  padding: 16px 25px 0 25px;
+.logo {
+  text-align: center;
+  font-size: 16px;
+  color: #1DA57A;
+}
+.changeLocale {
+  flex: auto;
+  text-align: center;
+  padding: 16px 16px 16px 16px;
 }
 
-.Breadcrumb {
-  font-size: 14px;
-  line-height: 16px;
-  margin: 16px 0px;
-}
-
-.title {
-  font-size: 28px;
-  color: #000000;
-  line-height: 40px;
-  opacity: 0.85;
-  margin-top: 16px;
-  letter-spacing: -0.41px;
-
-  .backDoor {
-    margin-right: 16px;
-    cursor: pointer;
-  }
-}

@@ -28,6 +28,3 @@ class Category extends React.Component {
 }
 
 export default Category
-
-// 推荐样式：https://github.com/antvis/antvis.github.io/blob/develop/site/components/DecisionTree/DecisionTree.module.less
-// 样式预览：https://antv.vision/zh

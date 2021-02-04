@@ -61,7 +61,7 @@ export default () => {
 
     function* watchGetMachinesForPod() {
         while (true) {
-            const query = yield take(Types.GET_MACHINES_FOR_POD_PAGEABLE);
+            const {query} = yield take(Types.GET_MACHINES_FOR_POD_PAGEABLE);
             yield fork(getMachinesForPodPageable, query)
         }
     }
@@ -78,8 +78,16 @@ export default () => {
         } else {
             if (response && response.ok) {
                 let data = response.data;
+                const {pageSize, page, pages, total, original} = data.data;
                 if (data.success) {
-                    yield put(Actions.getMachinesForPodPageableResult(data.data));
+                    yield put(Actions.getMachinesForPodPageableResult({
+                        pageSize,
+                        page,
+                        pages,
+                        total,
+                        machines: data.data.data,
+                        original,
+                    }));
                 } else {
                     error = getError(data);
                 }
@@ -97,7 +105,7 @@ export default () => {
 
     function* watchGetMachinesForNode() {
         while (true) {
-            const query = yield take(Types.GET_MACHINES_FOR_NODE_PAGEABLE);
+            const {query} = yield take(Types.GET_MACHINES_FOR_NODE_PAGEABLE);
             yield fork(getMachinesForNodePageable, query)
         }
     }
@@ -107,15 +115,22 @@ export default () => {
             response: call(KubernetesApi.getMachinesForNodePageable, query),
             timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
         });
-
         let error;
         if (timeout) {
             error = Errors.TIMEOUT_ERROR;
         } else {
             if (response && response.ok) {
                 let data = response.data;
+                const {pageSize, page, pages, total, original} = data.data;
                 if (data.success) {
-                    yield put(Actions.getMachinesForNodePageableResult(data.data));
+                    yield put(Actions.getMachinesForNodePageableResult({
+                        pageSize,
+                        page,
+                        pages,
+                        total,
+                        machines: data.data.data,
+                        original,
+                    }));
                 } else {
                     error = getError(data);
                 }
@@ -131,7 +146,43 @@ export default () => {
         }
     }
 
+    function* watchQueryCollectStatus() {
+        while (true) {
+            yield take(Types.QUERY_COLLECT_STATUS);
+            yield fork(queryCollectStatus)
+        }
+    }
+
+    function* queryCollectStatus() {
+        const {response, timeout} = yield race({
+            response: call(KubernetesApi.queryCollectStatus),
+            timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
+        });
+        let error;
+        if (timeout) {
+            error = Errors.TIMEOUT_ERROR;
+        } else {
+            if (response && response.ok) {
+                let data = response.data;
+                if (data.success) {
+                    yield put(Actions.queryCollectStatusResult(data.data));
+                } else {
+                    error = getError(data);
+                }
+            } else {
+                error = getError(response);
+            }
+        }
+        if (error) {
+            yield all([
+                put(Actions.queryCollectStatusResult(false)),
+                put(Actions.handleError(response))
+            ]);
+        }
+    }
+
     return {
+        watchQueryCollectStatus,
         watchGetK8sResourceStatistics,
         watchGetMachinesForPod,
         watchGetMachinesForNode,

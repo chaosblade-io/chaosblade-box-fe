@@ -67,7 +67,8 @@ class KubernetesExperiment extends React.Component {
     }
 
     componentDidMount() {
-        const {getClusterInfo} = this.props
+        const {getClusterInfo, queryCollectStatus} = this.props
+        queryCollectStatus();
         getClusterInfo()
     }
 
@@ -326,7 +327,7 @@ const mapStateToProps = state => {
     const experiment = state.experimentCreating.toJS();
     return {
         categories: experiment.categories,
-        collect: false,
+        collect: experiment.collect,
     }
 }
 
@@ -334,11 +335,10 @@ const mapDispatchToProps = dispatch => {
     return {
         getClusterInfo: () => dispatch(Actions.getClusterInfo()),
         getKubernetesNamespaces: () => dispatch(Actions.getKubernetesNamespaces()),
-        // status: 2、9; namespace: ns
         getPodsPageable: query => dispatch(Actions.getMachinesForPodPageable(query)),
-        // status: 2、9
         getNodesPageable: query => dispatch(Actions.getMachinesForNodePageable(query)),
 
+        queryCollectStatus: () => dispatch(Actions.queryCollectStatus()),
         // scenarioCategory
         getScenarioCategories: (query) => dispatch(Actions.getScenarioCategories(query)),
         // scenario: kubernetes container|pod|node /

@@ -32,7 +32,7 @@ class ExperimentStatistics extends React.Component {
 
     render() {
         const {statistics} = this.props;
-        const {total, finished, failure, running, exception} = statistics;
+        const {totals, finished, failure, running, exception} = statistics;
         return (
             <div>
                 <Row gutter={[8, 8]}>
@@ -40,8 +40,7 @@ class ExperimentStatistics extends React.Component {
                         <Card>
                             <Statistic
                                 title="总计"
-                                value={total}
-                                valueStyle={{color: '#3f8600'}}
+                                value={totals}
                             />
                         </Card>
                     </Col>
@@ -50,8 +49,6 @@ class ExperimentStatistics extends React.Component {
                             <Statistic
                                 title="运行中"
                                 value={running}
-                                valueStyle={{color: '#3f8600'}}
-                                // prefix={<ArrowUpOutlined/>}
                             />
                         </Card>
                     </Col>
@@ -60,16 +57,14 @@ class ExperimentStatistics extends React.Component {
                             <Statistic
                                 title="已完成"
                                 value={finished}
-                                valueStyle={{color: '#3f8600'}}
                             />
                         </Card>
                     </Col>
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="异常"
+                                title="成功"
                                 value={exception}
-                                valueStyle={{color: '#3f8600'}}
                             />
                         </Card>
                     </Col>
@@ -78,7 +73,6 @@ class ExperimentStatistics extends React.Component {
                             <Statistic
                                 title="失败"
                                 value={failure}
-                                valueStyle={{color: '#3f8600'}}
                             />
                         </Card>
                     </Col>

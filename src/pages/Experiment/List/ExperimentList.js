@@ -44,9 +44,12 @@ const SelectSearchFields = [
         placeholder: "请选择实验状态",
         options: [
             ExperimentConstants.TASK_WAIT,
-            ExperimentConstants.TASK_SUCCESS,
-            ExperimentConstants.TASK_FAILED,
-            ExperimentConstants.TASK_RUNNING
+            ExperimentConstants.TASK_START_RUNNING,
+            ExperimentConstants.TASK_START_SUCCESS,
+            ExperimentConstants.TASK_START_FAILED,
+            ExperimentConstants.TASK_END_RUNNING,
+            ExperimentConstants.TASK_END_SUCCESS,
+            ExperimentConstants.TASK_END_FAILED,
         ]
     },
 ];
@@ -148,13 +151,21 @@ class ExperimentList extends React.Component {
 
     onFinish = (values) => {
         const {query, page, pageSize, getExperimentsPageable} = this.props
+        const {status} = values;
+        if (status != undefined || status != null) {
+            const {status: s, result} = Task.parseTaskStatus(status)
+            values = {...values, lastTaskStatus: s}
+            if (result !== undefined) {
+                values = {...values, lastTaskResult: result}
+            }
+        }
         getExperimentsPageable({...query, page: page, pageSize: pageSize, ...values})
     };
 
     render() {
         const {loading, experiments, page, total, pageSize, query, getExperimentsPageable} = this.props;
         return (
-            <div className="application-machine-table">
+            <div>
                 {getSearchForm(this)}
                 <Table columns={this.TableColumns}
                        dataSource={loading ? [] : experiments}

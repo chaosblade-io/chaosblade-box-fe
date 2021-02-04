@@ -53,9 +53,9 @@ const PathRouter = () => (
             <Route exact path="/experiment/creating" component={ExperimentCreating}></Route>
             <Route exact path="/experiment/detail" component={ExperimentDetail}></Route>
             <Route exact path="/experiment/task" component={Task}></Route>
-            <Route exact path="/chaostools/deployed" component={ChaostoolsDeployed}></Route>
             <Route exact path="/chaostools/market" component={ChaostoolsMarket}></Route>
-            <Route exact path="/chaostools/detail" component={ChaostoolsDetail}></Route>
+            <Route exact path="/chaostools/market/deployed" component={ChaostoolsDeployed}></Route>
+            <Route exact path="/chaostools/market/detail" component={ChaostoolsDetail}></Route>
         </Switch>
     </Suspense>
 )

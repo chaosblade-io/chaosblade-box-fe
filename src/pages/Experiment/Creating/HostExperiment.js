@@ -93,7 +93,7 @@ class HostExperiment extends React.Component {
 
     render() {
         const {creatingStepCurrent, targetKeys, dimension} = this.state;
-        const {machines, machinesSelected} = this.props;
+        const {machines, machinesSelected, loading} = this.props;
         if (_.isEmpty(targetKeys) && !_.isEmpty(machinesSelected)) {
             targetKeys.push(...machinesSelected)
         }
@@ -112,6 +112,7 @@ class HostExperiment extends React.Component {
                         <MachinesSelection
                             machines={machines}
                             targetKeys={targetKeys}
+                            loading={loading}
                             handleChange={this.handleChange.bind(this)}
                             titles={
                                 [<a onClick={() => {
@@ -128,8 +129,7 @@ const mapStateToProps = state => {
     const experimentCreating = state.experimentCreating.toJS();
     const {hosts} = experimentCreating
     return {
-        loading: hosts.loading,
-        refreshing: hosts.refreshing,
+        loading: experimentCreating.loading,
         machines: hosts.machines,
         pageSize: hosts.pageSize,
         page: hosts.page,

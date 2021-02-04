@@ -51,23 +51,47 @@ export const ExperimentConstants = {
 
     TASK_WAIT: {
         code: -1,
-        desc: '未执行'
+        desc: '未执行',
+        status: null,
+        result: null,
     },
-    TASK_SUCCESS: {
+    TASK_START_RUNNING: {
         code: 0,
-        desc: '成功',
+        desc: '启动中',
+        status: 1,
+        result: null,
     },
-    TASK_FAILED: {
+    TASK_START_SUCCESS: {
         code: 1,
-        desc: '失败',
+        desc: '启动成功',
+        status: 1,
+        result: 0,
     },
-    TASK_RUNNING: {
+    TASK_START_FAILED: {
         code: 2,
-        desc: '运行中'
+        desc: '启动失败',
+        status: 1,
+        result: 1,
     },
-
-    TASK_UNKNOWN: {
+    TASK_END_RUNNING: {
         code: 3,
+        desc: '终止中',
+        status: 3,
+    },
+    TASK_END_SUCCESS: {
+        code: 4,
+        desc: '终止成功',
+        status: 4,
+        result: 0,
+    },
+    TASK_END_FAILED: {
+        code: 5,
+        desc: '终止失败',
+        status: 4,
+        result: 1,
+    },
+    TASK_UNKNOWN: {
+        code: 6,
         desc: 'unknown'
     },
 
@@ -87,5 +111,14 @@ export const ExperimentConstants = {
         code: 3,
         desc: '执行失败',
     }
+}
 
+export const TASK_STATUS = {
+    "-1": ExperimentConstants.TASK_WAIT,
+    0: ExperimentConstants.TASK_START_RUNNING,
+    1: ExperimentConstants.TASK_START_SUCCESS,
+    2: ExperimentConstants.TASK_START_FAILED,
+    3: ExperimentConstants.TASK_END_RUNNING,
+    4: ExperimentConstants.TASK_END_SUCCESS,
+    5: ExperimentConstants.TASK_END_FAILED
 }

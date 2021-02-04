@@ -24,17 +24,15 @@ export const INITIAL_STATE = Map({
     loading: false,
     refreshing: false,
     hostStatistics: {
-        machine: 0,
+        totals: 0,
+        onlines: 0,
     },
     // host
     hosts: {
-        loading: false,
-        refreshing: false,
-        page: 1, // 当前页码
+        page: 1,
         pageSize: 10,
-        pages: 1, // 总页码数
-        total: 0, // 总记录数
-        machines: [], // 机器列表
+        total: 0,
+        machines: [],
     },
     // application
     applicationStatistics: {
@@ -43,13 +41,10 @@ export const INITIAL_STATE = Map({
         machines: 0,
     },
     applications: {
-        loading: false,
-        refreshing: false,
-        page: 1, // 当前页码
+        page: 1,
         pageSize: 10,
-        pages: 1, // 总页码数
-        total: 0, // 总记录数
-        machines: [], // 机器列表
+        total: 0,
+        machines: [],
     },
     // cluster
     clusterStatistics: {
@@ -58,40 +53,43 @@ export const INITIAL_STATE = Map({
         pods: 0,
     },
     pods: {
-        loading: false,
-        refreshing: false,
-        page: 1, // 当前页码
+        page: 1,
         pageSize: 10,
-        pages: 1, // 总页码数
-        total: 0, // 总记录数
-        machines: [], // 机器列表
+        total: 0,
+        machines: [],
     },
     nodes: {
-        loading: false,
-        refreshing: false,
-        page: 1, // 当前页码
+        page: 1,
         pageSize: 10,
-        pages: 1, // 总页码数
-        total: 0, // 总记录数
-        machines: [], // 机器列表
+        total: 0,
+        machines: [],
     }
 });
+
+const getHostTotalStatisticsResult = (state, action) => {
+    if (_.isEmpty(action.statistics)) {
+        return state;
+    }
+    return state.merge({hostStatistics: action.statistics})
+}
 
 const getApplicationStatistics = (state, action) => {
     if (_.isEmpty(action.statistics)) {
         return state;
     }
     return state.merge({applicationStatistics: action.statistics});
-
 }
 
 const getK8sResourceStatistics = (state, action) => {
+    if (_.isEmpty(action.statistics)) {
+        return state;
+    }
     return state.merge({clusterStatistics: action.statistics});
 }
 
 const banAndUnbanMachine = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({loading: false});
     }
     const {original} = action.data
     let current = state.toJS();
@@ -103,25 +101,25 @@ const banAndUnbanMachine = (state, action) => {
     };
     switch (original) {
         case "host":
-            return state.merge({hosts: {loading: false, machines: current.hosts.machines.map(updateFunc)}})
+            return state.merge({loading: false, hosts: {machines: current.hosts.machines.map(updateFunc)}})
         case 'application':
             return state.merge({
+                loading: false,
                 applications: {
-                    loading: false,
                     machines: current.applications.machines.map(updateFunc)
                 }
             })
         case 'pod':
-            return state.merge({pods: {loading: false, machines: current.pods.machines.map(updateFunc)}})
+            return state.merge({loading: false, pods: {machines: current.pods.machines.map(updateFunc)}})
         case 'node':
-            return state.merge({nodes: {loading: false, machines: current.nodes.machines.map(updateFunc)}})
+            return state.merge({loading: false, nodes: {machines: current.nodes.machines.map(updateFunc)}})
         default:
-            return state.merge({hosts: {loading: false, machines: current.hosts.machines.map(updateFunc)}})
+            return state.merge({loading: false, hosts: {machines: current.hosts.machines.map(updateFunc)}})
     }
 }
 
 const getMachinesForHostPageable = (state, action) => {
-    return state.merge({hosts: {loading: true}})
+    return state.merge({loading: true})
 }
 
 const ACTION_HANDLERS = {
@@ -129,6 +127,7 @@ const ACTION_HANDLERS = {
     [Types.GET_MACHINES_FOR_HOST_PAGEABLE_RESULT]: handleMachinesFetchingResult,
     [Types.GET_APPLICATION_TOTAL_STATISTICS_RESULT]: getApplicationStatistics,
     [Types.GET_MACHINES_FOR_APPLICATION_PAGEABLE_RESULT]: handleMachinesFetchingResult,
+    [Types.GET_HOST_TOTAL_STATISTICS_RESULT]: getHostTotalStatisticsResult,
 
     [Types.GET_K8S_RESOURCE_STATISTICS_RESULT]: getK8sResourceStatistics,
     [Types.GET_MACHINES_FOR_POD_PAGEABLE_RESULT]: handleMachinesFetchingResult,

@@ -22,7 +22,7 @@ import TaskExecuting from "./TaskExecuting";
 import TaskInfo from "./TaskInfo";
 import TaskMonitoring from "./TaskMonitoring";
 import queryString from "query-string";
-import {ExperimentConstants} from "../../../constants/ExperimentConstants";
+import {ExperimentConstants, TASK_STATUS} from "../../../constants/ExperimentConstants";
 
 
 class Task extends React.Component {
@@ -37,27 +37,35 @@ class Task extends React.Component {
         if (status == null || status === ExperimentConstants.TASK_STATUS_READY.code) {
             return ExperimentConstants.TASK_WAIT;
         }
-        if (status === ExperimentConstants.TASK_STATUS_RUNNING.code ||
-            status === ExperimentConstants.TASK_STATUS_STOPPING.code) {
-            if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_NULL.code) {
-                return ExperimentConstants.TASK_RUNNING;
-            }
+        if (status === ExperimentConstants.TASK_STATUS_RUNNING.code) {
             if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_SUCCESS.code) {
-                return ExperimentConstants.TASK_RUNNING;
+                return ExperimentConstants.TASK_START_SUCCESS;
             }
             if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_FAILED.code) {
-                return ExperimentConstants.TASK_FAILED;
+                return ExperimentConstants.TASK_START_FAILED;
             }
+            return ExperimentConstants.TASK_START_RUNNING;
+
+        }
+        if (status === ExperimentConstants.TASK_STATUS_STOPPING.code) {
+            return ExperimentConstants.TASK_END_RUNNING;
         }
         if (status === ExperimentConstants.TASK_STATUS_END.code) {
             if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_SUCCESS.code) {
-                return ExperimentConstants.TASK_SUCCESS;
+                return ExperimentConstants.TASK_END_SUCCESS;
             }
             if (resultStatus === ExperimentConstants.TASK_RESULT_STATUS_FAILED.code) {
-                return ExperimentConstants.TASK_FAILED;
+                return ExperimentConstants.TASK_END_FAILED;
             }
         }
         return ExperimentConstants.TASK_UNKNOWN;
+    }
+
+    static parseTaskStatus(taskStatus) {
+        if (taskStatus === -1) {
+            return ExperimentConstants.TASK_WAIT;
+        }
+        return TASK_STATUS[taskStatus]
     }
 
 
@@ -67,7 +75,6 @@ class Task extends React.Component {
             </div>
         );
     }
-
 
     render() {
         return (

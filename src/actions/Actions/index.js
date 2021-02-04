@@ -48,6 +48,10 @@ const Actions = {
     banMachineResult: data => ({type: Types.BAN_MACHINE_RESULT, data}),
     unbanMachine: machineId => ({type: Types.UNBAN_MACHINE, machineId}),
     unbanMachineResult: data => ({type: Types.UNBAN_MACHINE_RESULT, data}),
+    getHostTotalStatistics: () => ({type: Types.GET_HOST_TOTAL_STATISTICS}),
+    getHostTotalStatisticsResult: statistics => ({type: Types.GET_HOST_TOTAL_STATISTICS_RESULT, statistics}),
+    queryCollectStatus: () => ({type: Types.QUERY_COLLECT_STATUS}),
+    queryCollectStatusResult: () => ({type: Types.QUERY_COLLECT_STATUS_RESULT}),
 
 
     // Scenario

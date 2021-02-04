@@ -19,20 +19,20 @@ import _ from "lodash";
 export const handleMachinesFetchingResult = (state, action) => {
     const {machines, pageSize, page, pages, total, original} = action.pageableData;
     if (_.isEmpty(machines)) {
-        return state;
+        return state.merge({loading: false});
     }
     let _machines = _.orderBy(machines, ['modifyTime'], ['desc'])
-    let s = {machines: _machines, pageSize, page, pages, total, loading: false, refresh: false}
+    let s = {machines: _machines, pageSize, page, total}
     switch (original) {
         case "host":
-            return state.merge({hosts: s})
+            return state.merge({loading: false, hosts: s})
         case 'application':
-            return state.merge({applications: s})
+            return state.merge({loading: false, applications: s})
         case 'pod':
-            return state.merge({pods: s})
+            return state.merge({loading: false, pods: s})
         case 'node':
-            return state.merge({nodes: s})
+            return state.merge({loading: false, nodes: s})
         default:
-            return state.merge({hosts: s})
+            return state.merge({loading: false, hosts: s})
     }
 }

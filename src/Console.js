@@ -76,7 +76,6 @@ class Console extends React.Component {
                                         changeLocale={this.changeLocale.bind(this)}
                                     />
                                     <Layout className="site-layout">
-                                        <Header className="site-layout-background" style={{padding: 0}}/>
                                         <Content style={{margin: '0 16px'}}>
                                             <HeaderBar/>
                                             <div className="site-layout-background"

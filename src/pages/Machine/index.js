@@ -22,7 +22,7 @@ import Host from "./Host";
 import Kubernetes from "./Kubernetes";
 import {FormattedMessage} from "react-intl";
 import {Link} from "react-router-dom";
-import './index.module.scss';
+import styles from './index.module.scss';
 
 const {TabPane} = Tabs
 
@@ -43,7 +43,7 @@ class SiderDemo extends React.Component {
     render() {
         const {active, probeId} = this.state;
         return (
-            <div>
+            <div className={styles.machineStatistics}>
                 <Tabs defaultActiveKey={active}>
                     <TabPane key="host" tab={
                         <span>

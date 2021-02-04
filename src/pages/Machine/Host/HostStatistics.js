@@ -15,12 +15,55 @@
  */
 
 import React from "react";
+import {Card, Col, Row, Statistic} from "antd";
+import {connect} from "react-redux";
+import Actions from "../../../actions/Actions";
 
-export default class HostStatistics extends React.Component {
+class HostStatistics extends React.Component {
+
+    componentDidMount() {
+        const {getHostTotalStatistics} = this.props;
+        getHostTotalStatistics();
+    }
 
     render() {
+        const {totals, onlines} = this.props;
         return (
-            <div><span>HOST 主机数据统计</span></div>
+            <div>
+                <Row gutter={[8, 8]}>
+                    <Col span={12}>
+                        <Card>
+                            <Statistic
+                                title="机器总数"
+                                value={totals}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={12}>
+                        <Card>
+                            <Statistic
+                                title="在线机器数"
+                                value={onlines}
+                            />
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
         )
     }
 }
+
+const mapStateToProps = state => {
+    const machine = state.machine.toJS();
+    return {
+        totals: machine.hostStatistics.totals,
+        onlines: machine.hostStatistics.onlines,
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        getHostTotalStatistics: () => dispatch(Actions.getHostTotalStatistics())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HostStatistics);

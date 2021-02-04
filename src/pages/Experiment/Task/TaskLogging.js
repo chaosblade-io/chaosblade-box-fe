@@ -31,6 +31,7 @@ class TaskLogging extends React.Component {
     componentDidMount() {
         const {queryTaskLog} = this.props;
         const taskId = Task.getTaskId();
+        queryTaskLog(taskId);
         this.logTime = setInterval(() => {
             queryTaskLog(taskId);
         }, 3000)
@@ -56,7 +57,7 @@ class TaskLogging extends React.Component {
 
     render() {
         const {resultStatus} = this.props;
-        const pending = resultStatus === ExperimentConstants.TASK_RESULT_STATUS_NULL.code ? '执行中' : null;
+        const pending = resultStatus === null ? '执行中' : null;
         return (
             <div>
                 <Timeline pending={pending} reverse>

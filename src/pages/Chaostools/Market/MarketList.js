@@ -58,13 +58,13 @@ class MarketList extends React.Component {
         if (!_.isEmpty(anchor)) {
             query = {...query, anchor}
         }
-        history.push(`/chaostools/detail/?${request.generateUrlSearch({...query})}`);
+        history.push(`/chaostools/market/detail/?${request.generateUrlSearch({...query})}`);
     }
 
     deployed(name, version) {
         const {history} = this.props;
         let query = {name, version};
-        history.push(`/chaostools/deployed/?${request.generateUrlSearch({...query})}`);
+        history.push(`/chaostools/market/deployed/?${request.generateUrlSearch({...query})}`);
     }
 
     render() {

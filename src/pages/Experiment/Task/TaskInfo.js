@@ -41,14 +41,23 @@ class TaskInfo extends React.Component {
         const _status = Task.getTaskStatus(status, resultStatus);
         let statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_UNKNOWN.desc}</Tag>;
         switch (_status) {
-            case ExperimentConstants.TASK_SUCCESS:
-                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_SUCCESS.desc}</Tag>;
+            case ExperimentConstants.TASK_START_SUCCESS:
+                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_START_SUCCESS.desc}</Tag>;
                 break;
-            case ExperimentConstants.TASK_FAILED:
-                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_FAILED.desc}</Tag>;
+            case ExperimentConstants.TASK_END_SUCCESS:
+                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_END_SUCCESS.desc}</Tag>;
                 break;
-            case ExperimentConstants.TASK_RUNNING:
-                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_RUNNING.desc}/>;
+            case ExperimentConstants.TASK_START_FAILED:
+                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_START_FAILED.desc}</Tag>;
+                break;
+            case ExperimentConstants.TASK_END_FAILED:
+                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_END_FAILED.desc}</Tag>;
+                break;
+            case ExperimentConstants.TASK_START_RUNNING:
+                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_START_RUNNING.desc}/>;
+                break;
+            case ExperimentConstants.TASK_END_RUNNING:
+                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_END_RUNNING.desc}/>;
                 break;
             case ExperimentConstants.TASK_WAIT:
                 statusTag = <Tag color={"geekblue"}>{ExperimentConstants.TASK_WAIT.desc}</Tag>;

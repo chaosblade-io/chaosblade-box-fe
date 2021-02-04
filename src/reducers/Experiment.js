@@ -21,11 +21,11 @@ import _ from "lodash";
 
 export const INITIAL_STATE = Map({
     statistics: {
-        total: 0,
+        totals: 0,
         running: 0,
-        exception: 0,
+        finished: 0,
         success: 0,
-        failure: 0,
+        failed: 0,
     },
     loading: false,
     refreshing: false,

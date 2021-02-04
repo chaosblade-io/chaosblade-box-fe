@@ -19,6 +19,7 @@ import {Layout, Menu, Radio} from "antd";
 import {NavigationConfig} from "../Component/Metadata/navigation";
 import {Link} from "react-router-dom";
 import {FormattedMessage} from "react-intl";
+import styles from './index.module.scss'
 
 const {SubMenu} = Menu
 const {Sider} = Layout;
@@ -42,21 +43,19 @@ class ConsoleSider extends React.Component {
         const {collapsed} = this.state;
         return (
             <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-                <div>
-                    <div className="change-locale">
-                        <span style={{margin: 16}}></span>
-                        <Radio.Group onChange={changeLocale} defaultValue={locale}>
-                            <Radio.Button key="en" value={"en"}>
-                                English
-                            </Radio.Button>
-                            <Radio.Button key="cn" value={"zh"}>
-                                中文
-                            </Radio.Button>
-                        </Radio.Group>
-                    </div>
+                <div className={styles.changeLocale}>
+                    <Radio.Group onChange={changeLocale} defaultValue={locale}>
+                        <Radio.Button key="en" value={"en"}>
+                            English
+                        </Radio.Button>
+                        <Radio.Button key="cn" value={"zh"}>
+                            中文
+                        </Radio.Button>
+                    </Radio.Group>
                 </div>
-                <div className="logo"/>
-                <Menu theme="dark" defaultSelectedKeys={['/overview']}
+                <h1 className={styles.logo}>{collapsed ? 'CHAOS' : 'CHAOS-PLATFORM'}</h1>
+                <Menu theme="dark"
+                      defaultSelectedKeys={['/machine']}
                       selectedKeys={[location.pathname]}
                       mode="inline"
                       defaultOpenKeys={['/overview', '/machine', '/chaostools', '/scenario', '/experiment']}>

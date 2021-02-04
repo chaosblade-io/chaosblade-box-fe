@@ -24,6 +24,42 @@ import {Errors} from "../constants/Errors";
 
 export default () => {
 
+    function* watchGetHostTotalStatistics() {
+        while (true) {
+            yield take(Types.GET_HOST_TOTAL_STATISTICS);
+            yield fork(getHostTotalStatistics)
+        }
+    }
+
+    function* getHostTotalStatistics() {
+        const {response, timeout} = yield race({
+            response: call(HostApi.getHostTotalStatistics),
+            timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
+        });
+
+        let error;
+        if (timeout) {
+            error = Errors.TIMEOUT_ERROR;
+        } else {
+            if (response && response.ok) {
+                let data = response.data;
+                if (data.success) {
+                    yield put(Actions.getHostTotalStatisticsResult(data.data));
+                } else {
+                    error = getError(data)
+                }
+            } else {
+                error = getError(response)
+            }
+        }
+        if (error) {
+            yield all([
+                put(Actions.getHostTotalStatisticsResult()),
+                put(Actions.handleError(error.code, error.message))
+            ]);
+        }
+    }
+
     function* watchMachinesForHostFetching() {
         while (true) {
             const {query: filter} = yield take(Types.GET_MACHINES_FOR_HOST_PAGEABLE);
@@ -260,6 +296,7 @@ export default () => {
     }
 
     return {
+        watchGetHostTotalStatistics,
         watchMachinesForHostFetching,
         watchAnsibleHostsFetching,
         watchAnsibleHostsRegisterFetching,

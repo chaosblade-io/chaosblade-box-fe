@@ -204,19 +204,20 @@ const mapStateToProps = state => {
     const machine = state.machine.toJS();
     const {applications} = machine
     return {
-        loading: applications.loading,
-        refreshing: applications.refreshing,
+        loading: machine.loading,
         machines: applications.machines,
         pageSize: applications.pageSize,
         page: applications.page,
-        pages: applications.pages,
         total: applications.total,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getMachinesForApplicationPageable: query => dispatch(Actions.getMachinesForApplicationPageable(query)),
+        getMachinesForApplicationPageable: query => dispatch(Actions.getMachinesForApplicationPageable({
+            ...query,
+            original: "application"
+        })),
         banMachine: machineId => dispatch(Actions.banMachine(machineId)),
         unbanMachine: machineId => dispatch(Actions.unbanMachine(machineId)),
     }

@@ -22,11 +22,9 @@ import MachineConstants from "../constants/MachineConstants";
 
 export const INITIAL_STATE = Map({
     loading: false,
-    refreshing: false,
     name: "",
+    collect: false,
     hosts: {
-        loading: false,
-        refreshing: false,
         page: 1, // 当前页码
         pageSize: 10,
         pages: 1, // 总页码数
@@ -49,9 +47,15 @@ export const INITIAL_STATE = Map({
     metricCategories: [],
 });
 
+const handleMachinesFetching = (state, action) => {
+    return state.merge({loading: true});
+}
+
 const handleMachinesFetchingResult = (state, action) => {
+    if (_.isEmpty(action.pageableData)) {
+        return state.merge({loading: false});
+    }
     const {machines, pageSize, page, pages, total} = action.pageableData;
-    console.log("h: ", machines);
     let items = [];
     if (!_.isEmpty(machines)) {
         let _machines = _.orderBy(machines, ['status'], ['desc'])
@@ -66,7 +70,7 @@ const handleMachinesFetchingResult = (state, action) => {
             })
         })
     }
-    return state.merge({hosts: {machines: items, pageSize, page, pages, total, loading: false, refresh: false}})
+    return state.merge({loading: false, hosts: {machines: items, pageSize, page, pages, total, refresh: false}})
 }
 
 const getScenarioCategories = (state, action) => {
@@ -178,7 +182,12 @@ const queryMetricCategory = (state, action) => {
     return state.merge({metricCategories: action.data});
 }
 
+const queryCollectStatus = (state, action) => {
+    return state.merge({collect: action.data});
+}
+
 const ACTION_HANDLERS = {
+    [Types.GET_MACHINES_FOR_HOST_PAGEABLE]: handleMachinesFetching,
     [Types.GET_MACHINES_FOR_HOST_PAGEABLE_RESULT]: handleMachinesFetchingResult,
     [Types.GET_SCENARIO_CATEGORIES_RESULT]: getScenarioCategories,
     [Types.CREATE_EXPERIMENT_RESULT]: createExperiment,
@@ -189,6 +198,7 @@ const ACTION_HANDLERS = {
     [Types.CREATING_FROM_MACHINE_RESULT]: creatingFromMachine,
     [Types.CREATING_FROM_SCENARIO_RESULT]: creatingFromScenario,
     [Types.QUERY_METRIC_CATEGORY_RESULT]: queryMetricCategory,
+    [Types.QUERY_COLLECT_STATUS_RESULT]: queryCollectStatus,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);

@@ -24,6 +24,13 @@ const {TreeNode} = Tree
 
 class CategoryList extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            editing: false
+        }
+    }
+
     componentDidMount() {
         const {getScenarioCategories} = this.props;
         getScenarioCategories()
@@ -34,23 +41,44 @@ class CategoryList extends React.Component {
             return;
         }
         return data.map(item => {
-            if (item.children) {
-                return <TreeNode title={item.name} key={item.categoryId} dataRef={item}>
-                    {this.treeNode(item.children)}
+            return (
+                <TreeNode title={item.name} key={item.categoryId} dataRef={item}>
+                    {
+                        _.isEmpty(item.children) ? <></> : this.treeNode(item.children)
+                    }
                 </TreeNode>
-            }
-            return <TreeNode title={item.name} key={item.categoryId} dataRef={item}/>
+            );
         });
+    }
+
+    save() {
+        this.setState({editing: false});
+    }
+
+    edit() {
+        this.setState({editing: true});
     }
 
     render() {
         const {categories, getScenarioCategories} = this.props;
+        const {editing} = this.state;
         return (
             <div>
+                {/*<div style={{paddingBottom: 16}}>*/}
+                {/*    {*/}
+                {/*        editing ?*/}
+                {/*            <Button type={"primary"} onClick={this.save.bind(this)}>保存修改</Button>*/}
+                {/*            :*/}
+                {/*            <Button type={"primary"} onClick={this.edit.bind(this)}>编辑目录</Button>*/}
+                {/*    }*/}
+                {/*</div>*/}
                 {
-                    categories.length > 0 && <Tree defaultExpandAll={true} showLine={true}>
-                        {this.treeNode(categories)}
-                    </Tree>
+                    !_.isEmpty(categories) ?
+                        <Tree defaultExpandAll={true} showLine={true}>
+                            {this.treeNode(categories)}
+                        </Tree>
+                        :
+                        <div></div>
                 }
             </div>
         );

@@ -16,6 +16,8 @@
 
 import React from "react";
 import HostList from "./HostList";
+import {Divider} from "antd";
+import HostStatistics from "./HostStatistics";
 
 class Host extends React.Component {
 
@@ -27,6 +29,8 @@ class Host extends React.Component {
         const {probeId} = this.props;
         return (
             <div>
+                <HostStatistics/>
+                <Divider dashed/>
                 <HostList probeId={probeId}/>
             </div>
         )

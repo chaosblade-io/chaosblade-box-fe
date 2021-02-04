@@ -155,19 +155,17 @@ const mapStateToProps = state => {
     const machine = state.machine.toJS();
     let {nodes} = machine
     return {
-        loading: nodes.loading,
-        refreshing: nodes.refreshing,
+        loading: machine.loading,
         machines: nodes.machines,
         pageSize: nodes.pageSize,
         page: nodes.page,
-        pages: nodes.pages,
         total: nodes.total,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getMachinesForNodePageable: query => dispatch(Actions.getMachinesForNodePageable(query)),
+        getMachinesForNodePageable: query => dispatch(Actions.getMachinesForNodePageable({...query, original: "node"})),
         banMachine: machineId => dispatch(Actions.banMachine(machineId)),
         unbanMachine: machineId => dispatch(Actions.unbanMachine(machineId)),
     }

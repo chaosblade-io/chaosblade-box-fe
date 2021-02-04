@@ -41,7 +41,6 @@ class KubernetesStatistics extends React.Component {
                             <Statistic
                                 title="节点总数"
                                 value={nodes}
-                                valueStyle={{color: '#3f8600'}}
                             />
                         </Card>
                     </Col>
@@ -50,8 +49,6 @@ class KubernetesStatistics extends React.Component {
                             <Statistic
                                 title="命名空间总数"
                                 value={namespaces}
-                                valueStyle={{color: '#3f8600'}}
-                                // prefix={<ArrowUpOutlined/>}
                             />
                         </Card>
                     </Col>
@@ -60,7 +57,6 @@ class KubernetesStatistics extends React.Component {
                             <Statistic
                                 title="Pods总数"
                                 value={pods}
-                                valueStyle={{color: '#3f8600'}}
                             />
                         </Card>
                     </Col>
