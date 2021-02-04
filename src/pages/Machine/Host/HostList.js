@@ -122,7 +122,7 @@ class HostList extends React.Component {
                 if (!_.isEmpty(text)) {
                     text.map(tools => {
                         rows.push(
-                            <Row>
+                            <Row key={record.machineId}>
                                 <Col><a onClick={() => {
                                 }}>{tools.name}-{tools.version}</a></Col>
                             </Row>
