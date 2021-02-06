@@ -33,14 +33,14 @@ const fetchPublicChaostools = (state, action) => {
 const fetchPublicChaostoolsResult = (state, action) => {
     const {publics} = action.data;
     if (_.isEmpty(publics)) {
-        return state;
+        return state.merge({loading: false});
     }
     return state.merge({loading: false, publics});
 }
 
 const fetchChaostoolsOverviewResult = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({loading: false});
     }
     const {name, title, subTitle, description, webSite, logo, latest, copyright, readme} = action.data;
     const current = state.toJS();

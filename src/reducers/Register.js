@@ -34,7 +34,7 @@ const getAnsibleHosts = (state, action) => {
 
 const getAnsibleHostsResult = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({ansibleHostsLoading: false});
     }
     return state.merge({ansibleHostsLoading: false, ansibleHosts: action.data});
 }
@@ -45,7 +45,7 @@ const installProbes = (state, action) => {
 
 const installProbesResult = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({ansibleInstallationsLoading: false});
     }
     return state.merge({ansibleInstallationsLoading: false, ansibleInstallations: action.data});
 }
@@ -56,7 +56,7 @@ const queryProbesInstallation = (state, action) => {
 
 const queryProbesInstallationResult = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({probesInstallationsLoading: false});
     }
     return state.merge({probesInstallationsLoading: false, probesInstallations: action.data});
 }

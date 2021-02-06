@@ -21,7 +21,6 @@ import _ from 'lodash';
 
 export const INITIAL_STATE = Map({
     loading: false,
-    refreshing: false,
     experimentName: "",
     taskCount: 0,
     dimension: "",
@@ -37,6 +36,9 @@ export const INITIAL_STATE = Map({
 });
 
 const getExperimentById = (state, action) => {
+    if (_.isEmpty(action.data)) {
+        return state.merge({loading: false});
+    }
     const {
         experimentName,
         taskCount,
@@ -49,10 +51,9 @@ const getExperimentById = (state, action) => {
         scenarios,
         metrics
     } = action.data;
-    if (_.isEmpty(experimentName)) {
-        return state;
-    }
+
     return state.merge({
+        loading: false,
         experimentName,
         taskCount,
         dimension,
@@ -68,13 +69,14 @@ const getExperimentById = (state, action) => {
 
 const getTasksByExperimentId = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({loading: false});
     }
-    return state.merge({tasks: action.data});
+    return state.merge({loading: false, tasks: action.data});
 }
 
 const clearExperimentDetailResult = (state, action) => {
     return state.merge({
+        loading: false,
         experimentName: "",
         taskCount: 0,
         dimension: "",

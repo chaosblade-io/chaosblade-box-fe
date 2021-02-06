@@ -22,7 +22,6 @@ import _ from 'lodash'
 
 export const INITIAL_STATE = Map({
     loading: false,
-    refreshing: false,
     hostStatistics: {
         totals: 0,
         onlines: 0,

@@ -17,6 +17,9 @@
 import _ from "lodash";
 
 export const handleMachinesFetchingResult = (state, action) => {
+    if (_.isEmpty(action.pageableData)) {
+        return state.merge({loading: false});
+    }
     const {machines, pageSize, page, pages, total, original} = action.pageableData;
     if (_.isEmpty(machines)) {
         return state.merge({loading: false});

@@ -75,9 +75,9 @@ const getScenarioByIdResult = (state, action) => {
 }
 const getScenarioCategories = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({loading: false});
     }
-    return state.merge({categories: action.data})
+    return state.merge({loading: false, categories: action.data})
 }
 
 const updateScenario = (state, action) => {

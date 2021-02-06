@@ -21,7 +21,6 @@ import Types from "../actions/Types";
 
 export const INITIAL_STATE = Map({
     loading: false,
-    refreshing: false,
     page: 1, // 当前页码
     pageSize: 10,
     pages: 1, // 总页码数
@@ -36,9 +35,13 @@ export const INITIAL_STATE = Map({
     categories: []
 });
 
+const getScenarioCategories = (state, action) => {
+    return state.merge({loading: true});
+}
+
 const getScenarioCategoriesResult = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({loading: false});
     }
     let result = []
     const parseFunc = category => {
@@ -62,18 +65,21 @@ const getScenarioStatistics = (state, action) => {
 }
 
 const handleScenariosFetchingResult = (state, action) => {
-    const {scenarios, pageSize, page, pages, total} = action.pageableData
+    if (_.isEmpty(action.pageableData)) {
+        return state.merge({loading: false});
+    }
+    const {scenarios, pageSize, page, pages, total} = action.pageableData;
     if (!_.isEmpty(scenarios)) {
         let _scenarios = _.orderBy(scenarios, ['modifyTime'], ['desc'])
-        return state.merge({scenarios: _scenarios, pageSize, page, pages, total, loading: false, refresh: false})
+        return state.merge({loading: false, scenarios: _scenarios, pageSize, page, pages, total})
     } else {
-        return state.merge({scenarios: [], pageSize, page, pages, total, loading: false, refresh: false})
+        return state.merge({loading: false, scenarios: [], pageSize, page, pages, total})
     }
 }
 
 const updateScenarioResult = (state, action) => {
     if (_.isEmpty(action.data)) {
-        return state;
+        return state.merge({loading: false});
     }
     const {scenarioId} = action.data;
     let current = state.toJS();
@@ -83,10 +89,11 @@ const updateScenarioResult = (state, action) => {
         }
         return item;
     });
-    return state.merge({scenarios: newScenarios});
+    return state.merge({loading: false, scenarios: newScenarios});
 }
 
 const ACTION_HANDLERS = {
+    [Types.GET_SCENARIO_CATEGORIES]: getScenarioCategories,
     [Types.GET_SCENARIO_CATEGORIES_RESULT]: getScenarioCategoriesResult,
     [Types.GET_SCENARIOS_STATISTICS_RESULT]: getScenarioStatistics,
     [Types.GET_SCENARIOS_PAGEABLE_RESULT]: handleScenariosFetchingResult,
