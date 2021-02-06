@@ -29,6 +29,14 @@ class TaskExecuting extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        const {queryTaskResult} = this.props;
+        const taskId = Task.getTaskId();
+        this.executeTime = setInterval(() => {
+            queryTaskResult(taskId)
+        }, 3000);
+    }
+
     componentWillUnmount() {
         clearInterval(this.executeTime);
     }
@@ -110,6 +118,9 @@ class TaskExecuting extends React.Component {
                     />
                 );
             case ExperimentConstants.TASK_END_SUCCESS:
+                if (this.executeTime >= 0) {
+                    clearInterval(this.executeTime);
+                }
                 return (
                     <Result
                         className={styles.executeStatus}

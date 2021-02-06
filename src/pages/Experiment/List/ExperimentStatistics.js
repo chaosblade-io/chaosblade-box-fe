@@ -18,6 +18,7 @@ import React from "react";
 import Actions from "../../../actions/Actions";
 import {Card, Col, Row, Statistic} from "antd";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
 class ExperimentStatistics extends React.Component {
 
@@ -75,6 +76,18 @@ class ExperimentStatistics extends React.Component {
                                 value={failure}
                             />
                         </Card>
+                    </Col>
+                    <Col flex={1}>
+                        <Link to={{
+                            pathname: '/experiment/creating',
+                        }}>
+                            <Card style={{backgroundColor: "#28A47B", color: "white"}}>
+                                <Statistic style={{textAlign: "center", color: "white"}}
+                                           title={<span>操作</span>}
+                                           value={'创建实验'}
+                                />
+                            </Card>
+                        </Link>
                     </Col>
                 </Row>
             </div>

@@ -19,6 +19,27 @@ import React from "react";
 
 export const NavigationConfig = [
     {
+        id: "menu.experiment",
+        key: "/experiment",
+        path: "/experiment/list",
+        name: "实验管理",
+        icon: <ProjectOutlined/>,
+        subs: [
+            {
+                id: "menu.experiment.list",
+                key: "/experiment/list",
+                path: "/experiment/list",
+                name: "实验列表",
+            },
+            {
+                id: "menu.experiment.creating",
+                key: "/experiment/creating",
+                path: "/experiment/creating",
+                name: "创建实验",
+            },
+        ]
+    },
+    {
         id: "menu.machine",
         key: "/machine",
         path: "/machine/list",
@@ -46,21 +67,6 @@ export const NavigationConfig = [
         ]
     },
     {
-        id: "menu.chaostools",
-        key: "/chaostools",
-        path: "/chaostools/market",
-        name: "实验工具",
-        icon: <ProjectOutlined/>,
-        subs: [
-            {
-                id: "menu.chaostools.market",
-                key: "/chaostools/market",
-                path: "/chaostools/market",
-                name: "工具市场",
-            },
-        ]
-    },
-    {
         id: "menu.scenario",
         key: "/scenario",
         path: "/scenario/list",
@@ -82,23 +88,17 @@ export const NavigationConfig = [
         ]
     },
     {
-        id: "menu.experiment",
-        key: "/experiment",
-        path: "/experiment/list",
-        name: "实验管理",
+        id: "menu.chaostools",
+        key: "/chaostools",
+        path: "/chaostools/market",
+        name: "实验工具",
         icon: <ProjectOutlined/>,
         subs: [
             {
-                id: "menu.experiment.list",
-                key: "/experiment/list",
-                path: "/experiment/list",
-                name: "实验列表",
-            },
-            {
-                id: "menu.experiment.creating",
-                key: "/experiment/creating",
-                path: "/experiment/creating",
-                name: "创建实验",
+                id: "menu.chaostools.market",
+                key: "/chaostools/market",
+                path: "/chaostools/market",
+                name: "工具市场",
             },
         ]
     },

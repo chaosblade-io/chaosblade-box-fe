@@ -127,6 +127,12 @@ const Actions = {
     queryTaskMonitorResult: data => ({type: Types.QUERY_TASK_MONITOR_RESULT, data}),
     queryMetricCategory: query => ({type: Types.QUERY_METRIC_CATEGORY, query}),
     queryMetricCategoryResult: data => ({type: Types.QUERY_METRIC_CATEGORY_RESULT, data}),
+    onScenarioCategoryChanged: data => ({type: Types.ON_SCENARIO_CATEGORY_CHANGED, data}),
+    onScenarioChanged: data => ({type: Types.ON_SCENARIO_CHANGED, data}),
+    onExperimentNameChanged: data => ({type: Types.ON_EXPERIMENT_NAME_CHANGED, data}),
+    onMetricChanged: data => ({type: Types.ON_METRIC_CHANGED, data}),
+    onMachinesChanged: data => ({type: Types.ON_MACHINES_CHANGED, data}),
+    onDimensionChanged: data => ({type: Types.ON_DIMENSION_CHANGED, data}),
 
 
     // Cluster

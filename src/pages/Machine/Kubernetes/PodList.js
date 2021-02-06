@@ -71,29 +71,6 @@ class PodList extends React.Component {
         SelectSearchFields: SelectSearchField,
     }
 
-    // chaosRunning: false
-    // chaosTime: null
-    // chaosed: false
-    // chaostools: null
-    // clusterName: null
-    // containers: null
-    // createTime: "2021-02-05 09:32:56"
-    // heartbeatTime: "2021-02-05 10:15:38"
-    // hostname: null
-    // ip: null
-    // machineId: "1357502432392765442"
-    // machineType: null
-    // nodeIp: null
-    // nodeName: "izuf6gjchf1lak9iqeugunz"
-    // nodeVersion: null
-    // original: null
-    // podIp: "172.19.128.192"
-    // podName: "storage-provisioner"
-    // status: 2
-    // taskId: null
-    // taskStatus: null
-
-
     formRef = React.createRef()
     PodColumns = [
         {
@@ -145,7 +122,7 @@ class PodList extends React.Component {
                 }
                 return (
                     text.map(container => {
-                        return (<Row><Col span={12}>{container}</Col></Row>);
+                        return (<Row><Col span={12}>{container.containerName}</Col></Row>);
                     })
                 );
             }

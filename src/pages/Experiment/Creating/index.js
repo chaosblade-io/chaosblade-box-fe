@@ -15,22 +15,17 @@
  */
 
 import React from "react";
-import {Card, Col, Row, Steps, Tabs} from "antd";
+import {Card, Col, Row, Tabs} from "antd";
 import {FormattedMessage} from "react-intl";
 import HostExperiment from "./HostExperiment";
-import ApplicationExperiment from "./ApplicationExperiment";
-import KubernetesExperiment from "./KubernetesExperiment";
 import * as request from "../../Machine/libs/request";
 import _ from 'lodash'
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
 import queryString from "query-string";
 import linuxLogo from '../../../assets/images/experiment/linux.svg'
-import kubernetesLogo from '../../../assets/images/experiment/kubernetes.svg'
-import applicationLogo from '../../../assets/images/experiment/application.svg'
 import styles from './index.module.scss';
 
-const {Step} = Steps
 const {TabPane} = Tabs
 
 const ExperimentDimensions = [
@@ -41,20 +36,20 @@ const ExperimentDimensions = [
         imgSrc: linuxLogo,
         content: <HostExperiment/>,
     },
-    {
-        title: "page.experiment.creating.kubernetes.dimension.name",
-        key: "kubernetes",
-        imgAlt: "kubernetes",
-        imgSrc: kubernetesLogo,
-        content: <KubernetesExperiment/>,
-    },
-    {
-        title: "page.experiment.creating.application.dimension.name",
-        key: "application",
-        imgAlt: "application",
-        imgSrc: applicationLogo,
-        content: <ApplicationExperiment/>,
-    },
+    // {
+    //     title: "page.experiment.creating.kubernetes.dimension.name",
+    //     key: "kubernetes",
+    //     imgAlt: "kubernetes",
+    //     imgSrc: kubernetesLogo,
+    //     content: <KubernetesExperiment/>,
+    // },
+    // {
+    //     title: "page.experiment.creating.application.dimension.name",
+    //     key: "application",
+    //     imgAlt: "application",
+    //     imgSrc: applicationLogo,
+    //     content: <ApplicationExperiment/>,
+    // },
 ]
 
 
@@ -62,10 +57,6 @@ class ExperimentCreating extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            current: 0,
-            stepCurrent: 0,
-        };
     }
 
     static getExperimentId() {
@@ -75,52 +66,19 @@ class ExperimentCreating extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps) {
-        const {history, experimentId, clearResult} = nextProps;
-        // update 返回 experimentId
-        if (!_.isEmpty(experimentId)) {
+        const {history, experimentId, clearResult, finished} = nextProps;
+        if (finished && !_.isEmpty(experimentId)) {
             clearResult();
             history.push(`/experiment/detail/?${request.generateUrlSearch({id: experimentId})}`);
         }
     }
 
-    creatingFromExperiment() {
-        const {getExperimentById, clearResult} = this.props;
-        const id = ExperimentCreating.getExperimentId();
-        if (!_.isEmpty(id)) {
+    onTabChange(key) {
+        const {dimension, clearResult, onDimensionChanged} = this.props;
+        if (key !== dimension) {
             clearResult();
-            getExperimentById(id)
-            return true;
+            onDimensionChanged(key);
         }
-        return false;
-    }
-
-    creatingFromMachine() {
-        const {dimension, machineId, machineIp} = this.props.location;
-        const {creatingFromMachine, clearResult} = this.props;
-        if (dimension && machineId && machineIp) {
-            clearResult();
-            creatingFromMachine({dimension, machineIp, machineId});
-            return true;
-        }
-        return false;
-    }
-
-    creatingFromScenario() {
-
-    }
-
-    componentDidMount() {
-        this.creatingFromExperiment() ||
-        this.creatingFromMachine() ||
-        this.creatingFromScenario();
-    }
-
-    onChange = current => {
-        this.setState({current});
-    };
-
-    stepOnChange = current => {
-        this.setState({stepCurrent: current})
     }
 
     render() {
@@ -130,9 +88,8 @@ class ExperimentCreating extends React.Component {
                 <h1>选择演练维度</h1>
                 <div className={styles.experimentHeader}>
                     <Row>
-                        <Tabs defaultActiveKey={dimension} card={"card"} onChange={(key) => {
-                            this.setState({dimension: key})
-                        }}>
+                        <Tabs defaultActiveKey={dimension} className={styles.stepTab}
+                              onChange={this.onTabChange.bind(this)}>
                             {
                                 ExperimentDimensions.map(item => (
                                         <TabPane
@@ -172,15 +129,15 @@ class ExperimentCreating extends React.Component {
 const mapStateToProps = state => {
     const experiment = state.experimentCreating.toJS();
     return {
+        dimension: experiment.dimension,
         experimentId: experiment.experimentId,
+        finished: experiment.finished,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
-        getExperimentById: experimentId => dispatch(Actions.getExperimentById(experimentId)),
-        creatingFromMachine: machine => dispatch(Actions.creatingFromMachine(machine)),
-        creatingFromScenario: scenario => dispatch(Actions.creatingFromScenario(scenario)),
+        onDimensionChanged: dimension => dispatch(Actions.onDimensionChanged()),
     }
 }
 

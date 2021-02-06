@@ -24,7 +24,6 @@ import TaskMonitoring from "./TaskMonitoring";
 import queryString from "query-string";
 import {ExperimentConstants, TASK_STATUS} from "../../../constants/ExperimentConstants";
 
-
 class Task extends React.Component {
 
     static getTaskId() {
@@ -77,16 +76,17 @@ class Task extends React.Component {
     }
 
     render() {
+        const {history} = this.props;
         return (
             <div>
                 <div>
-                    <Row gutter={[6, 6]}>
-                        <Col flex="30%">
+                    <Row gutter={[6, 6]} wrap={false}>
+                        <Col flex="25%">
                             <Card title="基础信息" bordered={true} className={styles.taskCard}>
-                                <TaskInfo/>
+                                <TaskInfo history={history}/>
                             </Card>
                         </Col>
-                        <Col flex="70%">
+                        <Col flex={"auto"}>
                             <Card title="监控" bordered={true} className={styles.taskCard}>
                                 <TaskMonitoring/>
                             </Card>

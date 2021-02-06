@@ -17,4 +17,5 @@
 export const Errors = {
     UNKNOWN_ERROR: {code: 1001, message: '未知错误'},
     TIMEOUT_ERROR: {code: 1004, message: '请求超时，请稍后重试！'},
+    PARAMETER_ERROR: {code: 1006, message: '参数配置错误！'},
 }

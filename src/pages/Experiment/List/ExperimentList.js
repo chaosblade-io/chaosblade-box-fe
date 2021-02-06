@@ -84,7 +84,9 @@ class ExperimentList extends React.Component {
             key: 'lastTaskResult',
             render: (text, record) => {
                 const status = Task.getTaskStatus(record.lastTaskStatus, record.lastTaskResult);
-                return <span>{status.desc}</span>
+                return <Space size="middle">
+                    <a href={`/experiment/task/?${request.generateUrlSearch({id: record.lastTaskId})}`}>{status.desc}</a>
+                </Space>
             }
         },
         {

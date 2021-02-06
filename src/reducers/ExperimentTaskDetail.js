@@ -20,6 +20,7 @@ import createReducer from "./createReducer";
 import _ from 'lodash';
 
 export const INITIAL_STATE = Map({
+    experimentId: "",
     taskName: "",
     startTime: "",
     endTime: "",
@@ -29,16 +30,21 @@ export const INITIAL_STATE = Map({
     execute: {},
     metrics: [],
     loggingLoading: false,
-    logging: []
+    logging: [],
+    monitor: {
+        name: "",
+        params: [],
+        metrics: [],
+    }
 });
 
 
 const queryTaskResult = (state, action) => {
-    const {taskName, startTime, endTime, status, resultStatus} = action.data;
-    if (_.isEmpty(taskName)) {
+    if (_.isEmpty(action.data)) {
         return state;
     }
-    return state.merge({taskName, startTime, endTime, status, resultStatus});
+    const {taskName, startTime, endTime, status, resultStatus, experimentId} = action.data;
+    return state.merge({taskName, startTime, endTime, status, resultStatus, experimentId});
 }
 
 const failRetryExperiment = (state, action) => {
@@ -64,22 +70,26 @@ const queryTaskLogResult = (state, action) => {
 }
 
 const queryTaskMonitorResult = (state, action) => {
-    const datas = action.data;
+    if (_.isEmpty(action.data)) {
+        return state;
+    }
+    const {name, code, params, metricTask} = action.data[0];
     let metrics = [];
-    if (!_.isEmpty(datas)) {
-        datas.map(data => {
+    if (!_.isEmpty(metricTask)) {
+        metricTask.map(data => {
             if (!_.isEmpty(data) && !_.isEmpty(data.metrics)) {
                 data.metrics.map(metric => {
                     metrics.push({
                         ip: data.ip,
-                        value: Number(metric.value),
+                        value: Number(metric.value).toFixed(4),
                         date: metric.date,
                     })
                 });
             }
         })
     }
-    return state.merge({metrics});
+    const _metrics = _.orderBy(metrics, ['date'], ['asc'])
+    return state.merge({monitor: {metrics: _metrics, name, code, params}});
 }
 
 const ACTION_HANDLERS = {
