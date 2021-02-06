@@ -58,7 +58,17 @@ const queryProbesInstallationResult = (state, action) => {
     if (_.isEmpty(action.data)) {
         return state.merge({probesInstallationsLoading: false});
     }
-    return state.merge({probesInstallationsLoading: false, probesInstallations: action.data});
+    const current = state.toJS();
+    const {ansibleHosts} = current;
+    const probesInstallations = action.data;
+    probesInstallations.map(probe => {
+        ansibleHosts.map(host => {
+            if (probe.host === host.host || probe.ip === host.host) {
+                host.status = probe.status;
+            }
+        })
+    })
+    return state.merge({probesInstallationsLoading: false, probesInstallations: action.data, ansibleHosts});
 }
 
 const clearAnsibleRegisterResult = (state, action) => {

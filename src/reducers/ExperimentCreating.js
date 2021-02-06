@@ -22,7 +22,7 @@ import MachineConstants from "../constants/MachineConstants";
 
 export const INITIAL_STATE = Map({
     loading: false,
-    name: "",
+    experimentName: "",
     collect: false,
     hosts: {
         page: 1, // 当前页码
@@ -38,13 +38,15 @@ export const INITIAL_STATE = Map({
         loading: false,
         page: 1,
         pageSize: 20,
-        pages: 0,
         total: 0,
         scenarios: [],
     },
     scenarioSelected: null,
     machinesSelected: [],
+    metricSelected: null,
     metricCategories: [],
+    finished: false,
+    scenarioCategoryIdSelected: '',
 });
 
 const handleMachinesFetching = (state, action) => {
@@ -85,7 +87,7 @@ const createExperiment = (state, action) => {
     if (_.isEmpty(experimentId)) {
         return state;
     }
-    return state.merge({experimentId});
+    return state.merge({experimentId, finished: true});
 }
 
 const updateExperiment = (state, action) => {
@@ -93,7 +95,7 @@ const updateExperiment = (state, action) => {
     if (_.isEmpty(experimentId)) {
         return state;
     }
-    return state.merge({experimentId});
+    return state.merge({experimentId, finished: true});
 }
 
 const getScenariosPageable = (state, action) => {
@@ -120,7 +122,7 @@ const clearExperimentCreatingResult = (state, action) => {
     return state.merge({
         loading: false,
         refreshing: false,
-        name: "",
+        experimentName: "",
         hosts: {
             loading: false,
             refreshing: false,
@@ -143,26 +145,43 @@ const clearExperimentCreatingResult = (state, action) => {
         },
         scenarioSelected: null,
         machinesSelected: [],
+        metricSelected: null,
+        finished: false,
+        scenarioCategoryIdSelected: '',
+        k8sCollect: false,
     })
 }
 
 const getExperimentById = (state, action) => {
-    const {experimentName, dimension, machines, scenarios, metrics} = action.data;
+    const {experimentId, experimentName, dimension, machines, scenarios, metrics} = action.data;
     let scenarioSelected = null;
+    let categoryId = '';
     if (!_.isEmpty(scenarios)) {
-        let scenario = scenarios[0];
-        scenarioSelected = {
-            categoryIds: [scenario.categoryId],
-            scenarioId: scenario.scenarioId,
-            name: scenario.name,
-            parameters: scenario.parameters,
+        const scenario = scenarios[0];
+        scenarioSelected = scenario;
+        if (!_.isEmpty(scenario.categories)) {
+            categoryId = scenario.categories[0].categoryId;
+
+            scenarioSelected = {...scenarioSelected, categoryId}
         }
     }
-    let machinesSelected = []
+    let metricSelected = null;
+    if (!_.isEmpty(metrics)) {
+        metricSelected = metrics[0];
+    }
+    let machinesSelected = [];
     if (!_.isEmpty(machines)) {
         machines.map(machine => machinesSelected.push(machine.machineId + "-" + machine.ip));
     }
-    return state.merge({dimension, experimentName, scenarioSelected, machinesSelected, metrics});
+    return state.merge({
+        dimension: dimension ? dimension : "host",
+        experimentId,
+        experimentName,
+        scenarioSelected,
+        machinesSelected,
+        metricSelected,
+        scenarioCategoryIdSelected: categoryId
+    });
 }
 
 const creatingFromMachine = (state, action) => {
@@ -172,7 +191,12 @@ const creatingFromMachine = (state, action) => {
 }
 
 const creatingFromScenario = (state, action) => {
-
+    if (_.isEmpty(action.data)) {
+        return state;
+    }
+    const {categoryId, scenarioId} = action.data;
+    const scenario = {categoryId, scenarioId}
+    return state.merge({scenarioSelected: scenario})
 }
 
 const queryMetricCategory = (state, action) => {
@@ -184,6 +208,41 @@ const queryMetricCategory = (state, action) => {
 
 const queryCollectStatus = (state, action) => {
     return state.merge({collect: action.data});
+}
+
+const onScenarioCategoryChanged = (state, action) => {
+    const {categoryId} = action.data;
+    return state.merge({scenarioCategoryIdSelected: categoryId});
+}
+
+const onScenarioChanged = (state, action) => {
+    console.log("sc: ", action.data);
+    if (_.isEmpty(action.data)) {
+        return state.merge({scenarioSelected: null});
+    }
+    const {scenario} = action.data;
+    return state.merge({scenarioSelected: scenario});
+}
+
+const onExperimentNameChanged = (state, action) => {
+    const {name} = action.data;
+    return state.merge({experimentName: name});
+}
+
+const onMetricChanged = (state, action) => {
+    const {metric} = action.data;
+    return state.merge({metricSelected: metric});
+}
+
+const onMachinesChanged = (state, action) => {
+    console.log("c: ", action.data);
+    const {machines} = action.data;
+    return state.merge({machinesSelected: machines});
+}
+
+const onDimensionChanged = (state, action) => {
+    const {dimension} = action.data;
+    return state.merge({dimension});
 }
 
 const ACTION_HANDLERS = {
@@ -199,6 +258,12 @@ const ACTION_HANDLERS = {
     [Types.CREATING_FROM_SCENARIO_RESULT]: creatingFromScenario,
     [Types.QUERY_METRIC_CATEGORY_RESULT]: queryMetricCategory,
     [Types.QUERY_COLLECT_STATUS_RESULT]: queryCollectStatus,
+    [Types.ON_SCENARIO_CATEGORY_CHANGED]: onScenarioCategoryChanged,
+    [Types.ON_SCENARIO_CHANGED]: onScenarioChanged,
+    [Types.ON_EXPERIMENT_NAME_CHANGED]: onExperimentNameChanged,
+    [Types.ON_METRIC_CHANGED]: onMetricChanged,
+    [Types.ON_MACHINES_CHANGED]: onMachinesChanged,
+    [Types.ON_DIMENSION_CHANGED]: onDimensionChanged,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);

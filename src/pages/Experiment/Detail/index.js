@@ -79,7 +79,9 @@ class ExperimentDetail extends React.Component {
     }
 
     experimentTaskRender = () => {
-        const {loading, tasks, page, pageSize, total, query, getMachinesForHostPageable} = this.props;
+        const {loading, tasks, page, pageSize, total, query, getTaskByExperimentId} = this.props;
+        const experimentId = ExperimentDetail.getExperimentId();
+
         return (
             <div id={"Task"}>
                 <Descriptions title="实验任务列表"></Descriptions>
@@ -91,7 +93,7 @@ class ExperimentDetail extends React.Component {
                        rowKey={record => record.taskId}
                        loading={loading}
                        pagination={GenPagination(page, pageSize, total,
-                           (page, pageSize) => getMachinesForHostPageable({...query, page, pageSize})
+                           (page, pageSize) => getTaskByExperimentId({...query, page, pageSize, experimentId})
                        )}
                 />
             </div>
@@ -141,11 +143,14 @@ class ExperimentDetail extends React.Component {
                 <Descriptions.Item label="场景名称"
                                    span={2}>{scenario && scenario.name ? scenario.name : 'unknown'}</Descriptions.Item>
                 <Descriptions.Item label="场景目录"
-                                   span={2}>{scenario && scenario.categories ? scenario.categories : 'unknown'}</Descriptions.Item>
+                                   span={2}>{scenario && scenario.categories ? scenario.categories[0].categoryName : 'unknown'}</Descriptions.Item>
                 <Descriptions.Item label="场景参数" span={4}>
                     <Row gutter={8}>
                         {(scenario && !_.isEmpty(scenario.parameters)) ?
                             scenario.parameters.map(param => {
+                                if (param.value === undefined || param.value === null) {
+                                    return;
+                                }
                                 return <Col span={6}>{param.name}:{param.value}</Col>;
                             }) : <Col>无参数</Col>}
                     </Row>

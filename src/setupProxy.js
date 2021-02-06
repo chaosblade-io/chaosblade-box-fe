@@ -31,7 +31,7 @@ module.exports = function (app) {
     }));
     app.use('/api/', proxy.createProxyMiddleware({
         pathRewrite: {'^/api': '/'},
-        target: "http://101.133.239.202:8080/",
+        target: "http://127.0.0.1:8080/",
         changeOrigin: true
     }));
 };

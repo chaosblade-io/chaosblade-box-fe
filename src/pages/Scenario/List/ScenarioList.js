@@ -112,7 +112,6 @@ class ScenarioList extends React.Component {
             title: '场景名',
             dataIndex: 'name',
             key: 'name',
-            render: text => <a>{text}</a>,
         },
         {
             title: '唯一码',

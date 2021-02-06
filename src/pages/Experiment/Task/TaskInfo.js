@@ -22,6 +22,7 @@ import _ from 'lodash'
 import Task from "./index";
 import {ExperimentConstants} from "../../../constants/ExperimentConstants";
 import * as moment from "moment";
+import * as request from "../../Machine/libs/request";
 
 class TaskInfo extends React.Component {
 
@@ -100,9 +101,9 @@ class TaskInfo extends React.Component {
         const {duration} = this.state;
         return (
             <div>
-                {duration.days > 0 ? <span>{duration.days} days</span> : ''}
-                {duration.hours > 0 ? <span>{duration.hours} hours</span> : ''}
-                {duration.minutes > 0 ? <span>{duration.minutes} mins</span> : ''}
+                {duration.days > 0 ? <span>{duration.days} days &nbsp;</span> : ''}
+                {duration.hours > 0 ? <span>{duration.hours} hours &nbsp;</span> : ''}
+                {duration.minutes > 0 ? <span>{duration.minutes} mins &nbsp;</span> : ''}
                 {duration.seconds > 0 ? <span>{duration.seconds} s</span> : ''}
             </div>
         );
@@ -113,20 +114,23 @@ class TaskInfo extends React.Component {
     }
 
     render() {
-        const {taskName, startTime, endTime, status, resultStatus} = this.props;
+        const {taskName, startTime, endTime, status, resultStatus, experimentId, history} = this.props;
         return (
             <Descriptions column={1}>
                 <Descriptions.Item label="实验名称">{taskName}</Descriptions.Item>
-                <Descriptions.Item label="已运行时长">{this.renderDuration()}</Descriptions.Item>
+                <Descriptions.Item label="运行时长">{this.renderDuration()}</Descriptions.Item>
                 <Descriptions.Item label="任务状态">
                     {TaskInfo.statusRender(status, resultStatus)}
                 </Descriptions.Item>
-                <Descriptions.Item label="开始执行时间">{startTime}</Descriptions.Item>
-                <Descriptions.Item label="任务结束时间">
+                <Descriptions.Item label="开始时间">{startTime}</Descriptions.Item>
+                <Descriptions.Item label="结束时间">
                     {
                         endTime ? endTime :
                             <Badge status="processing" text="运行中"/>
                     }</Descriptions.Item>
+                <Descriptions.Item label="实验"><a onClick={() => {
+                    history.push(`/experiment/detail/?${request.generateUrlSearch({id: experimentId})}`);
+                }}>{experimentId}</a></Descriptions.Item>
             </Descriptions>
         );
     }
@@ -141,6 +145,7 @@ const mapStateToProps = state => {
         endTime: task.endTime,
         status: task.status,
         resultStatus: task.resultStatus,
+        experimentId: task.experimentId,
     }
 }
 const mapDispatchToProps = dispatch => {

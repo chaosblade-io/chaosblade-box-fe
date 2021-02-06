@@ -15,14 +15,52 @@
  */
 
 import React from "react";
-import {Typography} from "antd";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
 import {Line} from '@antv/g2plot';
 import Task from "./index";
 import _ from 'lodash';
+import {ExperimentConstants} from "../../../constants/ExperimentConstants";
 
-const {Paragraph, Text} = Typography;
+const chartOptions = {
+    data: [],
+    padding: 'auto',
+    xField: 'date',
+    yField: 'value',
+    seriesField: 'ip',
+    yAxis: {
+        label: {
+            formatter: (v) => Number(v),
+        },
+    },
+    annotations: [
+        {
+            top: true,
+            type: 'regionFilter',
+            start: ['min', 'median'],
+            end: ['max', '0'],
+            color: '#F4664A',
+        },
+        {
+            type: 'text',
+            position: ['min', 'median'],
+            content: '中位数',
+            offsetY: -4,
+            style: {
+                textBaseline: 'bottom',
+            },
+        },
+        {
+            type: 'line',
+            start: ['min', 'median'],
+            end: ['max', 'median'],
+            style: {
+                stroke: '#F4664A',
+                lineDash: [2, 2],
+            },
+        },
+    ],
+};
 
 class TaskMonitoring extends React.Component {
 
@@ -30,93 +68,56 @@ class TaskMonitoring extends React.Component {
         super(props);
     }
 
-    handleTaskMonitor() {
+    taskMetricsRender() {
         const taskId = Task.getTaskId();
         const {queryTaskMonitor} = this.props;
         queryTaskMonitor({taskId});
+        this.updateChart();
+    }
+
+    updateChart() {
+        const {metrics, status, resultStatus} = this.props;
+        if (_.isEmpty(metrics)) {
+            return;
+        }
+        if (_.isEmpty(this.chart)) {
+            this.chart = new Line('monitor', chartOptions);
+            this.chart.render();
+        }
+        chartOptions.data = metrics;
+        this.chart.update(chartOptions);
+        const taskStatus = Task.getTaskStatus(status, resultStatus);
+        if (taskStatus === ExperimentConstants.TASK_END_SUCCESS) {
+            clearInterval(this.metricTime);
+        }
     }
 
     componentDidMount() {
-        this.handleTaskMonitor()
-        this.logTime = setInterval(() => {
-            this.handleTaskMonitor();
-        }, 5000)
+        this.metricTime = setInterval(() => {
+            this.taskMetricsRender();
+        }, 3000)
     }
 
     componentWillUnmount() {
-        clearInterval(this.logTime);
+        clearInterval(this.metricTime);
     }
 
     render() {
         const {metrics} = this.props;
-        if (_.isEmpty(metrics)) {
-            return (
-                <Paragraph id={"monitor"} style={{height: "100%"}}>暂无数据</Paragraph>
-            )
-        }
-        this.metricsRender();
-        return (
-            <Paragraph id={"monitor"} style={{height: "100%"}}></Paragraph>
-        );
-    }
-
-    metricsRender = () => {
-        const {metrics} = this.props;
-        if (_.isEmpty(metrics)) {
-            return;
-        }
-        const line = new Line('monitor', {
-            data: metrics,
-            padding: 'auto',
-            xField: 'date',
-            yField: 'value',
-            seriesField: 'ip',
-            xAxis: {
-                type: 'time',
-            },
-            // yAxis: {
-            //     label: {
-            //         // 数值格式化为千分位
-            //         formatter: (v) => Number(v) / (1024*1024),
-            //     },
-            // },
-            annotations: [
-                // 低于中位数颜色变化
-                {
-                    top: true,
-                    type: 'regionFilter',
-                    start: ['min', 'median'],
-                    end: ['max', '0'],
-                    color: '#F4664A',
-                },
-                {
-                    type: 'text',
-                    position: ['min', 'median'],
-                    content: '中位数',
-                    offsetY: -4,
-                    style: {
-                        textBaseline: 'bottom',
-                    },
-                },
-                {
-                    type: 'line',
-                    start: ['min', 'median'],
-                    end: ['max', 'median'],
-                    style: {
-                        stroke: '#F4664A',
-                        lineDash: [2, 2],
-                    },
-                },
-            ],
-        });
-        line.render();
+        return <div>
+            <div id={"monitor"}>{_.isEmpty(metrics) ? '暂无数据' : ''}</div>
+        </div>
     }
 }
 
 const mapStateToProps = state => {
     const detail = state.taskDetail.toJS();
+    const {monitor} = detail;
     return {
-        metrics: detail.metrics,
+        name: monitor.name,
+        metrics: monitor.metrics,
+        status: detail.status,
+        resultStatus: detail.resultStatus,
     }
 }
 const mapDispatchToProps = dispatch => {

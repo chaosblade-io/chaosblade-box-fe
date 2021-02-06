@@ -104,17 +104,23 @@ class ProbeList extends React.Component {
         unbanProbe({probeId: probeId});
     }
 
-    uninstallProbe = probeId => {
+    uninstallProbe = (probeId) => {
         const {uninstallProbe} = this.props;
         uninstallProbe({probeId: probeId});
     }
 
-    operationWrapperRender = (operationFunc, text) => {
+    operationWrapperRender = (operationFunc, text, agentType) => {
+        let content = text;
+        let confirm = operationFunc;
+        if (agentType === ProbeConstants.PROBE_TYPE_KUBERNETES.code) {
+            content = "请使用 Helm 命令手动删除";
+            confirm = ()=>{}
+        }
         return (
             <Popconfirm
                 placement="top"
-                title={text}
-                onConfirm={() => operationFunc()}
+                title={content}
+                onConfirm={() => confirm()}
                 okText={<FormattedMessage id={"page.popconfirm.ok"}/>}
                 cancelText={<FormattedMessage id={"page.popconfirm.cancel"}/>}
             >
@@ -157,7 +163,7 @@ class ProbeList extends React.Component {
                 {
                     pathname: '/machine/list',
                     probeId: record.probeId,
-                    active: record.agentType,
+                    active: ProbeConstants.PROBE_TYPES[record.agentType],
                 }
             }>查看</Link></span>)
         },
@@ -167,15 +173,15 @@ class ProbeList extends React.Component {
                 const operations = [];
                 if (record.status === MachineConstants.MACHINE_STATUS_OFFLINE.code ||
                     record.status === MachineConstants.MACHINE_STATUS_INSTALL_FAILED.code) {
-                    operations.push(this.operationWrapperRender(this.installProbe.bind(this, probeId), '安装'));
+                    operations.push(this.operationWrapperRender(this.installProbe.bind(this, probeId), '安装', record.agentType));
                 }
                 if (record.status === MachineConstants.MACHINE_STATUS_BANING.code) {
-                    operations.push(this.operationWrapperRender(this.unbanProbe.bind(this, probeId), '启用'));
-                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId), '卸载'));
+                    operations.push(this.operationWrapperRender(this.unbanProbe.bind(this, probeId), '启用', record.agentType));
+                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId), '卸载', record.agentType));
                 }
                 if (record.status === MachineConstants.MACHINE_STATUS_ONLINE.code) {
-                    operations.push(this.operationWrapperRender(this.banProbe.bind(this, probeId), '禁用'));
-                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId), '卸载'));
+                    operations.push(this.operationWrapperRender(this.banProbe.bind(this, probeId), '禁用', record.agentType));
+                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId), '卸载', record.agentType));
                 }
                 return (
                     <Space size="middle">
