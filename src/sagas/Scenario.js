@@ -37,7 +37,7 @@ export default () => {
             timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
         });
 
-        let error;
+        let error ;
         if (timeout) {
             error = Errors.TIMEOUT_ERROR;
         } else {

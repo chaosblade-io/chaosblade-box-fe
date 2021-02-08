@@ -20,7 +20,7 @@ class Kubernetes extends React.Component {
 
     render() {
         return (
-            <div>Kubernetes模式</div>
+            <div>敬请期待...</div>
         );
     }
 }

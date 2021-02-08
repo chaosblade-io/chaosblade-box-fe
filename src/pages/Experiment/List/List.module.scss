@@ -17,3 +17,11 @@
 .hidden {
   display: none;
 }
+
+.createOperation {
+  background-color: #28A47B;
+
+  :global(.ant-statistic-content) {
+    color: #ffffff;
+  }
+}

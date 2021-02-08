@@ -49,6 +49,19 @@
   padding-left: 16px;
   padding-bottom: 30px;
   margin-top: 16px;
+
+  :global(.ant-transfer-list-content-item) {
+    display: inline-block;
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.ant-pagination) {
+    height: 45px;
+    padding-top: 10px;
+  }
 }
 
 .step {
@@ -66,17 +79,6 @@
 .stepsAction {
   margin-top: 24px;
   text-align: right;
-}
-
-
-:global(.ant-transfer-list-content-item) {
-  display: inline-block;
-  width: 33%;
-}
-
-:global(.ant-pagination) {
-  height: 45px;
-  padding-top: 10px;
 }
 
 .stepLayout {
@@ -100,7 +102,11 @@
 .stepCardSelected {
   background-color: #b2d9c7;
   box-shadow: 0px 0px 10px 5px rgba(#b2d9c7, 0.2);
+  word-wrap:break-word;
+  word-break:break-all;
 }
 
 .stepCardNoSelected {
+  word-wrap:break-word;
+  word-break:break-all;
 }

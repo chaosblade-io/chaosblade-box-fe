@@ -25,6 +25,7 @@ import styles from './index.module.scss';
 import * as request from "../../Machine/libs/request";
 import {ScenarioConstants} from "../../../constants/ScenarioConstants";
 import _ from "lodash";
+import {Errors} from "../../../constants/Errors";
 
 const SelectSearchFields = [
     {
@@ -81,9 +82,13 @@ class ScenarioList extends React.Component {
         getScenariosPageable({...query, page: page, pageSize: pageSize, ...values})
     };
 
-    online = (scenarioId) => {
-        const {unbanScenario} = this.props;
-        unbanScenario({scenarioId});
+    online = (record) => {
+        const {unbanScenario, handleError} = this.props;
+        if (_.isEmpty(record.categories) || _.isEmpty(record.supportScopeTypes)) {
+            handleError(Errors.PARAMETER_ERROR.code, '请先编辑配置 supportScopeTypes 和 categories');
+            return;
+        }
+        unbanScenario({scenarioId: record.scenarioId});
     }
 
     offline = (scenarioId) => {
@@ -170,7 +175,7 @@ class ScenarioList extends React.Component {
                     <Space size="middle">
                         {
                             record.status === ScenarioConstants.STATUS_READY.code ?
-                                <a onClick={this.online.bind(this, scenarioId)}>上架</a>
+                                <a onClick={this.online.bind(this, record)}>上架</a>
                                 :
                                 <a onClick={this.offline.bind(this, scenarioId)}>下架</a>
                         }
@@ -222,6 +227,7 @@ const mapDispatchToProps = dispatch => {
         getScenariosPageable: query => dispatch(Actions.getScenariosPageable(query)),
         banScenario: scenarioId => dispatch(Actions.banScenario(scenarioId)),
         unbanScenario: scenarioId => dispatch(Actions.unbanScenario(scenarioId)),
+        handleError: (code, message) => dispatch(Actions.handleError(code, message)),
     }
 }
 

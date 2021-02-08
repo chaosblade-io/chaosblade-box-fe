@@ -19,28 +19,19 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import queryString from 'query-string';
 import Actions from "../../actions/Actions";
-import styles from './index.module.scss';
 import {message} from "antd";
-
 
 class Error extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            requestId: "",
-            errorCode: -1,
-            errorMessage: null
-        };
     }
 
     static getDerivedStateFromProps(nextProps) {
-        const {requestId, errorCode, errorMessage, clearError} = nextProps;
+        const {errorCode, errorMessage, clearError} = nextProps;
         if (errorCode > -1 && !_.isEmpty(errorMessage)) {
-            message.error(errorMessage, 2, onclose);
             clearError && clearError();
-            return {requestId, errorCode, errorMessage};
+            message.error(errorMessage);
         }
         return null;
     }
@@ -65,16 +56,10 @@ class Error extends Component {
     }
 
     render() {
-        const {requestId, errorCode, errorMessage} = this.state;
         const {children} = this.props;
         return (
             <Fragment>
                 {children}
-                <div className={styles.error}>
-                    <p>{requestId}</p>
-                    <p>{errorCode}</p>
-                    <p>{errorMessage}</p>
-                </div>
             </Fragment>
         );
     }

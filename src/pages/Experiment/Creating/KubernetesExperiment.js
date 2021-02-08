@@ -16,18 +16,12 @@
 
 import React from "react";
 import Actions from "../../../actions/Actions";
-import {
-    AndroidOutlined,
-    AppleOutlined,
-    AppstoreOutlined,
-    MailOutlined,
-    QuestionCircleOutlined,
-    SettingOutlined
-} from "@ant-design/icons";
+import {AndroidOutlined, AppleOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {Alert, Divider, Form, Input, Layout, Menu, Tabs, Tooltip} from "antd";
 import {connect} from "react-redux";
-import MachinesSelection from "./MachinesSelection";
 import ExperimentSteps from "./ExperimentSteps";
+import MachineStep from "./MachineStep";
+import {GenPagination} from "../../../libs/Pagination";
 
 const {TabPane} = Tabs
 const {TextArea} = Input
@@ -54,7 +48,6 @@ class KubernetesExperiment extends React.Component {
     constructor() {
         super();
         this.state = {
-            creatingStepCurrent: 0,
             targetStepCurrent: 0,
             podNamespace: "",
             podNames: "",
@@ -62,14 +55,25 @@ class KubernetesExperiment extends React.Component {
             containerIndex: "",
             nodeNames: "",
             tabKey: "container", // container | pod | node
-            scenarioOpenKeys: ['sub1'],
         }
     }
 
     componentDidMount() {
-        const {getClusterInfo, queryCollectStatus} = this.props
+        const {
+            getClusterInfo,
+            queryCollectStatus,
+            getPodsPageable,
+            getNodesPageable,
+            podPage,
+            podPageSize,
+            nodePage,
+            nodePageSize
+        } = this.props
         queryCollectStatus();
-        getClusterInfo()
+        getClusterInfo();
+        getPodsPageable({page: podPage, pageSize: podPageSize});
+        getNodesPageable({page: nodePage, pageSize: nodePageSize});
+
     }
 
     podNamespaceValueChange = (value) => {
@@ -94,25 +98,33 @@ class KubernetesExperiment extends React.Component {
     }
 
     onFinish = (values) => {
+        // 表单填写
+        // machine 是执行的探针
     }
 
+    // 从 Pod 中获取 containers
+
     collectContainersEnabledRender = () => {
+        const {podPage, podPageSize, podTotal, containers, getPodsPageable} = this.props;
         return (
-            <div>
-                <MachinesSelection titles={
+            <MachineStep
+                machines={containers}
+                pagination={GenPagination(podPage, podPageSize, podTotal,
+                    (page, pageSize) => getPodsPageable({page, pageSize}))}
+                titles={
                     [
                         <div style={{display: "inline-block"}}>
-                            <a onClick={() => {
-                                console.log("遇到问题点我查看？")
-                            }}>切换成名称</a>
-                            <Divider type={"vertical"}/>
+                            {/*<a onClick={() => {*/}
+                            {/*    console.log("遇到问题点我查看？")*/}
+                            {/*}}>切换成名称</a>*/}
+                            {/*<Divider type={"vertical"}/>*/}
                             机器不可选&nbsp;
                             <Tooltip title="机器处于已被禁用状态，在机器列表页面启用后可选。">
                                 <QuestionCircleOutlined/>
                             </Tooltip>
                         </div>
-                    ]}/>
-            </div>
+                    ]}
+            />
         );
     }
 
@@ -161,42 +173,49 @@ class KubernetesExperiment extends React.Component {
     }
 
     collectPodsEnabledRender = () => {
+        const {podPage, podPageSize, podTotal, pods, getPodsPageable} = this.props;
         return (
-            <div>
-                <MachinesSelection titles={
+            <MachineStep
+                machines={pods}
+                pagination={GenPagination(podPage, podPageSize, podTotal,
+                    (page, pageSize) => getPodsPageable({page, pageSize}))}
+                titles={
                     [
                         <div style={{display: "inline-block"}}>
-                            <a onClick={() => {
-                                console.log("遇到问题点我查看？")
-                            }}>切换成Pod名称</a>
-                            <Divider type={"vertical"}/>
+                            {/*<a onClick={() => {*/}
+                            {/*    console.log("遇到问题点我查看？")*/}
+                            {/*}}>切换成Pod名称</a>*/}
+                            {/*<Divider type={"vertical"}/>*/}
                             机器不可选&nbsp;
                             <Tooltip title="机器处于已被禁用状态，在机器列表页面启用后可选。">
                                 <QuestionCircleOutlined/>
                             </Tooltip>
                         </div>
                     ]}/>
-            </div>
         );
     };
 
     collectNodesEnabledRender = () => {
+        const {nodePage, nodePageSize, nodeTotal, nodes, getNodesPageable} = this.props;
         return (
-            <div>
-                <MachinesSelection titles={
+
+            <MachineStep
+                machines={nodes}
+                pagination={GenPagination(nodePage, nodePageSize, nodeTotal,
+                    (page, pageSize) => getNodesPageable({page, pageSize}))}
+                titles={
                     [
                         <div style={{display: "inline-block"}}>
-                            <a onClick={() => {
-                                console.log("遇到问题点我查看？")
-                            }}>切换成节点名称</a>
-                            <Divider type={"vertical"}/>
+                            {/*<a onClick={() => {*/}
+                            {/*    console.log("遇到问题点我查看？")*/}
+                            {/*}}>切换成节点名称</a>*/}
+                            {/*<Divider type={"vertical"}/>*/}
                             机器不可选&nbsp;
                             <Tooltip title="机器处于已被禁用状态，在机器列表页面启用后可选。">
                                 <QuestionCircleOutlined/>
                             </Tooltip>
                         </div>
                     ]}/>
-            </div>
         );
     };
 
@@ -211,23 +230,6 @@ class KubernetesExperiment extends React.Component {
                 </Form>
             </div>
         );
-    };
-
-    onTabChange = (activeKey) => {
-        const {getScenarioCategories, getScenariosPageable} = this.props;
-        this.setState({tabKey: activeKey});
-        getScenarioCategories({page: 1, pageSize: 1000})
-    }
-
-    rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
-
-    onOpenChange = keys => {
-        // const latestOpenKey = keys.find(key => this.scenarioOpenKeys.indexOf(key) === -1);
-        // if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        //     this.setState({scenarioOpenKeys: keys})
-        // } else {
-        //     this.setState({scenarioOpenKeys: latestOpenKey ? [latestOpenKey] : []})
-        // }
     };
 
     machinesRender = () => {
@@ -252,71 +254,22 @@ class KubernetesExperiment extends React.Component {
             </Tabs>
         );
     }
-    scenariosRender = () => {
-        const {categories} = this.props;
-        return (
-            <Layout>
-                <Layout>
-                    <Sider>
-                        <Menu mode="inline" defaultOpenKeys={this.scenarioOpenKeys}
-                              onOpenChange={this.onOpenChange}>
-                            <SubMenu key="sub1" icon={<MailOutlined/>} title="Navigation One">
-                                <Menu.Item key="1">Option 1</Menu.Item>
-                                <Menu.Item key="2">Option 2</Menu.Item>
-                                <Menu.Item key="3">Option 3</Menu.Item>
-                                <Menu.Item key="4">Option 4</Menu.Item>
-                            </SubMenu>
-                            <SubMenu key="sub2" icon={<AppstoreOutlined/>} title="Navigation Two">
-                                <Menu.Item key="5">Option 5</Menu.Item>
-                                <Menu.Item key="6">Option 6</Menu.Item>
-                                <SubMenu key="sub3" title="Submenu">
-                                    <Menu.Item key="7">Option 7</Menu.Item>
-                                    <Menu.Item key="8">Option 8</Menu.Item>
-                                </SubMenu>
-                            </SubMenu>
-                            <SubMenu key="sub4" icon={<SettingOutlined/>} title="Navigation Three">
-                                <Menu.Item key="9">Option 9</Menu.Item>
-                                <Menu.Item key="10">Option 10</Menu.Item>
-                                <Menu.Item key="11">Option 11</Menu.Item>
-                                <Menu.Item key="12">Option 12</Menu.Item>
-                            </SubMenu>
-                        </Menu>
-                    </Sider>
-                    <Content>
-                        演练场景内容
-                    </Content>
-                </Layout>
-            </Layout>
-        );
-    }
-
-    monitorRender = () => {
-        return (
-            <span>接入稳态监控</span>
-        );
-    }
 
     onTargetTabChange = current => {
         this.setState({targetStepCurrent: current});
     }
 
-    changeCreatingStepCurrentValue = (value) => {
-        this.setState({creatingStepCurrent: value});
-    }
-
     render() {
-        const {creatingStepCurrent} = this.state;
+        const {targetStepCurrent} = this.state;
         const {collect} = this.props;
         return (
-            <ExperimentSteps current={creatingStepCurrent} onChange={this.changeCreatingStepCurrentValue.bind(this)}
-                             name={"POD-CPU"}
-                             steps={[
+            <ExperimentSteps dimension={targetStepCurrent}
+                             machineStep={
                                  <div>
                                      {collect ? EnableCollectAlert : DisableCollectAlert}
                                      {this.machinesRender()}
-                                 </div>,
-                                 this.scenariosRender()
-                             ]}
+                                 </div>
+                             }
             />
         );
     }
@@ -325,8 +278,17 @@ class KubernetesExperiment extends React.Component {
 
 const mapStateToProps = state => {
     const experiment = state.experimentCreating.toJS();
+    const {pods, nodes} = experiment;
     return {
-        categories: experiment.categories,
+        podPage: pods.page,
+        podPageSize: pods.pageSize,
+        podTotal: pods.total,
+        pods: pods.machines,
+        containers: pods.containers,
+        nodePage: nodes.page,
+        nodePageSize: nodes.pageSize,
+        nodeTotal: nodes.total,
+        nodes: nodes.machines,
         collect: experiment.collect,
     }
 }
@@ -337,13 +299,7 @@ const mapDispatchToProps = dispatch => {
         getKubernetesNamespaces: () => dispatch(Actions.getKubernetesNamespaces()),
         getPodsPageable: query => dispatch(Actions.getMachinesForPodPageable(query)),
         getNodesPageable: query => dispatch(Actions.getMachinesForNodePageable(query)),
-
         queryCollectStatus: () => dispatch(Actions.queryCollectStatus()),
-        // scenarioCategory
-        getScenarioCategories: (query) => dispatch(Actions.getScenarioCategories(query)),
-        // scenario: kubernetes container|pod|node /
-        getScenariosPageable: query => dispatch(Actions.getScenariosPageable(query)),
-
     }
 }
 

@@ -26,14 +26,14 @@ export const INITIAL_STATE = Map({
         finished: 0,
         success: 0,
         failed: 0,
+        prepares: 0,
     },
     loading: false,
     refreshing: false,
-    page: 1, // 当前页码
+    page: 1,
     pageSize: 10,
-    pages: 1, // 总页码数
-    total: 0, // 总记录数
-    experiments: [], // 机器列表
+    total: 0,
+    experiments: [],
 
 });
 

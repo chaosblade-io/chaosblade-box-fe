@@ -126,7 +126,6 @@ class MonitorStep extends React.Component {
             }).catch(error => {
                 const {errors} = error.errorFields[0];
                 const message = errors?errors[0]:Errors.PARAMETER_ERROR.message;
-                console.log("error: ", error);
                 handleError(Errors.PARAMETER_ERROR.code, message);
             })
         } else {

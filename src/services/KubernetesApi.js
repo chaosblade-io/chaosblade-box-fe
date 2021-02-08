@@ -21,7 +21,7 @@ const api = createApi();
 const getK8sResourceStatistics = () => api.get('GetK8sResourceStatistics')
 const getMachinesForPodPageable = query => api.post('GetMachinesForPodPageable', query);
 const getMachinesForNodePageable = query => api.post('GetMachinesForNodePageable', query);
-const queryCollectStatus = () => api.get('QueryCollectStatus');
+const queryCollectStatus = () => api.post('QueryCollectStatus');
 
 export default {
     queryCollectStatus,

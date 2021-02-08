@@ -70,6 +70,11 @@ class ExperimentSteps extends React.Component {
         this.setState({current});
     }
 
+    componentWillUnmount() {
+        const {clearResult} = this.props;
+        clearResult();
+    }
+
     onCreatingNext = () => {
         const current = this.state.current + 1;
         switch (current) {
@@ -103,24 +108,15 @@ class ExperimentSteps extends React.Component {
     }
 
     createExperiment = () => {
-        console.log("props: ", this.props);
         const {
             scenarioSelected,
             metricSelected,
             experimentName,
             dimension,
             createExperiment,
-            k8sCollect,
+            collect,
             scenarioCategoryIdSelected
         } = this.props;
-
-        console.log("create: ", scenarioSelected,
-            metricSelected,
-            experimentName,
-            dimension,
-            k8sCollect,
-            scenarioCategoryIdSelected);
-
         createExperiment({
             categoryId: scenarioCategoryIdSelected,
             scenarioId: scenarioSelected.scenarioId,
@@ -129,7 +125,7 @@ class ExperimentSteps extends React.Component {
             experimentName,
             machines: this.getMachines(),
             dimension,
-            collect: k8sCollect,
+            collect,
         })
     }
 
@@ -141,17 +137,9 @@ class ExperimentSteps extends React.Component {
             experimentName,
             dimension,
             updateExperiment,
-            k8sCollect,
+            collect,
             scenarioCategoryIdSelected
         } = this.props;
-
-        console.log("update: ", scenarioSelected,
-            metricSelected,
-            experimentName,
-            dimension,
-            k8sCollect,
-            scenarioCategoryIdSelected);
-
         updateExperiment({
             experimentId: ExperimentCreating.getExperimentId(),
             categoryId: scenarioCategoryIdSelected,
@@ -161,7 +149,7 @@ class ExperimentSteps extends React.Component {
             experimentName,
             machines: this.getMachines(),
             dimension,
-            collect: k8sCollect,
+            collect,
         })
     }
 
@@ -172,7 +160,7 @@ class ExperimentSteps extends React.Component {
         return (
             <div>
                 <Steps direction="horizontal" size="default" current={current}
-                       onChange={this.onCreatingTabChange}>
+                >
                     {
                         StepsConfig.map(s => {
                             return <Step title={s.title} description={s.description}/>;
@@ -245,6 +233,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
         createExperiment: experiment => dispatch(Actions.createExperiment(experiment)),
         updateExperiment: experiment => dispatch(Actions.updateExperiment(experiment)),
         onMachinesChanged: machines => dispatch(Actions.onMachinesChanged(machines))

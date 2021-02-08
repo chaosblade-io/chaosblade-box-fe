@@ -51,7 +51,7 @@ const Actions = {
     getHostTotalStatistics: () => ({type: Types.GET_HOST_TOTAL_STATISTICS}),
     getHostTotalStatisticsResult: statistics => ({type: Types.GET_HOST_TOTAL_STATISTICS_RESULT, statistics}),
     queryCollectStatus: () => ({type: Types.QUERY_COLLECT_STATUS}),
-    queryCollectStatusResult: () => ({type: Types.QUERY_COLLECT_STATUS_RESULT}),
+    queryCollectStatusResult: data => ({type: Types.QUERY_COLLECT_STATUS_RESULT, data}),
 
 
     // Scenario

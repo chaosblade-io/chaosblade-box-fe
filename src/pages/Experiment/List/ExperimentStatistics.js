@@ -19,6 +19,7 @@ import Actions from "../../../actions/Actions";
 import {Card, Col, Row, Statistic} from "antd";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+import styles from './List.module.scss';
 
 class ExperimentStatistics extends React.Component {
 
@@ -33,7 +34,7 @@ class ExperimentStatistics extends React.Component {
 
     render() {
         const {statistics} = this.props;
-        const {totals, finished, failure, running, exception} = statistics;
+        const {totals, finished, failed, running, success, prepares} = statistics;
         return (
             <div>
                 <Row gutter={[8, 8]}>
@@ -64,8 +65,16 @@ class ExperimentStatistics extends React.Component {
                     <Col flex={1}>
                         <Card>
                             <Statistic
+                                title="未执行"
+                                value={prepares}
+                            />
+                        </Card>
+                    </Col>
+                    <Col flex={1}>
+                        <Card>
+                            <Statistic
                                 title="成功"
-                                value={exception}
+                                value={success}
                             />
                         </Card>
                     </Col>
@@ -73,7 +82,7 @@ class ExperimentStatistics extends React.Component {
                         <Card>
                             <Statistic
                                 title="失败"
-                                value={failure}
+                                value={failed}
                             />
                         </Card>
                     </Col>
@@ -81,8 +90,8 @@ class ExperimentStatistics extends React.Component {
                         <Link to={{
                             pathname: '/experiment/creating',
                         }}>
-                            <Card style={{backgroundColor: "#28A47B", color: "white"}}>
-                                <Statistic style={{textAlign: "center", color: "white"}}
+                            <Card className={styles.createOperation}>
+                                <Statistic style={{textAlign: "center"}}
                                            title={<span>操作</span>}
                                            value={'创建实验'}
                                 />
