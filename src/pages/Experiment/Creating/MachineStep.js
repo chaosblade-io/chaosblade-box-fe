@@ -65,11 +65,10 @@ class MachineStep extends React.Component {
                         targetKeys={machinesSelected}
                         onChange={this.transferChange}
                         filterOption={this.transferFilter}
-                        render={item => item.ip}
-                        pagination={pagination}
-                        oneWay
-                        listStyle={{width: 510}}
+                        render={item => item.title}
+                        listStyle={{width: 510, height: 400}}
                         titles={titles}
+                        pagination
                     />
                 </Spin>
             </div>

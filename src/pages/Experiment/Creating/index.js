@@ -24,6 +24,8 @@ import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
 import queryString from "query-string";
 import linuxLogo from '../../../assets/images/experiment/linux.svg'
+import kubernetesLogo from '../../../assets/images/experiment/kubernetes.svg'
+import applicationLogo from '../../../assets/images/experiment/application.svg'
 import styles from './index.module.scss';
 
 const {TabPane} = Tabs
@@ -36,20 +38,21 @@ const ExperimentDimensions = [
         imgSrc: linuxLogo,
         content: <HostExperiment/>,
     },
-    // {
-    //     title: "page.experiment.creating.kubernetes.dimension.name",
-    //     key: "kubernetes",
-    //     imgAlt: "kubernetes",
-    //     imgSrc: kubernetesLogo,
-    //     content: <KubernetesExperiment/>,
-    // },
-    // {
-    //     title: "page.experiment.creating.application.dimension.name",
-    //     key: "application",
-    //     imgAlt: "application",
-    //     imgSrc: applicationLogo,
-    //     content: <ApplicationExperiment/>,
-    // },
+    {
+        title: "page.experiment.creating.kubernetes.dimension.name",
+        key: "kubernetes",
+        imgAlt: "kubernetes",
+        imgSrc: kubernetesLogo,
+        // content: <KubernetesExperiment/>,
+        content: <h1>敬请期待...</h1>,
+    },
+    {
+        title: "page.experiment.creating.application.dimension.name",
+        key: "application",
+        imgAlt: "application",
+        imgSrc: applicationLogo,
+        content: <h1>敬请期待...</h1>,
+    },
 ]
 
 
@@ -76,7 +79,7 @@ class ExperimentCreating extends React.Component {
     onTabChange(key) {
         const {dimension, clearResult, onDimensionChanged} = this.props;
         if (key !== dimension) {
-            clearResult();
+            // clearResult();
             onDimensionChanged(key);
         }
     }

@@ -56,10 +56,9 @@ class ApplicationForm extends React.Component {
                 this.setState({groupName: ""})
             })
             .catch(info => {
-                console.log("validate field: ", info);
+                return {};
             });
     }
-
 
     render() {
         const {appName, groupName} = this.state;

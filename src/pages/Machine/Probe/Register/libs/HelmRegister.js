@@ -20,7 +20,7 @@ class HelmRegister extends React.Component {
 
     render() {
         return (
-            <div> HELM REGISTER</div>
+            <div><h1>敬请期待...</h1></div>
         );
     }
 }

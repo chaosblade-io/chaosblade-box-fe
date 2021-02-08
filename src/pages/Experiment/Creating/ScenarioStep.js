@@ -23,11 +23,11 @@ import Actions from "../../../actions/Actions";
 import {connect} from "react-redux";
 import ExperimentCreating from "./index";
 import {Errors} from "../../../constants/Errors";
+import {GenPagination} from "../../../libs/Pagination";
 
 const {TreeNode} = Tree;
 const {Sider, Content, Footer} = Layout;
 
-const pageSize = 16;
 const FormLayout = {
     labelCol: {span: 8},
     wrapperCol: {span: 12},
@@ -91,7 +91,9 @@ class ScenarioStep extends React.Component {
             dimension,
             onScenarioCategoryChanged,
             scenarioCategoryIdSelected,
-            onScenarioChanged
+            onScenarioChanged,
+            page,
+            pageSize
         } = this.props;
         const categoryId = selectedKeys[0];
         onScenarioChanged(null);
@@ -101,6 +103,7 @@ class ScenarioStep extends React.Component {
                 categoryId: categoryId,
                 scopeType: dimension,
                 status: ScenarioConstants.STATUS_PUBLISH.code,
+                page,
                 pageSize,
             })
         }
@@ -135,7 +138,7 @@ class ScenarioStep extends React.Component {
     }
 
     getScenarioCategorySelectedKey = () => {
-        const {scenarioCategoryIdSelected, getScenariosPageable, dimension} = this.props;
+        const {scenarioCategoryIdSelected, getScenariosPageable, dimension, page, pageSize} = this.props;
         const {initialized} = this.state;
         const editing = this.isCreatingFromSelected();
         if (editing && !initialized && !_.isEmpty(scenarioCategoryIdSelected)) {
@@ -143,6 +146,7 @@ class ScenarioStep extends React.Component {
                 categoryId: scenarioCategoryIdSelected,
                 scopeType: dimension,
                 status: ScenarioConstants.STATUS_PUBLISH.code,
+                page,
                 pageSize,
             });
             this.setState({initialized: true});
@@ -159,7 +163,6 @@ class ScenarioStep extends React.Component {
             }).catch(error => {
                 const {errors} = error.errorFields[0];
                 const message = errors ? errors[0] : Errors.PARAMETER_ERROR.message;
-                console.log("error: ", error);
                 handleError(Errors.PARAMETER_ERROR.code, message);
             })
         } else {
@@ -200,7 +203,18 @@ class ScenarioStep extends React.Component {
     }
 
     render() {
-        const {categories, scenarios, loading, scenarioSelected} = this.props;
+        const {
+            categories,
+            scenarios,
+            loading,
+            scenarioSelected,
+            getScenariosPageable,
+            page,
+            pageSize,
+            dimension,
+            total,
+            scenarioCategoryIdSelected
+        } = this.props;
         const finished = this.initSelectedFinished();
         return (
             <Layout>
@@ -224,6 +238,15 @@ class ScenarioStep extends React.Component {
                                     <List
                                         grid={{gutter: 8, column: 4}}
                                         dataSource={scenarios}
+                                        pagination={GenPagination(page, pageSize, total, () => {
+                                            getScenariosPageable({
+                                                categoryId: scenarioCategoryIdSelected,
+                                                scopeType: dimension,
+                                                status: ScenarioConstants.STATUS_PUBLISH.code,
+                                                page,
+                                                pageSize,
+                                            })
+                                        })}
                                         renderItem={item => (
                                             <List.Item>
                                                 <Card
@@ -233,7 +256,8 @@ class ScenarioStep extends React.Component {
                                                         styles.stepCardNoSelected}
                                                     hoverable
                                                     onClick={this.onScenarioSelect.bind(this, item)}
-                                                    style={{textAlign: 'center', height: 64}}
+                                                    style={{textAlign: 'center', height: 72}}
+                                                    title={null}
                                                 >
                                                     {item.name}
                                                 </Card>
@@ -279,6 +303,9 @@ const mapStateToProps = state => {
         scenarioSelected: experiment.scenarioSelected,
         dimension: experiment.dimension,
         scenarioCategoryIdSelected: experiment.scenarioCategoryIdSelected,
+        page: experiment.scenarios.page,
+        pageSize: experiment.scenarios.pageSize,
+        total: experiment.scenarios.total,
     }
 }
 

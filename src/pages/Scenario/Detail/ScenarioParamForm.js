@@ -46,7 +46,7 @@ class ScenarioParamForm extends React.Component {
                 this.setState({groupName: ""})
             })
             .catch(info => {
-                console.log("validate field: ", info);
+                return {};
             });
     }
 

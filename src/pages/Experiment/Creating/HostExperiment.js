@@ -29,14 +29,13 @@ class HostExperiment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            targetKeys: [],
             dimension: "host",
         }
     }
 
     componentDidMount() {
-        const {query, page, getMachinesForHostPageable, probeId} = this.props
-        getMachinesForHostPageable({...query, page: page, pageSize, probeId: probeId})
+        const { page, getMachinesForHostPageable} = this.props
+        getMachinesForHostPageable({page, pageSize});
     }
 
     render() {
@@ -53,10 +52,11 @@ class HostExperiment extends React.Component {
                             machines={machines}
                             pagination={GenPagination(page, pageSize, total,
                                 (page, pageSize) => getMachinesForHostPageable({page, pageSize}))}
-                            titles={
-                                [<a onClick={() => {
-                                    console.log("遇到问题点我查看？")
-                                }}>切换成主机名称</a>]}/>
+                            // titles={
+                            //     [<a onClick={() => {
+                            //         console.log("遇到问题点我查看？")
+                            //     }}>切换成主机名称</a>]}
+                        />
                     </div>
                 }
             />

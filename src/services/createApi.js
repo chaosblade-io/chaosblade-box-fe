@@ -33,7 +33,6 @@ const createApi = (key = 'default', config = {}) => {
     });
 
     api.addRequestTransform(request => {
-        console.log("request: ", request);
         const parsedSearchParams = queryString.parse(window.location.search, {parseNumbers: true});
         let params = request.params;
 
@@ -61,7 +60,6 @@ const createApi = (key = 'default', config = {}) => {
         }
     });
 
-    console.log(process.env.NODE_ENV)
     if (process.env.NODE_ENV === 'development__') {
         const {mock} = queryString.parse(window.location.search);
         // if (mock) {

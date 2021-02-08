@@ -18,6 +18,7 @@ import {FormattedMessage} from "react-intl";
 
 export const GenPagination = (page, pageSize, total, onChange) => {
     let paginationProps = {
+        page: page,
         pageSize: pageSize,
         showTotal: (total, range) => <FormattedMessage id={'page.pagination.total'} values={{total: `${total}`}}/>,
         current: page,

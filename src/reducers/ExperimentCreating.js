@@ -20,16 +20,31 @@ import createReducer from "./createReducer";
 import _ from "lodash";
 import MachineConstants from "../constants/MachineConstants";
 
+const MAX_PAGE_SIZE = 5000;
+
 export const INITIAL_STATE = Map({
     loading: false,
     experimentName: "",
     collect: false,
     hosts: {
         page: 1, // 当前页码
-        pageSize: 10,
+        pageSize: MAX_PAGE_SIZE,
         pages: 1, // 总页码数
         total: 0, // 总记录数
         machines: [], // 机器列表
+    },
+    pods: {
+        page: 1,
+        pageSize: MAX_PAGE_SIZE,
+        total: 0,
+        machines: [],
+        containers: [],
+    },
+    nodes: {
+        page: 1,
+        pageSize: MAX_PAGE_SIZE,
+        total: 0,
+        machines: [],
     },
     categories: [],
     experimentId: "",
@@ -37,7 +52,7 @@ export const INITIAL_STATE = Map({
     scenarios: {
         loading: false,
         page: 1,
-        pageSize: 20,
+        pageSize: 10,
         total: 0,
         scenarios: [],
     },
@@ -57,7 +72,7 @@ const handleMachinesFetchingResult = (state, action) => {
     if (_.isEmpty(action.pageableData)) {
         return state.merge({loading: false});
     }
-    const {machines, pageSize, page, pages, total} = action.pageableData;
+    const {machines, pageSize, page, total} = action.pageableData;
     let items = [];
     if (!_.isEmpty(machines)) {
         let _machines = _.orderBy(machines, ['status'], ['desc'])
@@ -72,7 +87,58 @@ const handleMachinesFetchingResult = (state, action) => {
             })
         })
     }
-    return state.merge({loading: false, hosts: {machines: items, pageSize, page, pages, total, refresh: false}})
+    return state.merge({loading: false, hosts: {machines: items, pageSize, page, total}})
+}
+
+const handlePodsFetchingResult = (state, action) => {
+    if (_.isEmpty(action.pageableData)) {
+        return state.merge({loading: false});
+    }
+    const {machines, pageSize, page, pages, total} = action.pageableData;
+    let items = [];
+    let containers = [];
+    if (!_.isEmpty(machines)) {
+        let _machines = _.orderBy(machines, ['status'], ['desc'])
+        _machines.map(machine => {
+            items.push({
+                key: machine.machineId + "-" + machine.podName,
+                title: machine.podName,
+                podName: machine.podName,
+                description: machine.podName,
+                disabled: machine.status !== MachineConstants.MACHINE_STATUS_ONLINE.code,
+            })
+            machine.containers.map(container => {
+                containers.push({
+                    key: machine.machineId + "-" + container.containerName,
+                    title: container.containerName + "[" + machine.podName + "]",
+                    description: machine.podName + "-" + container.containerName,
+                    disabled: machine.status !== MachineConstants.MACHINE_STATUS_ONLINE.code,
+                })
+            })
+        })
+    }
+    return state.merge({loading: false, pods: {machines: items, containers, pageSize, page, total}});
+}
+
+const handleNodesFetchingResult = (state, action) => {
+    if (_.isEmpty(action.pageableData)) {
+        return state.merge({loading: false});
+    }
+    const {machines, pageSize, page, total} = action.pageableData;
+    let items = [];
+    if (!_.isEmpty(machines)) {
+        let _machines = _.orderBy(machines, ['status'], ['desc'])
+        _machines.map(machine => {
+            items.push({
+                key: machine.machineId + "-" + machine.nodeName,
+                title: machine.nodeName,
+                nodeName: machine.nodeName,
+                description: machine.nodeName,
+                disabled: machine.status !== MachineConstants.MACHINE_STATUS_ONLINE.code,
+            })
+        })
+    }
+    return state.merge({loading: false, nodes: {machines: items, pageSize, page, total}})
 }
 
 const getScenarioCategories = (state, action) => {
@@ -148,7 +214,6 @@ const clearExperimentCreatingResult = (state, action) => {
         metricSelected: null,
         finished: false,
         scenarioCategoryIdSelected: '',
-        k8sCollect: false,
     })
 }
 
@@ -161,7 +226,6 @@ const getExperimentById = (state, action) => {
         scenarioSelected = scenario;
         if (!_.isEmpty(scenario.categories)) {
             categoryId = scenario.categories[0].categoryId;
-
             scenarioSelected = {...scenarioSelected, categoryId}
         }
     }
@@ -216,7 +280,6 @@ const onScenarioCategoryChanged = (state, action) => {
 }
 
 const onScenarioChanged = (state, action) => {
-    console.log("sc: ", action.data);
     if (_.isEmpty(action.data)) {
         return state.merge({scenarioSelected: null});
     }
@@ -235,7 +298,6 @@ const onMetricChanged = (state, action) => {
 }
 
 const onMachinesChanged = (state, action) => {
-    console.log("c: ", action.data);
     const {machines} = action.data;
     return state.merge({machinesSelected: machines});
 }
@@ -264,6 +326,8 @@ const ACTION_HANDLERS = {
     [Types.ON_METRIC_CHANGED]: onMetricChanged,
     [Types.ON_MACHINES_CHANGED]: onMachinesChanged,
     [Types.ON_DIMENSION_CHANGED]: onDimensionChanged,
+    [Types.GET_MACHINES_FOR_POD_PAGEABLE_RESULT]: handlePodsFetchingResult,
+    [Types.GET_MACHINES_FOR_NODE_PAGEABLE_RESULT]: handleNodesFetchingResult,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);

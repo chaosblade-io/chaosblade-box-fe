@@ -25,11 +25,13 @@ export const INITIAL_STATE = Map({
     criticalError: null
 });
 
-const handleError = (state, action) => state.merge({
-    requestId: action.requestId,
-    code: action.code,
-    message: action.message
-});
+const handleError = (state, action) => {
+    return state.merge({
+        requestId: action.requestId,
+        code: action.code,
+        message: action.message
+    });
+};
 
 const handlerCriticalError = (state, action) => state.merge({criticalError: action.error});
 

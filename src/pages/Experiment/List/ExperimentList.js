@@ -85,7 +85,8 @@ class ExperimentList extends React.Component {
             render: (text, record) => {
                 const status = Task.getTaskStatus(record.lastTaskStatus, record.lastTaskResult);
                 return <Space size="middle">
-                    <a href={`/experiment/task/?${request.generateUrlSearch({id: record.lastTaskId})}`}>{status.desc}</a>
+                    {status === ExperimentConstants.TASK_WAIT?<span>{status.desc}</span>
+                        :<a href={`/experiment/task/?${request.generateUrlSearch({id: record.lastTaskId})}`}>{status.desc}</a>}
                 </Space>
             }
         },
@@ -99,8 +100,7 @@ class ExperimentList extends React.Component {
                     text.map(scenario => {
                         rows.push(
                             <Row>
-                                <Col><a onClick={() => {
-                                }}>{scenario.name}</a></Col>
+                                <Col><a href={`/scenario/detail/?${request.generateUrlSearch({id: scenario.scenarioId})}`}>{scenario.name}</a></Col>
                             </Row>
                         )
                     })

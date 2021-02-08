@@ -65,7 +65,7 @@ class ParameterList extends React.Component {
             dataIndex: 'component',
             key: 'component',
             render: (text, record) => {
-
+                return (<span>暂未开放</span>);
             }
         },
         {
@@ -75,7 +75,7 @@ class ParameterList extends React.Component {
             render: (text, record) => {
                 return (
                     <Space>
-                        <a onClick={this.edit.bind(this, record)}>编辑</a>
+                        暂未开放
                     </Space>
                 );
             }

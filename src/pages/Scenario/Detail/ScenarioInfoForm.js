@@ -56,7 +56,7 @@ class ScenarioInfoForm extends React.Component {
                 this.formRef.current.resetFields();
             })
             .catch(info => {
-                console.log("validate field: ", info);
+                return {};
             });
     }
 
@@ -80,7 +80,7 @@ class ScenarioInfoForm extends React.Component {
             categoryIds.map(category => categoryKeys.push(category.categoryId));
         }
         const FormLayout = {
-            labelCol: {span: 4},
+            labelCol: {span: 8},
             wrapperCol: {span: 12},
         };
 
@@ -120,7 +120,7 @@ class ScenarioInfoForm extends React.Component {
                         </Select>
                     </Form.Item>
                     <Form.Item label="选择场景目录" name="categoryIds"
-                               rules={[{required: false, message: '请选择场景目录'}]}>
+                               rules={[{required: true, message: '请选择场景目录'}]}>
                         <TreeSelect
                             treeCheckable
                             treeDefaultExpandAll

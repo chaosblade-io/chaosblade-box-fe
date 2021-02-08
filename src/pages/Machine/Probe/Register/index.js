@@ -87,7 +87,9 @@ class Register extends React.Component {
                     </TabPane>
                     <TabPane
                         key="application"
-                        tab={<span><FormattedMessage id={"page.machine.register.tab.application"}/></span>}>
+                        tab={<span><FormattedMessage id={"page.machine.register.tab.application"}/>
+                        </span>}>
+                        <h1>敬请期待...</h1>
                     </TabPane>
                 </Tabs>
             </div>
