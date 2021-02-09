@@ -34,7 +34,6 @@ const getProbePageableFetching = (state, action) => {
 const getProbePageableFetchingResult = (state, action) => {
     if (_.isEmpty(action.pageableData)) {
         return state.merge({loading: false});
-        ;
     }
     const {probes, pageSize, page, pages, total, original} = action.pageableData;
     if (!_.isEmpty(probes)) {
@@ -47,7 +46,6 @@ const getProbePageableFetchingResult = (state, action) => {
 const updateProbe = (state, action) => {
     if (_.isEmpty(action.data)) {
         return state.merge({loading: false});
-        ;
     }
     const {probeId} = action.data;
     let current = state.toJS();
