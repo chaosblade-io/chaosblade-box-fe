@@ -81,7 +81,7 @@ const queryTaskMonitorResult = (state, action) => {
                 data.metrics.map(metric => {
                     metrics.push({
                         ip: data.ip,
-                        value: Number(metric.value).toFixed(4),
+                        value: Number(Number(metric.value).toFixed(2)),
                         date: metric.date,
                     })
                 });

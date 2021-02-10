@@ -21,11 +21,11 @@ export const handleMachinesFetchingResult = (state, action) => {
         return state.merge({loading: false});
     }
     const {machines, pageSize, page, pages, total, original} = action.pageableData;
-    if (_.isEmpty(machines)) {
-        return state.merge({loading: false});
+    let s = []
+    if (!_.isEmpty(machines)) {
+        let _machines = _.orderBy(machines, ['status', 'modifyTime'], ['asc', 'desc'])
+        s = {machines: _machines, pageSize, page, total}
     }
-    let _machines = _.orderBy(machines, ['modifyTime'], ['desc'])
-    let s = {machines: _machines, pageSize, page, total}
     switch (original) {
         case "host":
             return state.merge({loading: false, hosts: s})

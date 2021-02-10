@@ -33,7 +33,7 @@ class ScenarioInfo extends React.Component {
 
     componentDidMount() {
         const {getScenarioCategories} = this.props;
-        getScenarioCategories();
+        getScenarioCategories({});
     }
 
 

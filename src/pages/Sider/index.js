@@ -44,7 +44,7 @@ class ConsoleSider extends React.Component {
         return (
             <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
                 <div className={styles.changeLocale}>
-                    <Radio.Group onChange={changeLocale} defaultValue={locale}>
+                    <Radio.Group onChange={changeLocale} defaultValue={locale} size={collapsed ? 'small' : 'normal'}>
                         <Radio.Button key="en" value={"en"}>
                             English
                         </Radio.Button>
@@ -54,6 +54,7 @@ class ConsoleSider extends React.Component {
                     </Radio.Group>
                 </div>
                 <h1 className={styles.logo}>{collapsed ? 'CHAOS' : 'CHAOS-PLATFORM'}</h1>
+                <h4 className={styles.logo}>{collapsed ? 'v0.0.1' : 'v0.0.1'}</h4>
                 <Menu theme="dark"
                       defaultSelectedKeys={['/machine']}
                       selectedKeys={[location.pathname]}

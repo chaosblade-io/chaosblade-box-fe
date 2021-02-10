@@ -70,7 +70,7 @@ const Actions = {
     unbanScenario: scenarioId => ({type: Types.UNBAN_SCENARIO, scenarioId}),
     unbanScenarioResult: data => ({type: Types.UNBAN_SCENARIO_RESULT, data}),
     importScenarios: (scenarios, file) => ({type: Types.IMPORT_SCENARIOS, scenarios, file}),
-    importScenariosResult: scenarios => ({type: Types.IMPORT_SCENARIOS_RESULT, scenarios}),
+    importScenariosResult: data => ({type: Types.IMPORT_SCENARIOS_RESULT, data}),
     getScenarioCategories: query => ({type: Types.GET_SCENARIO_CATEGORIES, query}),
     getScenarioCategoriesResult: data => ({type: Types.GET_SCENARIO_CATEGORIES_RESULT, data}),
 

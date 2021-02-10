@@ -21,7 +21,6 @@ import {Card, Divider, Form, Input, Layout, List, Spin, Tree} from "antd";
 import styles from "./index.module.scss";
 import Actions from "../../../actions/Actions";
 import {connect} from "react-redux";
-import ExperimentCreating from "./index";
 import {Errors} from "../../../constants/Errors";
 import {GenPagination} from "../../../libs/Pagination";
 
@@ -38,51 +37,15 @@ class ScenarioStep extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            initialized: false
-        };
     }
 
     componentDidMount() {
-        const {getScenarioCategories, event} = this.props;
-        getScenarioCategories();
-        this.creatingFromScenario();
+        const {getScenarioCategories, event, dimension, scenarioSelected, scenarioCategoryIdSelected} = this.props;
         event(this);
-    }
-
-    creatingFromScenario() {
-        if (_.isEmpty(this.props.location)) {
-            return false;
+        getScenarioCategories({dimension, scenarioCategoryIdSelected});
+        if (scenarioSelected !== null) {
+            this.onScenarioSelect(scenarioSelected.scenarioId);
         }
-        const {dimension, categoryId, scenarioId} = this.props.location;
-        const {creatingFromScenario, clearResult} = this.props;
-        if (dimension && categoryId && scenarioId) {
-            clearResult();
-            creatingFromScenario({dimension, categoryId, scenarioId});
-            return true;
-        }
-        return false;
-    }
-
-    isCreatingFromSelected() {
-        const experimentId = ExperimentCreating.getExperimentId();
-        if (!_.isEmpty(experimentId)) {
-            return true;
-        }
-        if (_.isEmpty(this.props.location)) {
-            return false;
-        }
-        const {categoryId, scenarioId} = this.props.location;
-        return !_.isEmpty(categoryId) && !_.isEmpty(scenarioId);
-    }
-
-    initSelectedFinished() {
-        if (!this.isCreatingFromSelected()) {
-            return true;
-        }
-        const {scenarioSelected} = this.props;
-        const {initialized} = this.state;
-        return initialized || scenarioSelected !== null;
     }
 
     onCategorySelect = (selectedKeys) => {
@@ -109,18 +72,9 @@ class ScenarioStep extends React.Component {
         }
     }
 
-    onScenarioSelect = (scenario) => {
-        const {scenarioSelected, onScenarioChanged} = this.props;
-        if (scenarioSelected !== null && scenario.scenarioId === scenarioSelected.scenarioId) {
-            scenario.parameters.map(scenarioParam => {
-                scenarioSelected.parameters.map(selectedParam => {
-                    if (scenarioParam.name === selectedParam.name) {
-                        scenarioParam.value = selectedParam.value;
-                    }
-                });
-            })
-        }
-        onScenarioChanged({scenario});
+    onScenarioSelect = (scenarioId) => {
+        const {getScenarioById, machinesSelected, dimension} = this.props;
+        getScenarioById({scenarioId, dimension, machines: machinesSelected})
     }
 
     scenarioCategoryTreeRender(data) {
@@ -135,23 +89,6 @@ class ScenarioStep extends React.Component {
             }
             return <TreeNode title={item.name} key={item.categoryId} dataRef={item}/>
         });
-    }
-
-    getScenarioCategorySelectedKey = () => {
-        const {scenarioCategoryIdSelected, getScenariosPageable, dimension, page, pageSize} = this.props;
-        const {initialized} = this.state;
-        const editing = this.isCreatingFromSelected();
-        if (editing && !initialized && !_.isEmpty(scenarioCategoryIdSelected)) {
-            getScenariosPageable({
-                categoryId: scenarioCategoryIdSelected,
-                scopeType: dimension,
-                status: ScenarioConstants.STATUS_PUBLISH.code,
-                page,
-                pageSize,
-            });
-            this.setState({initialized: true});
-        }
-        return scenarioCategoryIdSelected;
     }
 
     onFinish(finishFunc) {
@@ -202,6 +139,40 @@ class ScenarioStep extends React.Component {
         return params;
     }
 
+    getScenariosList() {
+        const {
+            scenarioSelected,
+            categories,
+            dimension,
+            page,
+            pageSize,
+            getScenariosPageable,
+            scenarioCategoryIdSelected
+        } = this.props;
+        if (scenarioCategoryIdSelected !== '' || categories.length === 0) {
+            return;
+        }
+        let firstCategoryId = '';
+        if (scenarioSelected === null) {
+            firstCategoryId = categories[0].categoryId;
+            for (let i = 0; i < categories.length; i++) {
+                if (categories[i].parentId !== '') {
+                    firstCategoryId = categories[i].categoryId;
+                    break;
+                }
+            }
+        } else {
+            firstCategoryId = scenarioSelected.categoryId;
+        }
+        getScenariosPageable({
+            categoryId: firstCategoryId,
+            scopeType: dimension,
+            status: ScenarioConstants.STATUS_PUBLISH.code,
+            page,
+            pageSize,
+        })
+    }
+
     render() {
         const {
             categories,
@@ -215,18 +186,16 @@ class ScenarioStep extends React.Component {
             total,
             scenarioCategoryIdSelected
         } = this.props;
-        const finished = this.initSelectedFinished();
         return (
             <Layout>
                 {
-                    finished &&
-                    <Spin spinning={loading || !finished}>
+                    <Spin spinning={loading}>
                         <Layout className={styles.stepLayout}>
                             <Sider>
                                 {
                                     categories.length > 0 && <Tree
                                         defaultExpandAll={true}
-                                        defaultSelectedKeys={[this.getScenarioCategorySelectedKey()]}
+                                        defaultSelectedKeys={[scenarioCategoryIdSelected]}
                                         onSelect={this.onCategorySelect.bind(this)}
                                     >
                                         {this.scenarioCategoryTreeRender(categories)}
@@ -255,7 +224,7 @@ class ScenarioStep extends React.Component {
                                                         :
                                                         styles.stepCardNoSelected}
                                                     hoverable
-                                                    onClick={this.onScenarioSelect.bind(this, item)}
+                                                    onClick={this.onScenarioSelect.bind(this, item.scenarioId)}
                                                     style={{textAlign: 'center', height: 72}}
                                                     title={null}
                                                 >
@@ -277,7 +246,8 @@ class ScenarioStep extends React.Component {
                                                             <Form.Item label={param.name} name={param.name}
                                                                        help={param.description}
                                                                        rules={[{required: param.required ? true : false}]}>
-                                                                <Input/>
+                                                                <Input disabled={param.component ?
+                                                                    param.component.editable ? false : true : false}/>
                                                             </Form.Item>
                                                         )}
                                                     </Form>
@@ -306,6 +276,7 @@ const mapStateToProps = state => {
         page: experiment.scenarios.page,
         pageSize: experiment.scenarios.pageSize,
         total: experiment.scenarios.total,
+        machinesSelected: experiment.machinesSelected
     }
 }
 
@@ -314,10 +285,10 @@ const mapDispatchToProps = dispatch => {
         clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
         getScenarioCategories: query => dispatch(Actions.getScenarioCategories(query)),
         getScenariosPageable: query => dispatch(Actions.getScenariosPageable(query)),
-        creatingFromScenario: scenario => dispatch(Actions.creatingFromScenario(scenario)),
         onScenarioCategoryChanged: categoryId => dispatch(Actions.onScenarioCategoryChanged(categoryId)),
         onScenarioChanged: scenario => dispatch(Actions.onScenarioChanged(scenario)),
         handleError: (code, message) => dispatch(Actions.handleError(code, message)),
+        getScenarioById: scenarioId => dispatch(Actions.getScenarioById(scenarioId)),
     }
 }
 

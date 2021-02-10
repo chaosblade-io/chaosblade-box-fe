@@ -42,7 +42,8 @@ class ChaostoolsMarket extends React.Component {
                 style={{paddingBottom: 16}}
                 title="混沌实验工具市场"
                 subTitle="选择有很多，将来会更多..."
-                tags={<IconText icon={GithubOutlined} text="Github" key="list-vertical-star-o"/>}>
+                // tags={<IconText icon={GithubOutlined} text="Github" key="list-vertical-star-o"/>}
+            >
                 <Content>
                     <Paragraph>
                         市场介绍

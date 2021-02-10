@@ -154,7 +154,7 @@ class Host extends React.Component {
                 return (
                     <Space size={"middle"}>
                         <a onClick={this.deploy.bind(this, record.machineId)}>部署</a>
-                        <a onClick={this.upgrade.bind(this, record.machineId)}>更新</a>
+                        {/*<a onClick={this.upgrade.bind(this, record.machineId)}>更新</a>*/}
                         <a onClick={this.undeploy.bind(this, record.machineId)}>卸载</a>
                     </Space>
                 );

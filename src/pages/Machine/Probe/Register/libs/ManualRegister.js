@@ -15,11 +15,21 @@
  */
 
 import React from "react";
+import {Typography} from "antd";
+
+const {Paragraph} = Typography
 
 class ManualRegister extends React.Component {
     render() {
         return (
-            <div>MANUAL REGISTER</div>
+            <div>
+                <h4>
+                    请复制并替换&nbsp;服务端地址、服务端口号，在目标实验目标服务上执行一下命令。
+                </h4>
+                <Paragraph copyable={{tooltips: false}}>
+                    wget https://chaosblade.oss-cn-hangzhou.aliyuncs.com/platform/chaosagentctl.sh -O chaosagentctl.sh  && chmod +x chaosagentctl.sh  && ./chaosagentctl.sh install -r https://chaosblade.oss-cn-hangzhou.aliyuncs.com/platform/chaosagent -t 服务端地址:服务端口号
+                </Paragraph>
+            </div>
         );
     }
 }

@@ -122,3 +122,13 @@ export const TASK_STATUS = {
     4: ExperimentConstants.TASK_END_SUCCESS,
     5: ExperimentConstants.TASK_END_FAILED
 }
+
+export const ExperimentCreatingTabKey = {
+    DEFAULT: 'host',
+    HOST: 'host',
+    KUBERNETES: 'kubernetes',
+    APPLICATION: 'application',
+    CONTAINER: 'container',
+    POD: 'pod',
+    NODE: 'node'
+}

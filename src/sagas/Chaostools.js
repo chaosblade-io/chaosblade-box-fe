@@ -182,7 +182,6 @@ export default () => {
                 error = getError(response);
             }
         }
-
         if (error) {
             yield all([
                 put(Actions.importScenariosResult()),

@@ -17,7 +17,6 @@
 
 import React from "react";
 import {Form, Input} from "antd";
-import ExperimentCreating from "./index";
 import Actions from "../../../actions/Actions";
 import {connect} from "react-redux";
 import _ from "lodash";
@@ -32,12 +31,6 @@ class NameStep extends React.Component {
 
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        const {getExperimentById} = this.props;
-        const id = ExperimentCreating.getExperimentId();
-        getExperimentById(id);
     }
 
     onExperimentNameFormChange = () => {
@@ -96,7 +89,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getExperimentById: experimentId => dispatch(Actions.getExperimentById(experimentId)),
         onExperimentNameChanged: name => dispatch(Actions.onExperimentNameChanged(name)),
     }
 }

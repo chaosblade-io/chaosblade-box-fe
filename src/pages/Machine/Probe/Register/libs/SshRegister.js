@@ -15,12 +15,15 @@
  */
 
 import React from "react";
+import {Typography} from "antd";
+
+const {Paragraph} = Typography
 
 class SshRegister extends React.Component {
     render() {
         return (
             <div>
-                复制一下命令，登录主机执行，需要root权限
+                <Paragraph copyable={{ tooltips: false }}>复制一下命令，登录主机执行，需要root权限</Paragraph>
             </div>
         );
     }

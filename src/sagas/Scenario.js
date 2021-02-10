@@ -21,12 +21,13 @@ import Actions from '../actions/Actions'
 import ScenarioApi from "../services/ScenarioApi";
 import {Errors} from "../constants/Errors";
 import {getError} from "./response";
+import {ScenarioConstants} from "../constants/ScenarioConstants";
 
 export default () => {
 
     function* watchGetScenarioById() {
         while (true) {
-            const scenarioId = yield take(Types.GET_SCENARIO_BY_ID);
+            const {scenarioId} = yield take(Types.GET_SCENARIO_BY_ID);
             yield fork(getScenarioById, scenarioId);
         }
     }
@@ -37,7 +38,7 @@ export default () => {
             timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
         });
 
-        let error ;
+        let error;
         if (timeout) {
             error = Errors.TIMEOUT_ERROR;
         } else {
@@ -142,14 +143,14 @@ export default () => {
 
     function* watchScenarioCategoriesFetching() {
         while (true) {
-            yield take(Types.GET_SCENARIO_CATEGORIES);
-            yield fork(getScenarioCategories)
+            const {query} = yield take(Types.GET_SCENARIO_CATEGORIES);
+            yield fork(getScenarioCategories, query)
         }
     }
 
-    function* getScenarioCategories() {
+    function* getScenarioCategories(query) {
         const {response, timeout} = yield race({
-            response: call(ScenarioApi.getScenarioCategories),
+            response: call(ScenarioApi.getScenarioCategories, query),
             timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
         });
         let error;
@@ -160,6 +161,32 @@ export default () => {
                 let data = response.data;
                 if (data.success) {
                     yield put(Actions.getScenarioCategoriesResult(data.data));
+                    if (query !== undefined) {
+                        const scenarioCategoryIdSelected = query.scenarioCategoryIdSelected;
+                        const dimension = query.dimension;
+                        if (scenarioCategoryIdSelected !== null || scenarioCategoryIdSelected !== undefined) {
+                            let categoryId = scenarioCategoryIdSelected;
+                            if (categoryId === '') {
+                                const categories = data.data;
+                                categoryId = categories[0].categoryId;
+                                for (let i = 0; i < categories.length; i++) {
+                                    if (categories[i].parentId !== '') {
+                                        categoryId = categories[i].categoryId;
+                                        break;
+                                    }
+                                }
+                            }
+                            yield put(Actions.getScenariosPageable(
+                                {
+                                    categoryId: categoryId,
+                                    scopeType: dimension,
+                                    status: ScenarioConstants.STATUS_PUBLISH.code,
+                                    page: 1,
+                                    pageSize: 10,
+                                }
+                            ))
+                        }
+                    }
                 } else {
                     error = getError(data);
                 }

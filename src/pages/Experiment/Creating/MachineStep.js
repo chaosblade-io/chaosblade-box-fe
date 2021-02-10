@@ -20,6 +20,7 @@ import {Spin, Transfer} from "antd";
 import _ from "lodash";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
+import {ExperimentCreatingTabKey} from "../../../constants/ExperimentConstants";
 
 class MachineStep extends React.Component {
 
@@ -49,20 +50,89 @@ class MachineStep extends React.Component {
         return option.description.indexOf(inputValue) > -1;
     };
 
+    getTargetKeys = () => {
+        const {machinesSelected, dimension} = this.props;
+        console.log(machinesSelected);
+        if (_.isEmpty(machinesSelected)) {
+            return [];
+        }
+        let keys = [];
+        switch (dimension) {
+            case ExperimentCreatingTabKey.HOST:
+                machinesSelected.map(machine => {
+                    keys.push(_.join([machine.machineId, machine.ip], '/'));
+                });
+                break;
+            case ExperimentCreatingTabKey.NODE:
+                machinesSelected.map(machine => {
+                    keys.push(machine);
+                });
+                break;
+            case ExperimentCreatingTabKey.POD:
+                machinesSelected.map(machine => {
+                    keys.push(_.join([machine.namespace, machine.podName], '/'));
+                });
+                break;
+            case ExperimentCreatingTabKey.CONTAINER:
+                machinesSelected.map(machine => {
+                    keys.push(_.join([machine.namespace, machine.podName, machine.containerName], '/'));
+                });
+                break;
+        }
+        return keys;
+    }
+
     transferChange = (targetKeys) => {
-        const {onMachinesChanged} = this.props;
-        onMachinesChanged({machines: targetKeys});
+        const {onMachinesChanged, dimension} = this.props;
+        let machines = [];
+        console.log(targetKeys);
+        switch (dimension) {
+            case ExperimentCreatingTabKey.HOST:
+                targetKeys.map(key => {
+                    let resources = _.split(key, '/');
+                    console.log(resources);
+                    if (_.isEmpty(resources[0]) || _.isEmpty(resources[1])) {
+                        return;
+                    }
+                    machines.push({machineId: resources[0], ip: resources[1]});
+                })
+                break;
+            case ExperimentCreatingTabKey.NODE:
+                targetKeys.map(key => {
+                    machines.push({nodeName: key})
+                })
+                break;
+            case ExperimentCreatingTabKey.POD:
+            case ExperimentCreatingTabKey.CONTAINER:
+                targetKeys.map(key => {
+                    let resources = _.split(key, '/');
+                    if (resources.length === 2) {
+                        machines.push({
+                            namespace: resources[0],
+                            podName: resources[1],
+                        })
+                    } else if (resources.length === 3) {
+                        machines.push({
+                            namespace: resources[0],
+                            podName: resources[1],
+                            containerName: resources[2],
+                        })
+                    }
+                })
+                break;
+        }
+        onMachinesChanged({machines: machines});
     }
 
     render() {
-        const {titles, machines, pagination, loading, machinesSelected} = this.props
+        const {titles, machines, pagination, loading} = this.props
         return (
             <div className={styles.stepMachineContent}>
                 <Spin spinning={loading}>
                     <Transfer
                         dataSource={machines}
                         showSearch
-                        targetKeys={machinesSelected}
+                        targetKeys={this.getTargetKeys()}
                         onChange={this.transferChange}
                         filterOption={this.transferFilter}
                         render={item => item.title}
@@ -81,6 +151,7 @@ const mapStateToProps = state => {
     return {
         loading: creating.loading,
         machinesSelected: creating.machinesSelected,
+        dimension: creating.dimension,
     };
 }
 
@@ -89,6 +160,7 @@ const mapDispatchToProps = dispatch => {
         clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
         creatingFromMachine: machine => dispatch(Actions.creatingFromMachine(machine)),
         onMachinesChanged: machines => dispatch(Actions.onMachinesChanged(machines)),
+        handleError: (code, message) => dispatch(Actions.handleError(code, message)),
     }
 }
 
