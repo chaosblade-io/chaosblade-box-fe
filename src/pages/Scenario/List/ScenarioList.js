@@ -74,7 +74,7 @@ class ScenarioList extends React.Component {
     componentDidMount() {
         const {query, page, pageSize, getScenariosPageable, getScenarioCategories} = this.props
         getScenariosPageable({...query, page: page, pageSize: pageSize});
-        getScenarioCategories();
+        getScenarioCategories({});
     }
 
     onFinish = (values) => {

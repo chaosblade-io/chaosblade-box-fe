@@ -27,12 +27,6 @@ import styles from './index.module.scss'
 
 const {Paragraph} = Typography;
 
-const IconText = ({icon, text}) => (
-    <Space>
-        {React.createElement(icon)}
-        <a>{text}</a>
-    </Space>
-);
 const Content = ({children, extraContent}) => (
     <Row>
         <div style={{flex: 1}}>{children}</div>
@@ -66,14 +60,15 @@ class ChaostoolsDetail extends React.Component {
     }
 
     render() {
-        const {scenarioFiles, loading} = this.props;
+        const {scenarioFiles, loading, releaseUrl} = this.props;
         return (
             <div>
                 <div id="information" className={styles.pageHeader}>
                     <PageHeader
                         title={<span>ChaosBlade</span>}
                         subTitle="选择有很多，将来会更多..."
-                        tags={<IconText icon={GithubOutlined} text="Github" key="list-vertical-star-o"/>}>
+                        tags={<Space><GithubOutlined/><a href={releaseUrl} target={'_blank'}>Github</a></Space>}
+                    >
                         <Content>
                             <Paragraph>
                                 项目介绍

@@ -27,6 +27,8 @@ import linuxLogo from '../../../assets/images/experiment/linux.svg'
 import kubernetesLogo from '../../../assets/images/experiment/kubernetes.svg'
 import applicationLogo from '../../../assets/images/experiment/application.svg'
 import styles from './index.module.scss';
+import KubernetesExperiment from "./KubernetesExperiment";
+import {ExperimentCreatingTabKey} from "../../../constants/ExperimentConstants";
 
 const {TabPane} = Tabs
 
@@ -44,14 +46,14 @@ const ExperimentDimensions = [
         imgAlt: "kubernetes",
         imgSrc: kubernetesLogo,
         // content: <KubernetesExperiment/>,
-        content: <h1>敬请期待...</h1>,
+        content: <h1>Coming soon...</h1>,
     },
     {
         title: "page.experiment.creating.application.dimension.name",
         key: "application",
         imgAlt: "application",
         imgSrc: applicationLogo,
-        content: <h1>敬请期待...</h1>,
+        content: <h1>Coming soon...</h1>,
     },
 ]
 
@@ -74,58 +76,85 @@ class ExperimentCreating extends React.Component {
             clearResult();
             history.push(`/experiment/detail/?${request.generateUrlSearch({id: experimentId})}`);
         }
+        return null;
+    }
+
+    componentDidMount() {
+        const {getExperimentById} = this.props;
+        const id = ExperimentCreating.getExperimentId();
+        getExperimentById(id);
     }
 
     onTabChange(key) {
-        const {dimension, clearResult, onDimensionChanged} = this.props;
+        const {dimension, onDimensionChanged} = this.props;
         if (key !== dimension) {
-            // clearResult();
-            onDimensionChanged(key);
+            if (key === ExperimentCreatingTabKey.KUBERNETES) {
+                key = ExperimentCreatingTabKey.POD;
+            }
+            onDimensionChanged({dimension: key});
         }
     }
 
-    render() {
+    getTabKey() {
         const {dimension} = this.props;
+        const id = ExperimentCreating.getExperimentId();
+        let activeKey = dimension;
+        if (_.isEmpty(id) && _.isEmpty(dimension)) {
+            activeKey = ExperimentCreatingTabKey.DEFAULT;
+        }
+        if (activeKey === ExperimentCreatingTabKey.CONTAINER || activeKey === ExperimentCreatingTabKey.POD ||
+            activeKey === ExperimentCreatingTabKey.NODE) {
+            activeKey = ExperimentCreatingTabKey.KUBERNETES;
+        }
+        return activeKey;
+    }
+
+    render() {
+        const activeKey = this.getTabKey();
         return (
             <div>
                 <h1>选择演练维度</h1>
                 <div className={styles.experimentHeader}>
-                    <Row>
-                        <Tabs defaultActiveKey={dimension} className={styles.stepTab}
-                              onChange={this.onTabChange.bind(this)}>
-                            {
-                                ExperimentDimensions.map(item => (
-                                        <TabPane
-                                            tab={
-                                                <Col span={4}>
-                                                    <Card
-                                                        style={{width: 300}}
-                                                        bordered={true}
-                                                        hoverable={true}
-                                                        title={
-                                                            <>
-                                                                <FormattedMessage id={item.title}/>
-                                                            </>
-                                                        }
-                                                        cover={<img alt={item.imgAlt} src={item.imgSrc}
-                                                                    style={{
-                                                                        width: 296,
-                                                                        height: 182
-                                                                    }}/>}
-                                                    />
-                                                </Col>
-                                            }
-                                            key={item.key}>
-                                            {item.content}
-                                        </TabPane>
+                    {activeKey ?
+                        <Row>
+                            <Tabs defaultActiveKey={activeKey} className={styles.stepTab}
+                                  onChange={this.onTabChange.bind(this)}>
+                                {
+                                    ExperimentDimensions.map(item => (
+                                            <TabPane
+                                                tab={
+                                                    <Col span={4}>
+                                                        <Card
+                                                            style={{width: 300}}
+                                                            bordered={true}
+                                                            hoverable={true}
+                                                            title={
+                                                                <>
+                                                                    <FormattedMessage id={item.title}/>
+                                                                </>
+                                                            }
+                                                            cover={<img alt={item.imgAlt} src={item.imgSrc}
+                                                                        style={{
+                                                                            width: 296,
+                                                                            height: 182
+                                                                        }}/>}
+                                                        />
+                                                    </Col>
+                                                }
+                                                key={item.key}>
+                                                {item.content}
+                                            </TabPane>
+                                        )
                                     )
-                                )
-                            }
-                        </Tabs>
-                    </Row>
+                                }
+                            </Tabs>
+                        </Row>
+                        :
+                        <Row/>
+                    }
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -140,7 +169,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
-        onDimensionChanged: dimension => dispatch(Actions.onDimensionChanged()),
+        onDimensionChanged: dimension => dispatch(Actions.onDimensionChanged(dimension)),
+        getExperimentById: experimentId => dispatch(Actions.getExperimentById(experimentId)),
     }
 }
 

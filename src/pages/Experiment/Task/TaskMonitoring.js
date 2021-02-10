@@ -27,7 +27,8 @@ const chartOptions = {
     padding: 'auto',
     xField: 'date',
     yField: 'value',
-    seriesField: 'ip',
+    // seriesField: 'ip',
+    color: '#F4664A',
     yAxis: {
         label: {
             formatter: (v) => Number(v),
@@ -39,7 +40,7 @@ const chartOptions = {
             type: 'regionFilter',
             start: ['min', 'median'],
             end: ['max', '0'],
-            color: '#F4664A',
+            color: '#4aa5f4',
         },
         {
             type: 'text',
@@ -48,6 +49,7 @@ const chartOptions = {
             offsetY: -4,
             style: {
                 textBaseline: 'bottom',
+                stroke: '#F4664A'
             },
         },
         {
@@ -77,6 +79,7 @@ class TaskMonitoring extends React.Component {
 
     updateChart() {
         const {metrics, status, resultStatus} = this.props;
+        console.log(metrics);
         if (_.isEmpty(metrics)) {
             return;
         }

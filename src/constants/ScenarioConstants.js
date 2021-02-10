@@ -27,7 +27,13 @@ export const ScenarioConstants = {
     SUPPORT_HOST_SCOPE: {
         code: 0, desc: 'host',
     },
-    SUPPORT_KUBERNETES_SCOPE: {
-        code: 0, desc: 'kubernetes',
+    SUPPORT_CONTAINER_SCOPE: {
+        code: 1, desc: 'container',
+    },
+    SUPPORT_POD_SCOPE: {
+        code: 2, desc: 'pod',
+    },
+    SUPPORT_NODE_SCOPE: {
+        code: 3, desc: 'node',
     }
 }

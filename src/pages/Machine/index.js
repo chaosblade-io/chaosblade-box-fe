@@ -17,7 +17,13 @@
 import React from "react";
 import Application from "./Application";
 import {Tabs, Tooltip} from "antd";
-import {AndroidOutlined, AppleOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {
+    AndroidOutlined,
+    AppleOutlined,
+    AppstoreAddOutlined,
+    CloudOutlined, HddOutlined,
+    QuestionCircleOutlined
+} from "@ant-design/icons";
 import Host from "./Host";
 import Kubernetes from "./Kubernetes";
 import {FormattedMessage} from "react-intl";
@@ -47,7 +53,7 @@ class SiderDemo extends React.Component {
                 <Tabs defaultActiveKey={active}>
                     <TabPane key="host" tab={
                         <span>
-                        <AppleOutlined/><FormattedMessage id={"page.machine.tab.host"}/>
+                        <HddOutlined /><FormattedMessage id={"page.machine.tab.host"}/>
                             &nbsp;
                             <Tooltip title={
                                 <span>显示获取到的主机机器列表，可通过<Link to={
@@ -63,7 +69,7 @@ class SiderDemo extends React.Component {
                     <TabPane key="kubernetes"
                              tab={
                                  <span>
-                                 <AndroidOutlined/><FormattedMessage id={"page.machine.tab.kubernetes"}/>
+                                 <CloudOutlined/><FormattedMessage id={"page.machine.tab.kubernetes"}/>
                                      &nbsp;
                                      <Tooltip title={
                                          <span>显示采集到的集群资源数据列表，可通过可通过
@@ -80,7 +86,7 @@ class SiderDemo extends React.Component {
                     <TabPane key="application"
                              tab={
                                  <span>
-                                 <AndroidOutlined/><FormattedMessage id={"page.machine.tab.application"}/>
+                                 <AppstoreAddOutlined /><FormattedMessage id={"page.machine.tab.application"}/>
                                      &nbsp;
                                      <Tooltip title={
                                          <span>

@@ -25,6 +25,7 @@ import * as request from "../../Machine/libs/request";
 import Task from "../Task";
 import styles from './index.module.scss';
 import TaskInfo from "../Task/TaskInfo";
+import {ExperimentCreatingTabKey} from "../../../constants/ExperimentConstants";
 
 
 class ExperimentDetail extends React.Component {
@@ -45,6 +46,7 @@ class ExperimentDetail extends React.Component {
             clearExperimentDetailResult();
             history.push(`/experiment/task/?${request.generateUrlSearch({id: taskId})}`)
         }
+        return null;
     }
 
     componentDidMount() {
@@ -127,7 +129,22 @@ class ExperimentDetail extends React.Component {
                         {_.isEmpty(machines) ? <Col>无机器</Col>
                             :
                             machines.map(machine => {
-                                return <Col span={6}>{machine.ip}</Col>;
+                                let m = '';
+                                switch (dimension) {
+                                    case ExperimentCreatingTabKey.HOST:
+                                        m= machine.ip;
+                                        break;
+                                    case ExperimentCreatingTabKey.NODE:
+                                        m= machine;
+                                        break;
+                                    case ExperimentCreatingTabKey.POD:
+                                        m= _.join([machine.namespace, machine.podName], '/');
+                                        break;
+                                    case ExperimentCreatingTabKey.CONTAINER:
+                                        m= _.join([machine.namespace, machine.podName, machine.containerName], '/');
+                                        break;
+                                }
+                                return <Col span={6}>{m}</Col>;
                             })}
                     </Row>
                 </Descriptions.Item>

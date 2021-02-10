@@ -24,7 +24,7 @@ const getScenarioById = scenarioId => api.post('GetScenarioById', scenarioId);
 const getScenarioStatistics = () => api.post('GetScenarioStatistics');
 
 // 获取场景目录
-const getScenarioCategories = () => api.post('GetScenarioCategories');
+const getScenarioCategories = (query) => api.post('GetScenarioCategories', query);
 
 const updateScenario = scenario => api.post('UpdateScenario', scenario);
 const importScenarios = (scenarios, file) => api.post('ImportScenarios', scenarios, file);

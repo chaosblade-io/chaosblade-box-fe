@@ -59,6 +59,9 @@ class ExperimentSteps extends React.Component {
         this.setState({current});
     }
 
+    machineEvent = child => {
+        this._machine = child;
+    }
     scenarioEvent = child => {
         this._scenario = child;
     }
@@ -115,7 +118,8 @@ class ExperimentSteps extends React.Component {
             dimension,
             createExperiment,
             collect,
-            scenarioCategoryIdSelected
+            scenarioCategoryIdSelected,
+            machinesSelected
         } = this.props;
         createExperiment({
             categoryId: scenarioCategoryIdSelected,
@@ -123,12 +127,11 @@ class ExperimentSteps extends React.Component {
             parameters: scenarioSelected.parameters,
             metrics: metricSelected ? [metricSelected] : [],
             experimentName,
-            machines: this.getMachines(),
+            machines: machinesSelected,
             dimension,
             collect,
-        })
+        });
     }
-
 
     updateExperiment = () => {
         const {
@@ -138,7 +141,8 @@ class ExperimentSteps extends React.Component {
             dimension,
             updateExperiment,
             collect,
-            scenarioCategoryIdSelected
+            scenarioCategoryIdSelected,
+            machinesSelected
         } = this.props;
         updateExperiment({
             experimentId: ExperimentCreating.getExperimentId(),
@@ -147,7 +151,7 @@ class ExperimentSteps extends React.Component {
             parameters: scenarioSelected.parameters,
             metrics: metricSelected ? [metricSelected] : [],
             experimentName,
-            machines: this.getMachines(),
+            machines: machinesSelected,
             dimension,
             collect,
         })
@@ -168,18 +172,46 @@ class ExperimentSteps extends React.Component {
                     }
                 </Steps>
                 <div className={styles.stepContent}>
-                    <div className={current === 0 ? styles.fadeIn : styles.step}>
-                        {machineStep}
-                    </div>
-                    <div className={current === 1 ? styles.fadeIn : styles.step}>
-                        <ScenarioStep dimension={dimension} current={current} event={this.scenarioEvent}/>
-                    </div>
-                    <div className={current === 2 ? styles.fadeIn : styles.step}>
-                        <MonitorStep dimension={dimension} current={current} event={this.monitorEvent}/>
-                    </div>
-                    <div className={current === 3 ? styles.fadeIn : styles.step}>
-                        <NameStep dimension={dimension} current={current}/>
-                    </div>
+                    {
+                        current === 0 ?
+                            <div className={styles.fadeIn}>
+                                {
+                                    // React.cloneElement(
+                                    //     machineStep,
+                                    //     {dimension, current, event: this.machineEvent}
+                                    // )
+                                    // // <Element dimension={dimension} current={current} event={this.machineEvent}/>
+                                    machineStep
+                                }
+
+                            </div>
+                            :
+                            <div className={styles.step}></div>
+                    }
+                    {
+                        current === 1 ?
+                            <div className={styles.fadeIn}>
+                                <ScenarioStep dimension={dimension} current={current} event={this.scenarioEvent}/>
+                            </div>
+                            :
+                            <div className={styles.step}></div>
+                    }
+                    {
+                        current === 2 ?
+                            <div className={styles.fadeIn}>
+                                <MonitorStep dimension={dimension} current={current} event={this.monitorEvent}/>
+                            </div>
+                            :
+                            <div className={styles.step}></div>
+                    }
+                    {
+                        current === 3 ?
+                            <div className={styles.fadeIn}>
+                                <NameStep dimension={dimension} current={current}/>
+                            </div>
+                            :
+                            <div className={styles.step}></div>
+                    }
                 </div>
                 <Divider dashed/>
                 <div className={styles.stepsAction}>

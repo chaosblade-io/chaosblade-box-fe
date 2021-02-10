@@ -54,7 +54,7 @@ const HelmRegisterConfig = {
 
 export const HostRegisterConfig = [
     AnsibleRegisterConfig,
-    SshRegisterConfig,
+    // SshRegisterConfig,
     ManualRegisterConfig,
 ]
 

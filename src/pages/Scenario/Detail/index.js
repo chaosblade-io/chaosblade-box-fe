@@ -38,7 +38,7 @@ class ScenarioDetail extends React.Component {
     componentDidMount() {
         const {getScenarioById} = this.props;
         const id = ScenarioDetail.getScenarioId();
-        getScenarioById(id)
+        getScenarioById({scenarioId: id})
     }
 
     onFinish = (values) => {

@@ -61,6 +61,7 @@ const SelectSearchField = [
         options: [
             MachineConstants.MACHINE_STATUS_ONLINE,
             MachineConstants.MACHINE_STATUS_BANING,
+            MachineConstants.MACHINE_STATUS_OFFLINE,
         ]
     },
 ]

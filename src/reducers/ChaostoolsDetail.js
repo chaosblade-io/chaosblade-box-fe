@@ -79,7 +79,7 @@ const fetchChaostoolsOverviewResult = (state, action) => {
 }
 
 const importScenarios = (state, action) => {
-    const {scenarioCount, file} = action;
+    const {scenarioCount, file} = action.data;
     const current = state.toJS();
     if (!_.isEmpty(current.scenarios)) {
         const scenarios = current.scenarios.map(item => {

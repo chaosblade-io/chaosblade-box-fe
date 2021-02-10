@@ -20,7 +20,7 @@ import Actions from "../../../actions/Actions";
 import {List, Space} from "antd";
 import _ from 'lodash';
 import * as request from "../../Machine/libs/request";
-import {ImportOutlined, MoreOutlined, ToolOutlined, UnorderedListOutlined} from "@ant-design/icons";
+import {MoreOutlined, ToolOutlined, UnorderedListOutlined} from "@ant-design/icons";
 
 
 class MarketList extends React.Component {
@@ -87,19 +87,13 @@ class MarketList extends React.Component {
                             <Space>
                                 <UnorderedListOutlined/>
                                 <a onClick={this.detail.bind(this, item.name, item.latest, "scenarios")}>
-                                    场景列表
-                                </a>
-                            </Space>,
-                            <Space>
-                                <ImportOutlined/>
-                                <a onClick={this.detail.bind(this, item.name, item.latest, "scenarios")}>
-                                    导入&更新场景
+                                    场景管理
                                 </a>
                             </Space>,
                             <Space>
                                 <ToolOutlined/>
                                 <a onClick={this.deployed.bind(this, item.name, item.latest, "deployed")}>
-                                    部署&更新工具
+                                    工具管理
                                 </a>
                             </Space>,
                             <Space>
@@ -117,7 +111,8 @@ class MarketList extends React.Component {
                         }
                     >
                         <List.Item.Meta
-                            title={<a href={item.href}>{item.title}(v{item.latest})</a>}
+                            title={<a
+                                onClick={this.detail.bind(this, item.name, item.latest, "information")}>{item.title}(v{item.latest})</a>}
                             description={item.description}
                         />
                         {item.readme}

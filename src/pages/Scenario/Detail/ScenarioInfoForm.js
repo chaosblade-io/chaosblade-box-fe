@@ -35,7 +35,7 @@ class ScenarioInfoForm extends React.Component {
 
     componentDidMount() {
         const {getScenarioCategories} = this.props;
-        getScenarioCategories()
+        getScenarioCategories({});
     }
 
     onCancel = () => {
@@ -115,8 +115,12 @@ class ScenarioInfoForm extends React.Component {
                         >
                             <Option key={ScenarioConstants.SUPPORT_HOST_SCOPE.desc}>
                                 {ScenarioConstants.SUPPORT_HOST_SCOPE.desc}</Option>
-                            <Option key={ScenarioConstants.SUPPORT_KUBERNETES_SCOPE.desc}>
-                                {ScenarioConstants.SUPPORT_KUBERNETES_SCOPE.desc}</Option>
+                            <Option key={ScenarioConstants.SUPPORT_CONTAINER_SCOPE.desc}>
+                                {ScenarioConstants.SUPPORT_CONTAINER_SCOPE.desc}</Option>
+                            <Option key={ScenarioConstants.SUPPORT_POD_SCOPE.desc}>
+                                {ScenarioConstants.SUPPORT_POD_SCOPE.desc}</Option>
+                            <Option key={ScenarioConstants.SUPPORT_NODE_SCOPE.desc}>
+                                {ScenarioConstants.SUPPORT_NODE_SCOPE.desc}</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item label="选择场景目录" name="categoryIds"

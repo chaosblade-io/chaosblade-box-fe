@@ -17,7 +17,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
-import {Button, Table, Tabs} from "antd";
+import {Alert, Button, Table, Tabs} from "antd";
 import {FormattedMessage} from "react-intl";
 import _ from 'lodash';
 import ChaostoolsDetail from "./index";
@@ -75,8 +75,13 @@ class Scenarios extends React.Component {
                         !_.isEmpty(scenarios) ? scenarios.map(item => {
                                 return (
                                     <TabPane tab={item.file} key={item.file}>
-                                        <Button
-                                            onClick={() => this.importScenarios(item.scenarios, item.file)}>导入实验场景</Button>
+                                        {
+                                            item.importScenarioCount > 0 ?
+                                                <Alert message={"成功导入 "+item.importScenarioCount+" 个场景"} type="success"/>
+                                                :
+                                                <Button
+                                                    onClick={() => this.importScenarios(item.scenarios, item.file)}>导入实验场景</Button>
+                                        }
                                         <Table columns={this.TableColumns}
                                                rowKey={record => record.index}
                                                dataSource={item.scenarioList}
