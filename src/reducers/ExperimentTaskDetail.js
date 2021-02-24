@@ -80,7 +80,7 @@ const queryTaskMonitorResult = (state, action) => {
             if (!_.isEmpty(data) && !_.isEmpty(data.metrics)) {
                 data.metrics.map(metric => {
                     metrics.push({
-                        ip: data.ip,
+                        name: data.metric,
                         value: Number(Number(metric.value).toFixed(2)),
                         date: metric.date,
                     })
