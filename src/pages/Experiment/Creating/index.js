@@ -82,7 +82,9 @@ class ExperimentCreating extends React.Component {
     componentDidMount() {
         const {getExperimentById} = this.props;
         const id = ExperimentCreating.getExperimentId();
-        getExperimentById(id);
+        if (!_.isEmpty(id)) {
+            getExperimentById(id);
+        }
     }
 
     onTabChange(key) {
