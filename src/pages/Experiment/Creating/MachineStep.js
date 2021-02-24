@@ -52,7 +52,6 @@ class MachineStep extends React.Component {
 
     getTargetKeys = () => {
         const {machinesSelected, dimension} = this.props;
-        console.log(machinesSelected);
         if (_.isEmpty(machinesSelected)) {
             return [];
         }
@@ -85,12 +84,10 @@ class MachineStep extends React.Component {
     transferChange = (targetKeys) => {
         const {onMachinesChanged, dimension} = this.props;
         let machines = [];
-        console.log(targetKeys);
         switch (dimension) {
             case ExperimentCreatingTabKey.HOST:
                 targetKeys.map(key => {
                     let resources = _.split(key, '/');
-                    console.log(resources);
                     if (_.isEmpty(resources[0]) || _.isEmpty(resources[1])) {
                         return;
                     }

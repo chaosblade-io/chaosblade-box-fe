@@ -54,7 +54,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.getK8sResourceStatisticsResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -98,7 +98,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.getMachinesForPodPageableResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }

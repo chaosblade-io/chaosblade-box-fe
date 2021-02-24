@@ -27,7 +27,7 @@ const chartOptions = {
     padding: 'auto',
     xField: 'date',
     yField: 'value',
-    // seriesField: 'ip',
+    seriesField: 'name',
     color: '#F4664A',
     yAxis: {
         label: {
@@ -79,7 +79,6 @@ class TaskMonitoring extends React.Component {
 
     updateChart() {
         const {metrics, status, resultStatus} = this.props;
-        console.log(metrics);
         if (_.isEmpty(metrics)) {
             return;
         }
@@ -96,6 +95,7 @@ class TaskMonitoring extends React.Component {
     }
 
     componentDidMount() {
+        this.taskMetricsRender();
         this.metricTime = setInterval(() => {
             this.taskMetricsRender();
         }, 3000)

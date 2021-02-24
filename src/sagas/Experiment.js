@@ -206,7 +206,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.getExperimentByIdResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -242,7 +242,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.getTaskByExperimentIdResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -278,7 +278,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.queryTaskResultResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -314,7 +314,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.startExperimentResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -350,7 +350,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.endExperimentResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -386,7 +386,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.retryExperimentResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -422,7 +422,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.queryTaskLogResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -458,7 +458,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.queryTaskMonitorResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }
@@ -494,7 +494,7 @@ export default () => {
         if (error) {
             yield all([
                 put(Actions.queryMetricCategoryResult()),
-                put(Actions.handleError(response))
+                put(Actions.handleError(error.code, error.message))
             ]);
         }
     }

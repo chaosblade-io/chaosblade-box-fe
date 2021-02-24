@@ -127,7 +127,6 @@ class KubernetesExperiment extends React.Component {
 
     collectDisabledRender = () => {
         const {dimension, machinesSelected} = this.props;
-        console.log(machinesSelected);
         return (
             <div>
                 <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish}

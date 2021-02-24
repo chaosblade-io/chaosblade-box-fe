@@ -19,6 +19,7 @@ import Types from "../actions/Types";
 import createReducer from "./createReducer";
 import _ from "lodash";
 import MachineConstants from "../constants/MachineConstants";
+import {ExperimentCreatingTabKey} from "../constants/ExperimentConstants";
 
 const MAX_PAGE_SIZE = 5000;
 
@@ -48,7 +49,7 @@ export const INITIAL_STATE = Map({
     },
     categories: [],
     experimentId: "",
-    dimension: "",
+    dimension: ExperimentCreatingTabKey.DEFAULT,
     scenarios: {
         loading: false,
         page: 1,
@@ -209,7 +210,7 @@ const clearExperimentCreatingResult = (state, action) => {
         },
         categories: [],
         experimentId: "",
-        dimension: "",
+        dimension: ExperimentCreatingTabKey.DEFAULT,
         scenarios: {
             loading: false,
             page: 1,
