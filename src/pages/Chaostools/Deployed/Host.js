@@ -21,7 +21,7 @@ import {FormattedMessage} from "react-intl";
 import styles from "../../Machine/Host/Host.module.scss";
 import MachineConstants from "../../../constants/MachineConstants";
 import _ from "lodash";
-import {Col, Row, Space, Table} from "antd";
+import {Col, Popconfirm, Row, Space, Table} from "antd";
 import {getEmptyContent, getSearchForm} from "../../../libs/Search";
 import {Link} from "react-router-dom";
 import {GenPagination} from "../../../libs/Pagination";
@@ -70,6 +70,22 @@ class Host extends React.Component {
     componentDidMount() {
         const {query, page, pageSize, getMachinesForHostPageable, probeId} = this.props
         getMachinesForHostPageable({...query, page: page, pageSize: pageSize, probeId: probeId, original: "host"})
+    }
+
+    operationWrapperRender = (operationFunc, text) => {
+        let content = text;
+        let confirm = operationFunc;
+        return (
+            <Popconfirm
+                placement="top"
+                title={content}
+                onConfirm={() => confirm()}
+                okText={<FormattedMessage id={"page.popconfirm.ok"}/>}
+                cancelText={<FormattedMessage id={"page.popconfirm.cancel"}/>}
+            >
+                <a>{text}</a>
+            </Popconfirm>
+        );
     }
 
     deploy = (machineId) => {
@@ -153,9 +169,8 @@ class Host extends React.Component {
             render: (text, record) => {
                 return (
                     <Space size={"middle"}>
-                        <a onClick={this.deploy.bind(this, record.machineId)}>部署</a>
-                        {/*<a onClick={this.upgrade.bind(this, record.machineId)}>更新</a>*/}
-                        <a onClick={this.undeploy.bind(this, record.machineId)}>卸载</a>
+                        {this.operationWrapperRender(this.deploy.bind(this, record.machineId), '部署')}
+                        {this.operationWrapperRender(this.undeploy.bind(this, record.machineId), '卸载')}
                     </Space>
                 );
             }
@@ -191,7 +206,7 @@ const mapStateToProps = state => {
     const chaostoolsDeploy = state.chaostoolsDeploy.toJS();
     const {hosts} = chaostoolsDeploy
     return {
-        loading: hosts.loading,
+        loading: chaostoolsDeploy.loading,
         refreshing: hosts.refreshing,
         machines: hosts.machines,
         pageSize: hosts.pageSize,
