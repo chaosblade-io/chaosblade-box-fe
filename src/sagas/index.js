@@ -65,6 +65,7 @@ export default function* root() {
     yield fork(chaostools().watchFetchPublicChaostools);
     yield fork(chaostools().watchImportScenarios);
     yield fork(chaostools().watchDeployChaostoolsToHost);
+    yield fork(chaostools().watchUndeployChaostoolsToHost);
     yield fork(chaostools().watchFetchChaostoolsOverview);
     yield fork(chaostools().watchFetchChaostoolsVersionInfo);
     yield fork(chaostools().watchFetchChaostoolsScenarios);

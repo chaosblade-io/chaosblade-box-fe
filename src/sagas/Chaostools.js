@@ -226,6 +226,42 @@ export default () => {
         }
     }
 
+    function* watchUndeployChaostoolsToHost() {
+        while (true) {
+            const {tools} = yield take(Types.UNDEPLOY_CHAOSTOOLS_FOR_HOST);
+            yield fork(undeployChaostoolsToHost, tools);
+        }
+    }
+
+    function* undeployChaostoolsToHost(tools) {
+        const {response, timeout} = yield race({
+            response: call(ChaostoolsApi.undeployChaostoolsForHost, tools),
+            timeout: delay(NetworkConstants.TIMEOUT_INTERVAL)
+        });
+
+        let error;
+        if (timeout) {
+            error = Errors.TIMEOUT_ERROR;
+        } else {
+            if (response && response.ok) {
+                let data = response.data;
+                if (data.success) {
+                    yield put(Actions.undeployChaostoolsForHostResult(data.data));
+                } else {
+                    error = getError(data);
+                }
+            } else {
+                error = getError(response);
+            }
+        }
+        if (error) {
+            yield all([
+                put(Actions.undeployChaostoolsForHostResult()),
+                put(Actions.handleError(error.code, error.message))
+            ]);
+        }
+    }
+
     return {
         watchFetchChaostoolsOverview,
         watchFetchChaostoolsVersionInfo,
@@ -233,5 +269,6 @@ export default () => {
         watchFetchPublicChaostools,
         watchImportScenarios,
         watchDeployChaostoolsToHost,
+        watchUndeployChaostoolsToHost,
     }
 }

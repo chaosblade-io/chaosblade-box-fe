@@ -45,8 +45,31 @@ const handleMachinesFetchingResult = (state, action) => {
     return state.merge({hosts: s})
 }
 
+const updateChaostoolsForHost = (state, action) =>{
+    return state.merge({loading: true});
+}
+
+const updateChaostoolsForHostResult = (state, action) => {
+    if (_.isEmpty(action.data)) {
+        return state.merge({loading: false});
+    }
+    const {machineId} = action.data;
+    let current = state.toJS();
+    let machines = current.hosts.machines.map(item => {
+        if (item.machineId === machineId) {
+            return action.data;
+        }
+        return item;
+    });
+    return state.merge({loading: false, hosts: {machines}});
+}
+
 const ACTION_HANDLERS = {
     [Types.GET_MACHINES_FOR_HOST_PAGEABLE_RESULT]: handleMachinesFetchingResult,
+    [Types.DEPLOY_CHAOSTOOLS_TO_HOST]: updateChaostoolsForHost,
+    [Types.DEPLOY_CHAOSTOOLS_TO_HOST_RESULT]: updateChaostoolsForHostResult,
+    [Types.UNDEPLOY_CHAOSTOOLS_FOR_HOST]: updateChaostoolsForHostResult,
+    [Types.UNDEPLOY_CHAOSTOOLS_FOR_HOST_RESULT]: updateChaostoolsForHostResult,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);
