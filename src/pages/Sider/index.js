@@ -54,7 +54,7 @@ class ConsoleSider extends React.Component {
                     </Radio.Group>
                 </div>
                 <h1 className={styles.logo}>{collapsed ? 'CHAOS' : 'CHAOS-PLATFORM'}</h1>
-                <h4 className={styles.logo}>{collapsed ? 'v0.0.1' : 'v0.0.1'}</h4>
+                <h4 className={styles.logo}>{collapsed ? 'v0.1.0' : 'v0.1.0'}</h4>
                 <Menu theme="dark"
                       defaultSelectedKeys={['/machine']}
                       selectedKeys={[location.pathname]}
