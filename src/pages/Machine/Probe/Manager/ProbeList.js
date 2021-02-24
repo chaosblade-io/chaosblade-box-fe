@@ -114,7 +114,8 @@ class ProbeList extends React.Component {
         let confirm = operationFunc;
         if (agentType === ProbeConstants.PROBE_TYPE_KUBERNETES.code) {
             content = "请使用 Helm 命令手动删除";
-            confirm = ()=>{}
+            confirm = () => {
+            }
         }
         return (
             <Popconfirm
@@ -173,7 +174,7 @@ class ProbeList extends React.Component {
                 const operations = [];
                 if (record.status === MachineConstants.MACHINE_STATUS_OFFLINE.code ||
                     record.status === MachineConstants.MACHINE_STATUS_INSTALL_FAILED.code) {
-                    operations.push(this.operationWrapperRender(this.installProbe.bind(this, probeId), '安装', record.agentType));
+                    operations.push(<Link to={{pathname: '/machine/register'}}>重新安装</Link>);
                 }
                 if (record.status === MachineConstants.MACHINE_STATUS_BANING.code) {
                     operations.push(this.operationWrapperRender(this.unbanProbe.bind(this, probeId), '启用', record.agentType));
@@ -232,7 +233,6 @@ const mapDispatchToProps = dispatch => {
         banProbe: probeId => dispatch(Actions.banProbe(probeId)),
         unbanProbe: probeId => dispatch(Actions.unbanProbe(probeId)),
         uninstallProbe: probeId => dispatch(Actions.uninstallProbe(probeId)),
-        installProbe: probeId => dispatch(Actions.installProbe(probeId)),
     }
 }
 
