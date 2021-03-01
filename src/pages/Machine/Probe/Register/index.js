@@ -52,13 +52,13 @@ class Register extends React.Component {
                                          placement="bottomLeft"
                                          title={
                                              <div>
-                                                 注册主机指平台感知主机的存在，用于对目标主机实现混沌实验，适用于非集群模式。实现方案是通过在目标主机部署探针，探针具备以下核心功能：<br/>
-                                                 · 上报主机信息注册到平台；<br/>
-                                                 · 维持心跳监控主机状态；<br/>
-                                                 · 部署混沌实验工具等；<br/>
-                                                 · 执行平台下发的混沌实验指令；<br/>
+                                                 <FormattedMessage id={"page.machine.register.host.tooltip.intro"}/><br/>
+                                                 · <FormattedMessage id={"page.machine.register.host.tooltip.li1"}/><br/>
+                                                 · <FormattedMessage id={"page.machine.register.host.tooltip.li2"}/><br/>
+                                                 · <FormattedMessage id={"page.machine.register.host.tooltip.li3"}/><br/>
+                                                 · <FormattedMessage id={"page.machine.register.host.tooltip.li4"}/><br/>
                                                  <p/>
-                                                 主机探针的安装模式目前支持：通过 Ansible 或 SSH 实现远程安装；登录目标主机手动执行命令安装；
+                                               <FormattedMessage id={"page.machine.register.host.tooltip.support"}/>
                                              </div>
                                          }>
                                 <QuestionCircleOutlined/>
@@ -73,11 +73,8 @@ class Register extends React.Component {
                                      &nbsp;
                                      <Tooltip title={
                                          <div>
-                                             注册 Kubernetes 指获取集群 Pods、Nodes
-                                             资源数据，方便创建实验时选择目标资源做混沌实验，无需手动填写资源名称等参数，适用于集群模式。
-                                             实现方案是通过在集群里部署资源采集器探针，采集器探针具备以下核心功能：采集Pods、Nodes资源基础数据注册到平台；<br/>
-                                             <p/>
-                                             Kubernetes 探针的安装模式目前仅支持 Helm 安装方式。
+                                           <FormattedMessage id={"page.machine.register.k8s.tooltip.intro"}/><br/><p/>
+                                           <FormattedMessage id={"page.machine.register.k8s.tooltip.support"}/>
                                          </div>
                                      } autoAdjustOverflow placement="bottomLeft">
                                         <QuestionCircleOutlined/>

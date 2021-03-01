@@ -56,9 +56,10 @@ class SiderDemo extends React.Component {
                         <HddOutlined /><FormattedMessage id={"page.machine.tab.host"}/>
                             &nbsp;
                             <Tooltip title={
-                                <span>显示获取到的主机机器列表，可通过<Link to={
+                                <span><FormattedMessage id={"page.machine.tab.host.tooltip.hostList"}/><Link to={
                                     {pathname: '/machine/register', active: 'host'}
-                                }>机器注册</Link>页面安装探针进行机器注册。</span>
+                                }><FormattedMessage id={"page.machine.tab.host.tooltip.machineRegister"}/></Link>
+                                    <FormattedMessage id={"page.machine.tab.host.tooltip.probeInstall"}/></span>
                             }>
                                 <QuestionCircleOutlined/>
                             </Tooltip>
@@ -72,10 +73,11 @@ class SiderDemo extends React.Component {
                                  <CloudOutlined/><FormattedMessage id={"page.machine.tab.kubernetes"}/>
                                      &nbsp;
                                      <Tooltip title={
-                                         <span>显示采集到的集群资源数据列表，可通过可通过
+                                         <span><FormattedMessage id={"page.machine.tab.kubernetes.tooltip.resources"}/>
                                              <Link to={
                                                  {pathname: '/machine/register', active: 'kubernetes'}
-                                             }>机器注册</Link>页面安装探针进行数据采集。</span>
+                                             }><FormattedMessage id={"page.machine.tab.host.tooltip.machineRegister"}/></Link>
+                                             <FormattedMessage id={"page.machine.tab.kubernetes.tooltip.probe"}/></span>
                                      }>
                                 <QuestionCircleOutlined/>
                             </Tooltip>
@@ -90,12 +92,14 @@ class SiderDemo extends React.Component {
                                      &nbsp;
                                      <Tooltip title={
                                          <span>
-                                             显示具有应用标识的机器或者集群Pods、节点资源，可通过<Link to={
+                                             <FormattedMessage id={"page.machine.tab.application.tooltip.identity"}/><Link to={
                                              {pathname: '/machine/register', active: 'application'}
-                                         }>机器注册</Link>页面按照应用接入方式完成接入。
-                                             <p>点击<Link to={
+                                         }><FormattedMessage id={"page.machine.tab.host.tooltip.machineRegister"}/></Link>
+                                         <FormattedMessage id={"page.machine.tab.application.tooltip.appRegister"}/>
+                                             <p><FormattedMessage id={"page.machine.tab.application.tooltip.click"}/><Link to={
                                                  {pathname: '/machine/register', active: 'application'}
-                                             }>应用介绍</Link>了解应用维度。</p>
+                                             }><FormattedMessage id={"page.machine.tab.application.tooltip.appIntroduction"}/></Link>
+                                                 <FormattedMessage id={"page.machine.tab.application.tooltip.appDimensionInfo"}/></p>
                                          </span>
                                      }>
                                     <QuestionCircleOutlined/>
