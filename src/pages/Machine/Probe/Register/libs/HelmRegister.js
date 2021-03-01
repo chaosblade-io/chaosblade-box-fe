@@ -15,12 +15,13 @@
  */
 
 import React from "react";
+import {FormattedMessage} from "react-intl";
 
 class HelmRegister extends React.Component {
 
     render() {
         return (
-            <div><h1>敬请期待...</h1></div>
+            <div><h1>{<FormattedMessage id={"page.machine.register.info.waiting"}/>}</h1></div>
         );
     }
 }

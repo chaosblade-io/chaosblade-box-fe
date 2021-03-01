@@ -15,6 +15,7 @@
  */
 
 import {DesktopOutlined, FileOutlined, ProjectOutlined} from "@ant-design/icons";
+import {FormattedMessage} from "react-intl";
 import React from "react";
 
 export const NavigationConfig = [
@@ -43,26 +44,26 @@ export const NavigationConfig = [
         id: "menu.machine",
         key: "/machine",
         path: "/machine/list",
-        name: "机器管理",
+        name: <FormattedMessage id={"menu.machine"} />,
         icon: <DesktopOutlined/>,
         subs: [
             {
                 id: "menu.machine.list",
                 key: "/machine/list",
                 path: "/machine/list",
-                name: "机器列表",
+                name: <FormattedMessage id={"menu.machine.list"} />,
             },
             {
                 id: "menu.machine.register",
                 key: "/machine/register",
                 path: "/machine/register",
-                name: "机器注册",
+                name: <FormattedMessage id={"menu.machine.register"} />,
             },
             {
                 id: "menu.machine.probe",
                 key: "/machine/probe",
                 path: "/machine/probe",
-                name: "探针管理",
+                name: <FormattedMessage id={"menu.machine.probe"} />,
             },
         ]
     },
