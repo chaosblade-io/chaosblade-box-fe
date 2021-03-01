@@ -78,9 +78,20 @@ class ExperimentSteps extends React.Component {
         clearResult();
     }
 
+    submitMachineForm(current) {
+        const {machineForm} = this.props;
+        if (!_.isEmpty(machineForm)) {
+            machineForm.submit();
+        }
+        this.changeCurrent(current);
+    }
+
     onCreatingNext = () => {
         const current = this.state.current + 1;
         switch (current) {
+            case 1:
+                this.submitMachineForm(current);
+                break;
             case 2:
                 this._scenario.onFinish(this.changeCurrent.bind(this, current));
                 break;
