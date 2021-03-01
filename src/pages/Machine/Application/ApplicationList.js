@@ -176,11 +176,12 @@ class ApplicationList extends React.Component {
     onFinish = (values) => {
         const {query, page, pageSize, getMachinesForApplicationPageable} = this.props
         getMachinesForApplicationPageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     render() {
-        const {loading, machines, page, total, pageSize, query, getMachinesForApplicationPageable} = this.props;
-
+        const {loading, machines, page, total, pageSize, getMachinesForApplicationPageable} = this.props;
+        const {query} = this.state;
         return (
             <div className="application-machine-table">
                 {getSearchForm(this)}

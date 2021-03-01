@@ -172,10 +172,12 @@ class PodList extends React.Component {
     onFinish = (values) => {
         const {query, page, pageSize, getMachinesForPodPageable} = this.props
         getMachinesForPodPageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     render() {
-        const {loading, page, pageSize, total, machines, query, getMachinesForPodPageable} = this.props
+        const {loading, page, pageSize, total, machines, getMachinesForPodPageable} = this.props;
+        const {query} = this.state;
         return (
             <div>
                 {getSearchForm(this)}

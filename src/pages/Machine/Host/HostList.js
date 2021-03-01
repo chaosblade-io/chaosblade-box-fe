@@ -181,16 +181,18 @@ class HostList extends React.Component {
 
     componentDidMount() {
         const {query, page, pageSize, getMachinesForHostPageable, probeId} = this.props
-        getMachinesForHostPageable({...query, page: page, pageSize: pageSize, probeId: probeId, original: "host"})
+        getMachinesForHostPageable({...query, page: page, pageSize: pageSize, probeId: probeId})
     }
 
     onFinish = (values) => {
         const {query, page, pageSize, getMachinesForHostPageable} = this.props
-        getMachinesForHostPageable({...query, page: page, pageSize: pageSize, original: "host", ...values})
+        getMachinesForHostPageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     render() {
-        const {loading, machines, page, total, pageSize, query, getMachinesForHostPageable} = this.props;
+        const {loading, machines, page, total, pageSize, getMachinesForHostPageable} = this.props;
+        const {query} = this.state;
         return (
             <div>
                 {getSearchForm(this)}

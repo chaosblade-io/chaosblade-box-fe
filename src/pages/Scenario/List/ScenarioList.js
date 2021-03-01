@@ -80,6 +80,7 @@ class ScenarioList extends React.Component {
     onFinish = (values) => {
         const {query, page, pageSize, getScenariosPageable} = this.props
         getScenariosPageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     online = (record) => {
@@ -187,7 +188,8 @@ class ScenarioList extends React.Component {
     ]
 
     render() {
-        const {loading, scenarios, page, total, pageSize, query, getScenariosPageable} = this.props;
+        const {loading, scenarios, page, total, pageSize, getScenariosPageable} = this.props;
+        const {query} = this.state;
         return (
             <div className="application-machine-table">
                 {getSearchForm(this)}

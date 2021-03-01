@@ -30,6 +30,7 @@ class HostExperiment extends React.Component {
         super(props);
         this.state = {
             dimension: "host",
+            query: props.query || {},
         }
     }
 

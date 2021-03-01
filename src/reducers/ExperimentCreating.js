@@ -195,6 +195,7 @@ const getScenariosPageable = (state, action) => {
 }
 
 const clearExperimentCreatingResult = (state, action) => {
+
     return state.merge({
         loading: false,
         refreshing: false,
