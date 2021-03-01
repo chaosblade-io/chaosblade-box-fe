@@ -45,8 +45,7 @@ const ExperimentDimensions = [
         key: "kubernetes",
         imgAlt: "kubernetes",
         imgSrc: kubernetesLogo,
-        // content: <KubernetesExperiment/>,
-        content: <h1>Coming soon...</h1>,
+        content: <KubernetesExperiment/>,
     },
     {
         title: "page.experiment.creating.application.dimension.name",

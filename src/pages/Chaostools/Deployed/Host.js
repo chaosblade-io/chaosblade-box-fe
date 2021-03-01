@@ -65,6 +65,9 @@ class Host extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state={
+            query: props.query || {},
+        }
     }
 
     componentDidMount() {
@@ -178,7 +181,8 @@ class Host extends React.Component {
     ];
 
     render() {
-        const {loading, machines, page, total, pageSize, query, getMachinesForHostPageable} = this.props;
+        const {loading, machines, page, total, pageSize, getMachinesForHostPageable} = this.props;
+        const {query} = this.state;
         return (
             <div>
                 {getSearchForm(this)}
