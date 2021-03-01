@@ -87,13 +87,14 @@ class ExperimentCreating extends React.Component {
     }
 
     onTabChange(key) {
-        const {dimension, onDimensionChanged} = this.props;
+        const {dimension, onDimensionChanged, clearResult} = this.props;
         if (key !== dimension) {
             if (key === ExperimentCreatingTabKey.KUBERNETES) {
                 key = ExperimentCreatingTabKey.POD;
             }
             onDimensionChanged({dimension: key});
         }
+        clearResult();
     }
 
     getTabKey() {
@@ -102,8 +103,9 @@ class ExperimentCreating extends React.Component {
         let activeKey = dimension;
         if (_.isEmpty(id) && _.isEmpty(dimension)) {
             activeKey = ExperimentCreatingTabKey.DEFAULT;
-        }
-        if (activeKey === ExperimentCreatingTabKey.CONTAINER || activeKey === ExperimentCreatingTabKey.POD ||
+        } else if (!_.isEmpty(id) && _.isEmpty(dimension)) {
+            activeKey = ''
+        } else if (activeKey === ExperimentCreatingTabKey.CONTAINER || activeKey === ExperimentCreatingTabKey.POD ||
             activeKey === ExperimentCreatingTabKey.NODE) {
             activeKey = ExperimentCreatingTabKey.KUBERNETES;
         }

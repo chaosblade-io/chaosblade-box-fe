@@ -28,11 +28,11 @@ export const INITIAL_STATE = Map({
     experimentName: "",
     collect: false,
     hosts: {
-        page: 1, // 当前页码
+        page: 1,
         pageSize: MAX_PAGE_SIZE,
-        pages: 1, // 总页码数
-        total: 0, // 总记录数
-        machines: [], // 机器列表
+        pages: 1,
+        total: 0,
+        machines: [],
     },
     pods: {
         page: 1,
@@ -49,7 +49,7 @@ export const INITIAL_STATE = Map({
     },
     categories: [],
     experimentId: "",
-    dimension: ExperimentCreatingTabKey.DEFAULT,
+    dimension: '',
     scenarios: {
         loading: false,
         page: 1,
@@ -58,6 +58,7 @@ export const INITIAL_STATE = Map({
         scenarios: [],
     },
     scenarioSelected: null,
+    scenarioSelectedFromExperiment: null,
     machinesSelected: [],
     metricSelected: null,
     metricCategories: [],
@@ -195,7 +196,6 @@ const getScenariosPageable = (state, action) => {
 }
 
 const clearExperimentCreatingResult = (state, action) => {
-
     return state.merge({
         loading: false,
         refreshing: false,
@@ -211,7 +211,6 @@ const clearExperimentCreatingResult = (state, action) => {
         },
         categories: [],
         experimentId: "",
-        dimension: ExperimentCreatingTabKey.DEFAULT,
         scenarios: {
             loading: false,
             page: 1,
@@ -221,6 +220,7 @@ const clearExperimentCreatingResult = (state, action) => {
             scenarios: [],
         },
         scenarioSelected: null,
+        scenarioSelectedFromExperiment: null,
         machinesSelected: [],
         metricSelected: null,
         finished: false,
@@ -230,14 +230,14 @@ const clearExperimentCreatingResult = (state, action) => {
 
 const getExperimentById = (state, action) => {
     const {experimentId, experimentName, dimension, machines, scenarios, metrics} = action.data;
-    let scenarioSelected = null;
+    let scenarioSelectedFromExperiment = null;
     let categoryId = '';
     if (!_.isEmpty(scenarios)) {
         const scenario = scenarios[0];
-        scenarioSelected = scenario;
+        scenarioSelectedFromExperiment = scenario;
         if (!_.isEmpty(scenario.categories)) {
             categoryId = scenario.categories[0].categoryId;
-            scenarioSelected = {...scenarioSelected, categoryId}
+            scenarioSelectedFromExperiment = {...scenarioSelectedFromExperiment, categoryId}
         }
     }
     let metricSelected = null;
@@ -249,7 +249,7 @@ const getExperimentById = (state, action) => {
         dimension: dimension ? dimension : "host",
         experimentId,
         experimentName,
-        scenarioSelected,
+        scenarioSelectedFromExperiment,
         machinesSelected,
         metricSelected,
         scenarioCategoryIdSelected: categoryId

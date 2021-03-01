@@ -40,11 +40,17 @@ class ScenarioStep extends React.Component {
     }
 
     componentDidMount() {
-        const {getScenarioCategories, event, dimension, scenarioSelected, scenarioCategoryIdSelected} = this.props;
+        const {
+            getScenarioCategories,
+            event,
+            dimension,
+            scenarioSelectedFromExperiment,
+            scenarioCategoryIdSelected
+        } = this.props;
         event(this);
         getScenarioCategories({dimension, scenarioCategoryIdSelected});
-        if (scenarioSelected !== null) {
-            this.onScenarioSelect(scenarioSelected.scenarioId);
+        if (scenarioSelectedFromExperiment !== null) {
+            this.onScenarioSelect(scenarioSelectedFromExperiment.scenarioId);
         }
     }
 
@@ -276,7 +282,8 @@ const mapStateToProps = state => {
         page: experiment.scenarios.page,
         pageSize: experiment.scenarios.pageSize,
         total: experiment.scenarios.total,
-        machinesSelected: experiment.machinesSelected
+        machinesSelected: experiment.machinesSelected,
+        scenarioSelectedFromExperiment: experiment.scenarioSelectedFromExperiment,
     }
 }
 
