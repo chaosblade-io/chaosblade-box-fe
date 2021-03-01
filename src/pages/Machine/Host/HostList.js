@@ -31,14 +31,14 @@ const InputSearchFields = [
     {
         key: "hostname",
         name: "hostname",
-        label: "主机名",
-        placeholder: "请填写主机名"
+        label: <FormattedMessage id={"page.machine.host.column.title.hostname"}/>,
+        placeholder: "page.machine.host.column.title.hostname.placeholder"
     },
     {
         key: "ip",
         name: "ip",
-        label: "IP地址",
-        placeholder: "请填写IP地址"
+        label: <FormattedMessage id={"page.machine.host.column.title.ip"}/>,
+        placeholder: "page.machine.host.column.title.ip.placeholder"
     },
 ]
 
@@ -46,8 +46,8 @@ const SelectSearchFields = [
     {
         key: "status",
         name: "status",
-        label: "机器状态",
-        placeholder: "请选择机器状态",
+        label: <FormattedMessage id={"page.machine.host.machineStatus"}/>,
+        placeholder: <FormattedMessage id={"page.machine.host.machineStatus.placeholder"}/>,
         options: [
             MachineConstants.MACHINE_STATUS_ONLINE,
             MachineConstants.MACHINE_STATUS_OFFLINE,
@@ -57,15 +57,16 @@ const SelectSearchFields = [
     {
         key: "chaosed",
         name: "chaosed",
-        label: "是否演练过",
+        label: <FormattedMessage id={"page.machine.host.everChaosed"}/>,
+        placeholder: <FormattedMessage id={"page.machine.search.select.yes.no"}/>,
         options: [
             {
                 code: true,
-                desc: '是',
+                desc: "select.option.true"
             },
             {
                 code: false,
-                desc: '否'
+                desc: "select.option.false"
             }
         ]
     }
@@ -114,7 +115,7 @@ class HostList extends React.Component {
             key: 'heartbeatTime'
         },
         {
-            title: "演练工具",
+            title: <FormattedMessage id={"page.machine.host.column.title.chaosTool"}/>,
             dataIndex: 'chaostools',
             key: 'chaostools',
             render: (text, record) => {
@@ -147,7 +148,7 @@ class HostList extends React.Component {
             dataIndex: 'chaosed',
             key: 'chaosed',
             render: (text) => {
-                return text ? (<span>是</span>) : <span>否</span>
+                return text ? (<span><FormattedMessage id={"select.option.true"}/></span>) : <span><FormattedMessage id={"select.option.false"}/></span>
             }
         },
         {
@@ -201,10 +202,12 @@ class HostList extends React.Component {
                        dataSource={loading ? [] : machines}
                        locale={{
                            emptyText: getEmptyContent(
-                               <span>没有机器数据，请先在
-                                   <Link to={{pathname: '/machine/register', active: 'host'}}>&nbsp;机器注册&nbsp;</Link>页面注册机器
+                               <span><FormattedMessage id={"page.machine.host.list.empty.info1"}/>
+                                   <Link to={{pathname: '/machine/register', active: 'host'}}>
+                                       &nbsp;<FormattedMessage id={"page.machine.host.list.register.machine"}/>&nbsp;</Link>
+                                   <FormattedMessage id={"page.machine.host.list.empty.info2"}/>
                                </span>,
-                               "查找不到机器", query)
+                             <FormattedMessage id={"page.machine.host.list.search.empty"}/>, query)
                        }}
                        loading={loading}
                        pagination={GenPagination(page, pageSize, total,

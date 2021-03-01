@@ -19,6 +19,7 @@ import {Tabs} from "antd";
 import {AndroidOutlined, AppleOutlined} from "@ant-design/icons";
 import PodList from "./PodList";
 import NodeList from "./NodeList";
+import { FormattedMessage } from 'react-intl'
 
 const {TabPane} = Tabs
 
@@ -27,10 +28,10 @@ class KubernetesList extends React.Component {
         return (
             <div>
                 <Tabs defaultActiveKey="pod">
-                    <TabPane tab={<span><AppleOutlined/>Pod 列表</span>} key="pod">
+                    <TabPane tab={<span><AppleOutlined/><FormattedMessage id={"page.machine.k8s.tab.pod"}/> </span>} key="pod">
                         <PodList/>
                     </TabPane>
-                    <TabPane tab={<span> <AndroidOutlined/>Node 列表</span>} key="node">
+                    <TabPane tab={<span> <AndroidOutlined/><FormattedMessage id={"page.machine.k8s.tab.node"}/></span>} key="node">
                         <NodeList/>
                     </TabPane>
                 </Tabs>

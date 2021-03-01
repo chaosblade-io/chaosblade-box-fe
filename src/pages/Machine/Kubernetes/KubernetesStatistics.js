@@ -18,6 +18,7 @@ import React from "react";
 import Actions from "../../../actions/Actions";
 import {connect} from "react-redux";
 import {Card, Col, Row, Statistic} from "antd";
+import { FormattedMessage } from 'react-intl'
 
 class KubernetesStatistics extends React.Component {
 
@@ -39,7 +40,7 @@ class KubernetesStatistics extends React.Component {
                     <Col span={8}>
                         <Card>
                             <Statistic
-                                title="节点总数"
+                                title={<FormattedMessage id={"page.machine.k8s.info.nodeCount"}/>}
                                 value={nodes}
                             />
                         </Card>
@@ -47,7 +48,7 @@ class KubernetesStatistics extends React.Component {
                     <Col span={8}>
                         <Card>
                             <Statistic
-                                title="命名空间总数"
+                                title={<FormattedMessage id={"page.machine.k8s.info.namespaceCount"}/>}
                                 value={namespaces}
                             />
                         </Card>
@@ -55,7 +56,7 @@ class KubernetesStatistics extends React.Component {
                     <Col span={8}>
                         <Card>
                             <Statistic
-                                title="Pods总数"
+                                title={<FormattedMessage id={"page.machine.k8s.info.podCount"}/>}
                                 value={pods}
                             />
                         </Card>
