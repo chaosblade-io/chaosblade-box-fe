@@ -55,6 +55,8 @@ const defaultActive = "pod";
 
 class KubernetesExperiment extends React.Component {
 
+    formRef = React.createRef()
+
     constructor() {
         super();
     }
@@ -194,9 +196,6 @@ class KubernetesExperiment extends React.Component {
                             )
                         }
                     </Form.List>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">提交（临时方案）</Button>
-                    </Form.Item>
                 </Form>
             </div>
         )
@@ -286,6 +285,7 @@ class KubernetesExperiment extends React.Component {
         return (
             dimension ?
                 <ExperimentSteps dimension={dimension}
+                                 machineForm={this.formRef.current}
                                  machineStep={
                                      <div>
                                          {collect ? EnableCollectAlert : DisableCollectAlert}
