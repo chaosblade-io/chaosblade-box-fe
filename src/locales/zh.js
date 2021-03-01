@@ -48,6 +48,7 @@ export const zh = {
     'page.machine.register.ssh': '通过SSH安装',
     'page.machine.register.manual': '手动安装',
     'page.machine.register.helm': '通过Helm安装',
+    'page.machine.register.info.waiting': '敬请期待...',
 
     'page.machine.status.wait': '未安装',
     'page.machine.status.installing': '安装中',

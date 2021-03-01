@@ -48,6 +48,7 @@ export const en = {
     'page.machine.register.ssh': 'SSH',
     'page.machine.register.manual': 'Manual',
     'page.machine.register.helm': 'Helm',
+    'page.machine.register.info.waiting': 'Coming soon...',
 
     'page.machine.status.wait': 'WaitForInstallation',
     'page.machine.status.installing': 'Installing',
