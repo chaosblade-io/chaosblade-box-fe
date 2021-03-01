@@ -131,10 +131,12 @@ class NodeList extends React.Component {
     onFinish = (values) => {
         const {query, page, pageSize, getMachinesForNodePageable} = this.props;
         getMachinesForNodePageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     render() {
-        const {loading, page, pageSize, total, machines, query, getMachinesForNodePageable} = this.props
+        const {loading, page, pageSize, total, machines, getMachinesForNodePageable} = this.props
+        const {query} = this.state;
         return (
             <div>
                 {getSearchForm(this)}

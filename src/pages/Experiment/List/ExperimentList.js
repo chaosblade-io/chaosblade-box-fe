@@ -162,10 +162,12 @@ class ExperimentList extends React.Component {
             }
         }
         getExperimentsPageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     render() {
-        const {loading, experiments, page, total, pageSize, query, getExperimentsPageable} = this.props;
+        const {loading, experiments, page, total, pageSize, getExperimentsPageable} = this.props;
+        const {query} = this.state;
         return (
             <div>
                 {getSearchForm(this)}

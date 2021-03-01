@@ -87,6 +87,7 @@ class ProbeList extends React.Component {
     onFinish = (values) => {
         const {query, page, pageSize, getProbesPageable} = this.props
         getProbesPageable({...query, page: page, pageSize: pageSize, ...values})
+        this.setState({query: values});
     };
 
     installProbe = (probeId) => {
@@ -194,7 +195,8 @@ class ProbeList extends React.Component {
     ]
 
     render() {
-        const {loading, probes, page, total, pageSize, query, getProbesPageable} = this.props;
+        const {loading, probes, page, total, pageSize, getProbesPageable} = this.props;
+        const {query} = this.state;
         return (
             <div>
                 {getSearchForm(this)}
