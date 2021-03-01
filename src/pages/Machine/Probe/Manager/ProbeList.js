@@ -138,52 +138,58 @@ class ProbeList extends React.Component {
             render: (text, record, index) => `${index + 1}`
         },
         {
-            title: "探针ID",
+            title: <FormattedMessage id={"page.machine.host.column.title.agentId"}/>,
             dataIndex: "probeId",
             key: "probeId",
             className: `${styles.hidden}`
         },
-        {title: '主机名', dataIndex: "hostname", key: "hostname"},
+        {title: <FormattedMessage id={"page.machine.host.column.title.hostname"}/>, dataIndex: "hostname", key: "hostname"},
         {title: 'IP', dataIndex: "ip", key: "ip"},
         {
-            title: '探针状态', dataIndex: "status", key: "status",
+            title: <FormattedMessage id={"page.machine.host.column.title.agentStatus"}/>, dataIndex: "status", key: "status",
             render: (text, record) => (
                 <FormattedMessage id={MachineConstants.MACHINE_STATUS[text]}/>
             ),
         },
-        {title: '探针版本', dataIndex: "version", key: "version"},
+        {title: <FormattedMessage id={"page.machine.host.column.title.agentVersion"}/>, dataIndex: "version", key: "version"},
         {
-            title: '探针类型', dataIndex: "agentType", key: "agentType", render: (text, record) => {
+            title: <FormattedMessage id={"page.machine.host.column.title.agentType"}/>, dataIndex: "agentType", key: "agentType", render: (text, record) => {
                 return <span>{ProbeConstants.PROBE_TYPES[text]}</span>
             }
         },
-        {title: '安装时间', dataIndex: "createTime", key: "createTime"},
-        {title: '心跳时间', dataIndex: "heartbeatTime", key: "heartbeatTime"},
+        {title: <FormattedMessage id={"page.machine.host.column.title.installTime"}/>, dataIndex: "createTime", key: "createTime"},
+        {title: <FormattedMessage id={"page.machine.host.column.title.heartbeatTime"}/>, dataIndex: "heartbeatTime", key: "heartbeatTime"},
         {
-            title: '对应机器', dataIndex: "relatedMachine", key: "relatedMachine",
+            title: <FormattedMessage id={"page.machine.host.column.title.relatedMachine"}/>,
+            dataIndex: "relatedMachine", key: "relatedMachine",
             render: (text, record) => (<span><Link to={
                 {
                     pathname: '/machine/list',
                     probeId: record.probeId,
                     active: ProbeConstants.PROBE_TYPES[record.agentType],
                 }
-            }>查看</Link></span>)
+            }><FormattedMessage id={"page.machine.host.column.detail"}/></Link></span>)
         },
         {
-            title: '操作', dataIndex: "operation", key: "operation", render: (text, record) => {
+            title: <FormattedMessage id={"page.machine.host.column.title.operation"}/>, dataIndex: "operation", key: "operation", render: (text, record) => {
                 const probeId = record.probeId;
                 const operations = [];
                 if (record.status === MachineConstants.MACHINE_STATUS_OFFLINE.code ||
                     record.status === MachineConstants.MACHINE_STATUS_INSTALL_FAILED.code) {
-                    operations.push(<Link to={{pathname: '/machine/register'}}>重新安装</Link>);
+                    operations.push(<Link to={{pathname: '/machine/register'}}>
+                        <FormattedMessage id={"page.machine.host.column.operation.reinstall"}/></Link>);
                 }
                 if (record.status === MachineConstants.MACHINE_STATUS_BANING.code) {
-                    operations.push(this.operationWrapperRender(this.unbanProbe.bind(this, probeId), '启用', record.agentType));
-                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId), '卸载', record.agentType));
+                    operations.push(this.operationWrapperRender(this.unbanProbe.bind(this, probeId),
+                      <FormattedMessage id={"page.machine.host.column.operation.unban.name"}/>, record.agentType));
+                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId),
+                      <FormattedMessage id={"page.machine.host.column.operation.uninstall"}/>, record.agentType));
                 }
                 if (record.status === MachineConstants.MACHINE_STATUS_ONLINE.code) {
-                    operations.push(this.operationWrapperRender(this.banProbe.bind(this, probeId), '禁用', record.agentType));
-                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId), '卸载', record.agentType));
+                    operations.push(this.operationWrapperRender(this.banProbe.bind(this, probeId),
+                      <FormattedMessage id={"page.machine.host.column.operation.ban.name"}/>, record.agentType));
+                    operations.push(this.operationWrapperRender(this.uninstallProbe.bind(this, probeId),
+                      <FormattedMessage id={"page.machine.host.column.operation.uninstall"}/>, record.agentType));
                 }
                 return (
                     <Space size="middle">
@@ -203,9 +209,10 @@ class ProbeList extends React.Component {
                 <Table columns={this.TableColumns}
                        dataSource={loading ? [] : probes}
                        locale={{
-                           emptyText: getEmptyContent(<span>探针不存在，请先<Link to={
+                           emptyText: getEmptyContent(<span><FormattedMessage id={"page.machine.host.probe.not.found.guide"}/><Link to={
                                {pathname: '/machine/register'}
-                           }>安装探针</Link></span>, "查找不到探针", query)
+                           }><FormattedMessage id={"page.machine.host.column.operation.install"}/></Link></span>,
+                             <FormattedMessage id={"page.machine.host.probe.not.found"}/>, query)
                        }}
                        rowKey={record => record.probeId}
                        loading={loading}

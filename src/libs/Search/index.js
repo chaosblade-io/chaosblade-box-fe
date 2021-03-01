@@ -61,10 +61,10 @@ export const getFields = (props) => {
 export const getSearch = (self) => {
     return (
         <Col key={"search"} span={6} style={{textAlign: 'right'}}>
-            <Button type="primary" htmlType="submit">搜索</Button>
+            <Button type="primary" htmlType="submit"><FormattedMessage id={"button.text.search"}/></Button>
             <Button style={{margin: '0 8px',}} onClick={() => {
                 self.formRef.current.resetFields();
-            }}>清空</Button>
+            }}><FormattedMessage id={"button.text.clear"}/></Button>
         </Col>
     )
 }
