@@ -275,10 +275,10 @@ class KubernetesExperiment extends React.Component {
     }
 
     onTargetTabChange = current => {
-        const {onDimensionChanged} = this.props;
+        const {onDimensionChanged,clearResult} = this.props;
         this.getMachinesByDimension(current);
-
         onDimensionChanged({dimension: current});
+        clearResult();
     }
 
     render() {
@@ -313,7 +313,6 @@ const mapStateToProps = state => {
         nodeTotal: nodes.total,
         nodes: nodes.machines,
         collect: experiment.collect,
-        // collect: false,
         dimension: experiment.dimension,
         machinesSelected: experiment.machinesSelected
     }
@@ -328,7 +327,7 @@ const mapDispatchToProps = dispatch => {
         queryCollectStatus: () => dispatch(Actions.queryCollectStatus()),
         onDimensionChanged: dimension => dispatch(Actions.onDimensionChanged(dimension)),
         onMachinesChanged: machines => dispatch(Actions.onMachinesChanged(machines)),
-        // clearExperimentState: ()=>dispatch(Actions.clearExperimentState()),
+        clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
     }
 }
 
