@@ -18,6 +18,7 @@ import React from "react";
 import {Card, Col, Row, Statistic} from "antd";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
+import {FormattedMessage} from "react-intl";
 
 class HostStatistics extends React.Component {
 
@@ -34,7 +35,7 @@ class HostStatistics extends React.Component {
                     <Col span={12}>
                         <Card>
                             <Statistic
-                                title="机器总数"
+                                title={<FormattedMessage id={"page.machine.host.count"}/>}
                                 value={totals}
                             />
                         </Card>
@@ -42,7 +43,7 @@ class HostStatistics extends React.Component {
                     <Col span={12}>
                         <Card>
                             <Statistic
-                                title="在线机器数"
+                                title={<FormattedMessage id={"page.machine.host.activeCount"}/>}
                                 value={onlines}
                             />
                         </Card>

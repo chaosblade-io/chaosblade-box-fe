@@ -20,6 +20,7 @@ import {Card, Col, Divider, Row, Statistic} from 'antd';
 import './Application.module.scss'
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
+import {FormattedMessage} from "react-intl";
 
 
 class ApplicationStatistics extends React.Component {
@@ -42,7 +43,7 @@ class ApplicationStatistics extends React.Component {
                         <Col span={8}>
                             <Card>
                                 <Statistic
-                                    title="应用总数"
+                                    title=<FormattedMessage id={"page.machine.app.count"}/>
                                     value={apps}
                                     valueStyle={{color: '#3f8600'}}
                                 />
@@ -51,7 +52,7 @@ class ApplicationStatistics extends React.Component {
                         <Col span={8}>
                             <Card>
                                 <Statistic
-                                    title="分组总数"
+                                    title=<FormattedMessage id={"page.machine.app.groupCount"}/>
                                     value={groups}
                                     valueStyle={{color: '#3f8600'}}
                                     // prefix={<ArrowUpOutlined/>}
@@ -61,7 +62,7 @@ class ApplicationStatistics extends React.Component {
                         <Col span={8}>
                             <Card>
                                 <Statistic
-                                    title="机器总数"
+                                    title=<FormattedMessage id={"page.machine.host.count"}/>
                                     value={machines}
                                     valueStyle={{color: '#3f8600'}}
                                 />
