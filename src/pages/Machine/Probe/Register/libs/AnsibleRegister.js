@@ -115,33 +115,33 @@ class AnsibleRegister extends React.Component {
     }
 
     TableColumns = [
-        {title: '主机信息', dataIndex: "host", key: "host"},
+        {title: <FormattedMessage id={"page.machine.host.info"}/>, dataIndex: "host", key: "host"},
         {
-            title: '注册状态', dataIndex: "status", key: "status", render: text => {
+            title: <FormattedMessage id={"page.machine.host.register.status.title"}/>, dataIndex: "status", key: "status", render: text => {
                 switch (text) {
                     case 0:
-                        return '未安装';
+                        return <FormattedMessage id={"page.machine.host.register.status.option.uninstall"}/>;
                     case 1:
-                        return '安装中';
+                        return <FormattedMessage id={"page.machine.host.register.status.option.installing"}/>;
                     case -1:
-                        return '安装失败';
+                        return <FormattedMessage id={"page.machine.host.register.status.option.installFailed"}/>;
                     case 2:
-                        return '已安装';
+                        return <FormattedMessage id={"page.machine.host.register.status.option.installed"}/>;
                     case 3:
-                        return '离线';
+                        return <FormattedMessage id={"page.machine.host.register.status.option.offline"}/>;
                     case 9:
-                        return '已禁用';
+                        return <FormattedMessage id={"page.machine.host.register.status.disabled"}/>;
                 }
             }
         },
         {
-            title: '操作', dataIndex: "operation", key: "operation", render: (text, record) => {
+            title: <FormattedMessage id={"page.machine.host.column.title.operation"}/>, dataIndex: "operation", key: "operation", render: (text, record) => {
                 const {status} = record
                 return (
                     <Space size="middle">
                         <span>
                             {status === 1 || status === 2 || status === 9 ? '--' :
-                                <a onClick={this.triggerProbe.bind(this, record)}>安装</a>
+                                <a onClick={this.triggerProbe.bind(this, record)}><FormattedMessage id={"page.machine.host.register.install"}/></a>
                             }
                         </span>
                     </Space>
@@ -170,29 +170,35 @@ class AnsibleRegister extends React.Component {
         const {current, appSwitch, bladeDeployedSwitch, formVisible, selectedRowKeys} = this.state;
         return (
             <Steps direction="vertical" current={current}>
-                <Step title="配置Ansible" description={
+                <Step title={<FormattedMessage id={"page.machine.ansible.configuration"}/>} description={
                     <div>
-                        请在控制台服务所部署的机器配置
+                        <FormattedMessage id={"page.machine.ansible.configuration.info1"}/>
                         <a href={"https://docs.ansible.com/ansible/latest/index.html"}
-                           target="_blank">&nbsp;Ansible&nbsp;</a>，配置完成后，点击下方的按钮同步配置信息到平台。&nbsp;&nbsp;
-                        <Button size={"small"} type="primary" onClick={() => this.syncAnsibleHosts()}>同步机器信息</Button>
+                           target="_blank">&nbsp;Ansible&nbsp;</a><FormattedMessage id={"page.machine.ansible.configuration.info2"}/>&nbsp;&nbsp;
+                        <Button size={"small"} type="primary" onClick={() => this.syncAnsibleHosts()}>
+                            <FormattedMessage id={"page.machine.ansible.machine.sync"}/></Button>
                     </div>
                 }>
                 </Step>
-                <Step title="选择机器安装" description={
+                <Step title=<FormattedMessage id={"page.machine.register.install.title"}/> description={
                     <div>
                         <span>
-                            选择下列机器进行安装，在安装时可以触发
-                            &nbsp;<Switch checkedChildren="开启" unCheckedChildren="关闭" defaultChecked={appSwitch}
-                                          onChange={this.applicationSwitch}/>&nbsp;
-                            开关选择是否开启或关闭应用信息配置，更多的应用信息介绍详见：
+                            <FormattedMessage id={"page.machine.register.install.info.trigger"}/>&nbsp;
+                            <Switch checkedChildren={<FormattedMessage id={"button.text.on"}/>}
+                                    unCheckedChildren={<FormattedMessage id={"button.text.off"}/>}
+                                    defaultChecked={appSwitch}
+                                    onChange={this.applicationSwitch}/>&nbsp;
+                            <FormattedMessage id={"page.machine.register.install.info.moreDetail"}/>
                             <a onClick={() => {
-                                console.log("跳转到应用接入页面")
-                            }}>应用接入说明</a>。
+                                console.log(<FormattedMessage id={"page.machine.register.redirect.installPage"}/>)
+                            }}><FormattedMessage id={"page.machine.register.redirect.installInstruction"}/></a>。
                             <br/>
-                            所选择的机器默认会&nbsp;<Switch checkedChildren="开启" unCheckedChildren="关闭"
-                                                   defaultChecked={bladeDeployedSwitch}
-                                                   onChange={this.bladeDeployedSwitch}/>&nbsp;ChaosBlade 工具部署，可以选择开启或关闭来控制是否部署ChaosBlade工具。
+                            <FormattedMessage id={"page.machine.register.install.info.defaultStatus"}/>&nbsp;
+                            <Switch checkedChildren={<FormattedMessage id={"button.text.on"}/>}
+                                    unCheckedChildren={<FormattedMessage id={"button.text.off"}/>}
+                                    defaultChecked={bladeDeployedSwitch}
+                                    onChange={this.bladeDeployedSwitch}/>&nbsp;
+                            <FormattedMessage id={"page.machine.register.install.info.chaosBlade"}/>
                         </span>
                         <ApplicationForm visible={formVisible}
                                          hosts={selectedRowKeys}
@@ -204,26 +210,26 @@ class AnsibleRegister extends React.Component {
                                rowSelection={{selectedRowKeys, onChange: this.onSelectChange,}}
                                rowKey={record => record.host}
                                locale={{
-                                   emptyText: getEmptyContent(<span><a>机器不存在</a></span>, "查找不到机器", null)
+                                   emptyText: getEmptyContent(<span><a><FormattedMessage id={"page.machine.register.noMachine"}/></a></span>, "查找不到机器", null)
                                }}
                                pagination={false}
                         />
                     </div>
                 }/>
-                <Step title="查看安装详情" description={
+                <Step title={<FormattedMessage id={"page.machine.ansible.view.install.info"}/>} description={
                     <div>
-                        定时刷新结果，可以在探针管理页面查看
+                        <FormattedMessage id={"page.machine.ansible.info.notice"}/>
                         <Table columns={TableColumnsResult}
                                dataSource={probesInstallations}
-                               locale={{emptyText: <span>无返回结果</span>}}
+                               locale={{emptyText: <span><FormattedMessage id={"page.machine.host.noResults"}/></span>}}
                                rowKey={record => record.probeId}
                                pagination={false}
                         />
-                        你也可以点击
+                        <FormattedMessage id={"page.machine.host.bottom.click"}/>
                         <Link to={{pathname: '/machine/probe'}}>
-                            详情
+                            <FormattedMessage id={"page.machine.host.bottom.detail"}/>
                         </Link>
-                        查看全部的探针列表
+                        <FormattedMessage id={"page.machine.host.bottom.listAll"}/>
                     </div>
                 }/>
             </Steps>
@@ -234,18 +240,18 @@ class AnsibleRegister extends React.Component {
 
 const TableColumnsResult = [
     {
-        title: '主机信息', dataIndex: "host", key: "host", render: (text, record) => {
+        title: <FormattedMessage id={"page.machine.host.info"}/>, dataIndex: "host", key: "host", render: (text, record) => {
             let host = record.host || record.ip || record.hostname;
             return (<span>{host}</span>);
         }
     },
     {
-        title: '探针状态', dataIndex: "status", key: "status", render: (text, record) => (
+        title: <FormattedMessage id={"page.machine.host.column.title.agentStatus"}/> , dataIndex: "status", key: "status", render: (text, record) => (
             <FormattedMessage id={MachineConstants.MACHINE_STATUS[text]}/>
         ),
     },
     {
-        title: '错误信息', dataIndex: "error", key: "error"
+        title: <FormattedMessage id={"page.machine.host.errorMessage"}/>, dataIndex: "error", key: "error"
     },
 ]
 

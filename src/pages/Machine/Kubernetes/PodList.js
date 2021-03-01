@@ -30,25 +30,26 @@ const PodInputSearchField = [
     {
         key: "node",
         name: "node",
-        label: "节点名",
-        placeholder: "请填写节点名"
+        label: <FormattedMessage id={"page.machine.k8s.node.name"}/>,
+        placeholder: "page.machine.k8s.node.name.placeholder"
     },
     {
         key: "namespace",
         name: "namespace",
-        label: "Namespace",
-        placeholder: "请填写 Namespace"
+        label: <FormattedMessage id={"page.machine.k8s.namespace.name"}/>,
+        placeholder: "page.machine.k8s.namespace.name.placeholder"
     },
     {
         key: "pod",
         name: "pod",
-        label: "Pod 名",
-        placeholder: "请填写 Pod 名"
-    }, {
+        label: <FormattedMessage id={"page.machine.k8s.pod.name"}/>,
+        placeholder: "page.machine.k8s.pod.name.placeholder"
+    },
+    {
         key: "ip",
         name: "ip",
-        label: "Pod IP",
-        placeholder: "请填写 Pod IP"
+        label: <FormattedMessage id={"page.machine.k8s.pod.ip"}/>,
+        placeholder: "page.machine.k8s.pod.ip.placeholder"
     }
 ]
 
@@ -56,8 +57,8 @@ const SelectSearchField = [
     {
         key: "status",
         name: "status",
-        label: "状态",
-        placeholder: "请选择状态",
+        label: <FormattedMessage id={"page.machine.k8s.pod.status"}/>,
+        placeholder: <FormattedMessage id={"page.machine.k8s.pod.status.placeholder"}/>,
         options: [
             MachineConstants.MACHINE_STATUS_ONLINE,
             MachineConstants.MACHINE_STATUS_BANING,
@@ -86,7 +87,7 @@ class PodList extends React.Component {
             className: `${styles.hidden}`
         },
         {
-            title: '节点名',
+            title: <FormattedMessage id={"page.machine.k8s.node.name"}/>,
             dataIndex: 'nodeName',
             key: 'nodeName',
         },
@@ -96,17 +97,17 @@ class PodList extends React.Component {
             key: 'namespace',
         },
         {
-            title: 'Pod 名称',
+            title: <FormattedMessage id={"page.machine.k8s.pod.name"}/>,
             dataIndex: 'podName',
             key: 'podName',
         },
         {
-            title: 'Pod IP',
+            title: <FormattedMessage id={"page.machine.k8s.pod.ip"}/>,
             dataIndex: 'podIp',
             key: 'podIp',
         },
         {
-            title: 'Pod 状态',
+            title: <FormattedMessage id={"page.machine.k8s.pod.status"}/>,
             dataIndex: 'status',
             key: 'status',
             render: (text, record) => (
@@ -114,7 +115,7 @@ class PodList extends React.Component {
             ),
         },
         {
-            title: '容器列表',
+            title: <FormattedMessage id={"page.machine.k8s.pod.containerList"}/>,
             dataIndex: 'containers',
             key: 'containers',
             render: text => {
@@ -129,20 +130,20 @@ class PodList extends React.Component {
             }
         },
         {
-            title: '是否演练过',
+            title: <FormattedMessage id={"page.machine.host.everChaosed"}/>,
             dataIndex: 'chaosed',
             key: 'chaosed',
             render: (text) => {
-                return text ? (<span>是</span>) : <span>否</span>
+                return text ? (<span><FormattedMessage id={"select.option.true"}/></span>) : <span><FormattedMessage id={"select.option.false"}/></span>
             }
         },
         {
-            title: '最近演练时间',
+            title: <FormattedMessage id={"page.machine.host.lastChaosedTime"}/>,
             dataIndex: 'chaosTime',
             key: 'chaosTime',
         },
         {
-            title: '操作',
+            title: <FormattedMessage id={"page.machine.host.column.title.operation"}/>,
             dataIndex: 'operation',
             key: 'operation',
             render: (text, record) => {

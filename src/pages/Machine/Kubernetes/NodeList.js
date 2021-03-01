@@ -29,14 +29,14 @@ const NodeInputSearchField = [
     {
         key: "node",
         name: "node",
-        label: "节点名",
-        placeholder: "请填写节点名"
+        label: <FormattedMessage id={"page.machine.k8s.node.name"}/>,
+        placeholder: "page.machine.k8s.node.name.placeholder"
     },
     {
         key: "ip",
         name: "ip",
-        label: "Node IP",
-        placeholder: "请填写 Node IP"
+        label: <FormattedMessage id={"page.machine.k8s.node.ip"}/>,
+        placeholder: "page.machine.k8s.node.ip.placeholder"
     }
 ]
 
@@ -44,8 +44,8 @@ const SelectSearchField = [
     {
         key: "status",
         name: "status",
-        label: "状态",
-        placeholder: "请选择状态",
+        label: <FormattedMessage id={"page.machine.k8s.node.status"}/>,
+        placeholder: <FormattedMessage id={"page.machine.k8s.node.status.placeholder"}/>,
         options: [
             MachineConstants.MACHINE_STATUS_ONLINE,
             MachineConstants.MACHINE_STATUS_BANING,
@@ -72,17 +72,17 @@ class NodeList extends React.Component {
             className: `${styles.hidden}`
         },
         {
-            title: '节点名',
+            title: <FormattedMessage id={"page.machine.k8s.node.name"}/>,
             dataIndex: 'nodeName',
             key: 'nodeName',
         },
         {
-            title: '节点IP',
+            title: <FormattedMessage id={"page.machine.k8s.node.ip"}/>,
             dataIndex: 'nodeIp',
             key: 'nodeIp',
         },
         {
-            title: '节点状态',
+            title: <FormattedMessage id={"page.machine.k8s.node.status"}/>,
             dataIndex: 'status',
             key: 'status',
             render: (text, record) => (
@@ -90,20 +90,20 @@ class NodeList extends React.Component {
             ),
         },
         {
-            title: '是否演练过',
+            title: <FormattedMessage id={"page.machine.host.everChaosed"}/>,
             dataIndex: 'chaosed',
             key: 'chaosed',
             render: text => {
-                return text ? '是' : '否'
+                return text ? <FormattedMessage id={"select.option.true"}/> : <FormattedMessage id={"select.option.false"}/>
             },
         },
         {
-            title: '最近演练时间',
+            title: <FormattedMessage id={"page.machine.host.lastChaosedTime"}/>,
             dataIndex: 'chaosTime',
             key: 'chaosTime',
         },
         {
-            title: '操作',
+            title: <FormattedMessage id={"page.machine.host.column.title.operation"}/>,
             key: 'action',
             render: (text, record) => {
                 return (

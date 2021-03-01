@@ -30,14 +30,14 @@ const InputSearchFields = [
     {
         key: "hostname",
         name: "hostname",
-        label: "主机名",
-        placeholder: "请填写主机名"
+        label: <FormattedMessage id={"page.machine.host.column.title.hostname"}/>,
+        placeholder: "page.machine.host.column.title.hostname.placeholder"
     },
     {
         key: "ip",
         name: "ip",
-        label: "IP地址",
-        placeholder: "请填写IP地址"
+        label: <FormattedMessage id={"page.machine.host.column.title.ip"}/>,
+        placeholder: "page.machine.host.column.title.ip.placeholder"
     },
 ]
 
@@ -45,8 +45,8 @@ const SelectSearchFields = [
     {
         key: "status",
         name: "status",
-        label: "探针状态",
-        placeholder: "请选择探针状态",
+        label: <FormattedMessage id={"page.machine.host.column.title.agentStatus"}/>,
+        placeholder: <FormattedMessage id={"page.machine.host.column.title.agentStatus.placeholder"}/>,
         options: [
             MachineConstants.MACHINE_STATUS_ONLINE,
             MachineConstants.MACHINE_STATUS_OFFLINE,
@@ -56,7 +56,8 @@ const SelectSearchFields = [
     {
         key: "agentType",
         name: "agentType",
-        label: "探针类型",
+        label: <FormattedMessage id={"page.machine.host.column.title.agentType"}/>,
+        placeholder: <FormattedMessage id={"page.machine.host.column.title.agentType.placeholder"}/>,
         options: [
             ProbeConstants.PROBE_TYPE_HOST,
             ProbeConstants.PROBE_TYPE_KUBERNETES,
@@ -209,7 +210,7 @@ class ProbeList extends React.Component {
                 <Table columns={this.TableColumns}
                        dataSource={loading ? [] : probes}
                        locale={{
-                           emptyText: getEmptyContent(<span><FormattedMessage id={"page.machine.host.probe.not.found.guide"}/><Link to={
+                           emptyText: getEmptyContent(<span><FormattedMessage id={"page.machine.host.agent.not.found.guide"}/><Link to={
                                {pathname: '/machine/register'}
                            }><FormattedMessage id={"page.machine.host.column.operation.install"}/></Link></span>,
                              <FormattedMessage id={"page.machine.host.probe.not.found"}/>, query)

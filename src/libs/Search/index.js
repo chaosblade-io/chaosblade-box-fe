@@ -28,16 +28,20 @@ export const getFields = (props) => {
     InputSearchFields.map((item) => {
         children.push(
             <Col span={6} key={item.key}>
-                <Form.Item name={`${item.name}`} label={`${item.label}`}>
-                    <Input placeholder={item.placeholder}/>
+                <Form.Item name={item.name} label={item.label}>
+                    <FormattedMessage id={item.placeholder}>
+                        {
+                            msg=><Input placeholder={msg}/>
+                        }
+                    </FormattedMessage>
                 </Form.Item>
-            </Col>,
+            </Col>
         );
     });
     SelectSearchFields.map(item => {
         children.push(
             <Col span={6} key={item.key}>
-                <Form.Item name={`${item.name}`} label={`${item.label}`}>
+                <Form.Item name={item.name} label={item.label}>
                     <Select
                         showSearch
                         placeholder={item.placeholder}

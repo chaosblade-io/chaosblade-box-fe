@@ -29,27 +29,27 @@ const InputSearchFields = [
     {
         key: "appName",
         name: "appName",
-        label: "应用名",
-        placeholder: "请填写应用名"
+        label: <FormattedMessage id={"page.machine.app.name"}/>,
+        placeholder: "page.machine.app.name.placeholder"
     },
     {
         key: "groupName",
         name: "groupName",
-        label: "应用分组",
-        placeholder: "请填写应用分组名"
+        label: <FormattedMessage id={"page.machine.app.group"}/>,
+        placeholder: "page.machine.app.group.placeholder"
 
     },
     {
         key: "hostname",
         name: "hostname",
-        label: "主机名",
-        placeholder: "请填写主机名"
+        label: <FormattedMessage id={"page.machine.host.column.title.hostname"}/>,
+        placeholder: "page.machine.host.column.title.hostname.placeholder"
     },
     {
         key: "ip",
         name: "ip",
-        label: "机器 IP",
-        placeholder: "请填写机器 IP"
+        label: <FormattedMessage id={"page.machine.host.column.title.ip"}/>,
+        placeholder: "page.machine.host.column.title.ip.placeholder"
     }
 ]
 
@@ -57,8 +57,8 @@ const SelectSearchFields = [
     {
         key: "type",
         name: "type",
-        label: "机器类型",
-        placeholder: "请选择机器类型",
+        label: <FormattedMessage id={"page.machine.app.machineType"}/>,
+        placeholder: <FormattedMessage id={"page.machine.app.machineType.placeholder"}/>,
         options: [
             MachineConstants.MACHINE_TYPE_HOST,
             MachineConstants.MACHINE_TYPE_POD,
@@ -68,8 +68,8 @@ const SelectSearchFields = [
     {
         key: "status",
         name: "status",
-        label: "机器状态",
-        placeholder: "请选择机器状态",
+        label: <FormattedMessage id={"page.machine.app.machineStatus"}/>,
+        placeholder: <FormattedMessage id={"page.machine.app.machineStatus.placeholder"}/>,
         options: [
             MachineConstants.MACHINE_STATUS_ONLINE,
             MachineConstants.MACHINE_STATUS_OFFLINE,
@@ -96,38 +96,38 @@ class ApplicationList extends React.Component {
             className: `${styles.hidden}`
         },
         {
-            title: '机器名',
+            title: <FormattedMessage id={"page.machine.host.column.title.hostname"}/>,
             dataIndex: 'hostname',
             key: 'hostname',
             render: text => <a>{text}</a>,
         },
         {
-            title: 'IP',
+            title: <FormattedMessage id={"page.machine.host.column.title.ip"}/>,
             dataIndex: 'ip',
             key: 'ip',
         },
         {
-            title: '应用分组',
+            title: <FormattedMessage id={"page.machine.app.group"}/>,
             dataIndex: 'appName',
             key: 'appName',
         },
         {
-            title: '应用',
+            title: <FormattedMessage id={"page.machine.app.name"}/>,
             dataIndex: 'groupName',
             key: 'groupName',
         },
         {
-            title: '类型',
+            title: <FormattedMessage id={"page.machine.app.machineType"}/>,
             dataIndex: 'type',
             key: 'type',
         },
         {
-            title: '心跳',
+            title: <FormattedMessage id={"page.machine.host.column.title.heartbeatTime"}/>,
             dataIndex: 'modifyTime',
             key: 'modifyTime',
         },
         {
-            title: '状态',
+            title: <FormattedMessage id={"page.machine.app.machineStatus"}/>,
             dataIndex: 'status',
             key: 'status',
             render: (text, record) => (
@@ -135,20 +135,20 @@ class ApplicationList extends React.Component {
             ),
         },
         {
-            title: '是否演练过',
+            title: <FormattedMessage id={"page.machine.host.column.title.chaosed"}/>,
             dataIndex: 'chaosed',
             key: 'chaosed',
             render: text => {
-                return text ? '是' : '否'
+                return text ? <FormattedMessage id={"select.option.true"}/> : <FormattedMessage id={"select.option.false"}/>
             },
         },
         {
-            title: '上次演练时间',
+            title: <FormattedMessage id={"page.machine.host.lastChaosedTime"}/>,
             dataIndex: 'chaosTime',
             key: 'chaosTime',
         },
         {
-            title: '操作',
+            title: <FormattedMessage id={"page.machine.host.column.title.operation"}/>,
             key: 'action',
             render: (text, record) => {
                 return (
