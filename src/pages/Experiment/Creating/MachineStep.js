@@ -64,7 +64,7 @@ class MachineStep extends React.Component {
                 break;
             case ExperimentCreatingTabKey.NODE:
                 machinesSelected.map(machine => {
-                    keys.push(machine);
+                    keys.push(machine.nodeName);
                 });
                 break;
             case ExperimentCreatingTabKey.POD:

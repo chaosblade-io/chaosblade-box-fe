@@ -135,7 +135,7 @@ class ExperimentDetail extends React.Component {
                                         m= machine.ip;
                                         break;
                                     case ExperimentCreatingTabKey.NODE:
-                                        m= machine;
+                                        m= machine.nodeName;
                                         break;
                                     case ExperimentCreatingTabKey.POD:
                                         m= _.join([machine.namespace, machine.podName], '/');
