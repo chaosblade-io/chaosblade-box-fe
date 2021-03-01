@@ -15,6 +15,9 @@
  */
 
 export const zh = {
+    'button.text.search': '搜索',
+    'button.text.clear': '清空',
+
     'menu.overview': "概览",
     'menu.machine': '机器管理',
     'menu.machine.list': '机器列表',
@@ -40,6 +43,10 @@ export const zh = {
     'page.machine.tab.host': '主机维度',
     'page.machine.tab.application': '应用维度',
     'page.machine.tab.kubernetes': 'Kubernetes 维度',
+
+    'page.machine.input.prefix': '请填写',
+    'page.machine.select.prefix': '请选择',
+
     'page.machine.register.tab.host': '主机注册',
     'page.machine.register.tab.kubernetes': 'Kubernetes注册',
     'page.machine.register.tab.application': '应用接入说明',
@@ -64,18 +71,30 @@ export const zh = {
     'page.machine.host.column.title.machineId': '机器ID',
     'page.machine.host.column.title.hostname': '机器名',
     'page.machine.host.column.title.version': '系统版本',
+    'page.machine.host.column.title.agentStatus': '探针状态',
+    'page.machine.host.column.title.agentVersion': '探针版本',
+    'page.machine.host.column.title.agentType': '探针类型',
+    'page.machine.host.column.title.agentId': '探针Id',
+    'page.machine.host.column.title.installTime': '安装时间',
     'page.machine.host.column.title.heartbeatTime': '心跳时间',
+    'page.machine.host.column.title.relatedMachine': '对应机器',
     'page.machine.host.column.title.chaosed': '是否演练过',
     'page.machine.host.column.title.chaosTime': '演练时间',
     'page.machine.host.column.title.operation': '操作',
     'page.machine.host.column.title.chaosRunning': '是否演练中',
 
+    'page.machine.host.column.operation.reinstall': '重新安装',
+    'page.machine.host.column.operation.uninstall': '卸载',
+    'page.machine.host.column.operation.install': '安装',
     'page.machine.host.column.operation.ban.name': '禁用',
     'page.machine.host.column.operation.unban.name': '解禁',
     'page.machine.host.column.operation.ban.pop.title': '确定要禁用吗？',
     'page.machine.host.column.operation.unban.pop.title': '确定要解禁吗？',
     'page.machine.host.column.operation.experiment.creating': '创建实验',
     'page.machine.host.column.operation.experiment.running': '演练中...',
+    'page.machine.host.column.detail': '查看',
+    'page.machine.host.probe.not.found': '查找不到探针',
+    'page.machine.host.probe.not.found.guide': '探针不存在，请先 ',
 
     'page.experiment.creating.host.dimension.name': '主机维度',
     'page.experiment.creating.application.dimension.name': '应用维度',
