@@ -95,6 +95,10 @@ class ExperimentCreating extends React.Component {
             onDimensionChanged({dimension: key});
         }
         clearResult();
+        if (key === ExperimentCreatingTabKey.HOST) {
+            const {page, getMachinesForHostPageable} = this.props
+            getMachinesForHostPageable({page, pageSize: 24});
+        }
     }
 
     getTabKey() {
@@ -175,6 +179,7 @@ const mapDispatchToProps = dispatch => {
         clearResult: () => dispatch(Actions.clearExperimentCreatingResult()),
         onDimensionChanged: dimension => dispatch(Actions.onDimensionChanged(dimension)),
         getExperimentById: experimentId => dispatch(Actions.getExperimentById(experimentId)),
+        getMachinesForHostPageable: query => dispatch(Actions.getMachinesForHostPageable({...query, original: "host"})),
     }
 }
 
