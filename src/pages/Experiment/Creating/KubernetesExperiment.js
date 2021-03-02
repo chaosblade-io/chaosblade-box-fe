@@ -17,11 +17,12 @@
 import React from "react";
 import Actions from "../../../actions/Actions";
 import {
-    AndroidOutlined,
-    AppleOutlined,
+    BorderOutlined,
+    ContainerOutlined,
     MinusCircleOutlined,
     PlusOutlined,
-    QuestionCircleOutlined
+    QuestionCircleOutlined,
+    RobotOutlined
 } from "@ant-design/icons";
 import {Alert, Button, Form, Input, Layout, Menu, Space, Tabs, Tooltip} from "antd";
 import {connect} from "react-redux";
@@ -55,7 +56,9 @@ const defaultActive = "pod";
 
 class KubernetesExperiment extends React.Component {
 
-    formRef = React.createRef()
+    containerFormRef = React.createRef();
+    podFormRef = React.createRef();
+    nodeFormRef = React.createRef();
 
     constructor() {
         super();
@@ -127,11 +130,11 @@ class KubernetesExperiment extends React.Component {
         );
     }
 
-    collectDisabledRender = () => {
+    collectDisabledRender = (formRef) => {
         const {dimension, machinesSelected} = this.props;
         return (
             <div>
-                <Form ref={this.formRef} name="control-ref" onFinish={this.onFinish}
+                <Form ref={formRef} name="control-ref" onFinish={this.onFinish}
                       initialValues={{machines: machinesSelected}}>
                     <Form.List name={'machines'}>
                         {
@@ -252,19 +255,19 @@ class KubernetesExperiment extends React.Component {
         return (
             dimension ?
                 <Tabs defaultActiveKey={dimension} onChange={this.onTargetTabChange}>
-                    <TabPane tab={<span><AndroidOutlined/>创建 Container 实验</span>} key="container">
+                    <TabPane tab={<span><ContainerOutlined/>创建 Container 实验</span>} key="container">
                         {
-                            collect ? this.collectContainersEnabledRender() : this.collectDisabledRender()
+                            collect ? this.collectContainersEnabledRender() : this.collectDisabledRender(this.containerFormRef)
                         }
                     </TabPane>
-                    <TabPane tab={<span><AppleOutlined/>创建 POD 实验</span>} key="pod">
+                    <TabPane tab={<span><BorderOutlined/>创建 POD 实验</span>} key="pod">
                         {
-                            collect ? this.collectPodsEnabledRender() : this.collectDisabledRender()
+                            collect ? this.collectPodsEnabledRender() : this.collectDisabledRender(this.podFormRef)
                         }
                     </TabPane>
-                    <TabPane tab={<span> <AndroidOutlined/>创建 NODE 实验</span>} key="node">
+                    <TabPane tab={<span><RobotOutlined/>创建 NODE 实验</span>} key="node">
                         {
-                            collect ? this.collectNodesEnabledRender() : this.collectDisabledRender()
+                            collect ? this.collectNodesEnabledRender() : this.collectDisabledRender(this.nodeFormRef)
                         }
                     </TabPane>
                 </Tabs>
@@ -274,7 +277,7 @@ class KubernetesExperiment extends React.Component {
     }
 
     onTargetTabChange = current => {
-        const {onDimensionChanged,clearResult} = this.props;
+        const {onDimensionChanged, clearResult} = this.props;
         this.getMachinesByDimension(current);
         onDimensionChanged({dimension: current});
         clearResult();
@@ -282,10 +285,22 @@ class KubernetesExperiment extends React.Component {
 
     render() {
         const {collect, dimension} = this.props;
+        let formRef = null;
+        switch (dimension) {
+            case ExperimentCreatingTabKey.NODE:
+                formRef = this.nodeFormRef;
+                break;
+            case ExperimentCreatingTabKey.POD:
+                formRef = this.podFormRef;
+                break;
+            case ExperimentCreatingTabKey.CONTAINER:
+                formRef = this.containerFormRef;
+                break;
+        }
         return (
             dimension ?
                 <ExperimentSteps dimension={dimension}
-                                 machineForm={this.formRef.current}
+                                 machineForm={formRef.current}
                                  machineStep={
                                      <div>
                                          {collect ? EnableCollectAlert : DisableCollectAlert}
@@ -296,7 +311,6 @@ class KubernetesExperiment extends React.Component {
                 <div></div>
         );
     }
-
 }
 
 const mapStateToProps = state => {
