@@ -98,11 +98,12 @@ class ExperimentCreating extends React.Component {
     }
 
     getTabKey() {
-        const {dimension} = this.props;
+        const {dimension, onDimensionChanged} = this.props;
         const id = ExperimentCreating.getExperimentId();
         let activeKey = dimension;
         if (_.isEmpty(id) && _.isEmpty(dimension)) {
             activeKey = ExperimentCreatingTabKey.DEFAULT;
+            onDimensionChanged({dimension: activeKey});
         } else if (!_.isEmpty(id) && _.isEmpty(dimension)) {
             activeKey = ''
         } else if (activeKey === ExperimentCreatingTabKey.CONTAINER || activeKey === ExperimentCreatingTabKey.POD ||
