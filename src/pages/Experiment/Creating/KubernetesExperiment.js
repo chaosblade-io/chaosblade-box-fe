@@ -300,7 +300,7 @@ class KubernetesExperiment extends React.Component {
         return (
             dimension ?
                 <ExperimentSteps dimension={dimension}
-                                 machineForm={formRef.current}
+                                 machineForm={formRef ? formRef.current : null}
                                  machineStep={
                                      <div>
                                          {collect ? EnableCollectAlert : DisableCollectAlert}
