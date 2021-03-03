@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import {FormattedMessage} from "react-intl";
 import React from "react";
 import {Form, Modal, Select, Tree, TreeSelect} from "antd";
 import _ from 'lodash'
@@ -89,9 +89,9 @@ class ScenarioInfoForm extends React.Component {
             <Modal
                 confirmLoading={loading}
                 visible={visible}
-                title="修改场景信息"
-                okText="确定"
-                cancelText="取消"
+                title={<FormattedMessage id={"page.scenario.column.detail.modify_scenario_info"}/>}
+                okText={<FormattedMessage id={"page.scenario.column.detail.ok"}/>}
+                cancelText={<FormattedMessage id={"page.scenario.column.detail.cancel"}/>}
                 onCancel={this.onCancel}
                 onOk={this.onOK}
             >
@@ -102,14 +102,14 @@ class ScenarioInfoForm extends React.Component {
                     initialValues={{supportScopeTypes: supportScopeTypes, categoryIds: categoryKeys}}
                 >
                     <Form.Item
-                        label="场景维度"
+                        label={<FormattedMessage id={"page.scenario.column.scenario_dimension"}/>}
                         name="supportScopeTypes"
-                        rules={[{required: true, message: '请选择场景维度'}]}
+                        rules={[{required: true, message: <FormattedMessage id={"page.scenario.prompt.scenario_dimension_error"}/>}]}
                     >
                         <Select
                             mode="multiple"
                             size={"middle"}
-                            placeholder="选择场景维度"
+                            placeholder={<FormattedMessage id={"page.scenario.prompt.scenario_dimension"}/>}
                             onChange={this.handleChange}
                             style={{width: '100%'}}
                         >
@@ -123,14 +123,14 @@ class ScenarioInfoForm extends React.Component {
                                 {ScenarioConstants.SUPPORT_NODE_SCOPE.desc}</Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item label="选择场景目录" name="categoryIds"
-                               rules={[{required: true, message: '请选择场景目录'}]}>
+                    <Form.Item label={<FormattedMessage id={"page.scenario.column.scenario_category"}/>} name="categoryIds"
+                               rules={[{required: true, message: <FormattedMessage id={"page.scenario.prompt.scenario_category_error"}/>}]}>
                         <TreeSelect
                             treeCheckable
                             treeDefaultExpandAll
                             showSearch={true}
                             showCheckedStrategy={SHOW_CHILD}
-                            placeholder={"请选择所归属的场景目录"}
+                            placeholder={<FormattedMessage id={"page.scenario.prompt.scenario_category"}/>}
                             style={{width: '100%'}}
                         >
                             {this.treeNode(categories)}
