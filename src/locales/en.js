@@ -203,4 +203,50 @@ export const en = {
     'page.experiment.creating.application.dimension.name': 'ApplicationDimension',
     'page.experiment.creating.kubernetes.dimension.name': 'KubernetesDimension',
 
+
+    //scenario column title  
+    'page.scenario.column.title.unique_code':  'UniqueCode',
+    'page.scenario.column.title.scenario_name': 'ScenarioName',
+    'page.scenario.column.title.status': 'Status',
+    'page.scenario.column.title.version': 'Version',
+    'page.scenario.column.title.usage_times': 'Usage Times',
+    'page.scenario.column.title.parameters': 'Parameters',
+    'page.scenario.column.title.operation':  'Opeation',
+    'page.scenario.column.title.description':  'Description',
+    'page.scenario.column.title.category':  'Category',
+    'page.scenario.column.title.alias':  'Alias',
+    'page.scenario.column.title.source': 'Source',
+    'page.scenario.column.title.component':  'Component',
+    'page.scenario.column.scenario_dimension': "Scenario  dimension",
+    'page.scenario.column.scenario_category': "Scenario category",
+
+    //scenario column detail
+    'page.scenario.column.detail.enable':  'Enable',
+    'page.scenario.column.detail.disable':  'Disable',
+    'page.scenario.column.detail.edit':  'Edit',
+    'page.scenario.column.detail.not_avaliable':  'Not Avaliable',
+    'page.scenario.column.detail.to_be_released': 'To be released',
+    'page.scenario.column.detail.released': 'released',
+    'page.scenario.column.detail.cancel':  'Cancel',
+    'page.scenario.column.detail.ok':  'Ok',
+    'page.scenario.column.detail.modify_scenario_info':  'Please modify scenario info',
+
+    //scenario text prompt
+    'page.scenario.prompt.scenario_name' : "Scenario name",
+    'page.scenario.prompt.unique_code' : "Unique code",
+    'page.scenario.prompt.status' : "Please select status",
+    'page.scenario.prompt.scenario_dimension': "Scenario dimension",
+    'page.scenario.prompt.scenario_category': "Scenario category",
+    'page.scenario.prompt.scenario_dimension_error': "please select scenario dimension",
+    'page.scenario.prompt.scenario_category_error': "please select scenario category",
+
+
+
+    //scenario category
+    'page.scenario.category.java': 'Java Application',
+  
+
+
+
+
 }

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import {FormattedMessage} from "react-intl";
 export const ScenarioConstants = {
 
-    STATUS_READY: {code: 0, desc: '待发布'},
-    STATUS_PUBLISH: {code: 1, desc: '已发布'},
+    STATUS_READY: {code: 0, desc:  "page.scenario.column.detail.to_be_released"},
+    STATUS_PUBLISH: {code: 1, desc:  "page.scenario.column.detail.released"},
 
     STATUS: {
-        0: {code: 0, desc: '待发布'},
-        1: {code: 1, desc: '已发布'},
+        0: {code: 0, desc:  <FormattedMessage id={"page.scenario.column.detail.to_be_released"}/>},
+        1: {code: 1, desc:  <FormattedMessage id={"page.scenario.column.detail.released"}/>},
     },
 
     SUPPORT_HOST_SCOPE: {

@@ -46,36 +46,36 @@ class ParameterList extends React.Component {
             className: `${styles.hidden}`
         },
         {
-            title: '参数名称',
+            title: <FormattedMessage id={"page.scenario.column.title.parameters"}/>,
             dataIndex: 'paramName',
             key: 'paramName',
         },
         {
-            title: '别名',
+            title: <FormattedMessage id={"page.scenario.column.title.alias"}/>,
             dataIndex: 'alias',
             key: 'alias',
         },
         {
-            title: '描述',
+            title: <FormattedMessage id={"page.scenario.column.title.description"}/>,
             dataIndex: 'description',
             key: 'description',
         },
         {
-            title: '组件',
+            title: <FormattedMessage id={"page.scenario.column.title.component"}/>,
             dataIndex: 'component',
             key: 'component',
             render: (text, record) => {
-                return (<span>暂未开放</span>);
+                return (<span><FormattedMessage id={"page.scenario.column.detail.not_avaliable"}/></span>);
             }
         },
         {
-            title: '操作',
+            title: <FormattedMessage id={"page.scenario.column.title.operation"}/>,
             dataIndex: 'operation',
             key: 'operation',
             render: (text, record) => {
                 return (
                     <Space>
-                        暂未开放
+                        <FormattedMessage id={"page.scenario.column.detail.not_avaliable"}/>
                     </Space>
                 );
             }
