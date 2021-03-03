@@ -250,5 +250,4 @@ export const zh = {
 
     //scenario category
     'page.scenario.category.java': 'java应用',
-
 }
