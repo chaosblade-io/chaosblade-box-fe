@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import {FormattedMessage} from "react-intl";
 import React from "react";
 import {connect} from "react-redux";
 import {Button, Descriptions, PageHeader} from "antd";
@@ -71,7 +71,7 @@ class ScenarioInfo extends React.Component {
                     subTitle={description}
                     extra={[
                         <Button key="edit" type="primary" onClick={() => this.edit()}>
-                            编辑信息
+                            <FormattedMessage id={"page.scenario.column.detail.edit"}/>
                         </Button>,
                     ]}
                 >

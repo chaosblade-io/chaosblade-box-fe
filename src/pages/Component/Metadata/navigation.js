@@ -78,13 +78,13 @@ export const NavigationConfig = [
                 id: "menu.scenario.list",
                 key: "/scenario/list",
                 path: "/scenario/list",
-                name: "场景列表",
+                name: <FormattedMessage id={"menu.scenario.list"}/>,
             },
             {
                 id: "menu.scenario.category",
                 key: "/scenario/category",
                 path: "/scenario/category",
-                name: "场景目录",
+                name: <FormattedMessage id={"menu.scenario.category"}/>,
             }
         ]
     },

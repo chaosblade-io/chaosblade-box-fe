@@ -31,8 +31,8 @@ const SelectSearchFields = [
     {
         key: "status",
         name: "status",
-        label: "状态",
-        placeholder: "请选择场景状态",
+        label: <FormattedMessage id={"page.scenario.column.title.status"}/>,
+        placeholder: <FormattedMessage id={"page.scenario.prompt.status"}/>,
         options: [
             ScenarioConstants.STATUS_READY,
             ScenarioConstants.STATUS_PUBLISH
@@ -44,14 +44,14 @@ const InputSearchFields = [
     {
         key: "name",
         name: "name",
-        label: "场景名",
-        placeholder: "请填写场景名"
+        label:<FormattedMessage id={"page.scenario.column.title.scenario_name"}/>,
+        placeholder: "page.scenario.prompt.scenario_name",
     },
     {
         key: "code",
         name: "code",
-        label: "唯一码",
-        placeholder: "请填写唯一码"
+        label: <FormattedMessage id={"page.scenario.column.title.unique_code"}/>,
+        placeholder: "page.scenario.prompt.unique_code",
     }
 ]
 
@@ -115,17 +115,17 @@ class ScenarioList extends React.Component {
             className: `${styles.hidden}`
         },
         {
-            title: '场景名',
+            title:  <FormattedMessage id={"page.scenario.column.title.scenario_name"}/>,
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '唯一码',
+            title: <FormattedMessage id={"page.scenario.column.title.unique_code"}/>,
             dataIndex: 'code',
             key: 'code',
         },
         {
-            title: '状态',
+            title: <FormattedMessage id={"page.scenario.column.title.status"}/>,
             dataIndex: 'status',
             key: 'status',
             render: (text, record) => {
@@ -133,7 +133,7 @@ class ScenarioList extends React.Component {
             }
         },
         {
-            title: '类目',
+            title: <FormattedMessage id={"page.scenario.column.title.category"}/>,
             dataIndex: 'categories',
             key: 'categories',
             render: (text, record) => {
@@ -155,32 +155,32 @@ class ScenarioList extends React.Component {
             }
         },
         {
-            title: '来源',
+            title:<FormattedMessage id={"page.scenario.column.title.source"}/>,
             dataIndex: 'original',
             key: 'original'
         },
         {
-            title: '版本号',
+            title: <FormattedMessage id={"page.scenario.column.title.version"}/>,
             dataIndex: 'version',
             key: 'version',
         },
         {
-            title: '调用次数',
+            title: <FormattedMessage id={"page.scenario.column.title.usage_times"}/>,
             dataIndex: 'count',
             key: 'count'
         },
         {
-            title: '操作', dataIndex: "operation", key: "operation", render: (text, record) => {
+            title: <FormattedMessage id={"page.scenario.column.title.operation"}/>, dataIndex: "operation", key: "operation", render: (text, record) => {
                 const scenarioId = record.scenarioId;
                 return (
                     <Space size="middle">
                         {
                             record.status === ScenarioConstants.STATUS_READY.code ?
-                                <a onClick={this.online.bind(this, record)}>上架</a>
+                                <a onClick={this.online.bind(this, record)}><FormattedMessage id={"page.scenario.column.detail.enable"}/></a>
                                 :
-                                <a onClick={this.offline.bind(this, scenarioId)}>下架</a>
+                                <a onClick={this.offline.bind(this, scenarioId)}><FormattedMessage id={"page.scenario.column.detail.disable"}/></a>
                         }
-                        <a onClick={this.edit.bind(this, scenarioId)}>编辑</a>
+                        <a onClick={this.edit.bind(this, scenarioId)}><FormattedMessage id={"page.scenario.column.detail.edit"}/></a>
                     </Space>
                 );
             },
