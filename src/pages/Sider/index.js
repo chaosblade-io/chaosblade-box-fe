@@ -20,6 +20,9 @@ import {NavigationConfig} from "../Component/Metadata/navigation";
 import {Link} from "react-router-dom";
 import {FormattedMessage} from "react-intl";
 import styles from './index.module.scss'
+import Actions from "../../actions/Actions";
+import {connect} from "react-redux";
+import _ from 'lodash';
 
 const {SubMenu} = Menu
 const {Sider} = Layout;
@@ -34,27 +37,54 @@ class ConsoleSider extends React.Component {
         };
     }
 
+    componentWillMount() {
+        const {querySystemInfo} = this.props;
+        querySystemInfo()
+    }
+
+    changeLocale = e => {
+        const {changeLocale} = this.props;
+        let locale = e.target.value;
+        changeLocale({locale: locale});
+    };
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        const {locale} = this.props;
+        const {preLocale} = prevProps;
+        const {passLocale} = this.props;
+        if (!_.isEmpty(locale) && locale !== preLocale) {
+            passLocale(locale);
+        }
+    }
+
     onCollapse = collapsed => {
         this.setState({collapsed});
     };
 
     render() {
-        const {locale, changeLocale, location} = this.props;
+        const {locale, location, version} = this.props;
         const {collapsed} = this.state;
         return (
             <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
                 <div className={styles.changeLocale}>
-                    <Radio.Group onChange={changeLocale} defaultValue={locale} size={collapsed ? 'small' : 'normal'}>
-                        <Radio.Button key="en" value={"en"}>
-                            English
-                        </Radio.Button>
-                        <Radio.Button key="cn" value={"zh"}>
-                            中文
-                        </Radio.Button>
-                    </Radio.Group>
+                    {locale ?
+                        <Radio.Group onChange={this.changeLocale} defaultValue={locale}
+                                     size={collapsed ? 'small' : 'normal'}>
+                            <Radio.Button key="en" value={"en"}>
+                                English
+                            </Radio.Button>
+                            <Radio.Button key="cn" value={"zh"}>
+                                中文
+                            </Radio.Button>
+                        </Radio.Group>
+                        :
+                        <span></span>
+                    }
                 </div>
                 <h1 className={styles.logo}>{collapsed ? 'CHAOS' : 'CHAOS-PLATFORM'}</h1>
-                <h4 className={styles.logo}>{collapsed ? 'v0.2.0' : 'v0.2.0'}</h4>
+                {
+                    version ? <h4 className={styles.logo}>{collapsed ? version : version}</h4> : <span></span>
+                }
                 <Menu theme="dark"
                       defaultSelectedKeys={['/machine']}
                       selectedKeys={[location.pathname]}
@@ -89,4 +119,19 @@ class ConsoleSider extends React.Component {
     }
 }
 
-export default ConsoleSider;
+const mapStateToProps = state => {
+    const console = state.sider.toJS();
+    return {
+        locale: console.locale,
+        version: console.version,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLocale: (locale) => dispatch(Actions.changeLocale(locale)),
+        querySystemInfo: () => dispatch(Actions.querySystemInfo()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConsoleSider);
