@@ -147,6 +147,35 @@ const fetchChaostoolsScenariosResult = (state, action) => {
     return state.merge({scenarios: current.scenarios});
 }
 
+const clearChaostoolsDetail = (state, action) => {
+    return state.merge({
+        tools: {
+            loading: false,
+            name: "",
+            title: "",
+            subTitle: "",
+            description: "",
+            webSite: "",
+            logo: "",
+            latest: "",
+            copyright: "",
+            readme: "",
+        },
+
+        versionInfo: {
+            loading: true,
+            version: "",
+            releaseUrl: "",
+            downloadUrl: {},
+            changelog: "",
+            scenarioFiles: [],
+        },
+        // file: scenarios
+        scenariosLoading: false,
+        scenarios: [],
+    })
+}
+
 const ACTION_HANDLERS = {
     [Types.FETCH_CHAOSTOOLS_OVERVIEW]: fetchChaostoolsOverview,
     [Types.FETCH_CHAOSTOOLS_OVERVIEW_RESULT]: fetchChaostoolsOverviewResult,
@@ -155,6 +184,7 @@ const ACTION_HANDLERS = {
     [Types.FETCH_CHAOSTOOLS_SCENARIOS]: fetchChaostoolsScenarios,
     [Types.FETCH_CHAOSTOOLS_SCENARIOS_RESULT]: fetchChaostoolsScenariosResult,
     [Types.IMPORT_SCENARIOS_RESULT]: importScenarios,
+    [Types.CLEAR_CHAOSTOOLS_DETAIL]: clearChaostoolsDetail,
 
 };
 
