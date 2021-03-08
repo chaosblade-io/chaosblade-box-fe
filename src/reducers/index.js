@@ -29,6 +29,7 @@ import chaostoolsDeploy from './ChaostoolsDeploy'
 import chaostoolsDetail from './ChaostoolsDetail'
 import chaostools from './Chaostools'
 import error from './Error'
+import sider from './Sider'
 
 export default combineReducers({
     machine,
@@ -45,4 +46,5 @@ export default combineReducers({
     chaostoolsDetail,
     error,
     chaostools,
+    sider,
 })

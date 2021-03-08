@@ -163,6 +163,11 @@ const Actions = {
     clearCriticalError: () => ({type: Types.CLEAR_CRITICAL_ERROR}),
     loading: text => ({type: Types.LOADING, text}),
     loaded: () => ({type: Types.LOADED}),
-    clearExperimentCreatingResult: () => ({type: Types.CLEAR_EXPERIMENT_CREATING_RESULT})
+    clearExperimentCreatingResult: () => ({type: Types.CLEAR_EXPERIMENT_CREATING_RESULT}),
+
+    changeLocale: locale => ({type: Types.CHANGE_LOCALE, locale}),
+    changeLocaleResult: data => ({type: Types.CHANGE_LOCALE_RESULT, data}),
+    querySystemInfo: () => ({type: Types.QUERY_SYSTEM_INFO}),
+    querySystemInfoResult: (data) => ({type: Types.QUERY_SYSTEM_INFO_RESULT, data}),
 };
 export default Actions;
