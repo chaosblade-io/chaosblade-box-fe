@@ -81,7 +81,7 @@ class ConsoleSider extends React.Component {
                         <span></span>
                     }
                 </div>
-                <h1 className={styles.logo}>{collapsed ? 'CHAOS' : 'CHAOS-PLATFORM'}</h1>
+                <h1 className={styles.logo}>{collapsed ? 'CHAOS' : 'CHAOSBOX'}</h1>
                 {
                     version ? <h4 className={styles.logo}>{collapsed ? version : version}</h4> : <span></span>
                 }
