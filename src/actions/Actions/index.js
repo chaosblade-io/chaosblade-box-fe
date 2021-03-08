@@ -156,6 +156,7 @@ const Actions = {
     fetchChaostoolsOverviewResult: data => ({type: Types.FETCH_CHAOSTOOLS_OVERVIEW_RESULT, data}),
     fetchChaostoolsVersionInfo: (name, version) => ({type: Types.FETCH_CHAOSTOOLS_VERSION_INFO, name, version}),
     fetchChaostoolsVersionInfoResult: data => ({type: Types.FETCH_CHAOSTOOLS_VERSION_INFO_RESULT, data}),
+    clearChaostoolsDetail: ()=>({type: Types.CLEAR_CHAOSTOOLS_DETAIL}),
 
     handleError: (code, message) => ({type: Types.HANDLE_ERROR, code, message}),
     clearError: () => ({type: Types.HANDLE_ERROR}),
