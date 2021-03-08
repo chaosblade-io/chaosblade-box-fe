@@ -25,6 +25,10 @@ class Error extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            errorCode: -1,
+            errorMessage: null,
+        }
     }
 
     static getDerivedStateFromProps(nextProps) {
