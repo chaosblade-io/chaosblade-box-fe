@@ -15,7 +15,6 @@
  */
 
 import React from "react";
-import {GithubOutlined} from "@ant-design/icons";
 import {Divider, PageHeader, Row, Space, Spin, Typography} from "antd";
 import {connect} from "react-redux";
 import Actions from "../../../actions/Actions";
@@ -24,6 +23,7 @@ import Scenarios from "./Scenarios";
 import Deploy from "./Deploy";
 import _ from 'lodash';
 import styles from './index.module.scss'
+import {GlobalOutlined} from "@ant-design/icons";
 
 const {Paragraph} = Typography;
 
@@ -60,18 +60,18 @@ class ChaostoolsDetail extends React.Component {
     }
 
     render() {
-        const {scenarioFiles, loading, releaseUrl} = this.props;
+        const {scenarioFiles, loading, title, website, description} = this.props;
         return (
             <div>
                 <div id="information" className={styles.pageHeader}>
                     <PageHeader
-                        title={<span>ChaosBlade</span>}
+                        title={<span>{title}</span>}
                         subTitle="选择有很多，将来会更多..."
-                        tags={<Space><GithubOutlined/><a href={releaseUrl} target={'_blank'}>Github</a></Space>}
+                        tags={<Space><GlobalOutlined /><a href={website} target={'_blank'}>官网</a></Space>}
                     >
                         <Content>
                             <Paragraph>
-                                项目介绍
+                                {description}
                             </Paragraph>
                         </Content>
                     </PageHeader>
@@ -91,7 +91,7 @@ class ChaostoolsDetail extends React.Component {
 
 const mapStateToProps = state => {
     const detail = state.chaostoolsDetail.toJS();
-    const {versionInfo} = detail;
+    const {versionInfo, tools} = detail;
     return {
         loading: versionInfo.loading,
         version: versionInfo.version,
@@ -99,6 +99,9 @@ const mapStateToProps = state => {
         downloadUrl: versionInfo.downloadUrl,
         changelog: versionInfo.changelog,
         scenarioFiles: versionInfo.scenarioFiles,
+        title: tools.title,
+        website: tools.webSite,
+        description: tools.description,
     }
 }
 const mapDispatchToProps = dispatch => {

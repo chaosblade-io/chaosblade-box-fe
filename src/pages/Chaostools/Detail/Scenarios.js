@@ -65,6 +65,11 @@ class Scenarios extends React.Component {
         this.fetchScenarios();
     }
 
+    componentWillUnmount() {
+        const {clearChaostoolsDetail} = this.props;
+        clearChaostoolsDetail();
+    }
+
     render() {
         const {scenarios} = this.props;
         return (
@@ -77,7 +82,8 @@ class Scenarios extends React.Component {
                                     <TabPane tab={item.file} key={item.file}>
                                         {
                                             item.importScenarioCount > 0 ?
-                                                <Alert message={"成功导入 "+item.importScenarioCount+" 个场景"} type="success"/>
+                                                <Alert message={"成功导入 " + item.importScenarioCount + " 个场景"}
+                                                       type="success"/>
                                                 :
                                                 <Button
                                                     onClick={() => this.importScenarios(item.scenarios, item.file)}>导入实验场景</Button>
@@ -117,6 +123,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchChaostoolsScenarios: (name, version, file) => dispatch(Actions.fetchChaostoolsScenarios(name, version, file)),
         importScenarios: (scenarios, file) => dispatch(Actions.importScenarios(scenarios, file)),
+        clearChaostoolsDetail: () => dispatch(Actions.clearChaostoolsDetail()),
     }
 }
 
