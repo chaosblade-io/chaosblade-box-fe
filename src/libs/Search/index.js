@@ -29,11 +29,7 @@ export const getFields = (props) => {
         children.push(
             <Col span={6} key={item.key}>
                 <Form.Item name={item.name} label={item.label}>
-                    <FormattedMessage id={item.placeholder}>
-                        {
-                            msg=><Input placeholder={msg}/>
-                        }
-                    </FormattedMessage>
+                    <Input/>
                 </Form.Item>
             </Col>
         );

@@ -61,6 +61,11 @@ class ExperimentCreating extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            history: null,
+            experimentId: null,
+            finished: false,
+        }
     }
 
     static getExperimentId() {
