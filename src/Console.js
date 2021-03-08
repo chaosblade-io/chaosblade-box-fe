@@ -34,6 +34,7 @@ import {Messages} from "./locales";
 import HistoryContext from "./libs/Request/HistoryContext";
 import Error from "./pages/Error";
 import ConsoleSider from "./pages/Sider";
+import _ from 'lodash';
 
 const {SubMenu} = Menu
 const {Header, Content, Footer, Sider} = Layout;
@@ -51,8 +52,11 @@ class Console extends React.Component {
         };
     }
 
-    changeLocale = e => {
-        this.setState({locale: e.target.value});
+    changeLocale = newLocale => {
+        const {locale} = this.state;
+        if (locale !== newLocale && !_.isEmpty(newLocale)) {
+            this.setState({locale: newLocale});
+        }
     };
 
     createStore() {
@@ -60,9 +64,9 @@ class Console extends React.Component {
     }
 
     render() {
-        const {locale} = this.state;
         const {store, persistor} = this;
         const {location} = this.props;
+        const {locale} = this.state;
         return (
             <Provider store={store}>
                 <PersistGate persistor={persistor}>
@@ -73,7 +77,7 @@ class Console extends React.Component {
                                     <ConsoleSider
                                         location={location}
                                         locale={locale}
-                                        changeLocale={this.changeLocale.bind(this)}
+                                        passLocale={this.changeLocale.bind(this)}
                                     />
                                     <Layout className="site-layout">
                                         <Content style={{margin: '0 16px'}}>

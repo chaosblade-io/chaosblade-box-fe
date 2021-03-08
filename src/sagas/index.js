@@ -21,6 +21,7 @@ import kubernetes from './Kubernetes'
 import experiment from './Experiment'
 import probe from './Probe'
 import chaostools from './Chaostools'
+import sider from './Sider'
 import {fork} from "redux-saga/effects";
 
 export default function* root() {
@@ -69,4 +70,6 @@ export default function* root() {
     yield fork(chaostools().watchFetchChaostoolsOverview);
     yield fork(chaostools().watchFetchChaostoolsVersionInfo);
     yield fork(chaostools().watchFetchChaostoolsScenarios);
+    yield fork(sider().watchQuerySystemInfo);
+    yield fork(sider().watchChangeLocale);
 }
