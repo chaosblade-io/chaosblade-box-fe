@@ -275,6 +275,10 @@ export const zh = {
     'page.experiment.detail.task.startTime': '开始时间',
     'page.experiment.detail.task.endTime': '结束时间',
     'page.experiment.detail.task.operation': '操作',
+    'page.experiment.operation.detail': '实验任务',
+    'page.experiment.operation.edit': '编辑实验',
+    'page.experiment.operation.run': '执行实验',
+
 
 
     //scenario column title  

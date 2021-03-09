@@ -75,7 +75,7 @@ class ExperimentDetail extends React.Component {
         return (
             <Affix offsetTop={top}>
                 <Button onClick={() => this.scrollToAnchor("Task")}><FormattedMessage
-                    id={'page.experiment.operation.run'}/></Button>
+                    id={'page.experiment.operation.detail'}/></Button>
                 <Button onClick={() => this.editExperiment()} style={{marginLeft: 8}}><FormattedMessage
                     id={'page.experiment.operation.edit'}/></Button>
                 <Button onClick={() => this.startExperiment()} type="primary" style={{marginLeft: 8}}><FormattedMessage
