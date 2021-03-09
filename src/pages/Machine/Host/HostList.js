@@ -80,7 +80,7 @@ class HostList extends React.Component {
     formRef = React.createRef()
     HostColumns = [
         {
-            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
+            title: <FormattedMessage id={"page.column.title.index"}/>,
             key: "index",
             render: (text, record, index) => `${index + 1}`
         },

@@ -21,6 +21,7 @@ import {Alert} from "antd";
 import Actions from "../../../actions/Actions";
 import MachineStep from "./MachineStep";
 import {GenPagination} from "../../../libs/Pagination";
+import {FormattedMessage} from "react-intl";
 
 const pageSize = 24;
 
@@ -35,7 +36,7 @@ class HostExperiment extends React.Component {
     }
 
     componentDidMount() {
-        const { page, getMachinesForHostPageable} = this.props
+        const {page, getMachinesForHostPageable} = this.props
         getMachinesForHostPageable({page, pageSize});
     }
 
@@ -47,7 +48,7 @@ class HostExperiment extends React.Component {
                 machineStep={
                     <div>
                         <Alert style={{textAlign: "center"}}
-                               message="请选择以下的机器进行实验"
+                               message={<FormattedMessage id={'page.experiment.creating.resource.host.alert.message'}/>}
                                type="info" showIcon closable/>
                         <MachineStep
                             machines={machines}

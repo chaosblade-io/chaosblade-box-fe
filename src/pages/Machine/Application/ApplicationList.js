@@ -86,7 +86,7 @@ class ApplicationList extends React.Component {
     formRef = React.createRef()
     TableColumns = [
         {
-            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
+            title: <FormattedMessage id={"page.column.title.index"}/>,
             render: (text, record, index) => `${index + 1}`
         },
         {
