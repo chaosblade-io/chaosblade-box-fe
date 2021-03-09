@@ -24,25 +24,26 @@ import ScenarioStep from "./ScenarioStep";
 import MonitorStep from "./MonitorStep";
 import NameStep from "./NameStep";
 import _ from "lodash";
+import {FormattedMessage} from "react-intl";
 
 const {Step} = Steps;
 
 const StepsConfig = [
     {
-        title: "选择资源",
-        description: "必填项",
+        title: 'page.experiment.creating.step.title.resource',
+        description: 'page.item.required.true',
     },
     {
-        title: "选择场景",
-        description: "必填项",
+        title: 'page.experiment.creating.step.title.scenario',
+        description: 'page.item.required.true',
     },
     {
-        title: "接入监控",
-        description: "非必填项",
+        title: 'page.experiment.creating.step.title.monitor',
+        description: 'page.item.required.false',
     },
     {
-        title: "填写名称",
-        description: "非必填项",
+        title: 'page.experiment.creating.step.title.name',
+        description: 'page.item.required.false',
     },
 ]
 
@@ -178,7 +179,8 @@ class ExperimentSteps extends React.Component {
                 >
                     {
                         StepsConfig.map(s => {
-                            return <Step title={s.title} description={s.description}/>;
+                            return <Step title={<FormattedMessage id={s.title}/>}
+                                         description={<span><FormattedMessage id={s.description}/></span>}/>;
                         })
                     }
                 </Steps>

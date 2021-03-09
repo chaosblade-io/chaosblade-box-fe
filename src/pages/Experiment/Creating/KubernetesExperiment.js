@@ -32,6 +32,7 @@ import {GenPagination} from "../../../libs/Pagination";
 import ExperimentCreating from "./index";
 import _ from 'lodash'
 import {ExperimentCreatingTabKey} from "../../../constants/ExperimentConstants";
+import {FormattedMessage} from "react-intl";
 
 const {TabPane} = Tabs
 const {TextArea} = Input
@@ -48,9 +49,13 @@ const PodNameTips = '请填写 Pod 名称，多个名称之间使用逗号分隔
 const ContainerNameTips = '请填写 Container 名称，多个名称之间使用逗号分隔，例如 aa,bb。非必填项';
 const ContainerIndexTips = '请填写 Container 索引位置，起始值是 0。非必填项';
 const EnableCollectAlert =
-    <Alert style={{textAlign: "center"}} message="数据采集已经开启，请选择下方演练资源目标" type="info" showIcon closable/>;
+    <Alert style={{textAlign: "center"}}
+           message={<FormattedMessage id={'page.experiment.creating.resource.k8s.collect.alert.message'}/>} type="info"
+           showIcon closable/>;
 const DisableCollectAlert =
-    <Alert style={{textAlign: "center"}} message="数据采集没有开启，需要手动填写演练资源目标" type="warning" showIcon closable/>;
+    <Alert style={{textAlign: "center"}}
+           message={<FormattedMessage id={'page.experiment.creating.resource.k8s.alert.message'}/>} type="warning"
+           showIcon closable/>;
 
 const defaultActive = "pod";
 
@@ -120,8 +125,8 @@ class KubernetesExperiment extends React.Component {
                             {/*    console.log("遇到问题点我查看？")*/}
                             {/*}}>切换成名称</a>*/}
                             {/*<Divider type={"vertical"}/>*/}
-                            机器不可选&nbsp;
-                            <Tooltip title="机器处于已被禁用状态，在机器列表页面启用后可选。">
+                            <FormattedMessage id={'page.experiment.creating.resource.disabled.message'}/>&nbsp;
+                            <Tooltip title={<FormattedMessage id={'page.experiment.creating.resource.disabled.tips'}/>}>
                                 <QuestionCircleOutlined/>
                             </Tooltip>
                         </div>
@@ -218,8 +223,8 @@ class KubernetesExperiment extends React.Component {
                             {/*    console.log("遇到问题点我查看？")*/}
                             {/*}}>切换成Pod名称</a>*/}
                             {/*<Divider type={"vertical"}/>*/}
-                            机器不可选&nbsp;
-                            <Tooltip title="机器处于已被禁用状态，在机器列表页面启用后可选。">
+                            <FormattedMessage id={'page.experiment.creating.resource.disabled.message'}/>&nbsp;
+                            <Tooltip title={<FormattedMessage id={'page.experiment.creating.resource.disabled.tips'}/>}>
                                 <QuestionCircleOutlined/>
                             </Tooltip>
                         </div>
@@ -241,8 +246,8 @@ class KubernetesExperiment extends React.Component {
                             {/*    console.log("遇到问题点我查看？")*/}
                             {/*}}>切换成节点名称</a>*/}
                             {/*<Divider type={"vertical"}/>*/}
-                            机器不可选&nbsp;
-                            <Tooltip title="机器处于已被禁用状态，在机器列表页面启用后可选。">
+                            <FormattedMessage id={'page.experiment.creating.resource.disabled.message'}/>&nbsp;
+                            <Tooltip title={<FormattedMessage id={'page.experiment.creating.resource.disabled.tips'}/>}>
                                 <QuestionCircleOutlined/>
                             </Tooltip>
                         </div>
@@ -255,17 +260,20 @@ class KubernetesExperiment extends React.Component {
         return (
             dimension ?
                 <Tabs defaultActiveKey={dimension} onChange={this.onTargetTabChange}>
-                    <TabPane tab={<span><ContainerOutlined/>创建 Container 实验</span>} key="container">
+                    <TabPane tab={<span><ContainerOutlined/><FormattedMessage
+                        id={'page.experiment.creating.container.title'}/></span>} key="container">
                         {
                             collect ? this.collectContainersEnabledRender() : this.collectDisabledRender(this.containerFormRef)
                         }
                     </TabPane>
-                    <TabPane tab={<span><BorderOutlined/>创建 POD 实验</span>} key="pod">
+                    <TabPane tab={<span><BorderOutlined/><FormattedMessage
+                        id={'page.experiment.creating.pod.title'}/></span>} key="pod">
                         {
                             collect ? this.collectPodsEnabledRender() : this.collectDisabledRender(this.podFormRef)
                         }
                     </TabPane>
-                    <TabPane tab={<span><RobotOutlined/>创建 NODE 实验</span>} key="node">
+                    <TabPane tab={<span><RobotOutlined/><FormattedMessage
+                        id={'page.experiment.creating.node.title'}/></span>} key="node">
                         {
                             collect ? this.collectNodesEnabledRender() : this.collectDisabledRender(this.nodeFormRef)
                         }
