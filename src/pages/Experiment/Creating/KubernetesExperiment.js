@@ -43,11 +43,10 @@ const FormLayout = {
     labelCol: {span: 4},
     wrapperCol: {span: 12},
 };
-const NodeNameTips = '请填写 Node 名称，多个名称之间使用逗号分隔，例如 aa,bb。必填项';
-const PodNamespaceTips = '请填写 Namespace，仅支持填写一个。必填项';
-const PodNameTips = '请填写 Pod 名称，多个名称之间使用逗号分隔，例如 aa,bb。必填项';
-const ContainerNameTips = '请填写 Container 名称，多个名称之间使用逗号分隔，例如 aa,bb。非必填项';
-const ContainerIndexTips = '请填写 Container 索引位置，起始值是 0。非必填项';
+const NodeNameTips = <FormattedMessage id={'page.experiment.creating.node.name.tips'}/>;
+const PodNamespaceTips = <FormattedMessage id={'page.experiment.creating.pod.namespace.tips'}/>;
+const PodNameTips = <FormattedMessage id={'page.experiment.creating.pod.name.tips'}/>;
+const ContainerNameTips = <FormattedMessage id={'page.experiment.creating.container.name.tips'}/>;
 const EnableCollectAlert =
     <Alert style={{textAlign: "center"}}
            message={<FormattedMessage id={'page.experiment.creating.resource.k8s.collect.alert.message'}/>} type="info"
