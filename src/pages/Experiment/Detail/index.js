@@ -290,7 +290,7 @@ class ExperimentDetail extends React.Component {
             key: 'taskStatus',
             render: (text, record) => {
                 let status = Task.getTaskStatus(record.status, record.resultStatus);
-                return <span>{status.desc}</span>
+                return <span><FormattedMessage id={status.desc}/></span>
             }
         },
         {

@@ -17,6 +17,7 @@
 import React from "react";
 import {Space, Table} from "antd";
 import Task from "./index";
+import {FormattedMessage} from "react-intl";
 
 class TaskList extends React.Component {
     TableColumns = [
@@ -36,7 +37,7 @@ class TaskList extends React.Component {
             key: "taskStatus",
             render: (text, record) => {
                 let status = Task.getTaskStatus(record.status, record.resultStatus);
-                return <span>{status.desc}</span>
+                return <span><FormattedMessage id={status.desc}/></span>
             }
         },
         {
