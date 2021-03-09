@@ -116,7 +116,7 @@ class Host extends React.Component {
 
     TableColumns = [
         {
-            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
+            title: <FormattedMessage id={"page.column.title.index"}/>,
             key: "index",
             render: (text, record, index) => `${index + 1}`
         },

@@ -20,6 +20,7 @@ import {Card, Col, Row, Statistic} from "antd";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import styles from './List.module.scss';
+import {FormattedMessage} from "react-intl";
 
 class ExperimentStatistics extends React.Component {
 
@@ -41,7 +42,7 @@ class ExperimentStatistics extends React.Component {
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="总计"
+                                title={<FormattedMessage id={'page.experiment.list.statistic.total'}/>}
                                 value={totals}
                             />
                         </Card>
@@ -49,40 +50,40 @@ class ExperimentStatistics extends React.Component {
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="运行中"
-                                value={running}
+                                title=<FormattedMessage id={'page.experiment.list.statistic.running'}/>
+                            value={running}
                             />
                         </Card>
                     </Col>
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="已完成"
-                                value={finished}
+                                title=<FormattedMessage id={'page.experiment.list.statistic.finished'}/>
+                            value={finished}
                             />
                         </Card>
                     </Col>
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="未执行"
-                                value={prepares}
+                                title=<FormattedMessage id={'page.experiment.list.statistic.waiting'}/>
+                            value={prepares}
                             />
                         </Card>
                     </Col>
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="成功"
-                                value={success}
+                                title=<FormattedMessage id={'page.experiment.list.statistic.success'}/>
+                            value={success}
                             />
                         </Card>
                     </Col>
                     <Col flex={1}>
                         <Card>
                             <Statistic
-                                title="失败"
-                                value={failed}
+                                title=<FormattedMessage id={'page.experiment.list.statistic.failed'}/>
+                            value={failed}
                             />
                         </Card>
                     </Col>
@@ -92,8 +93,9 @@ class ExperimentStatistics extends React.Component {
                         }}>
                             <Card className={styles.createOperation}>
                                 <Statistic style={{textAlign: "center"}}
-                                           title={<span>操作</span>}
-                                           value={'创建实验'}
+                                           title={<FormattedMessage id={'page.experiment.list.statistic.operation'}/>}
+                                           valueRender={() => <FormattedMessage
+                                               id={'page.experiment.list.statistic.creating'}/>}
                                 />
                             </Card>
                         </Link>

@@ -61,7 +61,7 @@ class NodeList extends React.Component {
     formRef = React.createRef()
     NodeColumns = [
         {
-            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
+            title: <FormattedMessage id={"page.column.title.index"}/>,
             index: "index",
             render: (text, record, index) => `${index + 1}`
         },

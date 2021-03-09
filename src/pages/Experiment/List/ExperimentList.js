@@ -31,7 +31,7 @@ const InputSearchFields = [
     {
         key: "experimentName",
         name: "experimentName",
-        label: "实验名称",
+        label: <FormattedMessage id={'page.experiment.list.search.name.label'}/>,
         placeholder: "请填写实验名称"
     },
 ];
@@ -40,8 +40,8 @@ const SelectSearchFields = [
     {
         key: "status",
         name: "status",
-        label: "实验状态",
-        placeholder: "请选择实验状态",
+        label: <FormattedMessage id={'page.experiment.list.search.status.label'}/>,
+        placeholder: "Please select status",
         options: [
             ExperimentConstants.TASK_WAIT,
             ExperimentConstants.TASK_START_RUNNING,
@@ -63,36 +63,37 @@ class ExperimentList extends React.Component {
     formRef = React.createRef()
     TableColumns = [
         {
-            title: <FormattedMessage id={"page.machine.host.column.title.index"}/>,
+            title: <FormattedMessage id={"page.column.title.index"}/>,
             key: "index",
             render: (text, record, index) => `${index + 1}`
         },
         {
-            title: "实验ID",
+            title: <FormattedMessage id={"page.experiment.list.table.column.id"}/>,
             dataIndex: "experimentId",
             key: "experimentId",
             className: `${styles.hidden}`
         },
         {
-            title: '演练名称',
+            title: <FormattedMessage id={"page.experiment.list.table.column.name"}/>,
             dataIndex: 'experimentName',
             key: 'experimentName',
         },
         {
-            title: '最近运行状态',
+            title: <FormattedMessage id={"page.experiment.list.table.column.status"}/>,
             dataIndex: 'lastTaskResult',
             key: 'lastTaskResult',
             render: (text, record) => {
                 const status = Task.getTaskStatus(record.lastTaskStatus, record.lastTaskResult);
                 return <Space size="middle">
-                    {status === ExperimentConstants.TASK_WAIT ? <span>{status.desc}</span>
+                    {status === ExperimentConstants.TASK_WAIT ? <FormattedMessage id={status.desc}/>
                         :
-                        <a href={`/experiment/task/?${request.generateUrlSearch({id: record.lastTaskId})}`}>{status.desc}</a>}
+                        <a href={`/experiment/task/?${request.generateUrlSearch({id: record.lastTaskId})}`}><FormattedMessage
+                            id={status.desc}/></a>}
                 </Space>
             }
         },
         {
-            title: '场景概览',
+            title: <FormattedMessage id={"page.experiment.list.table.column.scenario"}/>,
             dataIndex: 'scenarios',
             key: 'scenarios',
             render: (text, record) => {
@@ -115,22 +116,22 @@ class ExperimentList extends React.Component {
             }
         },
         {
-            title: '创建时间',
+            title: <FormattedMessage id={"page.experiment.list.table.column.createTime"}/>,
             dataIndex: 'createTime',
             key: 'createTime',
         },
         {
-            title: '修改时间',
+            title: <FormattedMessage id={"page.experiment.list.table.column.modifyTime"}/>,
             dataIndex: 'modifyTime',
             key: 'modifyTime',
         },
         {
-            title: '最近运行时间',
+            title: <FormattedMessage id={"page.experiment.list.table.column.latestRunningTime"}/>,
             dataIndex: 'lastTaskStartTime',
             key: 'lastTaskStartTime',
         },
         {
-            title: '操作',
+            title: <FormattedMessage id={"page.experiment.list.table.column.operation"}/>,
             dataIndex: 'operation',
             key: 'operation',
             render: (text, record) => (

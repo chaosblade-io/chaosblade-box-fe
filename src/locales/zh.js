@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { Link } from 'react-router-dom'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export const zh = {
     'button.text.search': '搜索',
@@ -48,6 +46,9 @@ export const zh = {
     'page.pagination.total': '共{total}条',
     'page.popconfirm.ok': '确定',
     'page.popconfirm.cancel': '取消',
+    'page.column.title.index': '序号',
+    'page.item.required.true': '必填项',
+    'page.item.required.false': '非必填项',
 
     'page.machine.tab.host': '主机维度',
     'page.machine.tab.host.tooltip.hostList': '显示获取到的主机机器列表，可通过 ',
@@ -117,7 +118,7 @@ export const zh = {
     'page.machine.host.lastChaosedTime': '最近演练时间',
 
     'page.machine.host.column.title.status': '机器状态',
-    'page.machine.host.column.title.index': '序号',
+
     'page.machine.host.column.title.machineId': '机器ID',
     'page.machine.host.column.title.hostname': '机器名',
     'page.machine.host.column.title.hostname.placeholder': '请填写机器名',
@@ -203,46 +204,80 @@ export const zh = {
     'page.machine.app.machineStatus': "机器状态",
     'page.machine.app.machineStatus.placeholder': "请选择机器状态",
 
+    // experiment
+    'page.experiment.list.statistic.total': '总计',
+    'page.experiment.list.statistic.running': '运行中',
+    'page.experiment.list.statistic.finished': '已完成',
+    'page.experiment.list.statistic.waiting': '未执行',
+    'page.experiment.list.statistic.success': '成功',
+    'page.experiment.list.statistic.failed': '失败',
+    'page.experiment.list.statistic.operation': '操作',
+    'page.experiment.list.statistic.creating': '创建实验',
+    'page.experiment.list.search.name.label': '实验名称',
+    'page.experiment.list.search.status.label': '实验状态',
+    'page.experiment.task.status.wait': '未执行',
+    'page.experiment.task.status.start.running': '启动中',
+    'page.experiment.task.status.start.success': '启动成功',
+    'page.experiment.task.status.start.failed': '启动失败',
+    'page.experiment.task.status.end.running': '终止中',
+    'page.experiment.task.status.end.success': '终止成功',
+    'page.experiment.task.status.end.failed': '终止失败',
+    'page.experiment.list.table.column.name': '实验名称',
+    'page.experiment.list.table.column.status': '最新运行状态',
+    'page.experiment.list.table.column.scenario': '场景',
+    'page.experiment.list.table.column.createTime': '创建时间',
+    'page.experiment.list.table.column.modifyTime': '修改时间',
+    'page.experiment.list.table.column.operation': '操作',
+    'page.experiment.list.table.column.latestRunningTime': '最近运行时间',
     'page.experiment.creating.host.dimension.name': '主机维度',
     'page.experiment.creating.application.dimension.name': '应用维度',
     'page.experiment.creating.kubernetes.dimension.name': 'Kubernetes 维度',
+    'page.experiment.creating.step.title.resource': '选择资源',
+    'page.experiment.creating.step.title.scenario': '选择场景',
+    'page.experiment.creating.step.title.monitor': '接入监控',
+    'page.experiment.creating.step.title.name': '填写名称',
+    'page.experiment.creating.resource.host.alert.message': '请选择以下的机器进行实验',
+    'page.experiment.creating.resource.k8s.collect.alert.message': '数据采集已经开启，请选择下方演练资源目标',
+    'page.experiment.creating.resource.k8s.alert.message': '数据采集没有开启，需要手动填写演练资源目标',
+    'page.experiment.creating.resource.disabled.tips': '机器处于已被禁用状态，在机器列表页面启用后可选',
+    'page.experiment.creating.resource.disabled.message': '机器不可选',
+    'page.experiment.creating.container.title': '创建 Container 实验',
+    'page.experiment.creating.pod.title': '创建 Pod 实验',
+    'page.experiment.creating.node.title': '创建 Node 实验',
 
 
     //scenario column title  
-    'page.scenario.column.title.unique_code':  '唯一码',
+    'page.scenario.column.title.unique_code': '唯一码',
     'page.scenario.column.title.scenario_name': '场景名',
     'page.scenario.column.title.status': '状态',
     'page.scenario.column.title.version': '版本号',
     'page.scenario.column.title.usage_times': '调用次数',
     'page.scenario.column.title.parameters': '参数名称',
-    'page.scenario.column.title.operation':  '操作',
-    'page.scenario.column.title.description':  '描述',
+    'page.scenario.column.title.operation': '操作',
+    'page.scenario.column.title.description': '描述',
     'page.scenario.column.title.source': '来源',
-    'page.scenario.column.title.category':  '类目',
-    'page.scenario.column.title.alias':  '别名',
-    'page.scenario.column.title.component':  '组件',
+    'page.scenario.column.title.category': '类目',
+    'page.scenario.column.title.alias': '别名',
+    'page.scenario.column.title.component': '组件',
     'page.scenario.column.scenario_dimension': "场景维度",
     'page.scenario.column.scenario_category': "场景目录",
 
     //scenario column detail
-    'page.scenario.column.detail.enable':  '上架',
-    'page.scenario.column.detail.disable':  '下架',
-    'page.scenario.column.detail.edit':  '编辑',
-    'page.scenario.column.detail.not_avaliable':  '暂未开放',
+    'page.scenario.column.detail.enable': '上架',
+    'page.scenario.column.detail.disable': '下架',
+    'page.scenario.column.detail.edit': '编辑',
+    'page.scenario.column.detail.not_avaliable': '暂未开放',
     'page.scenario.column.detail.to_be_released': '待发布',
     'page.scenario.column.detail.released': '已发布',
-    'page.scenario.column.detail.cancel':  '取消',
-    'page.scenario.column.detail.ok':  '确认',
-    'page.scenario.column.detail.modify_scenario_info':  '修改场景信息',
+    'page.scenario.column.detail.cancel': '取消',
+    'page.scenario.column.detail.ok': '确认',
+    'page.scenario.column.detail.modify_scenario_info': '修改场景信息',
 
 
-
-
-    
     //scenario text prompt
-    'page.scenario.prompt.scenario_name' : "请填写场景名",
-    'page.scenario.prompt.unique_code' : "请填写唯一码",
-    'page.scenario.prompt.status' : "请选择场景状态",
+    'page.scenario.prompt.scenario_name': "请填写场景名",
+    'page.scenario.prompt.unique_code': "请填写唯一码",
+    'page.scenario.prompt.status': "请选择场景状态",
     'page.scenario.prompt.scenario_dimension': "选择场景维度",
     'page.scenario.prompt.scenario_category': "请选择所归属的场景目录",
     'page.scenario.prompt.scenario_dimension_error': "请选择场景维度",
