@@ -126,7 +126,7 @@ class ExperimentCreating extends React.Component {
         const activeKey = this.getTabKey();
         return (
             <div>
-                <h1>选择演练维度</h1>
+                <h1>{<FormattedMessage id={'page.experiment.creating.dimension'}/>}</h1>
                 <div className={styles.experimentHeader}>
                     {activeKey ?
                         <Row>

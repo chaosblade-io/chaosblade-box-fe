@@ -23,20 +23,20 @@ export const NavigationConfig = [
         id: "menu.experiment",
         key: "/experiment",
         path: "/experiment/list",
-        name: "实验管理",
+        name: <FormattedMessage id={'menu.experiment'}/>,
         icon: <ProjectOutlined/>,
         subs: [
             {
                 id: "menu.experiment.list",
                 key: "/experiment/list",
                 path: "/experiment/list",
-                name: "实验列表",
+                name: <FormattedMessage id={'menu.experiment.list'}/>,
             },
             {
                 id: "menu.experiment.creating",
                 key: "/experiment/creating",
                 path: "/experiment/creating",
-                name: "创建实验",
+                name: <FormattedMessage id={'menu.experiment.creating'}/>,
             },
         ]
     },
@@ -44,26 +44,26 @@ export const NavigationConfig = [
         id: "menu.machine",
         key: "/machine",
         path: "/machine/list",
-        name: <FormattedMessage id={"menu.machine"} />,
+        name: <FormattedMessage id={"menu.machine"}/>,
         icon: <DesktopOutlined/>,
         subs: [
             {
                 id: "menu.machine.list",
                 key: "/machine/list",
                 path: "/machine/list",
-                name: <FormattedMessage id={"menu.machine.list"} />,
+                name: <FormattedMessage id={"menu.machine.list"}/>,
             },
             {
                 id: "menu.machine.register",
                 key: "/machine/register",
                 path: "/machine/register",
-                name: <FormattedMessage id={"menu.machine.register"} />,
+                name: <FormattedMessage id={"menu.machine.register"}/>,
             },
             {
                 id: "menu.machine.probe",
                 key: "/machine/probe",
                 path: "/machine/probe",
-                name: <FormattedMessage id={"menu.machine.probe"} />,
+                name: <FormattedMessage id={"menu.machine.probe"}/>,
             },
         ]
     },
@@ -92,14 +92,14 @@ export const NavigationConfig = [
         id: "menu.chaostools",
         key: "/chaostools",
         path: "/chaostools/market",
-        name: "实验工具",
+        name: <FormattedMessage id={'menu.chaostools'}/>,
         icon: <ProjectOutlined/>,
         subs: [
             {
                 id: "menu.chaostools.market",
                 key: "/chaostools/market",
                 path: "/chaostools/market",
-                name: "工具市场",
+                name: <FormattedMessage id={'menu.chaostools.market'}/>,
             },
         ]
     },

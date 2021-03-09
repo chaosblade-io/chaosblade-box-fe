@@ -23,6 +23,7 @@ import Task from "./index";
 import {ExperimentConstants} from "../../../constants/ExperimentConstants";
 import * as moment from "moment";
 import * as request from "../../Machine/libs/request";
+import {FormattedMessage} from "react-intl";
 
 class TaskInfo extends React.Component {
 
@@ -40,28 +41,34 @@ class TaskInfo extends React.Component {
 
     static statusRender = (status, resultStatus) => {
         const _status = Task.getTaskStatus(status, resultStatus);
-        let statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_UNKNOWN.desc}</Tag>;
+        let statusTag = <Tag color={"red"}>{<FormattedMessage id={ExperimentConstants.TASK_UNKNOWN.desc}/>}</Tag>;
         switch (_status) {
             case ExperimentConstants.TASK_START_SUCCESS:
-                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_START_SUCCESS.desc}</Tag>;
+                statusTag =
+                    <Tag color={"green"}>{<FormattedMessage id={ExperimentConstants.TASK_START_SUCCESS.desc}/>}</Tag>;
                 break;
             case ExperimentConstants.TASK_END_SUCCESS:
-                statusTag = <Tag color={"green"}>{ExperimentConstants.TASK_END_SUCCESS.desc}</Tag>;
+                statusTag =
+                    <Tag color={"green"}>{<FormattedMessage id={ExperimentConstants.TASK_END_SUCCESS.desc}/>}</Tag>;
                 break;
             case ExperimentConstants.TASK_START_FAILED:
-                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_START_FAILED.desc}</Tag>;
+                statusTag =
+                    <Tag color={"red"}>{<FormattedMessage id={ExperimentConstants.TASK_START_FAILED.desc}/>}</Tag>;
                 break;
             case ExperimentConstants.TASK_END_FAILED:
-                statusTag = <Tag color={"red"}>{ExperimentConstants.TASK_END_FAILED.desc}</Tag>;
+                statusTag =
+                    <Tag color={"red"}>{<FormattedMessage id={ExperimentConstants.TASK_END_FAILED.desc}/>}</Tag>;
                 break;
             case ExperimentConstants.TASK_START_RUNNING:
-                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_START_RUNNING.desc}/>;
+                statusTag = <Badge status="processing"
+                                   text={<FormattedMessage id={ExperimentConstants.TASK_START_RUNNING.desc}/>}/>;
                 break;
             case ExperimentConstants.TASK_END_RUNNING:
-                statusTag = <Badge status="processing" text={ExperimentConstants.TASK_END_RUNNING.desc}/>;
+                statusTag = <Badge status="processing"
+                                   text={<FormattedMessage id={ExperimentConstants.TASK_END_RUNNING.desc}/>}/>;
                 break;
             case ExperimentConstants.TASK_WAIT:
-                statusTag = <Tag color={"geekblue"}>{ExperimentConstants.TASK_WAIT.desc}</Tag>;
+                statusTag = <Tag color={"geekblue"}>{<FormattedMessage id={ExperimentConstants.TASK_WAIT.desc}/>}</Tag>;
                 break;
         }
         return statusTag;

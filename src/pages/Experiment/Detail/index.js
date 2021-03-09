@@ -26,6 +26,7 @@ import Task from "../Task";
 import styles from './index.module.scss';
 import TaskInfo from "../Task/TaskInfo";
 import {ExperimentCreatingTabKey} from "../../../constants/ExperimentConstants";
+import {FormattedMessage} from "react-intl";
 
 
 class ExperimentDetail extends React.Component {
@@ -73,9 +74,12 @@ class ExperimentDetail extends React.Component {
         const top = 20
         return (
             <Affix offsetTop={top}>
-                <Button onClick={() => this.scrollToAnchor("Task")}>查看任务</Button>
-                <Button onClick={() => this.editExperiment()} style={{marginLeft: 8}}>编辑实验</Button>
-                <Button onClick={() => this.startExperiment()} type="primary" style={{marginLeft: 8}}>执行实验</Button>
+                <Button onClick={() => this.scrollToAnchor("Task")}><FormattedMessage
+                    id={'page.experiment.operation.run'}/></Button>
+                <Button onClick={() => this.editExperiment()} style={{marginLeft: 8}}><FormattedMessage
+                    id={'page.experiment.operation.edit'}/></Button>
+                <Button onClick={() => this.startExperiment()} type="primary" style={{marginLeft: 8}}><FormattedMessage
+                    id={'page.experiment.operation.run'}/></Button>
             </Affix>
         );
     }
@@ -86,11 +90,11 @@ class ExperimentDetail extends React.Component {
 
         return (
             <div id={"Task"}>
-                <Descriptions title="实验任务列表"></Descriptions>
+                <Descriptions title={<FormattedMessage id={'page.experiment.detail.task'}/>}></Descriptions>
                 <Table columns={this.TaskColumns}
                        dataSource={loading ? [] : tasks}
                        locale={{
-                           emptyText: <span><a>任务不存在</a></span>
+                           emptyText: <span><a>Empty</a></span>
                        }}
                        rowKey={record => record.taskId}
                        loading={loading}
@@ -105,13 +109,19 @@ class ExperimentDetail extends React.Component {
     experimentInfoRender = () => {
         const {experimentName, taskCount, createTime, lastTaskCreateTime, lastTaskStatus, lastTaskResult} = this.props;
         return (
-            <Descriptions title="实验信息" extra={this.experimentOperationRender()}>
-                <Descriptions.Item label="实验名称">{experimentName ? experimentName : 'unknown'}</Descriptions.Item>
-                <Descriptions.Item label="创建时间">{createTime ? createTime : 'unknown'}</Descriptions.Item>
-                <Descriptions.Item label="总执行次数">{taskCount ? taskCount : 0}</Descriptions.Item>
+            <Descriptions title={<FormattedMessage id={'page.experiment.detail.info'}/>}
+                          extra={this.experimentOperationRender()}>
+                <Descriptions.Item label={<FormattedMessage
+                    id={'page.experiment.detail.info.name'}/>}>{experimentName ? experimentName : 'unknown'}</Descriptions.Item>
+                <Descriptions.Item label={<FormattedMessage
+                    id={'page.experiment.detail.info.createTime'}/>}>{createTime ? createTime : 'unknown'}</Descriptions.Item>
+                <Descriptions.Item label={<FormattedMessage
+                    id={'page.experiment.detail.info.taskCount'}/>}>{taskCount ? taskCount : 0}</Descriptions.Item>
                 <Descriptions.Item
-                    label="上次执行时间">{lastTaskCreateTime ? lastTaskCreateTime : '未执行'}</Descriptions.Item>
-                <Descriptions.Item label="上次执行状态">
+                    label={<FormattedMessage
+                        id={'page.experiment.detail.info.latestTaskCreateTime'}/>}>{lastTaskCreateTime ? lastTaskCreateTime :
+                    <FormattedMessage id={'page.experiment.detail.info.status.waiting'}/>}</Descriptions.Item>
+                <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.info.latestTaskStatus'}/>}>
                     {TaskInfo.statusRender(lastTaskStatus, lastTaskResult)}
                 </Descriptions.Item>
 
@@ -122,26 +132,28 @@ class ExperimentDetail extends React.Component {
     experimentMachineRender = () => {
         const {dimension, machines} = this.props;
         return (
-            <Descriptions title="实验范围" bordered>
-                <Descriptions.Item label="实验维度" span={3}>{dimension ? dimension : '主机维度'}</Descriptions.Item>
-                <Descriptions.Item label="实验机器" span={3}>
+            <Descriptions title={<FormattedMessage id={'page.experiment.detail.scope'}/>} bordered>
+                <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.scope.dimension'}/>}
+                                   span={3}>{dimension ? dimension :
+                    <FormattedMessage id={'page.machine.tab.host'}/>}</Descriptions.Item>
+                <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.scope.resource'}/>} span={3}>
                     <Row gutter={8}>
-                        {_.isEmpty(machines) ? <Col>无机器</Col>
+                        {_.isEmpty(machines) ? <Col>Empty</Col>
                             :
                             machines.map(machine => {
                                 let m = '';
                                 switch (dimension) {
                                     case ExperimentCreatingTabKey.HOST:
-                                        m= machine.ip;
+                                        m = machine.ip;
                                         break;
                                     case ExperimentCreatingTabKey.NODE:
-                                        m= machine.nodeName;
+                                        m = machine.nodeName;
                                         break;
                                     case ExperimentCreatingTabKey.POD:
-                                        m= _.join([machine.namespace, machine.podName], '/');
+                                        m = _.join([machine.namespace, machine.podName], '/');
                                         break;
                                     case ExperimentCreatingTabKey.CONTAINER:
-                                        m= _.join([machine.namespace, machine.podName, machine.containerName], '/');
+                                        m = _.join([machine.namespace, machine.podName, machine.containerName], '/');
                                         break;
                                 }
                                 return <Col span={6}>{m}</Col>;
@@ -156,12 +168,13 @@ class ExperimentDetail extends React.Component {
         const {scenarios} = this.props;
         const scenario = _.isEmpty(scenarios) ? null : scenarios[0];
         return (
-            <Descriptions title="实验场景" bordered column={4}>
-                <Descriptions.Item label="场景名称"
+            <Descriptions title={<FormattedMessage id={'page.experiment.detail.scenario'}/>} bordered column={4}>
+                <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.scenario.name'}/>}
                                    span={2}>{scenario && scenario.name ? scenario.name : 'unknown'}</Descriptions.Item>
-                <Descriptions.Item label="场景目录"
+                <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.scenario.category'}/>}
                                    span={2}>{scenario && scenario.categories ? scenario.categories[0].categoryName : 'unknown'}</Descriptions.Item>
-                <Descriptions.Item label="场景参数" span={4}>
+                <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.scenario.parameter'}/>}
+                                   span={4}>
                     <Row gutter={8}>
                         {(scenario && !_.isEmpty(scenario.parameters)) ?
                             scenario.parameters.map(param => {
@@ -169,7 +182,7 @@ class ExperimentDetail extends React.Component {
                                     return;
                                 }
                                 return <Col span={6}>{param.name}:{param.value}</Col>;
-                            }) : <Col>无参数</Col>}
+                            }) : <Col>Empty</Col>}
                     </Row>
                 </Descriptions.Item>
             </Descriptions>
@@ -180,35 +193,41 @@ class ExperimentDetail extends React.Component {
         const {metrics} = this.props;
         if (_.isEmpty(metrics)) {
             return (
-                <Descriptions title="实验监控" bordered column={4}>
-                    <Descriptions.Item span={4}>无数据</Descriptions.Item>
+                <Descriptions title={<FormattedMessage id={'page.experiment.detail.monitor'}/>} bordered column={4}>
+                    <Descriptions.Item span={4}>No Data</Descriptions.Item>
                 </Descriptions>
             );
         }
         const metric = metrics[0];
         return (
-            <Descriptions title="实验监控" bordered column={4}>
+            <Descriptions title={<FormattedMessage id={'page.experiment.detail.monitor'}/>} bordered column={4}>
                 {_.isEmpty(metrics) ?
                     <Descriptions.Item span={4}>无数据</Descriptions.Item>
                     :
                     <>
-                        <Descriptions.Item label="稳态名称"
+                        <Descriptions.Item label={<FormattedMessage id={'page.experiment.detail.monitor.state.name'}/>}
                                            span={2}>{metric.name ? metric.name : 'unknown'}</Descriptions.Item>
                         {/*<Descriptions.Item label="监控图形"*/}
                         {/*                   span={2}>{monitor.component ? monitor.component.chart : 'unknown'}</Descriptions.Item>*/}
-                        <Descriptions.Item label="稳态预期" span={2}>稳态预期</Descriptions.Item>
-                        <Descriptions.Item label="兜底策略" span={2}>兜底策略</Descriptions.Item>
-                        <Descriptions.Item label="配置参数" span={2}>
+                        <Descriptions.Item
+                            label={<FormattedMessage id={'page.experiment.detail.monitor.state.expected'}/>} span={2}>{
+                            <FormattedMessage id={'page.experiment.detail.monitor.expected'}/>}</Descriptions.Item>
+                        <Descriptions.Item
+                            label={<FormattedMessage id={'page.experiment.detail.monitor.state.protect'}/>}
+                            span={2}><FormattedMessage
+                            id={'page.experiment.detail.monitor.state.protect'}/></Descriptions.Item>
+                        <Descriptions.Item
+                            label={<FormattedMessage id={'page.experiment.detail.monitor.state.config'}/>} span={2}>
                             <Row gutter={8}>
                                 {(!_.isEmpty(metric.params)) ?
                                     metric.params.map(param => {
                                         return <Col span={6}>{param.name}:{param.value}</Col>;
-                                    }) : <Col>无参数</Col>}
+                                    }) : <Col>Empty</Col>}
                             </Row>
                         </Descriptions.Item>
-                        <Descriptions.Item label="测试数据图表" span={2}>
-                            Come soon...
-                        </Descriptions.Item>
+                        {/*<Descriptions.Item label="测试数据图表" span={2}>*/}
+                        {/*    Come soon...*/}
+                        {/*</Descriptions.Item>*/}
                     </>}
             </Descriptions>
         );
@@ -251,22 +270,22 @@ class ExperimentDetail extends React.Component {
 
     TaskColumns = [
         {
-            title: "序号",
+            title: <FormattedMessage id={"page.column.title.index"}/>,
             render: (text, record, index) => `${index + 1}`
         },
         {
-            title: "任务ID",
+            title: <FormattedMessage id={"page.experiment.detail.task.id"}/>,
             dataIndex: "taskId",
             key: "taskId",
             className: `${styles.hidden}`
         },
         {
-            title: "名称",
+            title: <FormattedMessage id={"page.experiment.detail.task.name"}/>,
             dataIndex: 'taskName',
             key: 'taskName',
         },
         {
-            title: "状态",
+            title: <FormattedMessage id={"page.experiment.detail.task.status"}/>,
             dataIndex: 'taskStatus',
             key: 'taskStatus',
             render: (text, record) => {
@@ -275,17 +294,17 @@ class ExperimentDetail extends React.Component {
             }
         },
         {
-            title: "开始时间",
+            title: <FormattedMessage id={"page.experiment.detail.task.startTime"}/>,
             dataIndex: 'startTime',
             key: 'startTime',
         },
         {
-            title: "结束时间",
+            title: <FormattedMessage id={'page.experiment.detail.task.endTime'}/>,
             dataIndex: 'endTime',
             key: 'endTime',
         },
         {
-            title: "操作",
+            title: <FormattedMessage id={'page.experiment.detail.task.operation'}/>,
             dataIndex: 'operation',
             key: 'operation',
             render: this.operationRender,
