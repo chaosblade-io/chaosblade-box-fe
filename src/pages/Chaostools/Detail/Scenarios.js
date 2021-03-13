@@ -74,7 +74,7 @@ class Scenarios extends React.Component {
         const {scenarios} = this.props;
         return (
             <div>
-                <h3 id="scenarios">实验场景列表</h3>
+                <h3 id="scenarios"><FormattedMessage id={'page.chaostools.detail.title'}/></h3>
                 <Tabs>
                     {
                         !_.isEmpty(scenarios) ? scenarios.map(item => {
@@ -86,21 +86,21 @@ class Scenarios extends React.Component {
                                                        type="success"/>
                                                 :
                                                 <Button
-                                                    onClick={() => this.importScenarios(item.scenarios, item.file)}>导入实验场景</Button>
+                                                    onClick={() => this.importScenarios(item.scenarios, item.file)}>
+                                                    <FormattedMessage id={'page.chaostools.detail.importScenarios'}/>
+                                                </Button>
                                         }
                                         <Table columns={this.TableColumns}
                                                rowKey={record => record.index}
                                                dataSource={item.scenarioList}
                                                locale={{
-                                                   emptyText: <span>没有场景数据，请点击
-                                   <a>&nbsp;刷新&nbsp;</a>重试
-                               </span>
+                                                   emptyText: <span>Empty</span>
                                                }}
                                         />
                                     </TabPane>
                                 );
                             }) :
-                            <span>暂无数据</span>
+                            <span>Empty</span>
                     }
                 </Tabs>
             </div>

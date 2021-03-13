@@ -20,8 +20,6 @@ class Deploy extends React.Component {
     render() {
         return (
             <div>
-                已部署统计：具体跳转
-                工具使用方式：
             </div>
         );
     }
