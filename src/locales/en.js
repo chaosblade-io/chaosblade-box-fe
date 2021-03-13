@@ -316,5 +316,13 @@ export const en = {
     //scenario category
     'page.scenario.category.java': 'Java Application',
 
-
+    // chaostools
+    'page.chaostools.market.title': 'Chaos Market',
+    'page.chaostools.market.subtitle': 'There are many choices, and there will be more in the future...',
+    'page.chaostools.market.description': 'Market description',
+    'page.chaostools.list.scenarios': 'Scenario',
+    'page.chaostools.list.deployed': 'Deploy',
+    'page.chaostools.list.information': 'Detail',
+    'page.chaostools.detail.title': 'Scenarios',
+    'page.chaostools.detail.importScenarios': 'ImportScenarios',
 }

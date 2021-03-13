@@ -21,6 +21,7 @@ import {List, Space} from "antd";
 import _ from 'lodash';
 import * as request from "../../Machine/libs/request";
 import {MoreOutlined, ToolOutlined, UnorderedListOutlined} from "@ant-design/icons";
+import {FormattedMessage} from "react-intl";
 
 
 class MarketList extends React.Component {
@@ -31,16 +32,7 @@ class MarketList extends React.Component {
 
     fetchPublicChaostoolsList() {
         const {fetchPublicChaostools} = this.props;
-        fetchPublicChaostools(
-            data => {
-                const {publics} = data;
-                if (!_.isEmpty(publics)) {
-                    publics.map(name => {
-                        this.fetchChaostoolsOverview(name);
-                    })
-                }
-            }
-        );
+        fetchPublicChaostools();
     }
 
     fetchChaostoolsOverview(name) {
@@ -87,18 +79,20 @@ class MarketList extends React.Component {
                             <Space>
                                 <UnorderedListOutlined/>
                                 <a onClick={this.detail.bind(this, item.name, item.latest, "scenarios")}>
-                                    场景管理
+                                    <FormattedMessage id={'page.chaostools.list.scenarios'}/>
                                 </a>
                             </Space>,
                             <Space>
                                 <ToolOutlined/>
                                 <a onClick={this.deployed.bind(this, item.name, item.latest, "deployed")}>
-                                    工具管理
+                                    <FormattedMessage id={'page.chaostools.list.deployed'}/>
                                 </a>
                             </Space>,
                             <Space>
                                 <MoreOutlined/>
-                                <a onClick={this.detail.bind(this, item.name, item.latest, "information")}>查看更多详情</a>
+                                <a onClick={this.detail.bind(this, item.name, item.latest, "information")}>
+                                    <FormattedMessage id={'page.chaostools.list.information'}/>
+                                </a>
                             </Space>,
                         ]}
                         extra={

@@ -23,13 +23,14 @@ import ScenarioApi from "../services/ScenarioApi";
 import yaml from "js-yaml";
 import {Errors} from "../constants/Errors";
 import {getError} from "./response";
+import _ from "lodash";
 
 export default () => {
 
     function* watchFetchPublicChaostools() {
         while (true) {
-            const {callback} = yield take(Types.FETCH_PUBLIC_CHAOSTOOLS);
-            yield fork(fetchPublicChaostools, callback);
+            yield take(Types.FETCH_PUBLIC_CHAOSTOOLS);
+            yield fork(fetchPublicChaostools);
         }
     }
 
@@ -44,7 +45,12 @@ export default () => {
         } else {
             if (response && response.ok) {
                 const data = yaml.load(response.data, {json: true});
-                callback && callback(data);
+                const {publics} = data;
+                if (!_.isEmpty(publics)) {
+                    for (let i = 0; i < publics.length; i++) {
+                        yield call(fetchChaostoolsOverview, publics[i]);
+                    }
+                }
                 yield put(Actions.fetchPublicChaostoolsResult(data));
             } else {
                 error = getError(response);

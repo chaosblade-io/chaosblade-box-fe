@@ -16,8 +16,8 @@
 
 import React from "react";
 import {Divider, PageHeader, Row, Space, Typography} from "antd";
-import {GithubOutlined} from "@ant-design/icons";
 import MarketList from "./MarketList";
+import {FormattedMessage} from "react-intl";
 
 const {Paragraph} = Typography;
 const IconText = ({icon, text, onClick}) => (
@@ -40,16 +40,13 @@ class ChaostoolsMarket extends React.Component {
         return (
             <PageHeader
                 style={{paddingBottom: 16}}
-                title="混沌实验工具市场"
-                subTitle="选择有很多，将来会更多..."
+                title={<FormattedMessage id={'page.chaostools.market.title'}/>}
+                subTitle={<FormattedMessage id={'page.chaostools.market.subtitle'}/>}
                 // tags={<IconText icon={GithubOutlined} text="Github" key="list-vertical-star-o"/>}
             >
                 <Content>
                     <Paragraph>
-                        市场介绍
-                    </Paragraph>
-                    <Paragraph>
-                        部署流程：导入场景-部署演练工具
+                        {<FormattedMessage id={'page.chaostools.market.description'}/>}
                     </Paragraph>
                 </Content>
             </PageHeader>

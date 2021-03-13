@@ -280,8 +280,7 @@ export const zh = {
     'page.experiment.operation.run': '执行实验',
 
 
-
-    //scenario column title  
+    //scenario column title
     'page.scenario.column.title.unique_code': '唯一码',
     'page.scenario.column.title.scenario_name': '场景名',
     'page.scenario.column.title.status': '状态',
@@ -321,4 +320,13 @@ export const zh = {
     //scenario category
     'page.scenario.category.java': 'java应用',
 
+    // chaostools
+    'page.chaostools.market.title': '混沌实验工具市场',
+    'page.chaostools.market.subtitle': '选择有很多，将来会更多...',
+    'page.chaostools.market.description': '市场介绍',
+    'page.chaostools.list.scenarios': '场景管理',
+    'page.chaostools.list.deployed': '工具管理',
+    'page.chaostools.list.information': '查看更多详情',
+    'page.chaostools.detail.title': '实验场景列表',
+    'page.chaostools.detail.importScenarios': '导入实验场景',
 }
