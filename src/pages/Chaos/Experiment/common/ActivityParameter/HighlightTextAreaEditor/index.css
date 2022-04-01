@@ -1,0 +1,77 @@
+.paramesContro {
+  justify-content: flex-start;
+  min-width: 21%;
+
+  .switchValue {
+    margin-right: 8px;
+  }
+}
+
+.content {
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+}
+
+.switchEditStyle {
+  width: 90%;
+  :global(.ace_scroller) {
+    width: 230px !important;
+  }
+  :global(.ace_content) {
+    padding-top: 6px;
+  }
+}
+
+.paramesItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.fullStyle {
+  width: 650px !important;
+  height: 500px !important;
+  textarea {
+    height: 500px;
+  }
+  border: 1px solid #dedede;
+  :global(.ace_scroller) {
+    width: 650px !important;
+  }
+  :global(.ace_content) {
+    padding-top: 6px;
+  }
+}
+
+.fullScreenBtn {
+  position: absolute;
+  right: 5px;
+  top: -24px;
+  height: 32px;
+  line-height: 32px;
+  z-index: 1;
+  cursor: pointer;
+  display: flex;
+  div {
+    margin-left: 8px;
+  }
+}
+
+.collapsedBtn {
+  position: absolute;
+  top: -22px;
+  right: 5px;
+  height: 32px;
+  line-height: 32px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.editor {
+  height: 30px;
+  border: 1px solid #dedede;
+}

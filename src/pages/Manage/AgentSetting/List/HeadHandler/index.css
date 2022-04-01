@@ -1,0 +1,45 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  .left {
+    display: flex;
+    align-items: center;
+    :global(.next-select) {
+      flex: 30%;
+      margin-right: 12px;
+    }
+    :global(.next-search) {
+      width: auto;
+      margin-right: 12px;
+    }
+    .licenseTipsBtn {
+      flex: 20%;
+      cursor: pointer;
+      color: #0070cc;
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    .info {
+      margin-right: 12px; 
+    }
+    .btn {
+      margin: 0 12px;
+    }
+  }
+}
+
+.selector {
+  min-width: 130px;
+  :global(.next-input) {
+    background: #0070cc;
+    color: #fff;
+    font-weight: 500;
+    :global(.next-input-control .next-icon) {
+      color: #fff;
+      font-weight: 500;
+    }
+  }
+}

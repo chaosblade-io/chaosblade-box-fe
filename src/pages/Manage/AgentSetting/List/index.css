@@ -1,0 +1,9 @@
+.content {
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    :global(.next-pagination-pages) {
+      margin-left: 8px;
+    }
+  }
+}

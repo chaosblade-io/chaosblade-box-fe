@@ -1,0 +1,55 @@
+/* common */
+.text-primary {
+  color: #0070CC !important;
+}
+.text-success {
+  color: #1d8e3e !important;
+}
+.text-danger {
+  color: #D93026 !important;
+}
+.text-warning {
+  color: #ffc440 !important;
+}
+
+.vertical-align-middle {
+  vertical-align: middle !important;
+}
+.vertical-align-top {
+  vertical-align: top !important;
+}
+
+.text-align-center {
+  text-align: center !important;
+}
+.text-align-left {
+  text-align: left !important;
+}
+.text-align-right {
+  text-align: right !important;
+}
+
+.position-absolute {
+  position: absolute !important;
+}
+.position-relative {
+  position: relative !important;
+}
+.position-fixed {
+  position: fixed !important;
+}
+
+.text-ellipsis {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.maxBalloon {
+  max-width: 480px!important;
+  z-index: 1003;
+  .next-balloon-content {
+    line-height: 24px;
+  }
+}

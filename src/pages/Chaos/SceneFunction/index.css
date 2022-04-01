@@ -1,0 +1,101 @@
+.searchContent {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+
+  .actionSelect {
+    width: 140px;
+    margin-right: 8px;
+  }
+}
+
+.tabSecond {
+  margin-top: 16px;
+}
+
+.funContent {
+  margin-top: 24px;
+  height: 100%;
+
+  .funList {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    .listCard {
+      height: 44px;
+      width: 284px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-right: 16px;
+      margin-bottom: 16px;
+      
+      &:hover {
+        cursor: pointer;
+      }
+
+    }
+  }
+
+  .funInfo {
+    height: 154px;
+    width: 100%;
+    background: #F7F7F7;
+    margin-top: 8px;
+    padding: 12px 16px;
+  }
+}
+
+.radio {
+  height: 14px;
+  width: 14px;
+  border: 1px solid #DEDEDE;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.seleted {
+  height: 14px;
+  width: 14px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  border: 1px solid #0070CC;
+  margin-right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.seletedCard {
+  background: #E5F3FF;
+  border: 1px solid #0070CC;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.13);
+}
+
+.Card {
+  background: #FFFFFF;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.13);
+}
+
+.selectedCon {
+  height: 6px;
+  width: 6px;
+  background: #0070CC;
+  background-color: #0070CC;
+  border-radius: 50%;
+}
+
+.noDate {
+  margin-top: 10%;
+  margin-left: 40%;
+}
+.link {
+  color: #0070CC;
+  font-weight: bold;
+}

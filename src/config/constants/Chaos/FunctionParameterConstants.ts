@@ -1,0 +1,32 @@
+export const FunctionParameterConstants = {
+  PARAMETER_TYPE_MATCHER: 0,
+  PARAMETER_TYPE_ACTION: 1,
+  PARAMETER_TYPE_USER: 2,
+  PARAMETER_COMPONENT_TYPE_INPUT: 'input',
+  PARAMETER_COMPONENT_TYPE_PASSWORD: 'password',
+  PARAMETER_COMPONENT_TYPE_NUMBER_INPUT: 'number',
+  PARAMETER_COMPONENT_TYPE_RADIO: 'radio',
+  PARAMETER_COMPONENT_TYPE_SELECT: 'select',
+  PARAMETER_COMPONENT_TYPE_SELECT_REMOTE: 'select_remote',
+  PARAMETER_COMPONENT_TYPE_SEARCH: 'search',
+  PARAMETER_COMPONENT_TYPE_TIME: 'time',
+  PARAMETER_COMPONENT_TYPE_DATE: 'date',
+  PARAMETER_COMPONENT_TYPE_JSON: 'json',
+  PARAMETER_COMPONENT_TYPE_YAML: 'yaml',
+  PARAMETER_COMPONENT_TYPE_CODE: 'code',
+};
+
+export const COMPONENT_TYPES = {
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_RADIO ]: '单选框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_PASSWORD ]: '密码框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_SEARCH ]: '搜索框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_INPUT ]: '输入框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_SELECT ]: '下拉选择框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_SELECT_REMOTE ]: '下拉选择框(远程)',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_NUMBER_INPUT ]: '数字输入框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_TIME ]: '时间选择框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_DATE ]: '日期选择框',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_JSON ]: '富文本编辑框(JSON)',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_YAML ]: '富文本编辑框(YAML)',
+  [ FunctionParameterConstants.PARAMETER_COMPONENT_TYPE_CODE ]: '代码编辑框',
+};

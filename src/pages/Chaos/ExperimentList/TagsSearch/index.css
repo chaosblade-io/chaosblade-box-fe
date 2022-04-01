@@ -1,0 +1,93 @@
+.tagContent {
+  width: 380px;
+  border: 1px solid #ebebeb;
+  background-color: #fff;
+
+  .chiosed {
+    width: 100%;
+    min-height: 62px;
+    background: #fafafa;
+    border-bottom: 1px solid #ebebeb;
+    padding: 12px;
+
+    .tagsWord {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .tagsList {
+      margin-top: 10px;
+    }
+  }
+
+  .optionContent {
+    padding: 12px 0px 0px 0px;
+    height: 144px;
+    overflow-y: auto;
+
+    .item {
+      width: 100%;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 16px;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        background-color: #d8d8d8;
+      }
+    }
+
+    .noItem {
+      width: 100%;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 16px;
+    }
+
+    .chiosedTag {
+      background-color: #f3faff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .selectIcon {
+      color: #0070cc;
+
+      &::before {
+        font-size: 12px !important;
+        width: 12px !important;
+        height: 12px !important;
+        display: initial !important;
+      }
+    }
+  }
+
+  .actionButton {
+    padding: 12px 16px;
+    border-top: 1px solid #ebebeb;
+
+    .reset {
+      margin-left: 8px;
+      border: 0;
+      color: #0070cc;
+      line-height: 32px;
+      cursor: pointer;
+    }
+  }
+}
+
+.loading {
+  padding: 10% 45%;
+}
+
+.noTags {
+  margin: 30% 40%;
+}
+
+.tagSearch {
+  width: 124px;
+  margin-right: 6px;
+}

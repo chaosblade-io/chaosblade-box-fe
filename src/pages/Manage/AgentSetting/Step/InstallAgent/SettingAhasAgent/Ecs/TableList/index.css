@@ -1,0 +1,42 @@
+.content {
+  :global(.next-table-header) {
+    :global(.next-checkbox-wrapper) {
+      position: absolute;
+      bottom: -30px;
+    }
+  }
+  .ml10 {
+    margin-left: 10px;
+  }
+
+  .mr10 {
+    margin-right: 10px;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .v_a_b {
+    vertical-align: bottom;
+  }
+
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  height: 40px;
+  align-items: center;
+  border-top: 0;
+  padding: 0px 4px;
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    :global(.next-pagination-pages) {
+      margin-left: 8px;
+    }
+  }
+}
+

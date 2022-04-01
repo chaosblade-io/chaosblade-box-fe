@@ -1,0 +1,8 @@
+.installDialog {
+  label:before {
+    margin-right: 4px;
+    content: " ";
+    display: inline-block;
+    width: 6px;
+  } 
+}

@@ -1,0 +1,27 @@
+.content {
+  .codeBox {
+    padding: 16px;
+    background: #f2f4f5;
+    color: #333;
+    position: relative;
+    padding-right: 30px;
+    p {
+      margin-bottom: 0px
+    }
+    .codeCopy {
+      cursor: pointer;
+      width: 33px;
+      height: 30px;
+      background: #cfcfcf;
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .copyIcon {
+      color: #fff
+    }
+  }
+}

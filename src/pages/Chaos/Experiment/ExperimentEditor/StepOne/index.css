@@ -1,0 +1,109 @@
+.addDrillOb {
+  margin-bottom: 16px;
+}
+
+.ipList {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.ipBlock {
+  background: #D6E4FF;
+  border-radius: 2px;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+}
+
+.allCheck {
+  font-size: 12px;
+  cursor: pointer;
+  color: #0070CC;
+}
+
+.ipListBallon {
+  word-break: break-all;
+  line-height: 22px;
+}
+
+.ip {
+  margin-right: 8px;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.groups {
+  width: 100%;
+  height: 40px;
+  background: #F7F7F7;
+  padding: 10px 22px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  line-height: 20px;
+}
+
+.title {
+  flex: 1;
+  display: flex;
+}
+
+.groupIcon {
+  width: 12px;
+  height: 12px;
+  color: #888;
+  margin-right: 8px;
+}
+
+.groupIcon::before{
+  font-size: 12px !important;
+  width: 12px;
+}
+
+.groupName {
+  max-width: 41%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action {
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.groupIpAction {
+  color: #888;
+}
+
+.groupIpAction::before{
+  font-size: 12px !important;
+  width: 12px;
+}
+
+.groupIpActionCopy {
+  color: #888;
+  margin-right: 20px;
+}
+
+.groupIpActionCopy::before{
+  font-size: 12px !important;
+  width: 12px;
+}
+
+.DividerEdit {
+  width: 100%;
+  height: 1px;
+  background: #dedede;
+  margin: 16px 0;
+}
+
+/* 复制分组 */
+.content {
+  min-height: 500px;
+}

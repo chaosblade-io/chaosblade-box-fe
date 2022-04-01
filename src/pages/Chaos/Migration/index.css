@@ -1,0 +1,57 @@
+.setting, .progress, .finish {
+  width: 790px;
+  margin: 32px auto;
+
+  .header {
+    font-size: 14px;
+    margin-bottom: 16px;
+    font-weight: bold;
+    background: #f1f1f1;
+    padding: 8px 16px;
+    border-left: 4px solid #f5f5f5;
+  }
+  .content {
+    margin: 16px;
+    margin-bottom: 32px;
+  }
+  .formItem {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+
+    .label {
+      width: 90px;
+      text-align: right;
+      margin-right: 8px;
+      &::after {
+        content: ': ';
+      }
+    }
+  }
+  .tips {
+    background: #f5f5f5;
+    padding: 16px;
+    margin-bottom: 32px;
+    > div {
+      text-align: center;
+    }
+    .pHeader {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .desp {
+      color: #333;
+      margin: 10px 0 6px;
+    }
+    .error {
+      color: red;
+    }
+  }
+  .proItem {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 32px;
+    margin-bottom: 16px;
+    color: #333;
+  }
+}

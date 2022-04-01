@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="105d0065-5e92-4e2f-897e-85dcf4e71691" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="27BqfjTx7zjLwdXSR0sH5Fk3jUU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="105d0065-5e92-4e2f-897e-85dcf4e71691" name="Default Changelist" comment="" />
+      <created>1648803932997</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1648803932997</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="521" y="172" key="CommitChangelistDialog2" timestamp="1648804065779">
+      <screen x="68" y="25" width="1724" height="1095" />
+    </state>
+    <state x="521" y="172" key="CommitChangelistDialog2/-49.-1415.2560.1415/68.25.1724.1095@68.25.1724.1095" timestamp="1648804065779" />
+    <state x="530" y="309" key="Vcs.Push.Dialog.v2" timestamp="1648804260251">
+      <screen x="68" y="25" width="1724" height="1095" />
+    </state>
+    <state x="530" y="309" key="Vcs.Push.Dialog.v2/-49.-1415.2560.1415/68.25.1724.1095@68.25.1724.1095" timestamp="1648804260251" />
+    <state x="631" y="327" width="597" height="490" key="find.popup" timestamp="1648806545680">
+      <screen x="68" y="25" width="1724" height="1095" />
+    </state>
+    <state x="631" y="327" width="597" height="490" key="find.popup/-49.-1415.2560.1415/68.25.1724.1095@68.25.1724.1095" timestamp="1648806545680" />
+  </component>
+</project>

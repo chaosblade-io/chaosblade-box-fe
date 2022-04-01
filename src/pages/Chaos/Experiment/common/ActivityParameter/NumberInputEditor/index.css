@@ -1,0 +1,54 @@
+.paramesItem {
+  width: 412px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.errorMessage {
+  height: 18px;
+  font-size: 12px;
+  color: #f5222d;
+  margin-top: 3px;
+}
+
+.paramesContro {
+  margin-left: 36px;
+  display: flex;
+  justify-content: flex-start;
+  min-width: 21%;
+}
+
+.switchValue {
+  margin-right: 8px;
+}
+
+.switchEditStyle {
+  width: 90%;
+  :global(.next-number-picker) {
+    width: 100% !important;
+  }
+}
+
+.styleWidth {
+  width: 100%;
+}
+
+.numWidth {
+  width: 100%;
+
+  :global(.next-number-picker) {
+    width: 100% !important;
+  }
+}
+
+.error {
+  :global(.next-input),textarea:hover {
+    border-color: #f5222d;
+  }
+
+  :global(.next-input),textarea {
+    border-color: #f5222d;
+  }
+
+}

@@ -1,0 +1,245 @@
+.informationContainer {
+  padding: 16px 25px 25px 0;
+
+  .tabButton {
+    width: 100%;
+    position: relative;
+
+    .buttonGroup {
+      display: flex;
+      justify-content: flex-start;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 9;
+    }
+  }
+}
+
+.tabs{
+  margin-top: 16px;
+}
+
+.item {
+  width: 100%;
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  line-height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .label {
+    min-width: 100px;
+    color: #8C8C8C;
+    margin-right: 22px;
+    text-align: left;
+  }
+
+  .value {
+    width: 50%;
+    color: #262626;
+    word-break: break-all;
+  }
+
+  .infomation {
+    font-size: 14px;
+    color: #333;
+    margin-right: 62px;
+    text-align: left;
+  }
+
+  .editInfo {
+    text-decoration: none;
+    color: #0070CC;
+    cursor:pointer;
+    line-height: 20px;
+  }
+
+  .Icon {
+    font-size: 14px;
+    color: #0070CC;
+    margin-right: 8px;
+  }
+
+  .nameLong {
+    width: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .valueLong {
+    color: #262626;
+    width: 50%;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .tag {
+    margin-right: 5px;
+    max-width: 150px;
+  }
+}
+
+.infoContent {
+  width: 100%;
+  display: flex;
+  justify-content : flex-start;
+}
+
+/* 流程部分 */
+.actionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+
+  .actionLeft {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .runOrder {
+    margin: 0 8px;
+  }
+
+  .disableHelp {
+    line-height: 32px;
+    cursor: pointer;
+    margin-right: 4px;
+
+    i {
+      font-size: 16px;
+      color: #D93026;
+
+      &::before {
+        font-size: 16px !important;
+      }
+    }
+  }
+}
+
+.ulList {
+  list-style-type: square;
+  padding-left: 10px;
+  
+  .baoollnList {
+    line-height: 32px;
+  }
+}
+
+.detailView {
+
+  .detailLabel {
+    font-size: 12px;
+    color: #555555;
+    text-align: left;
+    margin-bottom: 8px;
+  }
+
+  .detailValue {
+    margin-bottom: 24px;
+  }
+
+  .nodeConfig {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .timeNumber {
+    width: 140px;
+  }
+
+  .timeUnitOption {
+    margin-top: 1px !important;
+    margin-left: -1px !important;
+  }
+}
+
+.inputExpression {
+  color: #c1c1c1;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.tagStyle {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  cursor: pointer !important;
+}
+
+.unAbleCheckAll{
+  font-size: 12px;
+  color: #C1C1C1;
+  cursor: not-allowed;
+}
+
+.ableCheckAll{
+  color: #0070CC;
+  text-align: left;
+  cursor: pointer;
+}
+
+.errorTip {
+  color: #D93026;
+  line-height: 28px;
+}
+
+.groupNameList {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 资源包部分 */
+.paidTips {
+  font-size: 12px;
+  color: #333;
+}
+
+.packName {
+  display: inline-block;
+  padding: 2px 2px;
+  height: 16px;
+  width: 44px;
+  background: #0091FF;
+  border-radius: 2px;
+  background-color: #0091FF;
+  font-family: PingFangSC-Regular;
+  color: #fff;
+}
+
+.action {
+  color: #0070CC;
+  cursor: pointer;
+}
+
+.tipsContent {
+  padding-left: 20px;
+  list-style: disc;
+
+  .startTipsList {
+    min-height: 22px;
+    line-height: 22px;
+  }
+}
+
+.warnContent {
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  background: #FFF7DB;
+}
+
+/* 编辑机器 */
+.content {
+  min-height: 500px;
+}

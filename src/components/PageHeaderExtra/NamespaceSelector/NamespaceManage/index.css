@@ -1,0 +1,33 @@
+.containerTips {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 14px;
+
+  span {
+    color: #0070CC;
+  }
+
+  :global(.next-icon-warning) {
+    color: #ffc440;
+    margin-right: 10px;
+  }
+}
+
+.containerIcon {
+  position: absolute;
+  top: 15px;
+  right: 5px;
+}
+
+.containerForm {
+  position: relative;
+
+  .containerInput {
+    width: 360px;
+
+    :global(.next-form-item-help) {
+      color: red !important;
+    }
+  }
+}

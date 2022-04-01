@@ -1,0 +1,170 @@
+.formContent {
+  border: 1px solid #EBEBEB;
+  padding: 0 24px;
+  margin-bottom: 8px;
+}
+
+.flowGroupTips {
+  padding: 10px 0;
+  margin-bottom: 16px;
+}
+
+.editIcon {
+  font-size: 12px;
+}
+
+.editIcon::before{
+  font-size: 12px !important;
+}
+
+.editingFlowGroup{
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.itemWidth{
+  display: block;
+}
+
+:global(.next-form-item-control) {
+  display: block;
+}
+
+:global(.next-form-item-label) {
+  color: #555;
+}
+
+.appOrHosts {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.appOrHostsIcon {
+  font-size: 12px !important;
+}
+
+.appOrHostsIcon::before {
+  font-size: 12px !important;
+}
+
+.wordContent {
+  width: 340px;
+}
+
+.wordContent>div {
+  line-height: 26px;
+  font-size: 14px;
+}
+
+.wordContent>div:nth-child(3) {
+  margin-top: 10px;
+}
+
+.wordContent>li {
+  line-height: 24px;
+  list-style: none;
+}
+
+.badgeIcon {
+  margin-left: -12px;
+  margin-right: 24px;
+}
+
+.badgeWord {
+  display: inline-block;
+  transform: scale(0.83);
+}
+
+.balloonStyle {
+  max-width: inherit !important;
+}
+
+.flowAction {
+  line-height: 32px;
+}
+
+.addFlow {
+  font-size: 12px;
+  cursor: pointer;
+  color: #006CD2;
+}
+
+.hasFlow {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.application {
+  width: 100%;
+}
+
+.buttonGroup {
+  margin-top: 24px;
+}
+
+.submit {
+  margin-right: 8px;
+}
+
+.itemContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scopeTip {
+  color: #c1c1c1;
+}
+
+.appName {
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemLine {
+  position: relative
+}
+
+.applications {
+  cursor: pointer;
+  text-decoration: none;
+  color: #0070cc;
+  position: absolute;
+  top: 6px;
+  margin-left: 8px;
+}
+
+.scopeBalloon {
+  max-width: 600px;
+  ul {
+    li {
+      line-height: 22px;
+      li {
+        text-indent: 1em;
+      }
+    }
+  }
+}
+
+.range {
+  width: 40%;
+}
+
+.rangeContent {
+  display: flex;  
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  span {
+    color: #666;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+}
+
+.rangeTips {
+  font-size: 12px;
+  color: #888;
+  position: absolute;
+}

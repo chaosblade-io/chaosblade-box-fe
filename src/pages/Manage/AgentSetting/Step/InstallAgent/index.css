@@ -1,0 +1,17 @@
+.headTop {
+  font-size: 28px;
+  display: inline-block;
+  line-height: 40px;
+  margin-bottom: 16px;
+  color: #111111 100%;
+  cursor: pointer;
+  :global(.next-icon:before) {
+    vertical-align: bottom;
+    color: #111111;
+    width: 24px;
+    font-size: 24px;
+  }
+  .protectionAccess {
+    margin-left: 16px;
+  }
+}

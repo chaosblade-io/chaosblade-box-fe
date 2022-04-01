@@ -1,0 +1,64 @@
+.body {
+  margin-top: 16px;
+}
+
+.status {
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #373D41;
+  margin-left: 10px;
+
+  &.playing {
+    color: #7EC12D;
+  }
+
+  &.finished {
+    color: #00C1DE;
+  }
+
+  &.unexpected {
+    color: #F5A623;
+  }
+
+  &.error {
+    color: #FF4F4C;
+  }
+}
+
+.optGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.opt {
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #0066CC;
+  letter-spacing: 0;
+  cursor: pointer;
+  margin: 1px 8px;
+}
+
+.pagination {
+  padding: 9px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  position: relative;
+  top: 2px;
+}
+
+.hrefId {
+  color: #0070cc;
+  cursor: pointer;
+}

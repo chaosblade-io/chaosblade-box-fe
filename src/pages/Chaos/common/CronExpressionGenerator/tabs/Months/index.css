@@ -1,0 +1,29 @@
+.container {
+  padding: 16px;
+}
+
+.prefix {
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.suffix {
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.selectableItem {
+  margin-bottom: 20px;
+}
+
+.startTime {
+  margin-top: 30px;
+}
+
+.daysOfMonthBox {
+  padding: 8px 0 0 16px;
+
+  :global(.next-checkbox-wrapper) {
+    width: 46px;
+  }
+}
