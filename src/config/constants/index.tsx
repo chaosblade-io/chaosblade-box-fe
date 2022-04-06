@@ -1,5 +1,4 @@
 import { IBreadCrumbItem } from '../interfaces';
-export const productName = 'ahas';
 
 // Request Code校验
 export const ERROR_CODE_ENUM = {

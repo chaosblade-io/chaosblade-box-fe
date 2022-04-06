@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './index.css';
 
@@ -14,7 +14,7 @@ interface Props {
 const DBForm: React.FC<Props> = props => {
   const { info, onChange } = props;
   const dispatch = useDispatch();
-  const [ dbInfo, setDbInfo ] = useState<any>({ });
+  const [ dbInfo, setDbInfo ] = useState<any>(info || {});
   const [ resultInfo, setResultInfo ] = useState<any>(null);
 
   useEffect(() => {
@@ -76,4 +76,4 @@ const DBForm: React.FC<Props> = props => {
   );
 };
 
-export default memo(DBForm);
+export default DBForm;

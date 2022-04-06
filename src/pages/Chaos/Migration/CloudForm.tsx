@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './index.css';
 
@@ -16,7 +16,7 @@ interface Props {
 const CloudForm: React.FC<Props> = props => {
   const { info, onChange } = props;
   // const dispatch = useDispatch();
-  const [ cloudInfo, setCloudInfo ] = useState<any>({});
+  const [ cloudInfo, setCloudInfo ] = useState<any>(info || {});
   // const [ resultInfo, setResultInfo ] = useState<any>(null);
 
   useEffect(() => {
@@ -64,4 +64,4 @@ const CloudForm: React.FC<Props> = props => {
   );
 };
 
-export default memo(CloudForm);
+export default CloudForm;

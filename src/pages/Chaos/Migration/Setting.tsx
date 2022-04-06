@@ -28,8 +28,8 @@ const Setting: React.FC<Props> = props => {
     if (res) {
       const info = {
         cloudInfo: {
-          account: res.cloudAccount,
-          password: res.cloudPassword,
+          account: res.cloudAk,
+          password: res.cloudSk,
         },
         dbInfo: {
           account: res.dbAccount,
@@ -92,7 +92,6 @@ const Setting: React.FC<Props> = props => {
       setLoading(false);
     }
   };
-
   return (
     <div className={styles.setting}>
       <div className={styles.header}>公有云账号AK/SK绑定<span style={{ fontSize: 12, color: '#666', marginLeft: 8, fontWeight: 400 }}>没有账号，<a style={{ color: '#0070cc' }} href="https://account.aliyun.com/register/register.htm" target="_blank">立即注册！</a></span></div>

@@ -30,7 +30,8 @@ const NamespaceSelector: FC<IPorps> = ({ selectSize = 'small', isShowPrompt = tr
 
   // 请求环境列表
   const getNamespaceLs = async () => {
-    const { Data: nsListData = [] } = await dispatch.homeModel.getNamespaceList();
+    const res = await dispatch.homeModel.getNamespaceList();
+    const { Data: nsListData = [] } = res || {};
     if ((curNamespace && !isEmpty(nsListData) && !nsListData.every((item: INsListData) => item.namespace !== curNamespace)) || !curNamespace) {
       setCookie('curNamespace', 'default');
     }
