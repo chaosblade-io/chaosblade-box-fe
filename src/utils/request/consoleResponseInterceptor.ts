@@ -11,16 +11,10 @@ import _ from 'lodash';
 const checkRequestCode = (response: any, resCode: string, resMessage?: string) => {
   const ignoreError = response.config.ignoreError;
   if (!ignoreError) {
-    const { openAHASServiceFailed, demoNoOpt, sgNoAuth, systemError } = ERROR_CODE_ENUM;
+    const { demoNoOpt, systemError } = ERROR_CODE_ENUM;
     switch (resCode) {
-      // 服务开通失败
-      case openAHASServiceFailed.code : Message.error(openAHASServiceFailed.message);
-        break;
       // demo示例下无权限操作
       case demoNoOpt.code : Message.error({ content: resMessage });
-        break;
-      // sg无权限
-      case sgNoAuth.code : Message.error(sgNoAuth.message);
         break;
       // 接口请求失败
       case systemError.code : Message.error(systemError.message);

@@ -8,7 +8,7 @@ import {
   IDescribePluginRateParams,
   IGetUserApplicationsParams,
   IInstallPluginParams,
-  IListAhasAgentMetricsParams,
+  IListChaosAgentMetricsParams,
   IListKubernetesClusterParams,
   IQueryPluginStatusParams,
   IQueryPluginsParams,
@@ -82,13 +82,6 @@ class AgentSetting extends BaseModel {
   *getQueryHelmPackageAddress(payload?: CommonReq) {
     return yield this.effects.call(createService('QueryHelmPackageAddress'), payload);
   }
-
-  // 探针数量
-  @effect()
-  *getQueryRecentlyInstalledAhasAgent(payload?: { Loop: boolean } & CommonReq) {
-    return yield this.effects.call(createService('QueryRecentlyInstalledAhasAgent'), payload);
-  }
-
   // ecs table 列表数据
   @effect()
   *getQueryWaitInstallPlugin(payload?: IQueryWaitInstallPluginParams) {
@@ -121,8 +114,8 @@ class AgentSetting extends BaseModel {
 
   // 查看探针监控
   @effect()
-  *getListAhasAgentMetrics(payload?: IListAhasAgentMetricsParams) {
-    return yield this.effects.call(createService('ListAhasAgentMetrics'), payload);
+  *getListChaosAgentMetrics(payload?: IListChaosAgentMetricsParams) {
+    return yield this.effects.call(createService('ListChaosAgentMetrics'), payload);
   }
   // 探针基本信息
   @effect()

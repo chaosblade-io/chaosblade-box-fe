@@ -2,16 +2,8 @@ import { IBreadCrumbItem } from '../interfaces';
 
 // Request Code校验
 export const ERROR_CODE_ENUM = {
-  openAHASServiceFailed: {
-    code: 'OpenAHASServiceFailed',
-    message: '服务开通失败，请稍后再试',
-  },
   demoNoOpt: {
     code: 'demo.not.support.operation',
-  },
-  sgNoAuth: {
-    code: 'sub_user_no_authority',
-    message: '子账号没有对应权限',
   },
   systemError: {
     code: 'system.error',

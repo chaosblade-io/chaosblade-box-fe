@@ -20,33 +20,13 @@ const BottomBtn: FC<IPorps> = ({ step, handleComplete, handlePrevOrNextStep }) =
           上一步
         </Button>
       )}
-      {step < 2 && step !== 0 && (
-        <Button
-          type={'primary'}
-          style={{ marginLeft: '10px' }}
-          onClick={() => handlePrevOrNextStep(true)}
-          data-spm-click="gostr=/aliyun;locaid=d_Setting_nextstep"
-        >
-          下一步
-        </Button>
-      )}
-      {step !== 2 && (
+      {step > 0 && step !== 2 && (
         <Button
           style={{ marginLeft: '10px' }}
           onClick={handleComplete}
           data-spm-click="gostr=/aliyun;locaid=d_Setting_cancle"
         >
           取消
-        </Button>
-      )}
-      {step === 2 && (
-        <Button
-          type={'primary'}
-          style={{ marginLeft: '10px' }}
-          onClick={handleComplete}
-          data-spm-click="gostr=/aliyun;locaid=d_Setting_compelete"
-        >
-          完成
         </Button>
       )}
     </div>

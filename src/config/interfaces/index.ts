@@ -1,6 +1,6 @@
 export interface CommonReq {
   RegionId?: string;
-  AhasRegionId?: string;
+  chaosRegionId?: string;
   Lang?: string;
   NameSpace?: string;
   Namespace?: string; // 够呛，不同接口还有大小写问题。。
@@ -14,7 +14,7 @@ declare global {
   interface Window {
     goldlog: any;
     ALIYUN_CONSOLE_I18N_MESSAGE: any;
-    'ahas-new_zh-cn': any;
+    'chaos-new_zh-cn': any;
     ALIYUN_CONSOLE_CONFIG: any;
     [key: string]: any;
   }

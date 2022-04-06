@@ -21,12 +21,6 @@ const SettingStep: FC<IPorps> = ({ step, handleSelectStep }) => {
           data-spm-click="gostr=/aliyun;locaid=d_SettingStep_step_installplugins"
           disabled={step < 1}
         />
-        <Step.Item
-          title={'查看数据'}
-          onClick={() => handleSelectStep(2)}
-          data-spm-click="gostr=/aliyun;locaid=d_SettingStep_step_installJavaAgent"
-          disabled={step < 2}
-        />
       </Step>
     </div>
   );

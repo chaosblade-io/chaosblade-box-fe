@@ -8,7 +8,7 @@ import router from './router';
 import { createBrowserHistory } from 'history';
 import { getLocal } from 'utils/util';
 
-const messages = window[`ahas-new_${getLocal()}`];
+const messages = window[`chaos-new_${getLocal()}`];
 const locale = getLocal() === 'zh-cn' ? 'zh-Hans-CN' : 'en-US';
 
 intl.set(

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styles from './index.css';
 import { Balloon, Dialog, Field, Form, Icon, Input, Message } from '@alicloud/console-components';
 import { DialogProps } from '@alicloud/console-components/types/dialog';
@@ -17,29 +17,12 @@ interface ExpandedNamespaceProps extends DialogProps {
   onAddChange?: (name: string) => void;
 }
 
-const PublishCountData = {
-  JAVA_SDK: 0,
-  AHAS_AGENT: 0,
-  JAVA_AGENT: 0,
-};
-
 const NamespaceManage: FC<ExpandedNamespaceProps> = props => {
   const dispatch = useDispatch();
   const myfield = Field.useField();
   const { init } = myfield;
-  const { isdele, delnamespace, delnamespacename, visible, datanslist } = props;
-  const [ pluginCountData ] = useState(PublishCountData);
+  const { isdele, delnamespace, delnamespacename, datanslist } = props;
   const nameSpaceListCount = Number(50) || 20;
-
-  useEffect(() => {
-    (async function() {
-      // 请求某个环境下各指标数据
-      if (visible && isdele) {
-        // const pluginCountData = await dispatch.homeModel.getLivedPluginCount({ NamespaceId: delnamespace });
-        // setPluginCountData(pluginCountData);
-      }
-    })();
-  }, []);
 
   async function handleDelNamespace() {
     const res = await dispatch.homeModel.DeleteNamespace({ NamespaceId: delnamespace });
@@ -53,9 +36,6 @@ const NamespaceManage: FC<ExpandedNamespaceProps> = props => {
       Message.error(errorMessage);
     }
   }
-
-  const { JAVA_SDK: sdkCount, AHAS_AGENT: ahasCount, JAVA_AGENT: javaCount } = pluginCountData;
-  const isNoDepend = ahasCount === 0 && javaCount === 0 && sdkCount === 0;
 
   // 新增环境校验
   async function handleSubmit() {
@@ -105,16 +85,10 @@ const NamespaceManage: FC<ExpandedNamespaceProps> = props => {
           <>
             {isdele ? (
               <>
-                {isNoDepend && (
-                  <p className={styles.containerTips}>
-                    <Icon type="warning" size='large'/>
-                    {'确认删除'} <span>&nbsp;{delnamespacename}&nbsp;</span> {'环境吗?'}
-                  </p>
-                )}
-                {ahasCount > 0 && <p>包含AHAS探针数：{ahasCount}</p>}
-                {javaCount > 0 && <p>包含Java探针数：{javaCount}</p>}
-                {sdkCount > 0 && <p>包含Java SDK数：{sdkCount}</p>}
-                {!isNoDepend && <p>请先卸载该环境内的所有依赖，再进行删除操作</p>}
+                <p className={styles.containerTips}>
+                  <Icon type="warning" size='large'/>
+                  {'确认删除'} <span>&nbsp;{delnamespacename}&nbsp;</span> {'环境吗?'}
+                </p>
               </>
             ) : (
               <>

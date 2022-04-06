@@ -46,7 +46,7 @@ const menuConfig = [
     ],
   },
   {
-    key: '/ahas/chaos/dataAdmin',
+    key: '/chaos/dataAdmin',
     label: '数据管理',
     items: [
       {
@@ -114,6 +114,6 @@ export function setMenuConfig(key: string) {
 
 // 激活菜单
 export const activeKeys: {[key: string]: string} = {
-  '/chaos/expertise/admin': '/ahas/chaos/dataAdmin',
-  '/chaos/scene/list': '/ahas/chaos/dataAdmin',
+  '/chaos/expertise/admin': '/chaos/dataAdmin',
+  '/chaos/scene/list': '/chaos/dataAdmin',
 };

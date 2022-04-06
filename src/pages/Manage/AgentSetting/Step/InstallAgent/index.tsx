@@ -1,9 +1,8 @@
 import BottomBtn from './BottomBtn';
 import React, { FC, memo, useEffect, useState } from 'react';
-import SettingAhasAgent from './SettingAhasAgent';
+import SettingChaosAgent from './SettingChaosAgent';
 import SettingSelectEnv from './SettingSelectEnv';
 import SettingStep from './SettingStep';
-import SettingSuccess from './SettingSuccess';
 import styles from './index.css';
 import { Icon } from '@alicloud/console-components';
 import { pushUrl, removeParams } from 'utils/libs/sre-utils';
@@ -78,11 +77,10 @@ const InstallAgent: FC = () => {
         />
       )}
       {step === 1 && (
-        <SettingAhasAgent
+        <SettingChaosAgent
           installMode={installMode}
         />
       )}
-      {step === 2 && <SettingSuccess />}
       <BottomBtn
         step={step}
         handleComplete={handleComplete}

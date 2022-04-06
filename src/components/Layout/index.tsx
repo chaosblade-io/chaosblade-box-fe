@@ -17,7 +17,7 @@ const { Breadcrumb, Header, Content } = Page;
 import MyHeader from '../MyHeader';
 
 const defaultOpenKeys = [
-  '/ahas/chaos/dataAdmin', // 基础数据管理
+  '/chaos/chaos/dataAdmin', // 基础数据管理
 ];
 
 const Layout: FC = ({ children }: PropsWithChildren<any>) => {

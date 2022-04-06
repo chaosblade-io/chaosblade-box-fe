@@ -10,7 +10,7 @@ interface IPorps {
 const ECS = 'ecs';
 const K8S = 'k8s';
 const PUBLIC = 'public';
-const SettingAhasAgent: FC<IPorps> = ({ installMode }) => {
+const SettingChaosAgent: FC<IPorps> = ({ installMode }) => {
 
   return (
     <div
@@ -23,4 +23,4 @@ const SettingAhasAgent: FC<IPorps> = ({ installMode }) => {
   );
 };
 
-export default memo(SettingAhasAgent);
+export default memo(SettingChaosAgent);

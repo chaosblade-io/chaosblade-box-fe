@@ -3,7 +3,6 @@ import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/
 import { router } from 'dva';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
 const AgentSettingList = lazy(() => import('pages/Manage/AgentSetting/List'));
-const AgentSettingDetail = lazy(() => import('pages/Manage/AgentSetting/Detail'));
 const AgentSettingStep = lazy(() => import('pages/Manage/AgentSetting/Step'));
 const AgentSettingTools = lazy(() => import('pages/Manage/AgentSetting/Tools'));
 const { Switch, Route, useRouteMatch } = router;
@@ -40,7 +39,6 @@ const Manage: FC = () => {
     <Switch>
       <Route exact path={`${path}`} component={AgentSettingList}/>
       <Route exact path={`${path}/k8sHost`} component={AgentSettingList}/>
-      <Route exact path={`${path}/detail`} component={AgentSettingDetail}/>
       <Route exact path={`${path}/step`} component={AgentSettingStep}/>
       <Route exact path={`${path}/tools`} component={AgentSettingTools}/>
     </Switch>

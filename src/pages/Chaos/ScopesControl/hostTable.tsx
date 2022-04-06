@@ -201,7 +201,6 @@ const HostTable: FC<IPorps> = props => {
   const renderOption = (value: string, index: number, record: any) => {
     const { osType, pluginStatus, configurationId, pluginType, deviceId, canAutoInstall, installMode } = record;
     const btns: {[key: string]: JSX.Element} = {
-      // monitorBtn: <LinkButton onClick={() => pushUrl(history, '/chaos/agentmanage/setting/detail', { configurationId }) }>监控</LinkButton>,
       clickUninstallBtn: <LinkButton onClick={() => toggleManualDialog(pluginType, true, configurationId, osType)}>手动卸载</LinkButton>,
       autoUninstallBtn: <LinkButton onClick={() => handleUninstall(configurationId, deviceId)}>卸载</LinkButton>,
       // startOrStopBtn: <LinkButton onClick={() => handleEnableSwitch(record, index)}>{ enable ? '停止' : '开启' }</LinkButton>,
@@ -232,7 +231,7 @@ const HostTable: FC<IPorps> = props => {
         break;
       case 2:
         btnKeys = [ 'monitorBtn' ];
-        if (/AHAS_AGENT/i.test(pluginType)) {
+        if (/CHAOS_AGENT/i.test(pluginType)) {
           btnKeys.push('startOrStopBtn');
         }
         btnKeys.push(canAutoInstall ? 'autoUninstallBtn' : 'clickUninstallBtn');

@@ -214,9 +214,7 @@ function K8sRowRender(props: IK8sRowRenderProps) {
 
   const renderOption = (value: string, index: number, record: SubRecord) => {
     const { osType, pluginStatus, configurationId, pluginType, deviceId, enable, canAutoInstall } = record;
-    const clusterId = props.data?.clusterId;
     const btns: {[key: string]: JSX.Element} = {
-      monitorBtn: <LinkButton onClick={() => pushUrl(history, '/chaos/agentmanage/setting/detail', { configurationId, clusterId }) }>监控</LinkButton>,
       // clickUninstallBtn: <LinkButton onClick={() => toggleManualDialog(pluginType, true, configurationId, osType)}>手动卸载</LinkButton>,
       // autoUninstallBtn: <LinkButton onClick={() => handleUninstall(configurationId, deviceId)}>卸载</LinkButton>,
       startOrStopBtn: <LinkButton onClick={() => handleEnableSwitch(record, index)}>{ enable ? '停止' : '开启' }</LinkButton>,
@@ -247,7 +245,7 @@ function K8sRowRender(props: IK8sRowRenderProps) {
         break;
       case 2:
         btnKeys = [ 'monitorBtn' ];
-        if (/AHAS_AGENT/i.test(pluginType)) {
+        if (/CHAOS_AGENT/i.test(pluginType)) {
           btnKeys.push('startOrStopBtn');
         }
         btnKeys.push(canAutoInstall ? 'autoUninstallBtn' : 'clickUninstallBtn');

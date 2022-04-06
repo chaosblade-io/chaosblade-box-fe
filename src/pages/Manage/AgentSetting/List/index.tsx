@@ -118,7 +118,7 @@ const List: FC = () => {
       let pluginStatusShow: any = '';
       let publicIpShow: any;
 
-      if (item.pluginType === 'AHAS_AGENT') {
+      if (item.pluginType === 'CHAOS_AGENT') {
         publicIpShow = '（公）';
       } else {
         publicIpShow = '（主机）';

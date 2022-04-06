@@ -255,7 +255,7 @@ const TableList: FC<IProps> = props => {
       case 2:
         label = (
           <>
-            {record.pluginType.toUpperCase() === 'AHAS_AGENT' && (
+            {record.pluginType.toUpperCase() === 'CHAOS_AGENT' && (
               <LinkButton
                 onClick={() => handleEnableSwitch(record, index)}
               >

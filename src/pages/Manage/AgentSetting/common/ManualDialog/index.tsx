@@ -98,7 +98,7 @@ const ManualDialog: FC<IPorps> = ({ pluginType, isUninstall, configurationId, on
   }, [ pluginType, isUninstall, configurationId, isClusterUninstall ]);
 
   useEffect(() => {
-    if (pluginType?.toUpperCase() === 'AHAS_AGENT' || isInstall) {
+    if (pluginType?.toUpperCase() === 'CHAOS_AGENT' || isInstall) {
       fetchManualCmd();
     } else {
       setManualCmd(javaAgentDom);

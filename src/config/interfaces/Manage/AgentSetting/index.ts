@@ -118,7 +118,7 @@ export interface IBatchQueryPluginStatusParams extends CommonReq {
   InstanceIds: string;
 }
 
-export interface IListAhasAgentMetricsParams extends CommonReq {
+export interface IListChaosAgentMetricsParams extends CommonReq {
   MetricNames: string;
   ConfigurationId: string;
   EndTime: number;

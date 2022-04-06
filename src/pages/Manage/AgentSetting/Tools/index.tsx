@@ -12,15 +12,11 @@ export default function Tools() {
   const dispatch = useDispatch();
   const parsed = parseQuery();
   const [ dataSource, setDataSource ] = useState<IGetListResItem[]>([]);
-  // const [ visible, setVisible ] = useState(false);
   const [ actionData, setActionData ] = useState<any>(null);
-  // const [ nameSpace, setNameSpace ] = useState('ahas');
   const [ isUpdate, setIsUpdate ] = useState(false);
   const [ loadingInstall, setLoadingInstall ] = useState(false);
 
   const { id, mode } = parsed;
-  // const clusterId = mode === 'k8s' ? id : null;
-  // const configurationId = mode !== 'k8s' ? id : null;
 
   useEffect(() => {
     dispatch.pageHeader.setTitle('工具管理');
@@ -64,7 +60,7 @@ export default function Tools() {
     actionData && dispatch.agentTools.installChaosTools({
       operateId: id,
       installMode: mode,
-      toolsNamespace: 'ahas',
+      toolsNamespace: 'chaosblade',
       name: actionData && actionData.name,
       version: actionData && actionData.latest,
     }, (res: boolean) => {
