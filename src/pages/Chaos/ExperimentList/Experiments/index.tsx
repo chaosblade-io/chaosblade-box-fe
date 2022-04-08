@@ -129,7 +129,7 @@ const Experiments: FC<IProps> = props => {
     });
   }
 
-  function renderMessageTitle(value: IExperimentInfo) {
+  const renderMessageTitle: any = (value: IExperimentInfo) => {
     const experimentAppRisks = _.get(value, 'experimentAppRisks', []);
     if (!_.isEmpty(experimentAppRisks)) {
       return <span style={{ fontSize: 12, color: '#555', fontWeight: 'normal' }}>
@@ -145,9 +145,9 @@ const Experiments: FC<IProps> = props => {
       </span>;
     }
     return <span style={{ fontSize: 12, color: '#555', fontWeight: 'normal', lineHeight: '20px' }}>演练开始后会对指定目标(主机等)进行故障注入等操作，可能会使目标(主机等)服务不可用，是否确认开始执行?</span>;
-  }
+  };
 
-  function renderTitle(value: string, index: number, record: IExperiment) {
+  const renderTitle: any = (value: string, index: number, record: IExperiment) => {
     const { experiment } = record;
     let description;
     let timing = false;
@@ -182,9 +182,9 @@ const Experiments: FC<IProps> = props => {
         {!_.isEmpty(description) ? description : value}
       </Balloon>
     );
-  }
+  };
 
-  function renderTags(value: string[]) {
+  const renderTags: any = (value: string[]) => {
     return (
       <div>
         {
@@ -196,9 +196,9 @@ const Experiments: FC<IProps> = props => {
         }
       </div>
     );
-  }
+  };
 
-  function renderApps(value: string[] = []) {
+  const renderApps: any = (value: string[] = []) => {
     const limited = value.length > MAX_SIZE;
     value = value.map(code => {
       const parts = code.split(/\./g);
@@ -246,9 +246,9 @@ const Experiments: FC<IProps> = props => {
         }
       </div>
     );
-  }
+  };
 
-  function renderStatus(value: string, index: number, record: IExperiment) {
+  const renderStatus: any = (value: string, index: number, record: IExperiment) => {
     const { experiment } = record;
     const { taskState, taskResult } = experiment;
 
@@ -296,13 +296,13 @@ const Experiments: FC<IProps> = props => {
         <span>{text}</span>
       </div>
     );
-  }
+  };
 
-  function renderNamesContent(names: any[]) {
+  const renderNamesContent: any = (names: any[]) => {
     return names.map((item: { name: string; }, index: number) => {
       return <span key={item.name}>{item.name}{names.length - 1 !== index && '、'}</span>;
     });
-  }
+  };
 
   async function handleDelete(name: string, experimentId: string) {
     let names: any = [];
@@ -448,7 +448,7 @@ const Experiments: FC<IProps> = props => {
 
   }
 
-  function renderOperations(value: IExperimentInfo) {
+  const renderOperations: any = (value: IExperimentInfo) => {
     const { experimentId, state, name, permission = 0 } = value;
     return (
       <div className={styles.optGroup}>
@@ -470,7 +470,7 @@ const Experiments: FC<IProps> = props => {
         }
       </div>
     );
-  }
+  };
 
   return (
     <div className={styles.container}>

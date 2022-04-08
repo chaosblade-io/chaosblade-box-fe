@@ -41,7 +41,7 @@ export default function ExperimentTaskHistory(props: ExperimentTaskHistoryProps)
     current && setCurrent(current);
   }
 
-  function renderDate(value: number | string) {
+  const renderDate: any = (value: number | string) => {
     if (_.isString(value) && !_.isEmpty(value)) {
       return moment(value).format('YYYY-MM-DD HH:mm:ss');
     }
@@ -51,9 +51,9 @@ export default function ExperimentTaskHistory(props: ExperimentTaskHistoryProps)
     }
 
     return value;
-  }
+  };
 
-  function renderStatus(value: string, index: number, record: any) {
+  const renderStatus: any = (value: string, index: number, record: any) => {
     const { result } = record;
 
     let icon;
@@ -90,19 +90,19 @@ export default function ExperimentTaskHistory(props: ExperimentTaskHistoryProps)
         <span>{text}</span>
       </div>
     );
-  }
+  };
 
   function handleHref(value: string) {
     value && pushUrl(history, '/chaos/experiment/task', { id: value });
   }
 
-  function renderOperations(value: string) {
+  const renderOperations: any = (value: string) => {
     return (
       <div className={styles.optGroup}>
         <a className={styles.opt} target="_blank" rel="noopener noreferrer" onClick={() => handleHref(value)}>查看详情</a>
       </div>
     );
-  }
+  };
 
   return (
     <div>

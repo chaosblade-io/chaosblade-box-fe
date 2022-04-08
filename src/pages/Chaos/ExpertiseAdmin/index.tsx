@@ -131,14 +131,14 @@ const ExpertiseAdmin: FC = () => {
     }
   }
 
-  function handleNameHref(value: string, index: number, record: ISearchExpertiseRes) {
+  const handleNameHref: any = (value: string, index: number, record: ISearchExpertiseRes) => {
     if (record && record.name) {
       return <span className={styles.recordName} onClick={() => handleUpdateExpertise(record)}>{record.name}</span>;
     }
     return;
-  }
+  };
 
-  function renderOperation(value: boolean, index: number, record: ISearchExpertiseRes) {
+  const renderOperation: any = (value: boolean, index: number, record: ISearchExpertiseRes) => {
     const { state, expertise_id: id, name } = record;
 
     return (
@@ -151,9 +151,9 @@ const ExpertiseAdmin: FC = () => {
         <LinkButton onClick={() => handleDeleteExperience(id)}>删除</LinkButton>
       </Actions>
     );
-  }
+  };
 
-  function renderTags(value: string[]) {
+  const renderTags: any = (value: string[]) => {
     if (!value || value.length === 0) return '-';
     return _.map(value, (item: string, index: number) => {
       if (index < 2) {
@@ -166,7 +166,7 @@ const ExpertiseAdmin: FC = () => {
         </Balloon>;
       }
     });
-  }
+  };
 
   // 判断权限 经验库
   const handleCreateExpertise = async () => {

@@ -41,7 +41,7 @@ const ClusterTableList: FC<IProps> = props => {
   };
 
   // 集群名称
-  const renderClusterName = (value: string, index: number, record: IListKubernetesClusterResultDatas) => {
+  const renderClusterName: any = (value: string, index: number, record: IListKubernetesClusterResultDatas) => {
     return (
       <>
         <a className="action" onClick={() => { goTabList(record.ClusterId); }}>
@@ -52,7 +52,7 @@ const ClusterTableList: FC<IProps> = props => {
       </>
     );
   };
-  const renderVersion = (value: string, index: number, record: IListKubernetesClusterResultDatas) => {
+  const renderVersion: any = (value: string, index: number, record: IListKubernetesClusterResultDatas) => {
     if (record.Upgrade && (agentType === 1 || agentType === 3)) {
       return <Balloon
         trigger={
@@ -71,23 +71,23 @@ const ClusterTableList: FC<IProps> = props => {
     return <span>{record.Version}</span>;
   };
 
-  const renderConnectTime = (value: string) => {
+  const renderConnectTime: any = (value: string) => {
     return <span>{value
       ? moment(value).format('YYYY-MM-DD HH:mm:ss')
       : ''}</span>;
   };
 
-  function renderTools(value: string[]) {
+  const renderTools: any = (value: string[]) => {
     if (value && value.length) {
       return value.map(it => {
         return <Tag key={it} style={{ marginRight: '4px' }}>{it}</Tag>;
       });
     }
     return '';
-  }
+  };
 
   // 渲染
-  const render = (value: string, index: number, record: IListKubernetesClusterResultDatas) => {
+  const render: any = (value: string, index: number, record: IListKubernetesClusterResultDatas) => {
     return (
       <Actions>
         {(record.OnlineCount && record.OnlineCount > 0) ? <LinkButton

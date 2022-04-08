@@ -71,15 +71,14 @@ const TableList: FC<IPorps> = props => {
     handleInstallDialog(recordsRef.current);
   };
 
-  function renderOsType(value: number) {
+  const renderOsType: any = (value: number) => {
     if (value === OS_TYPE.LINUX) return 'linux';
     if (value === OS_TYPE.WINDOWS) return 'windows';
-  }
+  };
 
   // 渲染
-  const render = (value: string, index: number, record:IQueryPluginStatusResult) => {
+  const render: any = (value: string, index: number, record:IQueryPluginStatusResult) => {
     let label;
-
     if (record.networkType === 'classic') {
       return <span>暂不支持</span>;
     }

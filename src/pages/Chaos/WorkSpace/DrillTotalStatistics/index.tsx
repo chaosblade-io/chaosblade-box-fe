@@ -61,6 +61,7 @@ const DrillTotalStatistics = () => {
           <Coord transpose />
           <Axis name="type"/>
           <Axis name="content" visible={false} />
+          {/* @ts-ignore */}
           <Geom type="interval" position="type*content" >
             <Label content='content' offset={5}/>
           </Geom>

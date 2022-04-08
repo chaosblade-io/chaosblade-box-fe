@@ -66,7 +66,7 @@ const TableList: FC<IProps> = props => {
   }, []);
 
   // 实例名称
-  const renderInstanceName = (value: string, index: number, record: IQueryPluginsResultDatas) => {
+  const renderInstanceName: any = (value: string, index: number, record: IQueryPluginsResultDatas) => {
     if (record.link) {
       return (
         <a href={record.link} target="_blank">
@@ -224,7 +224,7 @@ const TableList: FC<IProps> = props => {
   };
 
   // 渲染
-  const render = (value: string, index: number, record: IQueryPluginsResultDatas) => {
+  const render: any = (value: string, index: number, record: IQueryPluginsResultDatas) => {
     const osType = _.get(record, 'osType', NaN);
     let label: any;
     if (osType === OS_TYPE.WINDOWS) {
@@ -416,7 +416,7 @@ const TableList: FC<IProps> = props => {
     );
   };
   // 版本
-  const renderVersion = (value: string, index: number, record: IQueryPluginsResultDatas) => {
+  const renderVersion: any = (value: string, index: number, record: IQueryPluginsResultDatas) => {
     if (record.upgrade && (agentType === 1 || agentType === 3)) {
       return <Balloon
         trigger={
@@ -435,13 +435,13 @@ const TableList: FC<IProps> = props => {
     return <span>{record.version}</span>;
   };
 
-  function renderOsType(value: number) {
+  const renderOsType: any = (value: number) => {
     if (value === 0) return 'linux';
     if (value === 1) return 'windows';
     return;
-  }
+  };
 
-  function renderTools(value: string[]) {
+  const renderTools: any = (value: string[]) => {
     return <div>
       {value?.length > 0 &&
         value.map(it => {
@@ -449,7 +449,7 @@ const TableList: FC<IProps> = props => {
         })
       }
     </div>;
-  }
+  };
 
   const statusFilter = (filterParams: any) => {
     const { pluginStatusShow = {} } = filterParams;

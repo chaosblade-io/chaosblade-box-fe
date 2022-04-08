@@ -72,13 +72,13 @@ const ApplicationSetting: FC = () => {
     }
   }
 
-  function renderDesctiption(value: string) {
+  const renderDesctiption: any = (value: string) => {
     return (
       <Balloon trigger={<div className={styles.description}>{value}</div>} closable={false}>
         <div>{value}</div>
       </Balloon>
     );
-  }
+  };
 
   function renderPriority(value: number) {
     if (value === 0) {
@@ -104,13 +104,13 @@ const ApplicationSetting: FC = () => {
     return '否';
   }
 
-  function renderAction(value: IApplicationConfigurationRecordAndReq, index: number, record: IApplicationConfigurationRecordAndReq) {
+  const renderAction: any = (value: IApplicationConfigurationRecordAndReq, index: number, record: IApplicationConfigurationRecordAndReq) => {
     const status = _.get(record, 'status', NaN);
     if (status === 1) {
       return <span>配置失效无法编辑</span>;
     }
     return <span className={styles.moreTag} onClick={() => handleDialog(record)}>修改</span>;
-  }
+  };
 
   function handleNodeGroupChange(value: string[]) {
     if (currentRecord) {
@@ -153,10 +153,10 @@ const ApplicationSetting: FC = () => {
         >
           <Table.Column title='名称' dataIndex='name' width='15%' cell={renderDesctiption} />
           <Table.Column title="描述" dataIndex="description" width='20%' cell={renderDesctiption} />
-          <Table.Column title="配置优先级" dataIndex="priority" cell={renderPriority} />
-          <Table.Column title="适用分组" dataIndex="scope" cell={renderNodeGroup} />
+          <Table.Column title="配置优先级" dataIndex="priority" cell={renderPriority as any} />
+          <Table.Column title="适用分组" dataIndex="scope" cell={renderNodeGroup as any} />
           <Table.Column title="配置值" dataIndex="value" width='5%' />
-          <Table.Column title="是否覆盖用户配置内容" dataIndex="override" cell={renderOverride} />
+          <Table.Column title="是否覆盖用户配置内容" dataIndex="override" cell={renderOverride as any} />
           <Table.Column title="修改时间" dataIndex="gmt_modified" cell={formatDate} />
           <Table.Column title="操作" cell={renderAction} width='10%' />
         </Table>

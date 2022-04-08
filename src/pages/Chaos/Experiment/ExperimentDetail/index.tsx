@@ -290,11 +290,11 @@ function ExperimentDetail() {
     </Balloon>;
   }
 
-  function renderGroupName(value: string, index: number, record: any) {
+  const renderGroupName: any = (value: string, index: number, record: any) => {
     return <div className={styles.groupNameList} title={record.groupName}>{record.groupName}</div>;
-  }
+  };
 
-  function renderAboutHost(value: string, index: number, record: any) {
+  const renderAboutHost: any = (value: string, index: number, record: any) => {
     const hosts = _.get(record, 'hosts', []);
     const selectType = _.get(record, 'selectType', 0);
     const errorHosts = _.filter(hosts, (h: IHost) => _.has(h, 'passed') && !h.passed);
@@ -306,11 +306,11 @@ function ExperimentDetail() {
       <div>{hosts && hosts.length}个</div>
       {errorHosts.length > 0 && <div className={styles.errorTip}>异常：{errorHosts.length}个</div>}
     </span>;
-  }
+  };
 
-  function renderAction(value: string, index: number, record: any) {
+  const renderAction: any = (value: string, index: number, record: any) => {
     return <span className={styles.ableCheckAll} onClick={() => setEditHost(_.cloneDeep(record))}>编辑机器</span>;
-  }
+  };
 
   function handleAbleCheckAll(record: any) {
     setHostsVisible(true);
@@ -360,6 +360,7 @@ function ExperimentDetail() {
     setCurrentNode(node as INode);
     setActivityEditorVisible(true);
   }
+  const renderGroupNum: any = (value: string, index: number) => <span>分组{index + 1}</span>;
 
   function renderFlow() {
     const experimentDetail = functionDirectExperiment();
@@ -409,7 +410,7 @@ function ExperimentDetail() {
             dataSource={flowGroupsInfo as any}
             hasBorder={false}
           >
-            <Table.Column title="分组编号" width={80} cell={(value: string, index: number) => (<span>分组{index + 1}</span>)} />
+            <Table.Column title="分组编号" width={80} cell={renderGroupNum} />
             <Table.Column title="分组名称" width="12.8%" cell={renderGroupName}/>
             <Table.Column title="涉及机器" width="10%" cell={renderAboutHost}/>
             <Table.Column title="机器IP" cell={renderIP} />
@@ -468,7 +469,7 @@ function ExperimentDetail() {
     </div>;
   }
 
-  function renderHosts(value: string, index: number, record: any) {
+  const renderHosts: any = (value: string, index: number, record: any) => {
     let label;
     if (record.scopeType === SCOPE_TYPE.HOST || record.app || record.scopeType === SCOPE_TYPE.CLOUD) {
       label = `${record.ip}[${record.deviceName}]`;
@@ -480,7 +481,9 @@ function ExperimentDetail() {
       }
     }
     return <span>{label}</span>;
-  }
+  };
+  const renderReason: any = (value: string) => <span style={{ color: '#D93026' }}>{value}</span>;
+  const renderNo: any = (value: string, index: number) => <span>{index + 1}</span>;
 
   function renderAllIpsDialog(record: any) {
     const hosts = record && record.hosts;
@@ -492,14 +495,14 @@ function ExperimentDetail() {
       footer={false}
     >
       <Table dataSource={hosts} hasBorder={false}>
-        <Table.Column title="序号" cell={(value: string, index: number) => <span>{index + 1}</span>} />
+        <Table.Column title="序号" cell={renderNo} />
         <Table.Column title="机器IP" cell={renderHosts}/>
-        <Table.Column title="异常原因" dataIndex="content" cell={(value: string) => <span style={{ color: '#D93026' }}>{value}</span>}/>
+        <Table.Column title="异常原因" dataIndex="content" cell={renderReason}/>
       </Table>
     </Dialog>;
   }
 
-  function renderIP(value: string, index: number, record: any) {
+  const renderIP: any = (value: string, index: number, record: any) => {
     const hosts = record && record.hosts;
     const tags = handleDealHosts(hosts);
     const selectType = record && record.selectType;
@@ -516,7 +519,7 @@ function ExperimentDetail() {
       {renderTags(_.slice(tags, 0, 4), record)}
       <span className={styles.ableCheckAll} onClick={() => handleAbleCheckAll(record)} >查看全部</span>
     </div>;
-  }
+  };
 
   function renderTags(tags: any[], record: any) {
     return (

@@ -198,7 +198,7 @@ const HostTable: FC<IPorps> = props => {
   };
 
   /** table 操作 按钮 */
-  const renderOption = (value: string, index: number, record: any) => {
+  const renderOption: any = (value: string, index: number, record: any) => {
     const { osType, pluginStatus, configurationId, pluginType, deviceId, canAutoInstall, installMode } = record;
     const btns: {[key: string]: JSX.Element} = {
       clickUninstallBtn: <LinkButton onClick={() => toggleManualDialog(pluginType, true, configurationId, osType)}>手动卸载</LinkButton>,
@@ -272,20 +272,20 @@ const HostTable: FC<IPorps> = props => {
     setSearchKey(value);
     setPage(1);
   }
-  function renderName(value: string, index: number, record: IAppLicationScopeOrContorlRecord) {
+  const renderName: any = (value: string, index: number, record: IAppLicationScopeOrContorlRecord) => {
     return <span className={styles.href} onClick={() => {
       pushUrl(history, '/chaos/experiment/scope/detail', {
         id: record.configurationId,
       });
       removeParams('configurationId');
     }}>{value}</span>;
-  }
+  };
 
-  function renderIsexperiment(value: boolean) {
+  const renderIsexperiment: any = (value: boolean) => {
     return value ? '是' : '否';
-  }
+  };
 
-  function renderStatus(value: number) {
+  const renderStatus: any = (value: number) => {
     if (value === AGENT_STATUS.ONLINE) {
       return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} />在线</span>;
     }
@@ -296,7 +296,7 @@ const HostTable: FC<IPorps> = props => {
     if (value === AGENT_STATUS.OFFLINE) {
       return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} />离线</span>;
     }
-  }
+  };
   return (
     <div className={styles.tabContent}>
       <Search

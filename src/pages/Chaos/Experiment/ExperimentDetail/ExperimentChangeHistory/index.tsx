@@ -40,7 +40,7 @@ function ExperimentChangeHistory(props: ExperimentChangeHistoryProps) {
     current && setPage(current);
   }
 
-  function renderChangeDescription(value: string, index: number, record: any) {
+  const renderChangeDescription:any = (value: string, index: number, record: any) => {
     const { change_type, change_desc, property_id } = record;
     if (change_type === '运行' || change_type === '停止') {
       return <div >
@@ -51,7 +51,7 @@ function ExperimentChangeHistory(props: ExperimentChangeHistoryProps) {
       </div>;
     }
     return <span>{change_desc}</span>;
-  }
+  };
 
   function handleGoTask(record: any) {
     const { property_id } = record;

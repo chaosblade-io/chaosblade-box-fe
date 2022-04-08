@@ -91,6 +91,7 @@ function RingChart() {
             alignY="middle"
           />
         </Guide>
+        {/* @ts-ignore */}
         <Geom
           type="intervalStack"
           position="percent"

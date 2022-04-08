@@ -295,7 +295,9 @@ export default function Node(props: NodeProps): JSX.Element {
                   <>
                     <span>涉及机器：</span>
                     {(hostPercent && hostPercent !== 0 && !hosts) ? <span style={{ color: '#0070cc' }}>{hostPercent}%</span> : <span></span>}
-                    {hosts ? <span style={{ color: '#0070cc' }}>{node.hosts}个</span> : null}
+                    {hosts &&
+                      <span style={{ color: '#0070cc' }}>{`${node.hosts}个`}</span>
+                    }
                   </>
                 )
               }

@@ -280,15 +280,15 @@ function StepTwo(props: StepTwoProps) {
     return [];
   }
 
-  function renderGroupOrder(value: string, index: number, record: any) {
+  const renderGroupOrder: any = (value: string, index: number, record: any) => {
     return `分组${record.groupOrder}`;
-  }
+  };
 
-  function renderIP(value: string, index: number, record: any) {
+  const renderIP: any = (value: string, index: number, record: any) => {
     return handleDealHosts(record);
-  }
+  };
 
-  function handleDealHosts(val: any) {
+  const handleDealHosts: any = (val: any) => {
     let label;
     if (val.scopeType === SCOPE_TYPE.HOST || !val.k8s || val.app) {
       label = `${val.ip}[${val.deviceName}]`;
@@ -300,7 +300,7 @@ function StepTwo(props: StepTwoProps) {
       }
     }
     return label;
-  }
+  };
 
   function renderNodeClick() {
     return <Dialog

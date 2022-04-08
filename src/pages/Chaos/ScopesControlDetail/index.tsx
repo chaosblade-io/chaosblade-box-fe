@@ -101,7 +101,7 @@ const ScopesControlDetail: FC = () => {
     return null;
   }
 
-  function renderStatus(value: number, index: number, record: IScopeContorlDetailExperimentRecord) {
+  const renderStatus: any = (value: number, index: number, record: IScopeContorlDetailExperimentRecord) => {
     const { state, result } = record;
     if (state === ExperimentConstants.EXPERIMENT_TASK_STATE_FINISHED) {
       if (result === ExperimentConstants.EXPERIMENT_TASK_RESULT_SUCCESS) {
@@ -117,27 +117,26 @@ const ScopesControlDetail: FC = () => {
         return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.interrupt)} />中断</span>;
       }
     }
-
     return <span><Icon type="loading" className={classnames(styles.icon, styles.loading)} />执行中</span>;
-  }
+  };
 
-  function renderName(value: string, index: number, record: IScopeContorlDetailExperimentRecord) {
+  const renderName: any = (value: string, index: number, record: IScopeContorlDetailExperimentRecord) => {
     const { experiment_id } = record;
     return <a className={styles.linkHref} onClick={() => {
       pushUrl(history, '/chaos/experiment/detail', {
         id: experiment_id,
       });
     }}>{value}</a>; // 去往演练详情页
-  }
+  };
 
-  function renderAction(value: string, index: number, record: IScopeContorlDetailExperimentRecord) {
+  const renderAction: any = (value: string, index: number, record: IScopeContorlDetailExperimentRecord) => {
     const { task_id } = record;
     return <a className={styles.linkHref} onClick={() => {
       pushUrl(history, '/chaos/experiment/task', {
         id: task_id,
       });
     }}>查看详情</a>; // 去往执行页
-  }
+  };
 
   function handlePageChange(current: number, type: string) {
     if (!type) {
@@ -243,7 +242,7 @@ const ScopesControlDetail: FC = () => {
     );
   }
 
-  function renderPodApp(value: string, index: number, record: any) {
+  const renderPodApp: any = (value: string, index: number, record: any) => {
     if (!_.isEmpty(record)) {
       const { app_id } = record;
       return <span className={styles.href} onClick={() => {
@@ -252,7 +251,7 @@ const ScopesControlDetail: FC = () => {
         });
       }}>{value}</span>;
     }
-  }
+  };
 
   function renderPodTable() {
     return <div className={styles.taskHistory}>

@@ -52,16 +52,16 @@ const TaskList: FC = () => {
     })();
   }, [ page ]);
 
-  function renderName(value: string, index: number, record: IAppLicationBasicTask) {
+  const renderName: any = (value: string, index: number, record: IAppLicationBasicTask) => {
     const { experimentId } = record;
     return (
       <a onClick={() => pushUrl(history, '/chaos/experiment/detail', { id: experimentId })}>
         <span>{value}</span>
       </a>
     );
-  }
+  };
 
-  function renderStatus(value: string, index: number, record: IAppLicationBasicTask) {
+  const renderStatus: any = (value: string, index: number, record: IAppLicationBasicTask) => {
     const { state, result } = record;
     if (state === ExperimentConstants.EXPERIMENT_TASK_STATE_FINISHED) {
       if (result === ExperimentConstants.EXPERIMENT_TASK_RESULT_SUCCESS) {
@@ -78,16 +78,16 @@ const TaskList: FC = () => {
       }
     }
     return <span><Icon type="loading" className={classnames(styles.icon)} />执行中</span>;
-  }
+  };
 
-  function renderAction(value: string, index: number, record: IAppLicationBasicTask) {
+  const renderAction: any = (value: string, index: number, record: IAppLicationBasicTask) => {
     const { taskId } = record;
     return (
       <a onClick={() => pushUrl(history, '/chaos/experiment/task', { id: taskId })}>
         <span>查看详情</span>
       </a>
     );
-  }
+  };
 
   return (
     <div className={styles.warp}>

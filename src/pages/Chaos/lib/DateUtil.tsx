@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const formatDate = (date: string | number) => {
+const formatDate: any = (date: string | number) => {
   if (!date) {
     return '';
   }

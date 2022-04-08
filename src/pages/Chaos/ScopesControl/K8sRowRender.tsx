@@ -46,7 +46,7 @@ function K8sRowRender(props: IK8sRowRenderProps) {
   // const [ page, setPage ] = useState(1);
   const { getData } = props;
 
-  function renderStatus(value: number) {
+  const renderStatus: any = (value: number) => {
     if (value === AGENT_STATUS.ONLINE) {
       return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} />在线</span>;
     }
@@ -57,16 +57,16 @@ function K8sRowRender(props: IK8sRowRenderProps) {
     if (value === AGENT_STATUS.OFFLINE) {
       return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} />离线</span>;
     }
-  }
+  };
 
-  function renderNodeIp(value: string, index: number, record: SubRecord) {
+  const renderNodeIp: any = (value: string, index: number, record: SubRecord) => {
     return <span className={styles.href} onClick={() => {
       pushUrl(history, '/chaos/experiment/scope/detail', {
         id: record.configurationId,
         type: SCOPE_TYPE.K8S,
       });
     }}>{value}</span>;
-  }
+  };
 
   // function handlePageChange(current: number) {
   //   const { clusterId = '' } = props.data;
@@ -212,7 +212,7 @@ function K8sRowRender(props: IK8sRowRenderProps) {
     }
   }, [ dataSource ]);
 
-  const renderOption = (value: string, index: number, record: SubRecord) => {
+  const renderOption: any = (value: string, index: number, record: SubRecord) => {
     const { osType, pluginStatus, configurationId, pluginType, deviceId, enable, canAutoInstall } = record;
     const btns: {[key: string]: JSX.Element} = {
       // clickUninstallBtn: <LinkButton onClick={() => toggleManualDialog(pluginType, true, configurationId, osType)}>手动卸载</LinkButton>,

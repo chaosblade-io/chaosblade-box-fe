@@ -106,13 +106,13 @@ const ScopeList: FC = () => {
     return '主机名';
   }
 
-  function renderName(value: string, index: number, record: IAppLicationScopeOrContorlRecord) {
+  const renderName: any = (value: string, index: number, record: IAppLicationScopeOrContorlRecord) => {
     if (appType) {
       return <span>{record.deviceName}</span>;
     }
-  }
+  };
 
-  function renderIp(value: string, index: number, record: IAppLicationScopeOrContorlRecord) {
+  const renderIp: any = (value: string, index: number, record: IAppLicationScopeOrContorlRecord) => {
     if (!_.isEmpty(record)) {
       const { privateIp, publicIp } = record;
       return <div>
@@ -121,18 +121,17 @@ const ScopeList: FC = () => {
       </div>;
     }
     return '-';
-  }
+  };
 
-  function renderGroup(value: string[]) {
+  const renderGroup: any = (value: string[]) => {
     if (!_.isEmpty(value)) {
       return value.map((group: string, index: number) => {
         return <Tag type="primary" size="small" style={{ marginRight: 8 }} key={`${group}${index}`}>{group}</Tag>;
       });
     }
     return '-';
-  }
-
-  function renderStatus(value: number) {
+  };
+  const renderStatus: any = (value: number) => {
     if (value === AGENT_STATUS.ONLINE) {
       return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} />在线</span>;
     }
@@ -143,19 +142,19 @@ const ScopeList: FC = () => {
     if (value === AGENT_STATUS.OFFLINE) {
       return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} />离线</span>;
     }
-  }
+  };
 
-  function renderTags(value: boolean, index: number, record: IAppLicationScopeOrContorlRecord) {
+  const renderTags: any = (value: boolean, index: number, record: IAppLicationScopeOrContorlRecord) => {
     const tags = _.get(record, 'deviceTags', []);
     if (tags.length > 0) {
       return _.map(tags, (tag: string, idx: number) => <Tag key={idx} style={{ marginRight: 3, marginBottom: 2 }}>{tag}</Tag>);
     }
     return;
-  }
+  };
 
-  function renderAction(value: boolean, index: number, record: IAppLicationScopeOrContorlRecord) {
+  const renderAction: any = (value: boolean, index: number, record: IAppLicationScopeOrContorlRecord) => {
     return <span className={styles.action} onClick={() => handleRecord(record)}>编辑标签</span>;
-  }
+  };
 
   function handleRecord(record: IAppLicationScopeOrContorlRecord) {
     setBatch(false);

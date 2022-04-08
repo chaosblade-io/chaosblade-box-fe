@@ -79,19 +79,19 @@ const KubTable: FC<IPorps> = props => {
   function expandedRowRender(record: any): JSX.Element {
     return <K8sRowRender data={record} getData={getData}></K8sRowRender>;
   }
-  function renderAgentVersion(value: boolean) {
+  const renderAgentVersion: any = (value: boolean) => {
     if (value) {
       return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} />一致</span>;
     }
     return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} />不一致</span>;
-  }
+  };
 
   // 手动卸载
   const toggleManualDialog = (pluginType: string) => {
     setShowManualDialog(!showManualDialog);
     setPluginType(pluginType);
   };
-  const renderAction = (value: string, index: number, record: IK8sRecord) => {
+  const renderAction: any = (value: string, index: number, record: IK8sRecord) => {
     const { clusterId, onlineCount, pluginType, installMode } = record;
     const clickUninstallBtn = <LinkButton onClick={(e:any) => {
       toggleManualDialog(pluginType);

@@ -17,6 +17,7 @@ const router: IRouter = (routerApi?: RouterAPI) => {
   if (!routerApi) return {};
   return (
     <Router history={routerApi.history}>
+      {/* @ts-ignore */}
       <Layout>
         <Suspense fallback={loading}>
           <Switch>

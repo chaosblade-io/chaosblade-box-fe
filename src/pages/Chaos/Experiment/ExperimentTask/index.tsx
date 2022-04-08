@@ -429,12 +429,12 @@ export default function ExperimentTask() {
     );
   }
 
-  function renderAction(value: any, index: number, record: any) {
+  const renderAction: any = (value: any, index: number, record: any) => {
     setStrategiesDetail(record);
     return <span className={styles.ruleDetail} onClick={handleMoreShow}>规则详情</span>;
-  }
+  };
 
-  function renderIcon(value: string) {
+  const renderIcon: any = (value: string) => {
     if (value === 'RUNNING' || value === 'READY') {
       return <div className={styles.iconContent}>
         <div className={styles.circle}></div>
@@ -453,14 +453,14 @@ export default function ExperimentTask() {
         <img src='https://img.alicdn.com/tfs/TB1znK5VRr0gK0jSZFnXXbRRXXa-14-16.svg' className={styles.svg}/>
       </div>;
     }
-  }
+  };
 
-  function renderDetail(value: any, index: number, record: any) {
+  const renderDetail: any = (value: any, index: number, record: any) => {
     const { tolerance = [] } = record;
     return !_.isEmpty(tolerance) && tolerance.map((tole: IToleranceValue, idx: number) => {
       return <span className={styles.tolerance}>{tole.name}{tole.value + tole.unit}{idx !== tolerance.length - 1 ? '；' : null }</span>;
     });
-  }
+  };
 
   function handleActivitedNode(node: IActivity) {
     setActivity(node);
@@ -581,6 +581,9 @@ export default function ExperimentTask() {
       await dispatch.experimentTask.userCheckActivityTask({ activityTaskId, success: checked }, callBack);
     })();
   }
+  const renderName: any = (val: string) => {
+    return `保护${val}`;
+  };
 
   const source = _.get(experimentTask, 'source', '');
   const feedbackStatus = _.get(experimentTask, 'feedbackStatus', 0);
@@ -628,7 +631,7 @@ export default function ExperimentTask() {
         hasBorder={false}
         dataSource={strategies}
       >
-        <Table.Column title="策略名称" dataIndex="name" cell={(value: string) => '保护' + value}/>
+        <Table.Column title="策略名称" dataIndex="name" cell={renderName}/>
         <Table.Column title="策略状态" dataIndex="state" cell={renderIcon}/>
         <Table.Column title="策略内容" dataIndex="tolerance" cell={renderDetail}/>
         <Table.Column title="操作" cell={renderAction} />

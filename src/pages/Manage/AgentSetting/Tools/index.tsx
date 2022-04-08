@@ -72,7 +72,7 @@ export default function Tools() {
     });
   }
 
-  function renderAction(value: string, index: number, record: IGetListResItem) {
+  const renderAction: any = (value: string, index: number, record: IGetListResItem) => {
     const { installed, unInstalled } = record;
     record && setActionData(record);
     if (installed) {
@@ -82,7 +82,7 @@ export default function Tools() {
       return <span> 已安装 <Icon type={'success'} size='small'/> </span>;
     }
     if (!installed) return <Button text type='primary' loading={loadingInstall} onClick={() => handleSubmit()}>安装</Button>;
-  }
+  };
 
   return (
     <div>
