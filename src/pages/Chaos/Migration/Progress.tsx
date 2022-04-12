@@ -115,6 +115,7 @@ const Index: React.FC<Props> = props => {
         </div>
         <div className={styles.desp}>数据迁移耗时较长，请耐心等待。</div>
         <div className={styles.error}>迁移过程如果出现失败，可以点重试，或联系系统管理员！</div>
+        <div className={styles.error}>探针迁移，只针对host探针，k8s探针请手动替换成公有云探针，以防数据迁移失败！</div>
       </div>
       <Step direction="ver" shape="dot">
         {progress?.map((item, index) => {

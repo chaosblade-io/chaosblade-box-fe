@@ -35,6 +35,10 @@ const Index: React.FC = () => {
     if (res?.status === 'RUNNING') {
       setCurrStep(1);
     }
+
+    if (res?.status === 'FAILED') {
+      setCurrStep(1);
+    }
     setLoading(false);
   };
   const renderContent = useMemo(() => {
