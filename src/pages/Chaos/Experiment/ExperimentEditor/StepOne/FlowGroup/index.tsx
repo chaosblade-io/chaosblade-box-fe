@@ -1,7 +1,6 @@
 import ActivityEditor from 'pages/Chaos/Experiment/common/ActivityEditor';
 import AddFunction from 'pages/Chaos/Experiment/common/AddFunction';
 import ApplicationGroup from './ApplicationGroup';
-import CloudServer from './CloudServer';
 import MiniFlow from 'pages/Chaos/common/MiniFlow';
 import ParameterUtil from 'pages/Chaos/lib/ParameterUtil';
 import React, { useEffect, useState } from 'react';
@@ -43,11 +42,10 @@ function FlowGroup(props: FlowGroupProps) {
   const dispatch = useDispatch();
   const myfield = Field.useField([]);
   const { init } = myfield;
-  const { applications, groups, cloudList } = useSelector(({ experimentDataSource }) => {
+  const { applications, groups } = useSelector(({ experimentDataSource }) => {
     return {
       applications: experimentDataSource.applications,
       groups: experimentDataSource.groups,
-      cloudList: experimentDataSource.cloudList,
     };
   });
   const [ flowGroup, setFlowGroup ] = useState<IFlowGroup>(props.data);
@@ -122,11 +120,6 @@ function FlowGroup(props: FlowGroupProps) {
             setScopeSelectType(SELECT_TYPE.IPS);
           }
         }
-      } else if (scopeType === SCOPE_TYPE.CLOUD) {
-        setScopeType(scopeType);
-        setShowExperimentObj(false);
-        setExperimentObj(NaN);
-        expertiseId && setScopeDisabled(true);
       } else if (!_.isEmpty(hosts)) {
         setScopeType(hosts[0].scopeType);
         setAppDisabled(true);
@@ -295,24 +288,9 @@ function FlowGroup(props: FlowGroupProps) {
     if (scopeType !== SCOPE_TYPE.HOST) {
       setOsType(NaN);
     }
-    if (scopeType !== SCOPE_TYPE.CLOUD) {
-      setExperimentObj(APPLICATION_TYPE.APPLICATION);
-      setShowExperimentObj(true);
-      // 经验创建需要限制操作系统类型，传参加osType
-      // if (expertiseId && scopeType === SCOPE_TYPE.HOST) {
-      //   (async function() {
-      //     await dispatch.experimentDataSource.getApplication({ filterDisabled: true, appType: scopeType, osType });
-      //   })();
-      // } else {
-      //   (async function() {
-      //     await dispatch.experimentDataSource.getApplication({ filterDisabled: true, appType: scopeType });
-      //   })();
-      // }
-    } else {
-      setShowExperimentObj(false);
-      setExperimentObj(NaN);
-      handleCloudFocus();
-    }
+    setShowExperimentObj(false);
+    setExperimentObj(NaN);
+    handleCloudFocus();
     setScopeSelectType(SELECT_TYPE.IPS);
     setTotal(0);
   }
@@ -322,16 +300,6 @@ function FlowGroup(props: FlowGroupProps) {
       await dispatch.experimentDataSource.getCloudServiceList();
     })();
   };
-
-  function handleCloudChang(value: string, action: string, item: any) {
-    setFlowGroup({
-      ...flowGroup,
-      cloudServiceType: value as string,
-      cloudServiceName: item && item.label,
-      hosts: [],
-      flows: [],
-    });
-  }
 
   function handleScopeSelectTypeChange(selectType: string | number) {
     setScopeSelectType(selectType);
@@ -756,13 +724,7 @@ function FlowGroup(props: FlowGroupProps) {
 
     // 机器列表必填校验
     if (!isExpertise) {
-      if (scopeType === SCOPE_TYPE.CLOUD) {
-        if (_.isEmpty(flowGroup.hosts)) {
-          setValidateApp('error');
-          Message.error('请选择云服务实例！');
-          return;
-        }
-      } else if (scopeSelectType === SELECT_TYPE.IPS) {
+      if (scopeSelectType === SELECT_TYPE.IPS) {
         if (_.isEmpty(flowGroup.hosts)) {
           setValidateApp('error');
           Message.error('请选择机器列表！');
@@ -985,18 +947,11 @@ function FlowGroup(props: FlowGroupProps) {
 
   function renderFlowGroup() {
     const appName = _.get(flowGroup, 'appName', '');
-    const cloudServiceType = _.get(flowGroup, 'cloudServiceType', '');
     const { isExpertise } = props;
     const flows = _.get(flowGroup, 'flows', []);
     if (!isExpertise && experimentObj === APPLICATION_TYPE.APPLICATION) {
       if (!appName) {
         return <div className={styles.flowAction}><span style={{ color: '#888' }}>请选择演练应用后添加演练内容</span></div>;
-      }
-    }
-
-    if (scopeType === SCOPE_TYPE.CLOUD) {
-      if (!cloudServiceType && !isExpertise) {
-        return <div className={styles.flowAction}><span style={{ color: '#888' }}>请选择云服务后添加演练内容</span></div>;
       }
     }
 
@@ -1032,15 +987,6 @@ function FlowGroup(props: FlowGroupProps) {
       {renderScopeType()}
       {/* 操作系统 */}
       {isExpertise && scopeType === SCOPE_TYPE.HOST && renderOsType()}
-      {scopeType === SCOPE_TYPE.CLOUD && !isExpertise &&
-        <CloudServer
-          data={flowGroup}
-          cloudList={cloudList}
-          onCloudFocus={handleCloudFocus}
-          onCloudChange={handleCloudChang as () => void}
-          onScopeChange={handleScopeChange}
-        />
-      }
       {/* 演练对象 */}
       {!isExpertise && showExperimentObj && renderExperimentObj()}
       {!isExpertise && experimentObj === APPLICATION_TYPE.APPLICATION &&

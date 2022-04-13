@@ -193,31 +193,31 @@ function K8sRowRender(props: IK8sRowRenderProps) {
     }
   }, [ dataSource ]);
   // 开始 停止
-  const handleEnableSwitch = useCallback(async (record: any, index: number) => {
-    const action = record.enable ? 'StopPlugin' : 'StartPlugin';
-    const msg = record.enable ? '停止成功' : '开启成功';
-    const msgError = record.enable ? '停止失败' : '开启失败';
-    const { Data = false } = await dispatch.agentSetting.getStopAndStartPlugin(action, {
-      PluginType: record.pluginType,
-      ConfigurationId: record.configurationId,
-    });
-    if (Data === true) {
-      Message.success(msg);
-      record.enable = !record.enable;
-      const _dataSource: any[] = _.cloneDeep(dataSource);
-      _dataSource[index] = record;
-      setDataSource(_dataSource);
-    } else {
-      Message.error(msgError);
-    }
-  }, [ dataSource ]);
+  // const handleEnableSwitch = useCallback(async (record: any, index: number) => {
+  //   const action = record.enable ? 'StopPlugin' : 'StartPlugin';
+  //   const msg = record.enable ? '停止成功' : '开启成功';
+  //   const msgError = record.enable ? '停止失败' : '开启失败';
+  //   const { Data = false } = await dispatch.agentSetting.getStopAndStartPlugin(action, {
+  //     PluginType: record.pluginType,
+  //     ConfigurationId: record.configurationId,
+  //   });
+  //   if (Data === true) {
+  //     Message.success(msg);
+  //     record.enable = !record.enable;
+  //     const _dataSource: any[] = _.cloneDeep(dataSource);
+  //     _dataSource[index] = record;
+  //     setDataSource(_dataSource);
+  //   } else {
+  //     Message.error(msgError);
+  //   }
+  // }, [ dataSource ]);
 
   const renderOption: any = (value: string, index: number, record: SubRecord) => {
-    const { osType, pluginStatus, configurationId, pluginType, deviceId, enable, canAutoInstall } = record;
+    const { osType, pluginStatus, configurationId, pluginType, deviceId, canAutoInstall } = record;
     const btns: {[key: string]: JSX.Element} = {
       // clickUninstallBtn: <LinkButton onClick={() => toggleManualDialog(pluginType, true, configurationId, osType)}>手动卸载</LinkButton>,
       // autoUninstallBtn: <LinkButton onClick={() => handleUninstall(configurationId, deviceId)}>卸载</LinkButton>,
-      startOrStopBtn: <LinkButton onClick={() => handleEnableSwitch(record, index)}>{ enable ? '停止' : '开启' }</LinkButton>,
+      // startOrStopBtn: <LinkButton onClick={() => handleEnableSwitch(record, index)}>{ enable ? '停止' : '开启' }</LinkButton>,
       installBtn: <span className={styles.red}><a className={styles.ml10} onClick={() => handleInstall(deviceId)} data-spm-click="gostr=/aliyun;locaid=d_SettingInstalled_plugin_install" style={{ cursor: 'pointer' }}>单击安装</a></span>,
       clinkInstallBtn: <span className={styles.red}><a className={styles.ml10} onClick={() => toggleManualDialog(pluginType, false, configurationId, osType) } style={{ cursor: 'pointer' }} >手动安装</a></span>,
       tryBtn: <LinkButton onClick={() => handleUninstall(configurationId, deviceId)}>重试</LinkButton>,
@@ -290,7 +290,8 @@ function K8sRowRender(props: IK8sRowRenderProps) {
       <Table.Column title="设备ID" dataIndex="configurationId" />
       <Table.Column title="节点探针版本" dataIndex="agentVersion" />
       <Table.Column title="节点探针状态" dataIndex="agentStatus" cell={renderStatus}/>
-      <Table.Column title="操作" lock="right" align={'center'} width={160} cell={renderOption} />
+      {/* 操作  先去掉 */}
+      <Table.Column title="" lock="right" align={'center'} width={160} cell={renderOption} />
     </Table>
     {/* <Pagination
       className={styles.paginationK8s}

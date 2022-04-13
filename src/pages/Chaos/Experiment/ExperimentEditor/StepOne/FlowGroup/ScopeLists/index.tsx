@@ -76,7 +76,6 @@ const ScopeList: FC<IProps> = props => {
   const [ searchTypeOption, setSearchTypeOption ] = useState<any>({}); // 高级查询的 options
   const [ dropDownVisible, setDropDownVisible ] = useState(false);
   const [ updateScopes, setUpdateScopes ] = useState(false);
-  const [ cloudType, setCloudType ] = useState(props.type);
   const [ scopesOsType, setScopesOsType ] = useState(() => {
     const { osType } = props;
     if (osType === OS_TYPE.LINUX || osType === OS_TYPE.WINDOWS) return osType;
@@ -97,10 +96,7 @@ const ScopeList: FC<IProps> = props => {
     setDropDownVisible(false);
   }, [ props.appGroup, props.appId ]);
   useEffect(() => {
-    const { scopeType, isApp, appId, appGroup, osType } = props;
-    if (scopeType === SCOPE_TYPE.CLOUD) {
-      return;
-    }
+    const { isApp, appId, appGroup, osType } = props;
     setTotal(0);
     const { key = '', tags = [], namespaces = [], clusterNames = [] } = searchTypeInfo;
     isMountedRef.current = 1;
@@ -120,46 +116,11 @@ const ScopeList: FC<IProps> = props => {
           app_group: appGroup,
           osType,
         }, res => setDatas(res));
-      } else {
-        if (scopeType !== SCOPE_TYPE.CLOUD) {
-          await dispatch.experimentDataSource.getScopeNoApplication({
-            ...params,
-            scopeType,
-            osType: scopesOsType,
-          }, res => setDatas(res));
-        }
       }
     };
     isMountedRef.current && getDatas();
     return () => { isMountedRef.current = 0; };
   }, [ props.scopeType, props.appGroup, props.appId, page, updateScopes ]);
-
-  useEffect(() => {
-    getCloudList();
-  }, [ cloudType, page ]);
-
-  useEffect(() => {
-    setPage(1);
-    setCloudType(props.type);
-  }, [ props.type ]);
-
-  const getCloudList = async () => {
-    const { type, scopeType } = props;
-    const { cloudKey = '' } = searchTypeInfo;
-    if (scopeType === SCOPE_TYPE.CLOUD && type !== '' && type !== undefined) {
-      await dispatch.experimentDataSource.getCloudServiceInstanceList({
-        page,
-        size: 10,
-        type,
-        key: cloudKey,
-      }, res => {
-        setTotal(res && res.total);
-        // setPage(res && res.page);
-        // setPageSize(res && res.pageSize);
-      });
-      setDropDownVisible(false);
-    }
-  };
 
   useEffect(() => {
     setHostsValue([]);
@@ -222,11 +183,7 @@ const ScopeList: FC<IProps> = props => {
           ...newValue,
         });
       } else {
-        if (scopeType === SCOPE_TYPE.CLOUD) {
-          newValue = _.find(cloudInstanceList.data, (so: IHost) => so.deviceConfigurationId === val);
-        } else {
-          newValue = _.find(scopesNoApp.data, (so: IHost) => so.deviceConfigurationId === val);
-        }
+        newValue = _.find(scopesNoApp.data, (so: IHost) => so.deviceConfigurationId === val);
         if (!newValue) {
           newValue = _.find(props.value, (h: IHost) => h.deviceConfigurationId === val);
         }
@@ -248,7 +205,7 @@ const ScopeList: FC<IProps> = props => {
     }
     return !_.isEmpty(values) && values.map((val: IHost) => {
       const { ip, deviceName, clusterName, clusterId, appConfigurationId, deviceConfigurationId, allow, invalid, authMessage, k8s } = val;
-      if (scopeType === SCOPE_TYPE.HOST || isApp || scopeType === SCOPE_TYPE.CLOUD) {
+      if (scopeType === SCOPE_TYPE.HOST || isApp) {
         label = `${ip}[${deviceName}]`;
       } else {
         if (val && !_.isEmpty(clusterName)) {
@@ -272,15 +229,12 @@ const ScopeList: FC<IProps> = props => {
   }
 
   function handleIsAppOrNoApp() { // 通过isApp分为应用和非应用模式
-    const { isApp, appGroup, scopeType } = props;
+    const { isApp, appGroup } = props;
     if (appGroup?.length === 0) {
       return [];
     }
     if (isApp) {
       return handleScope(scopesByApp.data);
-    }
-    if (scopeType !== SCOPE_TYPE.CLOUD) {
-      return handleScope(scopesNoApp.data);
     }
     return handleScope(cloudInstanceList && cloudInstanceList.data || []);
   }
@@ -385,27 +339,8 @@ const ScopeList: FC<IProps> = props => {
     setDropDownVisible(false);
   }
   function renderSearchDropdown() {
-    const { appId, appGroup, isApp, scopeType, experimentObj, type } = props;
+    const { appId, appGroup, isApp, scopeType, experimentObj } = props;
     let disabled = false;
-    // 云服务实例 搜索
-    if (scopeType === 3) {
-      disabled = type === '' || type === undefined;
-      return (
-        <div className={styles.searchContent}>
-          <Form {...formItemLayout}>
-            <FormItem label="关键字" {...formItemLayout}>
-              <Input placeholder="请输入关键字" disabled={disabled} value={searchTypeInfo.cloudKey} onChange={(value: string) => changeSearchs('cloudKey', value)} hasClear/>
-            </FormItem>
-            <div style={{ width: '100%' }}>
-              <Button.Group style={{ float: 'right' }}>
-                <Button type='primary' style={{ marginRight: 8 }} disabled={disabled} onClick={getCloudList}>确认</Button>
-                <Button onClick={() => { setDropDownVisible(false); }}>取消</Button>
-              </Button.Group>
-            </div>
-          </Form>
-        </div>
-      );
-    }
     if (isApp) {
       disabled = !(appId && !_.isEmpty(appGroup));
     }

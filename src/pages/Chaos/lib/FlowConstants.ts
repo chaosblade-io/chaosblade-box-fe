@@ -20,19 +20,12 @@ export const STAGES = [
 export const SCOPE_TYPE = {
   HOST: 0, // 主机
   K8S: 2, // kubernates
-  CLOUD: 3, // 云服务
 };
 
 // 主机下不同操作系统
 export const OS_TYPE = {
   LINUX: 0, // linux
   WINDOWS: 1, // windows
-};
-
-export const CLOUD_TYPE = {
-  ECS: 1,
-  RDS: 2,
-  REDIS: 3,
 };
 
 // 百分比与具体ip

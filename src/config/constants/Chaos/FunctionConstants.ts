@@ -24,7 +24,6 @@ export const FunctionConstants = {
   DRILL_HOST: { label: '主机', value: 0 },
   DRILL_DOCKER: { label: 'Docker', value: 1 },
   DRILL_KUBERNETES: { label: 'kubernetes', value: 2 },
-  DRILL_CLOUDSERVSE: { label: '云服务', value: 3 },
 
 };
 
@@ -57,7 +56,6 @@ export const FUNCTION_STATUS = [
 export const DRILL_OBJ = [
   FunctionConstants.DRILL_HOST,
   FunctionConstants.DRILL_KUBERNETES,
-  FunctionConstants.DRILL_CLOUDSERVSE,
 ];
 
 export const ENABLED_TYPES = [ '待发布', '已发布', '已发布（上线）' ];

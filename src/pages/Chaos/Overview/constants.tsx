@@ -88,16 +88,6 @@ export const compTypes = [
       },
     },
   },
-  // {
-  //   prefix: <CustomIcon type="icon-yunfuwu" />,
-  //   title: '云服务',
-  //   skipInfo: {
-  //     url: '/chaos/scenes',
-  //     params: {
-  //       scopeType: 2,
-  //     },
-  //   },
-  // },
   {
     prefix: <CustomIcon type="icon-rongqifuwu" />,
     title: '容器服务',

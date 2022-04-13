@@ -214,9 +214,6 @@ const ExperimentsList = (props: { workspaceName: string }) => {
       if (item === 2) {
         type.push('Kubernetes');
       }
-      if (item === 3) {
-        type.push('云服务');
-      }
     });
     Message.show({
       type: 'notice',

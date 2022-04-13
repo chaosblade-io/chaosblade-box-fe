@@ -471,7 +471,7 @@ function ExperimentDetail() {
 
   const renderHosts: any = (value: string, index: number, record: any) => {
     let label;
-    if (record.scopeType === SCOPE_TYPE.HOST || record.app || record.scopeType === SCOPE_TYPE.CLOUD) {
+    if (record.scopeType === SCOPE_TYPE.HOST || record.app) {
       label = `${record.ip}[${record.deviceName}]`;
     } else {
       if (record && !_.isEmpty(record.clusterName)) {
@@ -556,7 +556,7 @@ function ExperimentDetail() {
     let label;
     const tags: IHost[] = [];
     hosts && _.map(hosts, (val: IHost) => {
-      if (val.scopeType === SCOPE_TYPE.HOST || val.app || val.scopeType === SCOPE_TYPE.CLOUD) {
+      if (val.scopeType === SCOPE_TYPE.HOST || val.app) {
         label = `${val.ip}[${val.deviceName}]`;
       } else {
         if (val && !_.isEmpty(val.clusterName)) {

@@ -152,7 +152,6 @@ export default function SceneFunctions() {
         <Button.Group>
           <Button type={scopeType === SCOPE_TYPE.K8S + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.K8S })}>Kubernetes</Button>
           <Button type={scopeType === SCOPE_TYPE.HOST + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.HOST })}>主机</Button>
-          <Button type={scopeType === SCOPE_TYPE.CLOUD + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.CLOUD })}>云服务</Button>
         </Button.Group>&nbsp;&nbsp;
         <Search
           onSearch={value => setSearchKey(value)}

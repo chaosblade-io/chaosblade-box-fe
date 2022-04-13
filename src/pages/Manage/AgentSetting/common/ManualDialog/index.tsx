@@ -84,7 +84,7 @@ const ManualDialog: FC<IPorps> = ({ pluginType, isUninstall, configurationId, on
       params.ConfigurationId = configurationId;
     }
     if (isClusterUninstall) {
-      setManualCmd('helm delete --purge ahas');
+      setManualCmd('helm delete --purge agent');
     } else {
       const { Data } = await dispatch.agentSetting.getQueryUninstallAndInstallCommand(action, params);
       // 安装接口返回数据
@@ -162,9 +162,9 @@ const ManualDialog: FC<IPorps> = ({ pluginType, isUninstall, configurationId, on
     return (
       <div>
         <div className={styles.item}>1. 执行以下Helm命令卸载探针</div>
-        {renderCode('helm delete ahas -n ahas', true)}
+        {renderCode('helm un agent -n chaosblade', true)}
         <div className={styles.item}>2. 卸载完成后，可执行一下命令查询ahas命令空间的探针pod是否已卸载完成</div>
-        {renderCode('kubectl get pods -n ahas', true)}
+        {renderCode('kubectl get pods -n chaosblade', true)}
         <div className={styles.item}>3. 如果卸载异常，在确保所有演练已终止的情况下，执行以下命令删除异常状态的演练</div>
         {renderCode(cmdLong, true)}
         <div className={styles.item}>4. 执行后可执行下面命令确认所有的chaosblade资源均被删除<a href={dowloadUrl} download target='_blank'>{dowloadUrl}</a></div>

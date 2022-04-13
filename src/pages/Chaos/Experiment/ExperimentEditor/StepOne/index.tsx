@@ -132,7 +132,7 @@ function StepOne(props: StepOneProps) {
 
   function handleScope(val: IHost) {
     let label;
-    if (val.scopeType === SCOPE_TYPE.HOST || val.app || val.scopeType === SCOPE_TYPE.CLOUD) {
+    if (val.scopeType === SCOPE_TYPE.HOST || val.app) {
       label = `${val.ip}[${val.deviceName}]`;
     } else {
       if (val && !_.isEmpty(val.clusterName)) {
@@ -302,7 +302,7 @@ function StepOne(props: StepOneProps) {
     for (const flowGroup of flowGroups) {
       ++index;
 
-      const { appName, groupName, hosts, flows, hostPercent, selectType, scopeType } = flowGroup;
+      const { appName, groupName, hosts, flows, hostPercent, selectType } = flowGroup;
 
       // 演练名称必填校验
       if (!groupName) {
@@ -312,12 +312,6 @@ function StepOne(props: StepOneProps) {
 
       // 机器列表必填校验
       if (!isExpertise) {
-        if (scopeType === SCOPE_TYPE.CLOUD) {
-          if (_.isEmpty(hosts)) {
-            Message.error(`分组${index}：请选择云服务实例列表！`);
-            return;
-          }
-        }
         if (selectType === SELECT_TYPE.IPS) {
           if (_.isEmpty(hosts)) {
             Message.error(`分组${index}：请选择机器列表！`);
