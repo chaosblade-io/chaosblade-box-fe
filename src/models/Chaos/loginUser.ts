@@ -21,8 +21,7 @@ class LoginUser extends BaseModel {
   }
   @effect()
   *getLoginUser() {
-    // const res = yield this.effects.call(createServiceChaos('LoginUserInfo'));
-    const res = JSON.parse('{"code":200,"Data":{"admin":false,"aliAccount":false,"betaFlag":0,"currentUserId":"259399978","grayEnable":false,"hacker":false,"mainUser":"259399978","mfaPresent":false,"secureTransport":false,"stsNoLogin":false,"stsUser":false,"subUser":false,"userId":"259399978","userName":"camix"},"success":true}');
+    const res = yield this.effects.call(createServiceChaos('LoginUserInfo'));
     const { code, Data = {} } = res || {};
     if (code === 200) {
       yield this.effects.put(this.setLoginUser(Data));
@@ -32,9 +31,8 @@ class LoginUser extends BaseModel {
 
   @effect()
   *onLogin(payload) {
-    // const res: any = yield this.effects.call(createService('UserLogin'), payload);
+    const res: any = yield this.effects.call(createService('UserLogin'), payload);
     console.log(payload);
-    const res = JSON.parse('{"code":200,"Data":{"id":1,"userId":"259399978","userName":"camix"},"success":true}');
     const { code, Data = {} } = res || {};
     if (code === 200) {
       yield this.effects.put(this.setLoginUser(Data));
