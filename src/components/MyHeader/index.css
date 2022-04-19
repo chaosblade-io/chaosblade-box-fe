@@ -23,15 +23,37 @@
         padding: 10px 0;
       }
     }
-    .userInfo {
-      width: 38px;
+    .right {
+      display: flex;
+      float: right;
       height: 38px;
-      line-height: 38px;
-      border-radius: 50%;
-      background-color: #ddd;
-      text-align: center;
-      color: #333;
+      margin-left: auto;
+      overflow: hidden;
+      .velaItem {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        height: 38px;
+        padding: 0 8px;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s;
+        a {
+          color: #fff;
+          cursor: pointer;
+        }
+      }
+      .userInfo {
+        width: 38px;
+        height: 38px;
+        line-height: 38px;
+        border-radius: 50%;
+        background-color: #ddd;
+        text-align: center;
+        color: #333;
+      }
     }
+  
   }
   
 }

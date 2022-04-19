@@ -1,0 +1,71 @@
+.languageButtonStyle {
+    display: flex;
+    align-items: center;
+    width: 70px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.01);
+    :global(.next-btn.next-medium) {
+      padding: 0;
+    }
+    :global(.next-btn.next-medium:not(.isOnlyIcon):not(.next-btn-text)) {
+      min-width: 0!important;
+    }
+    :global(.next-btn.next-btn-normal:not(.next-btn-text)) {
+      background: #f3f3f3;
+    }
+    .englishPart {
+      flex: 1;
+      width: 22px;
+      height: 30px;
+      color: #000;
+      font-size: 10px;
+      font-family: HelveticaNeue;
+      line-height: 16px;
+      letter-spacing: 0.33px;
+      text-align: center;
+      background-color: #727070;
+      opacity: 0.87;
+    }
+  
+    .chinesePart {
+      flex: 1;
+      width: 22px;
+      height: 30px;
+      color: #000;
+      font-size: 10px;
+      font-family: HelveticaNeue;
+      line-height: 16px;
+      letter-spacing: 0.33px;
+      text-align: center;
+      background-color: #ccc;
+      opacity: 0.87;
+    }
+  
+    .isEnglish {
+      width: 22px;
+      height: 30px;
+      color: #4a4a4a;
+      font-size: 10px;
+      font-family: PingFangSC-Regular;
+      line-height: 18px;
+      letter-spacing: 0.33px;
+      text-align: center;
+      background-color: #fff !important;
+      opacity: 1;
+    }
+  
+    .isEnglish:focus {
+      height: 30px;
+      color: #000;
+      background: #f3f3f3;
+      background-color: #f3f3f3;
+      border-radius: 4px;
+    }
+  
+    .next-btn.next-btn-normal {
+      border: none;
+    }
+  }
+  

@@ -1,3 +1,4 @@
+import './i18n';
 import '@alicloud/console-components/dist/wind.css';
 import 'config/styles/index.css';
 import createLoading from 'dva-loading';

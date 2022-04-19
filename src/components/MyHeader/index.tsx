@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 
+import SwitchButton from '../../components/SwitchButton';
 import { Balloon, Button } from '@alicloud/console-components';
 import { pushUrl } from 'utils/libs/sre-utils';
 import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
@@ -26,7 +27,10 @@ const MyHeader: FC = () => {
     <div className={styles.myHeader}>
       <div className={ styles.mhContent}>
         <div className={styles.logo}><img src={require('../../imgs/logo.png')}/></div>
-        <div>
+        <div className={styles.right}>
+          <div className={styles.velaItem}>
+            <SwitchButton />
+          </div>
           <Balloon
             align="bl"
             visible={visible}

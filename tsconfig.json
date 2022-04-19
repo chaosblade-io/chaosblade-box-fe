@@ -24,6 +24,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true, // 忽略库的默认声明文件的类型检查
     "noImplicitAny": false, // 表达式和声明上有隐含的any类型时报错
+    "resolveJsonModule": true,
     "lib": [
       "es2018",
       "dom"

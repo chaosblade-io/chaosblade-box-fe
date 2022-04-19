@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-
+import Translation from '../../../components/Translation';
 import styles from './index.css';
 import { Dialog, Dropdown, Icon, Menu } from '@alicloud/console-components';
 import { experienceCards, videoCards } from './constants';
@@ -19,7 +19,7 @@ const Guide: React.FC<Props> = props => {
     return (
       <div className={styles.segment}>
         <div className={styles.header} style={{ margin: 0 }}>
-          <div className={styles.title}>欢迎体验故障演练</div>
+          <div className={styles.title}><Translation>Welcome to the fault drill</Translation></div>
           <div className={styles.btn} data-type="link" onClick={() => setIsExpend(!isExpend)}>展开</div>
         </div>
       </div>
@@ -29,7 +29,7 @@ const Guide: React.FC<Props> = props => {
     <>
       <div className={styles.segment}>
         <div className={styles.header}>
-          <div className={styles.title}>欢迎体验故障演练</div>
+          <div className={styles.title}><Translation>Welcome to the fault drill</Translation></div>
           <div className={styles.btn} data-type="link" onClick={() => setIsExpend(!isExpend)}>收起</div>
         </div>
         <div className={styles.cards}>
