@@ -194,13 +194,6 @@ class ExperimentDataSource extends BaseModel {
     return Data;
   }
 
-  // 云服务
-  @effect()
-  *getCloudServiceList() {
-    const { Data: list } = yield this.effects.call(createServiceChaos('GetCloudServiceList'));
-    yield this.effects.put(this.setCloudList(list));
-  }
-
   @effect()
   *getApplicationGroup(payload: IApplicationGroup) {
     const { Data: groups } = yield this.effects.call(createServiceChaos('GetUserApplicationGroups'), payload);

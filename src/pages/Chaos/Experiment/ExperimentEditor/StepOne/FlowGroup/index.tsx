@@ -288,18 +288,11 @@ function FlowGroup(props: FlowGroupProps) {
     if (scopeType !== SCOPE_TYPE.HOST) {
       setOsType(NaN);
     }
-    setShowExperimentObj(false);
-    setExperimentObj(NaN);
-    handleCloudFocus();
+    setExperimentObj(APPLICATION_TYPE.APPLICATION);
+    setShowExperimentObj(true);
     setScopeSelectType(SELECT_TYPE.IPS);
     setTotal(0);
   }
-
-  const handleCloudFocus = () => {
-    (async function() {
-      await dispatch.experimentDataSource.getCloudServiceList();
-    })();
-  };
 
   function handleScopeSelectTypeChange(selectType: string | number) {
     setScopeSelectType(selectType);
