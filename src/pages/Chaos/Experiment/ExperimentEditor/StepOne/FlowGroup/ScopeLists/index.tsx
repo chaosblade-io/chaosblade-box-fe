@@ -56,7 +56,7 @@ const defaultSearchInfo = {
 const ScopeList: FC<IProps> = props => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { scopesByApp, scopesNoApp, cloudInstanceList } = useSelector(state => {
+  const { scopesByApp, scopesNoApp } = useSelector(state => {
     return {
       ...state.experimentDataSource.scopes,
       isAppLoading: state.loading.effects['experimentDataSource/getScopeByApplication'],
@@ -96,7 +96,7 @@ const ScopeList: FC<IProps> = props => {
     setDropDownVisible(false);
   }, [ props.appGroup, props.appId ]);
   useEffect(() => {
-    const { isApp, appId, appGroup, osType } = props;
+    const { scopeType, isApp, appId, appGroup, osType } = props;
     setTotal(0);
     const { key = '', tags = [], namespaces = [], clusterNames = [] } = searchTypeInfo;
     isMountedRef.current = 1;
@@ -115,6 +115,12 @@ const ScopeList: FC<IProps> = props => {
           app_id: appId,
           app_group: appGroup,
           osType,
+        }, res => setDatas(res));
+      } else {
+        await dispatch.experimentDataSource.getScopeNoApplication({
+          ...params,
+          scopeType,
+          osType: scopesOsType,
         }, res => setDatas(res));
       }
     };
@@ -236,7 +242,7 @@ const ScopeList: FC<IProps> = props => {
     if (isApp) {
       return handleScope(scopesByApp.data);
     }
-    return handleScope(cloudInstanceList && cloudInstanceList.data || []);
+    return handleScope(scopesNoApp.data);
   }
 
   function handleHref() {
