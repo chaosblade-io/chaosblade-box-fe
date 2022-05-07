@@ -1,5 +1,7 @@
 import React from 'react';
 import SvgIcon from './customeIcon';
+import Translation from 'components/Translation';
+
 import { Icon } from '@alicloud/console-components';
 
 import { customIconUrl } from 'config/constants';
@@ -10,7 +12,7 @@ const CustomIcon = Icon.createFromIconfontCN({
 
 export const experienceCards = [
   {
-    title: '首次进入，需先安装演练探针',
+    title: <Translation>When entering for the first time, you need to install the drill probe first</Translation>,
     desp: 'Chaos支持多平台安装',
     icons: [ <CustomIcon type="icon-K8S" />, <CustomIcon type="icon-ECS_cai" /> ],
     btn: {

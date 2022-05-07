@@ -18,6 +18,7 @@ const SwitchLanguage = () => {
           localStorage.setItem('lang', 'en');
           publish('language-change', 'en');
           setIsEnglish(true);
+          window.location.reload();
         }}
       >
         EN
@@ -29,6 +30,7 @@ const SwitchLanguage = () => {
           localStorage.setItem('lang', 'zh');
           publish('language-change', 'zh');
           setIsEnglish(false);
+          window.location.reload();
         }}
       >
         中文
