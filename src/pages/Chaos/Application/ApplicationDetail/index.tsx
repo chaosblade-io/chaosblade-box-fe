@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import _ from 'lodash';
 import classnames from 'classnames';
 import formatDate from 'pages/Chaos/lib/DateUtil';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { Balloon, Icon, Tag } from '@alicloud/console-components';
 import { ExperimentConstants } from 'config/constants/Chaos/ExperimentConstants';
@@ -19,16 +21,16 @@ const ApplicationDetail: FC = () => {
   const [ basic, setBasic ] = useState<IAppLicationBasic>();
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('应用概览');
+    dispatch.pageHeader.setTitle(<Translation>Application Overview</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'application',
-        value: '应用管理',
+        value: i18n.t('Application Management'),
         path: '/chaos/application',
       },
       {
         key: 'applicationDetail',
-        value: '应用概览',
+        value: i18n.t('Application Overview'),
         path: '/chaos/application/detail',
       },
     ]));
@@ -46,7 +48,7 @@ const ApplicationDetail: FC = () => {
   function renderType() {
     const appType = _.get(basic, 'app_type', '');
     if (appType === SCOPE_TYPE.HOST) {
-      return '主机';
+      return i18n.t('Host');
     }
     return 'Kubernetes';
   }
@@ -81,34 +83,34 @@ const ApplicationDetail: FC = () => {
   return (
     <div className={styles.warp}>
       <div className={styles.appBase}>
-        <div className={styles.baseTitle}>基础信息</div>
+        <div className={styles.baseTitle}><Translation>Basic information</Translation></div>
         <div>
           <div className={styles.lineItem}>
-            <span className={styles.lineLabel}>应用名称:</span>
+            <span className={styles.lineLabel}><Translation>Application name</Translation>:</span>
             <span className={styles.lineValueTitle}>{_.get(basic, 'app_name', '')}</span>
           </div>
           <div className={styles.content}>
             <div className={styles.leftContent}>
               <div className={styles.topLine}>
                 <div className={styles.lineItem}>
-                  <span className={styles.lineLabel}>应用类型:</span>
+                  <span className={styles.lineLabel}><Translation>Application type</Translation>:</span>
                   <span className={styles.lineValue}>{renderType()}</span>
                 </div>
               </div>
               <div className={styles.bottomLine}>
                 <div className={styles.lineItem}>
-                  <span className={styles.lineLabel}>最近一次演练时间:</span>
+                  <span className={styles.lineLabel}><Translation>Last drill time</Translation>:</span>
                   <span className={styles.lineValue}>{!_.isEmpty(task) ? formatDate(_.get(task, 'startTime', '')) : '-'}</span>
                 </div>
                 <div className={styles.lineItem}>
-                  <span className={styles.lineLabel}>最近一次演练结果:</span>
+                  <span className={styles.lineLabel}><Translation>Results of the last drill</Translation>:</span>
                   <span className={styles.lineValue}>{!_.isEmpty(basic) ? renderStatus() : '-'}</span>
                 </div>
               </div>
             </div>
             <div className={styles.rightContent}>
               <div className={styles.groupItem}>
-                <div className={styles.label}>机器分组</div>
+                <div className={styles.label}><Translation>Machine grouping</Translation></div>
                 <div>
                   {
                     basic && basic.app_groups && basic.app_groups.slice(0, 2).map((tag: string, index: number) => {
@@ -127,7 +129,7 @@ const ApplicationDetail: FC = () => {
                 </div>
               </div>
               <div className={styles.item}>
-                <div className={styles.label}>机器</div>
+                <div className={styles.label}><Translation>Machine</Translation></div>
                 <div className={styles.value}>
                   {basic && basic.machine_count || '-'}
                   <span className={styles.unit}>台</span>

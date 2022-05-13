@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import SettingDetail from './SettingDetail';
+import Translation from 'components/Translation';
 import _ from 'lodash';
 import formatDate from 'pages/Chaos/lib/DateUtil';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { Balloon, Message, Table, Tag } from '@alicloud/console-components';
 import { IApplicationConfigRecordScope, IApplicationConfigurationRecordAndReq } from 'config/interfaces/Chaos/application';
@@ -23,16 +25,16 @@ const ApplicationSetting: FC = () => {
   });
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('应用配置');
+    dispatch.pageHeader.setTitle(<Translation>Application configuration</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'application',
-        value: '应用管理',
+        value: i18n.t('Application Management'),
         path: '/chaos/application',
       },
       {
         key: 'applicationTaskList',
-        value: '应用概览',
+        value: i18n.t('Application Overview'),
         path: '/chaos/application/tasklist',
       },
     ]));
@@ -66,7 +68,7 @@ const ApplicationSetting: FC = () => {
       });
       if (res.success) {
         setVisible(false);
-        Message.success('操作成功');
+        Message.success(<Translation>Operation successful</Translation>);
         setUpdateDataSource(!updateDataSource);
       }
     }
@@ -82,12 +84,12 @@ const ApplicationSetting: FC = () => {
 
   function renderPriority(value: number) {
     if (value === 0) {
-      return '高';
+      return <Translation>High</Translation>;
     }
     if (value === 1) {
-      return '普通';
+      return <Translation>Normal</Translation>;
     }
-    return '低';
+    return <Translation>Low</Translation>;
   }
 
   function renderNodeGroup(value: IApplicationConfigRecordScope) {
@@ -99,17 +101,17 @@ const ApplicationSetting: FC = () => {
 
   function renderOverride(value: boolean) {
     if (value) {
-      return '是';
+      return <Translation>Yes</Translation>;
     }
-    return '否';
+    return <Translation>No</Translation>;
   }
 
   const renderAction: any = (value: IApplicationConfigurationRecordAndReq, index: number, record: IApplicationConfigurationRecordAndReq) => {
     const status = _.get(record, 'status', NaN);
     if (status === 1) {
-      return <span>配置失效无法编辑</span>;
+      return <span><Translation>The configuration is invalid and cannot be edited</Translation></span>;
     }
-    return <span className={styles.moreTag} onClick={() => handleDialog(record)}>修改</span>;
+    return <span className={styles.moreTag} onClick={() => handleDialog(record)}><Translation>Modify</Translation></span>;
   };
 
   function handleNodeGroupChange(value: string[]) {
@@ -151,14 +153,14 @@ const ApplicationSetting: FC = () => {
           hasBorder={false}
           loading={loading}
         >
-          <Table.Column title='名称' dataIndex='name' width='15%' cell={renderDesctiption} />
-          <Table.Column title="描述" dataIndex="description" width='20%' cell={renderDesctiption} />
-          <Table.Column title="配置优先级" dataIndex="priority" cell={renderPriority as any} />
-          <Table.Column title="适用分组" dataIndex="scope" cell={renderNodeGroup as any} />
-          <Table.Column title="配置值" dataIndex="value" width='5%' />
-          <Table.Column title="是否覆盖用户配置内容" dataIndex="override" cell={renderOverride as any} />
-          <Table.Column title="修改时间" dataIndex="gmt_modified" cell={formatDate} />
-          <Table.Column title="操作" cell={renderAction} width='10%' />
+          <Table.Column title={<Translation>Name</Translation>} dataIndex='name' width='15%' cell={renderDesctiption} />
+          <Table.Column title={<Translation>Description</Translation>} dataIndex="description" width='20%' cell={renderDesctiption} />
+          <Table.Column title={<Translation>Configure priority</Translation>} dataIndex="priority" cell={renderPriority as any} />
+          <Table.Column title={<Translation>Applicable grouping</Translation>} dataIndex="scope" cell={renderNodeGroup as any} />
+          <Table.Column title={<Translation>Configuration value</Translation>} dataIndex="value" width='5%' />
+          <Table.Column title={<Translation>Overwrite user configuration</Translation>} dataIndex="override" cell={renderOverride as any} />
+          <Table.Column title={<Translation>Modification time</Translation>} dataIndex="gmt_modified" cell={formatDate} />
+          <Table.Column title={<Translation>Operation</Translation>} cell={renderAction} width='10%' />
         </Table>
       </div>
       <SettingDetail

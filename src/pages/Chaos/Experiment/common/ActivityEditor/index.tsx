@@ -3,7 +3,9 @@ import ActivityRecoverEditor from 'pages/Chaos/Experiment/common/ActivityParamet
 import React, { useCallback, useEffect, useState } from 'react';
 import SlidePanel from '@alicloud/console-components-slide-panel';
 import SlidePanelClose from 'config/constants/Chaos/SlidePanelClose';
+import Translation from 'components/Translation';
 import _ from 'lodash';
+import i18n from '../../../../../i18n';
 import styles from './index.css';
 import { Button, Icon, Input, Loading, NumberPicker, Switch } from '@alicloud/console-components';
 import { FunctionParameterConstants } from 'config/constants/Chaos/FunctionParameterConstants';
@@ -50,7 +52,7 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
   // const [ displayParameters, setDisplayParameters ] = useState(true); // 参数Icon展示（上or下）
 
   const [ openLevels, setOpenLevels ] = useState<any>({});
-  const otherConfName = '流程配置';
+  const otherConfName = i18n.t('Process configuration');
   useEffect(() => {
     handleSyncData();
     initExpands(props.data.arguments, { [otherConfName]: false });
@@ -561,7 +563,7 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
       if (nodeType === NODE_TYPE.RECOVER) {
         return (
           <div>
-            <div className={styles.ruleTitle}>规则</div>
+            <div className={styles.ruleTitle}><Translation>Rules</Translation></div>
             <ActivityRecoverEditor
               disabled={disabled as boolean}
               isExpertise={isExpertise}
@@ -632,7 +634,7 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
       width={460}
       onClose={props.onClose}
       container={'SlidePanel'}
-      customFooter={<Button onClick={props.onClose}>关闭</Button>}
+      customFooter={<Button onClick={props.onClose}><Translation>close</Translation></Button>}
     >
       { loading &&
         <div className={styles.loading}>
@@ -654,9 +656,9 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
                 {
                   openLevels[otherConfName] && (
                     <>
-                      <p className={styles.description}>当前节点运行前会等待指定时间</p>
+                      <p className={styles.description}><Translation>The current node will wait for the specified time before running</Translation></p>
                       <div className={styles.configFieldContainer}>
-                        <div className={styles.configFieldLabel}>执行前等待(毫秒)</div>
+                        <div className={styles.configFieldLabel}><Translation>Wait before execution (MS)</Translation></div>
                         <NumberPicker
                           disabled={props.disabled}
                           value={pauseBefore}
@@ -665,9 +667,9 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
                           onChange={value => handleUpdateNode('pauses', { before: value, after: pauseAfter })}
                         />
                       </div>
-                      <p className={styles.description}>当前节点运行完毕后等待指定时间,如果处于演练终止中,则不生效</p>
+                      <p className={styles.description}><Translation>Wait for the specified time after the current node is running. If it is in the process of ending the drill, it will not take effect</Translation></p>
                       <div className={styles.configFieldContainer}>
-                        <div className={styles.configFieldLabel}>执行后等待(毫秒)</div>
+                        <div className={styles.configFieldLabel}><Translation>Wait after execution (MS)</Translation></div>
                         <NumberPicker
                           disabled={props.disabled}
                           value={pauseAfter}
@@ -676,20 +678,20 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
                           onChange={value => handleUpdateNode('pauses', { before: pauseBefore, after: value })}
                         />
                       </div>
-                      <p className={styles.description}>当前节点运行完毕之后(无论成功失败)是否进行下一个节点</p>
+                      <p className={styles.description}><Translation>Whether to proceed to the next node after the current node runs (whether successful or failed)</Translation></p>
                       <div className={styles.configFieldContainer}>
-                        <div className={styles.configFieldLabel}>是否手工推进演练</div>
+                        <div className={styles.configFieldLabel}><Translation>Whether to promote the drill manually</Translation></div>
                         <Switch
                           disabled={props.disabled}
                           checked={node.user_check}
                           onChange={checked => handleUpdateNode('user_check', checked)}
-                          checkedChildren={<span>是</span>}
-                          unCheckedChildren={<span>否</span>}
+                          checkedChildren={<span><Translation>yes</Translation></span>}
+                          unCheckedChildren={<span><Translation>no</Translation></span>}
                         />
                       </div>
-                      <p className={styles.description}>失败容忍度,当下面的机器或者子任务运行失败占比超过指定值,当前节点才会认定为失败,值在[0-100]</p>
+                      <p className={styles.description}><Translation>Failure tolerance: when the failure ratio of the following machines or subtasks exceeds the specified value, the current node will be recognized as failure, and the value is [0-100]</Translation></p>
                       <div className={styles.configFieldContainer}>
-                        <div className={styles.configFieldLabel}>失败容忍度</div>
+                        <div className={styles.configFieldLabel}><Translation>Failure tolerance</Translation></div>
                         <NumberPicker
                           disabled={props.disabled}
                           value={node.failedTolerance}
@@ -698,15 +700,15 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
                           onChange={value => handleUpdateNode('failedTolerance', value)}
                         />
                       </div>
-                      <p className={styles.description}>当前节点失败后是否立刻终止演练,只在非手动推进才生效</p>
+                      <p className={styles.description}><Translation>Whether to terminate the drill immediately after the current node fails will only take effect if it is not pushed manually</Translation></p>
                       <div className={styles.configFieldContainer}>
-                        <div className={styles.configFieldLabel}>是否立刻终止演练</div>
+                        <div className={styles.configFieldLabel}><Translation>Do you want to terminate the drill now</Translation></div>
                         <Switch
                           disabled={props.disabled}
                           checked={node.interruptedIfFailed}
                           onChange={checked => handleUpdateNode('interruptedIfFailed', checked)}
-                          checkedChildren={<span>是</span>}
-                          unCheckedChildren={<span>否</span>}
+                          checkedChildren={<span><Translation>yes</Translation></span>}
+                          unCheckedChildren={<span><Translation>no</Translation></span>}
                         />
                       </div>
                     </>
@@ -722,7 +724,7 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
                 <div className={styles.divider} />
                 <div className={styles.container}>
                   <div className={styles.experimentTargetHeader}>
-                    <span className={styles.headerTitle}>演练对象</span>
+                    <span className={styles.headerTitle}><Translation>Drill Object</Translation></span>
                   </div>
                   <ul>
                     {
@@ -730,8 +732,8 @@ export default function ActivityEditor(props: ActivityEditorProps): JSX.Element 
                         if (appId) {
                           return <li className={styles.experimentTargetItem}><span>
                             {`${ip}(${deviceName})`}
-                            { [ '应用：' + app ] }
-                            { [ '分组：' + nodeGroup ]}
+                            { [ i18n.t('application') + ':' + app ] }
+                            { [ i18n.t('Group') + ':' + nodeGroup ]}
                           </span></li>;
                         }
                         if (k8s) {

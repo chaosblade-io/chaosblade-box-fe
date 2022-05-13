@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import classnames from 'classnames';
 import formatDate from 'pages/Chaos/lib/DateUtil';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { ExperimentConstants } from 'config/constants/Chaos/ExperimentConstants';
 import { IAppLicationBasicTask } from 'config/interfaces/Chaos/application';
@@ -26,16 +28,16 @@ const TaskList: FC = () => {
   });
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('演练记录');
+    dispatch.pageHeader.setTitle(<Translation>Exercise recode</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'application',
-        value: '应用管理',
+        value: i18n.t('Application Management'),
         path: '/chaos/application',
       },
       {
         key: 'applicationTaskList',
-        value: '应用概览',
+        value: i18n.t('Application Overview'),
         path: '/chaos/application/tasklist',
       },
     ]));
@@ -65,26 +67,26 @@ const TaskList: FC = () => {
     const { state, result } = record;
     if (state === ExperimentConstants.EXPERIMENT_TASK_STATE_FINISHED) {
       if (result === ExperimentConstants.EXPERIMENT_TASK_RESULT_SUCCESS) {
-        return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} />成功</span>;
+        return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} /><Translation>Success</Translation></span>;
       }
       if (result === ExperimentConstants.EXPERIMENT_TASK_RESULT_FAILED) {
-        return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} />不符合预期</span>;
+        return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} /><Translation>Not as expected</Translation></span>;
       }
       if (result === ExperimentConstants.EXPERIMENT_TASK_RESULT_ERROR) {
-        return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.notInstall)} />异常</span>;
+        return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.notInstall)} /><Translation>Abnormal</Translation></span>;
       }
       if (result === ExperimentConstants.EXPERIMENT_TASK_RESULT_STOPPED) {
-        return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.interrupt)} />中断</span>;
+        return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.interrupt)} /><Translation>Interrupt</Translation></span>;
       }
     }
-    return <span><Icon type="loading" className={classnames(styles.icon)} />执行中</span>;
+    return <span><Icon type="loading" className={classnames(styles.icon)} /><Translation>In execution</Translation></span>;
   };
 
   const renderAction: any = (value: string, index: number, record: IAppLicationBasicTask) => {
     const { taskId } = record;
     return (
       <a onClick={() => pushUrl(history, '/chaos/experiment/task', { id: taskId })}>
-        <span>查看详情</span>
+        <span><Translation>View details</Translation></span>
       </a>
     );
   };
@@ -96,11 +98,11 @@ const TaskList: FC = () => {
         hasBorder={false}
         loading={loading}
       >
-        <Table.Column title='演练名' dataIndex='experimentName' width='30%' cell={renderName} />
-        <Table.Column title="开始时间" dataIndex="startTime" width='20%' cell={formatDate} />
-        <Table.Column title="结束时间" dataIndex="endTime" width='20%' cell={formatDate} />
-        <Table.Column title="状态" width='15%' cell={renderStatus} />
-        <Table.Column title="操作" cell={renderAction} width='15%' />
+        <Table.Column title={<Translation>Drill name</Translation>} dataIndex='experimentName' width='30%' cell={renderName} />
+        <Table.Column title={<Translation>Start time</Translation>} dataIndex="startTime" width='20%' cell={formatDate} />
+        <Table.Column title={<Translation>End time</Translation>} dataIndex="endTime" width='20%' cell={formatDate} />
+        <Table.Column title={<Translation>Status</Translation>} width='15%' cell={renderStatus} />
+        <Table.Column title={<Translation>Operation</Translation>} cell={renderAction} width='15%' />
       </Table>
       <Pagination
         className={styles.pagination}

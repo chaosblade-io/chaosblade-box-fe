@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import _ from 'lodash';
 import classnames from 'classnames';
 import formatDate from 'pages/Chaos/lib/DateUtil';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { AGENT_STATUS } from 'pages/Chaos/lib/FlowConstants';
 import { Button, Dialog, Icon, Message, Pagination, Search, Select, Table, Tag } from '@alicloud/console-components';
@@ -17,7 +19,7 @@ const ScopeList: FC = () => {
   const [ dataSource, setDataSource ] = useState<IAppLicationScopeOrContorlRecord[]>([]);
   const [ page, setPage ] = useState(1);
   const [ total, setTotal ] = useState(1);
-  const [ filterValue, setFilterValue ] = useState('全部分组');
+  const [ filterValue, setFilterValue ] = useState<any>(i18n.t('Group all'));
   const [ groups, setGroups ] = useState<string[]>([]);
   const [ key, setKey ] = useState('');
   const [ searchFlag, setSearchFlag ] = useState(false);
@@ -35,16 +37,16 @@ const ScopeList: FC = () => {
   });
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('机器列表');
+    dispatch.pageHeader.setTitle(<Translation>Machine list</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'application',
-        value: '应用管理',
+        value: i18n.t('Application Management'),
         path: '/chaos/application',
       },
       {
         key: 'applicationScopeList',
-        value: '机器列表',
+        value: i18n.t('Machine list'),
         path: '/chaos/application/scopelist',
       },
     ]));
@@ -76,7 +78,7 @@ const ScopeList: FC = () => {
         const { Data = false } = await dispatch.application.searchApplicationHosts({
           app_id: appId,
           key,
-          group: filterValue === '全部分组' ? '' : filterValue,
+          group: filterValue === i18n.t('Group all') ? '' : filterValue,
           page,
           size: 10,
         });
@@ -101,9 +103,9 @@ const ScopeList: FC = () => {
 
   function renderTitle() {
     if (appType === '1') {
-      return 'pod名';
+      return <Translation>Pod name</Translation>;
     }
-    return '主机名';
+    return <Translation>Host name</Translation>;
   }
 
   const renderName: any = (value: string, index: number, record: IAppLicationScopeOrContorlRecord) => {
@@ -116,8 +118,8 @@ const ScopeList: FC = () => {
     if (!_.isEmpty(record)) {
       const { privateIp, publicIp } = record;
       return <div>
-        {publicIp && <div style={{ lineHeight: '22px' }}>{publicIp}(公)</div>}
-        {privateIp && <div style={{ lineHeight: '22px' }}>{privateIp}(私)</div>}
+        {publicIp && <div style={{ lineHeight: '22px' }}>{publicIp}(<Translation>Public</Translation>)</div>}
+        {privateIp && <div style={{ lineHeight: '22px' }}>{privateIp}(<Translation>Private</Translation>)</div>}
       </div>;
     }
     return '-';
@@ -133,14 +135,14 @@ const ScopeList: FC = () => {
   };
   const renderStatus: any = (value: number) => {
     if (value === AGENT_STATUS.ONLINE) {
-      return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} />在线</span>;
+      return <span><Icon type="select" className={classnames(styles.onLineState, styles.icon)} /><Translation>On-line</Translation></span>;
     }
     if (value === AGENT_STATUS.WAIT_INSTALL) {
-      return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.notInstall)} />未安装</span>;
+      return <span><Icon type="minus-circle-fill" className={classnames(styles.icon, styles.notInstall)} /><Translation>Not installed</Translation></span>;
     }
 
     if (value === AGENT_STATUS.OFFLINE) {
-      return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} />离线</span>;
+      return <span><Icon type="exclamationcircle-f" className={classnames(styles.icon, styles.offLineState)} /><Translation>Off-line</Translation></span>;
     }
   };
 
@@ -153,7 +155,7 @@ const ScopeList: FC = () => {
   };
 
   const renderAction: any = (value: boolean, index: number, record: IAppLicationScopeOrContorlRecord) => {
-    return <span className={styles.action} onClick={() => handleRecord(record)}>编辑标签</span>;
+    return <span className={styles.action} onClick={() => handleRecord(record)}><Translation>Edit label</Translation></span>;
   };
 
   function handleRecord(record: IAppLicationScopeOrContorlRecord) {
@@ -182,7 +184,7 @@ const ScopeList: FC = () => {
       (async function name() {
         await dispatch.application.batchAddApplicationTag({ appId, configurationIds: hosts, tags }, res => {
           if (res) {
-            Message.success('操作成功！');
+            Message.success(i18n.t('Operation successful') + '！');
             setUpdate(!update);
             setVisible(false);
             setSelectedRowKeys([]);
@@ -193,7 +195,7 @@ const ScopeList: FC = () => {
       (async function name() {
         await dispatch.application.updateApplicationTag({ appId, groupName, configurationIds: hosts, tags }, res => {
           if (res) {
-            Message.success('操作成功！');
+            Message.success(i18n.t('Operation successful') + '！');
             setUpdate(!update);
             setVisible(false);
           }
@@ -212,7 +214,7 @@ const ScopeList: FC = () => {
       <div className={styles.actionContent}>
         <Search
           shape="simple"
-          placeholder='请输入分组名称'
+          placeholder={i18n.t('Please enter group name')}
           className={styles.searchContent}
           onFilterChange={handleFilterChange}
           onSearch={handleSearch}
@@ -232,21 +234,21 @@ const ScopeList: FC = () => {
         primaryKey='configurationId'
       >
         <Table.Column title={renderTitle} width='15%' cell={renderName} />
-        {appType === '1' && <Table.Column title='集群' dataIndex='clusterName' />}
+        {appType === '1' && <Table.Column title={<Translation>Cluster</Translation>} dataIndex='clusterName' />}
         <Table.Column title="IP" dataIndex="publicIp" cell={renderIp} width='140px'/>
-        <Table.Column title="分组" dataIndex="groups" cell={renderGroup} />
-        <Table.Column title="标签" dataIndex="deviceTags" cell={renderTags} />
-        <Table.Column title="版本" dataIndex="agentVersion" width='68px'/>
-        <Table.Column title="启动时间" dataIndex="connectTime" cell={formatDate} width='160px'/>
-        <Table.Column title="状态" dataIndex='agentStatus' width='90px' cell={renderStatus} />
-        <Table.Column title="操作" cell={renderAction} />
+        <Table.Column title={<Translation>Group</Translation>} dataIndex="groups" cell={renderGroup} />
+        <Table.Column title={<Translation>Tag</Translation>} dataIndex="deviceTags" cell={renderTags} />
+        <Table.Column title={<Translation>Version</Translation>} dataIndex="agentVersion" width='68px'/>
+        <Table.Column title={<Translation>Start time</Translation>} dataIndex="connectTime" cell={formatDate} width='160px'/>
+        <Table.Column title={<Translation>Status</Translation>} dataIndex='agentStatus' width='90px' cell={renderStatus} />
+        <Table.Column title={<Translation>Operation</Translation>} cell={renderAction} />
       </Table>
       <div className={styles.actionContent}>
         <Button
           type='primary'
           onClick={() => { setVisible(true); setBatch(true); setTags([]); }}
           disabled={_.isEmpty(selectedRowKeys)}
-        >批量添加标签</Button>
+        ><Translation>Batch labeling</Translation></Button>
         <Pagination
           current={page}
           total={total}
@@ -256,7 +258,7 @@ const ScopeList: FC = () => {
         />
       </div>
       <Dialog
-        title='编辑标签'
+        title={<Translation>Edit label</Translation>}
         visible={visible}
         onClose={() => { setVisible(!visible); setTags([]); }}
         onCancel={() => { setVisible(!visible); setTags([]); }}
@@ -264,16 +266,16 @@ const ScopeList: FC = () => {
       >
         <div className={styles.dialogSty}>
           <div className={styles.formItem}>
-            <div className={styles.label}>标签：</div>
+            <div className={styles.label}><Translation>Label</Translation></div>
             <Select
               mode='tag'
               value={tags}
               onChange={handleTagsChange}
               className={styles.select}
-              placeholder='请输入完整标签并按下回车键'
+              placeholder={i18n.t('Please enter the full label and press enter')}
             ></Select>
           </div>
-          <div className={styles.tips}>最多可添加5个标签，标签不超过30个字符，如需修改标签请删除该标签后重新添加。</div>
+          <div className={styles.tips}><Translation>Please add up to 5 labels with no more than 30 characters. If you need to modify the label, please delete the label and add it again.</Translation></div>
           {/* {more && <span className={styles.moreTip}>每个标签不超过30个字符</span>} */}
         </div>
       </Dialog>

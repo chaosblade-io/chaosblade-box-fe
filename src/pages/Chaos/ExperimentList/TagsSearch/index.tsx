@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import _ from 'lodash';
 import classnames from 'classnames';
 import styles from './index.css';
@@ -79,7 +80,7 @@ const TagsSearch: FC<IProps> = props => {
           return <div className={styles.item} onClick={() => handleSelectItem(tag)} key={tag} title={tag}>{tag}</div>;
         });
       }
-      return <div className={styles.noItem}>无选项</div>;
+      return <div className={styles.noItem}><Translation>No options</Translation></div>;
     }
     // if (_.isEmpty(keyTags)) {
     //   return <Icon type="loading" className={styles.loading} />;

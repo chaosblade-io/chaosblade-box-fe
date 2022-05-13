@@ -2,6 +2,7 @@ import request from './request/request';
 import { CommonReq } from 'config/interfaces';
 import { Message } from '@alicloud/console-components';
 import { getActiveNamespace } from 'utils/libs/sre-utils';
+import { getLanguage } from 'utils/util';
 import { getRequirePrefix } from 'utils/util';
 
 interface OptionParams {
@@ -36,7 +37,7 @@ function createServiceChaos(
     const namespace = getActiveNamespace();
     const args = {
       ...params, namespace,
-      Lang: 'zh',
+      Lang: getLanguage() === 'zh' ? 'zh' : 'en',
       Namespace: namespace,
     };
     return request({

@@ -1,7 +1,9 @@
 import FlowThumbnail from '../FlowThumbnail';
 import React, { FC, useLayoutEffect, useRef, useState } from 'react';
+import Translation from 'components/Translation';
 import _ from 'lodash';
 import classnames from 'classnames';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { Balloon, Button, Message, Tag } from '@alicloud/console-components';
 import { pushUrl } from 'utils/libs/sre-utils';
@@ -57,7 +59,7 @@ const ExpertiseCard: FC<IProps> = props => {
     const type: string[] = [];
     scope_type.forEach((item: number) => {
       if (item === 0) {
-        type.push('主机');
+        type.push(i18n.t('Host'));
       }
       if (item === 2) {
         type.push('Kubernetes');
@@ -65,7 +67,8 @@ const ExpertiseCard: FC<IProps> = props => {
     });
     Message.show({
       type: 'notice',
-      title: (`当前经验支持${type.join(',')}应用类型`),
+      title: (<Translation>{`当前经验支持${type.join(',')}应用类型`}</Translation>),
+      // title: (i18n.t(`Current experience supports ${type.join(',')} application types`)),
     });
     dispatch.experimentEditor.setClearExperiment();
     pushUrl(history, '/chaos/experiment/editor/', { expertiseId: expertise && expertise.expertise_id });
@@ -81,7 +84,7 @@ const ExpertiseCard: FC<IProps> = props => {
             key={`${item}scope${index}`}
             trigger={<img className={styles.machinetype} src="https://img.alicdn.com/imgextra/i4/O1CN01pLgvOf1WxB137tbc2_!!6000000002854-55-tps-16-16.svg" alt=""/>}
           >
-            <span>主机</span>
+            <span><Translation>Host</Translation></span>
           </Balloon>
         );
       }
@@ -127,8 +130,8 @@ const ExpertiseCard: FC<IProps> = props => {
         />
       </div>
       {!props.noFooter ? <div className={styles.ButtonGroup}>
-        <Button type='primary' className={styles.addRun} onClick={handleCreateExperiment}>创建演练</Button>
-        <Button type='normal' onClick={handleExpertiseDetail}>查看详情</Button>
+        <Button type='primary' className={styles.addRun} onClick={handleCreateExperiment}><Translation>create drill</Translation></Button>
+        <Button type='normal' onClick={handleExpertiseDetail}><Translation>See details</Translation></Button>
       </div> : null}
     </div>
   );

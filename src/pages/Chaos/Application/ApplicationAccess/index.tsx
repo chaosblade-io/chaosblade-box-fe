@@ -1,6 +1,8 @@
 import AccessStepComponent from 'pages/Chaos/Application/AccessStepComponent';
 import React, { useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import classnames from 'classnames';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { Message } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
@@ -14,16 +16,16 @@ function ApplicationAccess() {
   const [ language, setLanguage ] = useState('java');
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('应用接入');
+    dispatch.pageHeader.setTitle(<Translation>Application access</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'application',
-        value: '应用管理',
+        value: i18n.t('Application management'),
         path: '/chaos/application',
       },
       {
         key: 'freshapplication_access',
-        value: '应用接入',
+        value: i18n.t('Application access'),
         path: '/chaos/freshapplication/access',
       },
     ]));
@@ -65,11 +67,11 @@ function ApplicationAccess() {
   function renderHost() {
     return <div>
       <div className={styles.contentChiose}>
-        <div className={styles.title}>请选择应用语言</div>
+        <div className={styles.title}><Translation>Application management, please select application language</Translation></div>
         {renderCardContent([ 'java', 'https://img.alicdn.com/tfs/TB18mMPJ7L0gK0jSZFtXXXQCXXa-24-32.png', 'https://img.alicdn.com/tfs/TB1gSMWJ7T2gK0jSZFkXXcIQFXa-24-32.png', 'Java' ], [ 'other', 'https://img.alicdn.com/tfs/TB1OT.TJ.Y1gK0jSZFCXXcwqXXa-26-30.png', 'https://img.alicdn.com/tfs/TB18U4dbP39YK4jSZPcXXXrUFXa-26-30.png', '其它' ], 'language')}
       </div>
       {
-        language === 'java' && <div className={styles.guide}>通过配置 JVM 启动参数来指定应用和应用分组，用于精确划分该机器所归属的应用/应用分组（与安装探针时指定的应用/应用分组不冲突）。配置步骤如下：</div>
+        language === 'java' && <div className={styles.guide}><Translation>Specify the application and application group by configuring the JVM startup parameters, which is used to accurately divide the application / application group to which the machine belongs (it does not conflict with the application / application group specified when installing the probe). The configuration steps are as follows:</Translation></div>
       }
       <AccessStepComponent
         way={deployWay}
@@ -81,20 +83,19 @@ function ApplicationAccess() {
   return (
     <div className={styles.appAccess}>
       <div className={styles.contentChiose}>
-        <div className={styles.title}>请选择应用部署方式</div>
-        {renderCardContent([ 'host', 'https://img.alicdn.com/tfs/TB1TV0WaDM11u4jSZPxXXahcXXa-28-28.png', 'https://img.alicdn.com/tfs/TB15tsRJ.Y1gK0jSZFMXXaWcVXa-28-28.png', '主机' ], [ 'k8s', 'https://img.alicdn.com/tfs/TB1T5UQJVP7gK0jSZFjXXc5aXXa-30-30.png', 'https://img.alicdn.com/tfs/TB1k7J4fycKOu4jSZKbXXc19XXa-30-30.png', 'Kubernetes' ], 'way')}
+        <div className={styles.title}><Translation>Please select application deployment method</Translation></div>
+        {renderCardContent([ 'host', 'https://img.alicdn.com/tfs/TB1TV0WaDM11u4jSZPxXXahcXXa-28-28.png', 'https://img.alicdn.com/tfs/TB15tsRJ.Y1gK0jSZFMXXaWcVXa-28-28.png', 'host' ], [ 'k8s', 'https://img.alicdn.com/tfs/TB1T5UQJVP7gK0jSZFjXXc5aXXa-30-30.png', 'https://img.alicdn.com/tfs/TB1k7J4fycKOu4jSZKbXXc19XXa-30-30.png', 'Kubernetes' ], 'way')}
       </div>
       {deployWay === 'host' ?
         renderHost()
         :
         <div>
-          <div className={styles.guide}>通过 Pod 标签识别其所归属的应用/应用分组，配置如下：</div>
+          <div className={styles.guide}><Translation>Identify the application / application group to which it belongs through the pod tag. The configuration is as follows:</Translation></div>
           <AccessStepComponent
             way={deployWay}
             language={language}
           />
-          <Message title='' type="warning" className={styles.jvmWaring}>
-            在已部署故障演练探针的集群，修改 Pod 标签即可生效，无需重新部署故障演练探针。
+          <Message title='' type="warning" className={styles.jvmWaring}><Translation>In the cluster where the fault drill probe has been deployed, modifying the pod tag can take effect without redeploying the fault drill probe.</Translation>
           </Message>
         </div>}
     </div>

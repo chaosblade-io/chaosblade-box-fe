@@ -1,6 +1,8 @@
 import ApplicationCard from './ApplicationCard';
 import React, { FC, useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import _ from 'lodash';
+import i18n from '../../../i18n';
 import styles from './index.css';
 import { Button, Loading, Pagination, Search, Switch } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
@@ -24,11 +26,11 @@ const Application: FC = () => {
   const [ filterDisabled, setFilterDisabled ] = useState(true);
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('应用管理');
+    dispatch.pageHeader.setTitle(<Translation>Application Management</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'Application',
-        value: '应用管理',
+        value: i18n.t('Application Management'),
         path: '/chaos/application/index',
       },
     ]));
@@ -76,18 +78,18 @@ const Application: FC = () => {
         return <div className={styles.emptyData}>
           <img src='https://img.alicdn.com/tfs/TB1DCGzcBFR4u4jSZFPXXanzFXa-268-258.png' />
           <div>
-            <div className={styles.title}>没有发现与「{searchKey}」相关应用</div>
-            <div>请重新输入关键词进行搜索，或选择接入此应用。</div>
-            <div className={styles.hrefAction} onClick={handleGoAppAccess}>接入指南</div>
+            <div className={styles.title}><Translation>No related applications found</Translation></div>
+            <div><Translation>Please re-enter keywords to search, or choose to access this app.</Translation></div>
+            <div className={styles.hrefAction} onClick={handleGoAppAccess}><Translation>Access Guide</Translation></div>
           </div>
         </div>;
       }
       return <div className={styles.emptyData}>
         <img src='https://img.alicdn.com/tfs/TB1DCGzcBFR4u4jSZFPXXanzFXa-268-258.png' />
         <div>
-          <div className={styles.title}>当前暂无应用</div>
-          <div>建议您在使用前 <span className={styles.hrefAction} onClick={handleGoAppAccess}>点击这里</span> 查看应用接入指南，然后在此</div>
-          <div>查看已接入应用。</div>
+          <div className={styles.title}><Translation>No application currently</Translation></div>
+          <div><Translation>It is recommended that you</Translation> <span className={styles.hrefAction} onClick={handleGoAppAccess}><Translation>click here</Translation></span><Translation>View the app access guide and click here</Translation></div>
+          <div><Translation>View connected apps.</Translation></div>
         </div>
       </div>;
     }
@@ -99,7 +101,7 @@ const Application: FC = () => {
       <div className={styles.searchWarp}>
         <Search
           shape="simple"
-          placeholder='请输入应用名称'
+          placeholder={i18n.t('Please input application name')}
           className={styles.searchContent}
           onSearch={e => {
             setSearchKey(e);
@@ -107,7 +109,7 @@ const Application: FC = () => {
           }}
           hasClear
         />
-        <Button type='primary' onClick={handleGoAppAccess} className={styles.buttonAction}>新应用接入</Button>
+        <Button type='primary' onClick={handleGoAppAccess} className={styles.buttonAction}><Translation>New application access</Translation></Button>
         <div>
           <Switch
             checked={filterDisabled}
@@ -116,7 +118,7 @@ const Application: FC = () => {
               setPage(1);
             }}
           />
-          <span>{filterDisabled ? '不展示无机器应用' : '展示无机器应用'}</span>
+          <span>{filterDisabled ? <Translation>No machine free applications are shown</Translation> : <Translation>Show no machine applications</Translation>}</span>
         </div>
       </div>
       <div className={styles.cardContent}>

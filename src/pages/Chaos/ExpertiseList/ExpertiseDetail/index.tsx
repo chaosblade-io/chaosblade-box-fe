@@ -1,7 +1,9 @@
 import ActivityEditor from 'pages/Chaos/Experiment/common/ActivityEditor';
 import MiniFlowView from 'pages/Chaos/common/MInFlowView';
 import React, { FC, useEffect, useState } from 'react';
+import Translation from 'components/Translation';
 import _ from 'lodash';
+import i18n from '../../../../i18n';
 import styles from './index.css';
 import { Button, Tag } from '@alicloud/console-components';
 import { INode } from 'config/interfaces/Chaos/experiment';
@@ -27,22 +29,22 @@ const ExpertiseDetail: FC = () => {
   const state = _.get(expertiseInfo, 'basic_info.state', 0);
   useEffect(() => {
     dispatch.pageHeader.setNameSpace(false);
-    dispatch.pageHeader.setTitle('演练经验库详情页');
+    dispatch.pageHeader.setTitle(<Translation>Drill experience details page</Translation>);
     dispatch.pageHeader.setHeaderExtra(
       <div style={{ textAlign: 'right' }}>
-        {state ? <Button type='primary' onClick={handleCreateExp}>创建演练</Button> : null}
+        {state ? <Button type='primary' onClick={handleCreateExp}><Translation>create drill</Translation></Button> : null}
       </div>,
     );
     dispatch.pageHeader.showBackArrow(true);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'expertise_list',
-        value: '演练经验库',
+        value: i18n.t('drill experience library'),
         path: '/chaos/expertise/list',
       },
       {
         key: 'expertise_detail',
-        value: '演练经验库详情',
+        value: i18n.t('Drill experience details page'),
         path: '/chaos/expertise/detail',
       },
     ]));
@@ -81,18 +83,18 @@ const ExpertiseDetail: FC = () => {
   return (
     <div className={styles.warp}>
       <div className={styles.baseInfo}>
-        <div className={styles.title}>基本信息</div>
+        <div className={styles.title}><Translation>Basic Information</Translation></div>
         <div>
           <div className={styles.baseInfoItem}>
-            <div className={styles.label}>经验名称</div>
+            <div className={styles.label}><Translation>Experience name</Translation></div>
             <div className={styles.value} title={basicInfo! && basicInfo!.name}>{basicInfo && basicInfo.name}</div>
           </div>
           <div className={styles.baseInfoItem}>
-            <div className={styles.label}>经验描述</div>
+            <div className={styles.label}><Translation>Experience description</Translation></div>
             <div className={styles.value} title={basicInfo! && basicInfo!.function_desc}>{basicInfo && basicInfo.function_desc}</div>
           </div>
           <div className={styles.baseInfoItem}>
-            <div className={styles.label}>标签</div>
+            <div className={styles.label}><Translation>Tag</Translation></div>
             <div className={styles.value}>
               {!_.isEmpty(basicInfo) && basicInfo!.tags.map((tag: string) => {
                 return <Tag type="primary" size="small" key={tag} className={styles.tagCss}>{tag}</Tag>;
@@ -100,19 +102,19 @@ const ExpertiseDetail: FC = () => {
             </div>
           </div>
           <div className={styles.baseInfoItem}>
-            <div className={styles.label}>背景</div>
+            <div className={styles.label}><Translation>background</Translation></div>
             <div className={styles.value} title={basicInfo! && basicInfo!.background_desc}>{basicInfo && basicInfo.background_desc}</div>
           </div>
           <div className={styles.baseInfoItem}>
-            <div className={styles.label}>架构弱点</div>
+            <div className={styles.label}><Translation>Architectural Weaknesses</Translation></div>
             <div className={styles.value} title={basicInfo! && basicInfo!.design_concept}>{basicInfo && basicInfo.design_concept}</div>
           </div>
         </div>
       </div>
       <div className={styles.flows}>
-        <div className={styles.title}>演练流程</div>
+        <div className={styles.title}><Translation>Exercise process</Translation></div>
         <div className={styles.runEnvironment}>
-          <div className={styles.runTitle}>运行环境</div>
+          <div className={styles.runTitle}><Translation>Operating environment</Translation></div>
           <div>
             {!_.isEmpty(runTime) && runTime.items.map((it: string) => {
               return <Tag type='primary' size='small' key={it} className={styles.tagCss}>{it}</Tag>;
@@ -129,9 +131,9 @@ const ExpertiseDetail: FC = () => {
         </div>
       </div>
       <div>
-        <div className={styles.title}>其它信息</div>
+        <div className={styles.title}><Translation>Other information</Translation></div>
         <div className={styles.baseInfoItem}>
-          <div className={styles.label}>评测</div>
+          <div className={styles.label}><Translation>evaluating</Translation></div>
           <div className={styles.value} >
             {
               !_.isEmpty(evaluationInfo) && Array.from(evaluationInfo.items).map((e: any, idx: number) => {

@@ -1,16 +1,16 @@
 import FunctionsList from './functionsList';
 import React, { useEffect, useState } from 'react';
+import Translation from 'components/Translation';
+import i18n from '../../../i18n';
 import styles from './index.css';
 import { Balloon, Button, Dropdown, Icon, Menu, Search, Tab } from '@alicloud/console-components';
 import { ICategories } from 'config/interfaces/Chaos/scene';
 import { IFunction } from 'config/interfaces/Chaos/experiment';
 import { SCOPE_TYPE } from 'pages/Chaos/lib/FlowConstants';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
-
 import { getParams, pushUrl } from 'utils/libs/sre-utils';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
 import { useHistory } from 'dva';
-
 export default function SceneFunctions() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -33,11 +33,11 @@ export default function SceneFunctions() {
   });
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle('演练场景');
+    dispatch.pageHeader.setTitle(<Translation>Practice scenarios</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'scenes',
-        value: '演练场景',
+        value: i18n.t('Practice scenarios'),
         path: '/chaos/scenes',
       },
     ]));
@@ -151,26 +151,26 @@ export default function SceneFunctions() {
       <div className={styles.searchContent}>
         <Button.Group>
           <Button type={scopeType === SCOPE_TYPE.K8S + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.K8S })}>Kubernetes</Button>
-          <Button type={scopeType === SCOPE_TYPE.HOST + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.HOST })}>主机</Button>
+          <Button type={scopeType === SCOPE_TYPE.HOST + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.HOST })}><Translation>Host</Translation></Button>
         </Button.Group>&nbsp;&nbsp;
-        <Search
+        <Search placeholder={i18n.t('please input')}
           onSearch={value => setSearchKey(value)}
           style={{ width: '400px', marginRight: 8 }}
           onChange={value => setSearchKey(value)}
         />
         <Balloon
-          trigger={<Button type='primary' onClick={handleCreateByFunction} id='content'>创建演练</Button>}
+          trigger={<Button type='primary' onClick={handleCreateByFunction} id='content'><Translation>create drill</Translation></Button>}
           align="t"
           visible={ballonVisible}
           popupContainer='content'
           onClose={handleCloseBall}
         >
-          <div>选中场景可以由此直接创建演练啦~</div>
+          <div><Translation>Select a scene to directly create a drill</Translation>~</div>
         </Balloon>
       </div>
       {searchKey &&
         <>
-          <div>搜索结果：</div>
+          <div><Translation>Search results</Translation>：</div>
           <FunctionsList
             searchKey={searchKey}
             scopeType={scopeType}
