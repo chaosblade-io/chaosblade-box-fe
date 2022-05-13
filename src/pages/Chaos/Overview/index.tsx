@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Translation from '../../../components/Translation';
 import classnames from 'classnames';
 import styles from './index.css';
 import { compTypes } from './constants';
@@ -58,7 +59,9 @@ const WorkspaceDetail = () => {
   const renderExpertiseCards = () => {
     return (
       <>
-        <div style={{ textAlign: 'center', padding: '12px', color: '#666' }}>针对某个故障效果或者系统组件的一套演练模板。</div>
+        <div style={{ textAlign: 'center', padding: '12px', color: '#666' }}>
+          <Translation>A set of exercise templates for a failure effect or system component</Translation>
+        </div>
         <Loading style={{ display: 'block' }} visible={loadings.includes('expertiseLs')}>
           <div className={styles.cards}>
             {expertiseLs.map((item, index) => {
@@ -75,7 +78,9 @@ const WorkspaceDetail = () => {
                     <div className={styles.btn} data-type='blue' onClick={() => {
                       dispatch.experimentEditor.setClearExperiment();
                       skipUrl('/chaos/experiment/editor', { expertiseId });
-                    }}>创建演练</div>&nbsp;&nbsp;
+                    }}>
+                      <Translation>Create drill</Translation>
+                    </div>&nbsp;&nbsp;
                     <div className={styles.btn} data-type='no' onClick={() => pushUrl(history, '/chaos/expertise/detail/', { expertiseId })}>查看详情</div>
                   </div>
                 </div>
@@ -89,7 +94,8 @@ const WorkspaceDetail = () => {
           data-type='link'
           onClick={() => setCurrPage(currPage + 1 > pages ? 1 : currPage + 1)}
         >
-          <Icon type="sync-alt" size="xs"/> 换一批
+          <Icon type="sync-alt" size="xs"/>
+          <Translation>Change batch</Translation>
         </div>
       </>
     );
@@ -101,7 +107,9 @@ const WorkspaceDetail = () => {
       {!showGuide && <Statistics skipUrl={skipUrl}/>}
       <div className={styles.segment}>
         <div className={styles.header}>
-          <div className={styles.title}>组件类型</div>
+          <div className={styles.title}>
+            <Translation>Component type</Translation>
+          </div>
         </div>
         <div className={classnames([ styles.cards, styles.cardColors1 ])}>
           {compTypes.map((item, index) => {
@@ -118,10 +126,14 @@ const WorkspaceDetail = () => {
       </div>
       <div className={styles.segment} style={{ marginBottom: '48px' }}>
         <div className={styles.header}>
-          <div className={styles.title}>进阶场景</div>
+          <div className={styles.title}>
+            <Translation>Advanced scene</Translation>
+          </div>
         </div>
         <Tab navStyle={{ textAlign: 'center' }}>
-          <Tab.Item title={<span><SvgIcon type="star2" /> 演练经验</span>}>
+          <Tab.Item title={<span><SvgIcon type="star2" />
+            <Translation>Drill experience</Translation>
+          </span>}>
             {renderExpertiseCards()}
           </Tab.Item>
         </Tab>
