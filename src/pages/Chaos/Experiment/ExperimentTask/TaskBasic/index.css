@@ -1,0 +1,32 @@
+.basicContent {
+  width: 100%;
+
+  .title {
+    height: 32px;
+    width: 56px;
+    font-family: PingFangSC-Medium;
+    font-size: 14px;
+    color: #333333;
+    line-height: 32px;
+    margin-bottom: 8px;
+  }
+
+  .basicItem {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 12px;
+    color: #333333;
+    line-height: 20px;
+    margin-bottom: 8px;
+
+    .label {
+      width: 10%;
+    }
+
+    .value {
+      width: 70%;
+      white-space: pre-wrap;
+    }
+  }
+}

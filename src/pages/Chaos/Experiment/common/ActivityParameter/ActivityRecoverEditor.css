@@ -1,0 +1,77 @@
+.recoverRules {
+  font-size: 12px;
+  color: #555555;
+  margin: 12px 0;
+}
+
+.rules {
+  width: 100%;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  :global(.next-select) {
+    margin-right: 10px;
+  }
+
+  .units {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    margin-right: 20px;
+
+    .initInput {
+      width: 80%;
+    }
+  }
+}
+
+
+.unitsTole {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.tole {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.addRow,
+.deleteRow {
+  border: 1px solid #1890FF;
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  color: #1890FF;
+  text-align: center;
+  font-size: 12px;
+  line-height: 10px;
+  cursor: pointer;
+}
+
+.addRow {
+  margin-bottom: 16px;
+}
+
+.rowSeparator {
+  margin-bottom: 10px;
+}
+
+.required {
+  margin-right: 10px;
+
+  &:before {
+    margin-right: 4px;
+    content: '*';
+    font-family: SimSun;
+    line-height: 32px;
+    font-size: 14px;
+    color: #f5222d;
+  }
+}

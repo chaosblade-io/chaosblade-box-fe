@@ -1,0 +1,18 @@
+.content {
+  dl {
+    display: flex;
+    align-items: baseline;
+    dt {
+      width: 15%;
+      font-weight: normal;
+      color: #555555;
+      font-size: 12px;
+    }
+    dd {
+      width: 85%;
+      :global(.next-select) {
+        width: 100%;
+      }
+    }
+  }
+}

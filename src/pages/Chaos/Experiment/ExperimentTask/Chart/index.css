@@ -1,0 +1,39 @@
+.chartAction {
+  display: flex;
+  justify-content: space-between;
+  color: #818181;
+  width: 95%;
+
+  .iconCon {
+    i::before{
+      width: 14px !important;
+      height: 14px !important;
+      font-size: 14px !important;
+      cursor: pointer;
+    }
+
+    &:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+
+  .changeBig {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+  }
+}
+
+.iconConBig {
+  cursor: pointer;
+  
+  i::before{
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 20px !important;
+    cursor: pointer;
+  }
+}
+

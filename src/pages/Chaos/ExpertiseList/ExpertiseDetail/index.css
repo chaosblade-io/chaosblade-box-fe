@@ -1,0 +1,63 @@
+.warp {
+
+  .baseInfo {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #dedede;
+    margin-bottom: 24px;
+  }
+  
+  .flows {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #dedede;
+  }
+
+  .title {
+    font-size: 14px;
+    color: #333333;
+    line-height: 32px;
+    margin-bottom: 8px;
+  }
+
+  .baseInfoItem {
+    font-size: 12px;
+    color: #555555;
+    line-height: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-start;
+
+    .label {
+      min-width: 100px;
+    }
+
+    .value {
+      width: 80%;
+    }
+  }
+
+  .tagCss {
+    margin-right: 5px;
+  }
+
+  .runEnvironment {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+
+    .runTitle {
+      width: 100px;
+      font-size: 12px;
+      color: #555;
+    }
+  }
+
+  .valueItem {
+    line-height: 18px;
+    width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-bottom: 6px;
+    list-style: circle;
+  }
+}

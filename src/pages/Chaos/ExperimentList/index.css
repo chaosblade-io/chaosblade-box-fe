@@ -1,0 +1,90 @@
+.dingtalkIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.operations {
+  padding: 24px 0px 14px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .stopButton {
+    width: 88px;
+    background-color: #d93026;
+    margin-left: 4px;
+    color: #ffffff;
+  }
+
+  .createButton,
+  .stopButton {
+    /* font-family: PingFangSC-Regular; */
+    letter-spacing: -0.2px;
+    line-height: 32px;
+  }
+  .search {
+    width: 260px;
+    margin-left: 4px;
+  }
+
+  .select {
+    width: 240px;
+    margin-left: 4px;
+    margin-right: 6px;
+  }
+  .schedulerCb {
+    font-weight: 400;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    
+    margin-left: 8px;
+    > span {
+      color: #333!important;
+    }
+  }
+}
+
+.message {
+  background: #fff;
+  padding: 4px 8px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.13);
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 2px;
+}
+
+.switch {
+  line-height: 32px;
+  margin-left: 8px;
+  :global(.next-switch) {
+    position: relative;
+    top: 3px;
+    left: 2px;
+  }
+}
+
+.getHref {
+  color: '#0070cc';
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+/* .createButton {
+  &:hover > i {
+    transform: rotate(90deg);
+  }
+} */
+.createMenu {
+  > li:hover {
+    background: #bee2ff!important;
+  }
+  > li:last-child {
+    border-top: 1px solid #ddd;
+    margin: 4px 0;
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "customMatcher": "\\.css$"
+        }
+      }
+    ],
+    "baseUrl": "./src",
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true, //  生成输出文件
+    "strict": true,
+    "esModuleInterop": true,
+    "declaration": true, // 生成相应的.d.ts文件
+    "experimentalDecorators": true, // 启用装饰器
+    "emitDecoratorMetadata": true, // 装饰器
+    "jsx": "preserve",
+    // "preserveSymlinks": true, // 不把符号链接解析为其真实路径
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true, // 忽略库的默认声明文件的类型检查
+    "noImplicitAny": false, // 表达式和声明上有隐含的any类型时报错
+    "resolveJsonModule": true,
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

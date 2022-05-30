@@ -1,0 +1,19 @@
+.container {
+  font-size: 20px;
+  color: red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .containerHeaderLetf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+}
+
+
+.dialogCustom {
+  top: 5% !important;
+}

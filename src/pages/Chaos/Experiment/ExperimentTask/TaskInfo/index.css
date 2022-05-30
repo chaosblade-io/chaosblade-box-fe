@@ -1,0 +1,320 @@
+.infoContent {
+  width: 100%;
+  position: relative;
+
+  .machine{
+    padding-top: 10px;
+
+    .success {
+      color: #1E8E3E;
+    }
+
+    .faile {
+      color: #D93026;
+    }
+  }
+
+  .machineDetail {
+    margin-top: 10px;
+    width: 100%;
+    min-height: 200px;
+    background: #FAFAFA 100%;
+    padding: 14px;
+
+    .detailTop {
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+
+      .iconAndWord {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .titleIcon {
+        margin-right: 6px;
+        color: #0070CC;
+        width: 15px;
+        height: 16px;
+
+        &::before{
+          width: 15px !important;
+          font-size: 15px !important;
+        }
+      }
+
+      .title {
+        font-family: PingFangSC-Medium;
+        font-size: 14px;
+        color: #333333;
+      }
+
+      .tipsIcon {
+        color: #5A5A5A;
+
+        &::before{
+          font-size: 12px !important;
+        }
+      }
+
+      .tips {
+        font-family: PingFangSC-Regular;
+        font-size: 12px;
+        color: #888888;
+      }
+    }
+    .ipsContent {
+
+      .ipsSearch {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .ips {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        margin-right: -8px;
+      }
+    }
+
+   
+
+    .content {
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+  }
+
+  .userCheckState {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 14px;
+
+    .checkStateLabel {
+      margin-right: 16px;
+    }
+
+    .checkPass {
+      color: #7ec12d;
+    }
+
+    .checkFailed {
+      color: #ff4f4c;
+    }
+  }
+
+}
+
+.logTabs {
+  :global(.next-tabs-scrollable .next-tabs-nav-scroll) {
+    padding-right: 36px;
+  }
+}
+
+.infoDialog {
+  height: calc(100% - 60px);
+  :global(.next-dialog-close) {
+    z-index: 2!important;
+  }
+}
+
+.infoDialog :global(.next-dialog-body) {
+  /* height: calc(100% - 180px);
+  overflow-x: hidden; */
+  padding: 0 24px;
+}
+
+.infoContainer {
+
+  .detailInfo {
+    margin: 12px 0;
+    width: 100%;
+    background: #f7f7f7;
+    padding: 8px;
+    border: 1px solid #f5f5f5;
+    word-break: break-word;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    > div {
+      width: 50%;
+      height: 26px;
+      line-height: 26px;
+      span {
+        width: 70px;
+        display: inline-block;
+      }
+      .link {
+        color: #0064C8;
+        cursor: pointer;
+        &:hover {
+          color: #015396;
+        }
+      }
+    }
+  }
+
+  .infoTitle {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .infoContent {
+    margin: 12px 0;
+    width: 100%;
+    background: #f7f7f7;
+    padding: 8px;
+    border: 1px solid #f5f5f5;
+    word-break: break-word;
+
+    pre {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      font-size: 13px !important;
+    }
+  }
+  .msgs {
+    margin: 12px 0;
+    width: 100%;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow: auto;
+    font-size: 13px !important;
+    > div {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      > strong {
+        margin-right: 4px;
+      }
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
+
+.actionCon {
+  position: absolute;
+  top: 6px;
+  right: 0px;
+  z-index: 99;
+  
+  .action {
+    cursor: pointer;
+    font-size: 12px;
+    color: #0070CC;
+  }
+
+  .noParamsStyle {
+    cursor: not-allowed;
+    color: #c1c1c1;
+  }
+
+  .actionLine {
+    font-size: 12px;
+    color: #c9c9c9;
+    margin: 0 11px;
+  }
+}
+
+.logShowContent {
+  width: 100%;
+  height: 100%;
+  background: #f7f7f7;
+  overflow: auto;
+  border: 1px solid #f5f5f5;
+  font-size: 13px !important;
+  border: 1px solid #ddd;
+
+  > .logShow {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+
+    &:last-child {
+      border: none;
+    }
+
+    > strong {
+      margin-right: 4px;
+    }
+  
+    &.debug {
+      color: #999999;
+    }
+  
+    &.info {
+      color: #1D4046;
+    }
+  
+    &.warn {
+      color: #FF970D;
+    }
+  
+    &.error {
+      color: #FF4F4C;
+    }
+  }
+}
+
+
+
+.loadingStyle {
+  padding: 40%;
+  width: 800px;
+  text-align: center;
+}
+.pourLogs {
+  position: relative;
+  height: calc(100vh - 150px);
+  overflow: hidden;
+  .logHeader {
+    padding: 6px;
+    background: #eaeaea;
+    border-radius: 4px;
+  }
+  .logContent {
+    width: 100%;
+    position: absolute;
+    top: 34px;
+    bottom: 40px;
+    overflow: auto;
+    
+    > div {
+      border-bottom: 1px solid #ddd;
+      padding: 6px;
+      /* &:last-child {
+        border: none;
+      } */
+    }
+  }
+  :global(.next-pagination) {
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+  }
+  .logTitle {
+    color: #333;
+  }
+  .logDesp {
+    padding: 4px 0;
+    border: 0;
+    font-size: 12px;
+    color: #666;
+    line-height: 20px;
+  }
+  
+  .pullRight {
+    float: right;
+    font-size: 12px;
+  }
+}

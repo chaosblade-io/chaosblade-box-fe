@@ -1,0 +1,87 @@
+.root {
+  position: relative;
+  margin-top: 10px;
+  height: 250px;
+}
+
+.tip {
+  font-family: PingFangSC-Regular;
+  background: #FAFBFC;
+  line-height: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  color: #9B9B9B;
+}
+
+.metric {
+  padding: 16px;
+}
+
+.empty {
+  position: absolute;
+  top: 76px;
+  left: 0;
+  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  height: 126px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &.loading {
+    z-index: 2;
+  }
+}
+
+.buttonGroup {
+  font-family: PingFangSC-Regular;
+  line-height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  &.fullscreenMode {
+    justify-content: flex-end;
+  }
+}
+
+.fullscreenBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
+  cursor: pointer;
+  color: #1296DB;
+
+  span {
+    margin-right: 3px;
+  }
+}
+
+.refreshBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+  color: #1296DB;
+
+  span {
+    margin-right: 3px;
+  }
+}
+
+.DialogContent {
+  height: 450px !important;
+
+  :global(.next-dialog-body) {
+    overflow-y: initial !important;
+  }
+}

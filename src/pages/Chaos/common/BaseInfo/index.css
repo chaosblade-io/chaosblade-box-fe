@@ -1,0 +1,35 @@
+.warp {
+  width: 100%;
+  padding-right: 25px;
+
+}
+
+.experienceBase{
+  width: 520px !important;
+}
+
+.experienceBaseDescribe{
+  width: 520px !important;
+}
+
+.drillTag{
+  width: 520px !important;
+}
+
+.submit{
+  margin-top: 40px;
+  border-top: 1px solid #DEDEDE;
+  padding-top: 16px;
+}
+
+.warp:global(.next-form-item-control){
+  display: inline-block !important;
+}
+
+.errorMessage {
+  width: 100%;
+  height: 18px;
+  font-size: 12px;
+  color: #f5222d;
+  margin-top: 3px;
+}

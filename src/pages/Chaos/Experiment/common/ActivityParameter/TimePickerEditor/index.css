@@ -1,0 +1,31 @@
+.timePicker {
+  width: 100%;
+}
+
+.switchEditStyle {
+  width: 90%;
+}
+
+.paramesContro {
+  margin-left: 36px;
+  display: flex;
+  justify-content: flex-start;
+  min-width: 21%;
+}
+
+.switchValue {
+  margin-right: 8px;
+}
+
+.paramesItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.errorMessage {
+  height: 18px;
+  font-size: 12px;
+  color: #f5222d;
+  margin-top: 3px;
+}

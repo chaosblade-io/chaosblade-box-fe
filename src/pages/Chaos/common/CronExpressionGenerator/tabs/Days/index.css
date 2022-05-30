@@ -1,0 +1,19 @@
+.container {
+  padding: 16px;
+}
+
+.prefix {
+  margin-right: 5px;
+}
+
+.suffix {
+  margin-left: 5px;
+}
+
+.selectableItem {
+  margin-bottom: 20px;
+}
+
+.startTime {
+  margin-top: 30px;
+}

@@ -1,0 +1,124 @@
+.scopeContent {
+  height: 100%;
+}
+
+.searchContent {
+  background: #FFFFFF;
+  border: 1px solid #EBEBEB;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12);
+  padding: 16px 24px;
+  width: 580px;
+}
+
+.scopeBalloon {
+  max-width: 400px;
+  display: flex;
+  justify-content: space-between;
+  ul {
+    li {
+      line-height: 22px;
+    }
+  }
+ 
+}
+.deviceBalloon {
+  max-width: unset;
+  .deviceInfo > li{
+    margin-bottom: 6px;
+  }
+}
+
+.tipWord {
+  color: #0070cc;
+  cursor: pointer;
+}
+
+/* 失效机器弹窗样式 */
+.invalidTip {
+  display: flex;
+  justify-content: flex-start;
+
+  .titleIcon {
+    color: #FFA003;
+    margin-right: 10px;
+  }
+}
+
+.titleWord {
+  margin-bottom: 10px;
+}
+
+.list {
+  list-style: disc;
+  line-height: 20px;
+  padding-left: 10px;
+  color: #888888;
+}
+
+.selectIps {
+  width: 50%;
+  height: 100%;
+  border: 1px solid #EBEBEB;
+  padding: 10px 16px;
+  overflow-y: scroll;
+
+  .actionContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .title {
+      font-family: PingFangSC-Medium;
+      font-size: 12px;
+      color: #333333;
+    }
+
+    .deleteAll {
+      cursor: pointer;
+      font-family: PingFangSC-Regular;
+      font-size: 12px;
+      color: #0070CC;
+    }
+  }
+
+  .closeTag {
+    margin-bottom: 8px;
+
+    &:nth-child(2n) {
+      margin-left: 11px;
+    }
+
+    :global(.next-tag-body) {
+      
+      .tagContent {
+        display: block;
+        float: left;
+        width: 194px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .closeIcon {
+        margin-left: 3px;
+        font-size: 12px !important;
+        cursor: pointer;
+
+        i {
+          font-size: 12px !important;
+
+          &::before {
+            font-size: 12px !important;
+            width: 12px !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.titleContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

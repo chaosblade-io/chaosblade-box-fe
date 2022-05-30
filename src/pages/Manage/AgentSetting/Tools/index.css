@@ -1,0 +1,18 @@
+.dialogContent {
+  width: 500px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .label {
+    margin-right: 8px;
+  }
+
+  .value {
+    width: 300px;
+  }
+}

@@ -1,0 +1,36 @@
+
+
+.content {
+  /* margin-left: 24px; */
+  margin-right: 12px;
+}
+
+.optionItem {
+  :global(.next-menu-item) {
+    padding: 0;
+    .item {
+      width: 100%;
+      /* padding: 0 16px; */
+      &:hover {
+        .containerIcon {
+          display: block;
+        }
+      }
+    }
+    .containerIcon {
+      display: none;
+      margin-left: 5px;
+      position: absolute;
+      right: 5px;
+      top: 0;
+      z-index: 9;
+    }
+    .addNs {
+      padding: 0;
+    }
+  }
+}
+
+.dialogNamespace {
+  top: 15% !important;
+}

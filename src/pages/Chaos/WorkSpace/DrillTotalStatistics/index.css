@@ -1,0 +1,25 @@
+.right {
+  width: 39.5%;
+  height: 288px;
+  padding: 16px;
+  border: 1px solid #dedede;
+
+  .header {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .bottom {
+    margin-top: 18px;
+    color: #888888;
+    font-size: 12px;
+    line-height: 24px;
+    .value {
+      color: #333333;
+      margin-left: 28px;
+    }
+  }
+
+}

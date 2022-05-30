@@ -1,0 +1,257 @@
+.warp {
+  .topContent {
+    width: 100%;
+    height: 210px;
+    display: flex;
+    justify-content: space-between;
+
+    .ipInfo {
+      width: 42%;
+      height: 100%;
+      border: 1px solid #dedede;
+      padding: 16px 24px;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .around {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .left {
+      /* width: 50%; */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .right, .other {
+      /* width: 193px; */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .item {
+      display: flex;
+      justify-self: start;
+      height: 30px;
+      line-height: 30px;
+    }
+
+    .label {
+      font-size: 12px;
+      color: #888;
+      width: 72px;
+    }
+
+    .value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 156px;
+    }
+
+    .heatmap {
+      width: 40%;
+      height: 164px;
+    }
+
+    .ringChart {
+      width: 60%;
+      height: 164px;
+      :global(.g2-legend) {
+        height: 200px !important;
+        overflow: auto;
+        max-width: 95px !important;
+      }
+    }
+
+    .taskData {
+      width: 56.4%;
+      height: 210px;
+      border: 1px solid #dedede;
+      padding: 16px 24px;
+      overflow: hidden;
+    }
+  }
+
+  .taskHistory {
+    width: 100%;
+    margin-top: 16px;
+    border: 1px solid #dedede;
+    padding: 16px 24px;
+  }
+
+  .href {
+    color: #0070cc;
+    cursor: pointer;
+    width: 145px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .pagination {
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  .title {
+    font-family: PingFangSC-Medium;
+    font-size: 14px;
+    color: #333333;
+    margin-bottom: 16px;
+  }
+
+  .icon {
+    font-size: 14px;
+    margin-right: 8px;
+
+    &::before {
+      font-size: 14px !important;
+      width: 14px !important;
+    }
+  }
+
+  .onLineState {
+    color: #1e8e3e;
+  }
+
+  .notInstall {
+    color: #888;
+  }
+
+  .offLineState {
+    color: #d93026;
+  }
+
+  .interrupt {
+    color: #ffc440;
+  }
+
+  .loading {
+    color: #888;
+  }
+
+  .linkHref {
+    cursor: pointer;
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+}
+
+/* // 热力图样式 */
+
+.monthChart {
+  margin-right: 8px;
+
+  .monthTitle {
+    width: 70px;
+    text-align: right;
+    font-size: 12px;
+    color: #333333;
+    margin-bottom: 8px;
+  }
+
+  .monthContent {
+    max-width: 70px;
+    height: 94px;
+
+    .ulList {
+      max-width: 100%;
+      height: 100%;
+      display: flex;
+      flex-flow: column;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+
+      li {
+        width: 12px;
+        height: 12px;
+        background: #f5f5f5;
+        border: 1px solid #fff;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .emptyContent {
+    width: 12px;
+    height: 12px;
+    border: 0.5px solid #fff;
+    background-color: #fff;
+  }
+}
+
+.toolText {
+  font-size: 8px;
+  color: #555;
+
+  .toolTitle {
+    margin-bottom: 12px;
+  }
+}
+
+.heatMapContent {
+  height: 109px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.week {
+  margin-right: 12px;
+  margin-top: 23px;
+  font-size: 12px;
+  color: #888;
+
+  .weekDay {
+    width: 24px;
+    height: 36px;
+  }
+}
+
+.legendContent {
+  margin-top: 14px;
+  display: flex;
+  font-size: 12px;
+  color: #888;
+  justify-content: space-around;
+  padding: 0 32px;
+
+  .itemBlock {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.block {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+}
+
+.noTotal {
+  background: #f5f5f5 !important;
+}
+
+.manyTotal {
+  background: #597ef7 !important;
+}
+
+.middleTotal {
+  background: #85a5ff !important;
+}
+
+.littleTotal {
+  background: #adc6ff !important;
+}

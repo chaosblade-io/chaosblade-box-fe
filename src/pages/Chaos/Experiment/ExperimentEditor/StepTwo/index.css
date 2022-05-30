@@ -1,0 +1,218 @@
+.helpIcon {
+  font-size: 12px;
+  color: #888;
+
+  &::before {
+    font-size: 12px !important;
+    width: 12px;
+  }
+}
+
+.timeOutContent {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+.timeNumber {
+  width: 140px;
+}
+
+.timeUnitOption {
+  margin-left: -1px !important;
+}
+
+.inputExpression {
+  margin-right: 12px;
+}
+
+.cronTool {
+  color: #0070cc;
+  cursor: pointer;
+  line-height: 32px;
+}
+
+.clearCron {
+  color: #0070cc;
+  cursor: pointer;
+  margin-left: 12px;
+}
+
+.miniFlowContent {
+  margin-bottom: 24px;
+
+  .miniFlowBackGround {
+    padding: 24px;
+    background: #FAFAFA;
+  }
+}
+
+.globalNode {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .addNodeBtn {
+    display: inline-block;
+    width: 244px;
+    height: 64px;
+    color: #0070cc;
+    line-height: 64px;
+    text-align: center;
+    border: 1px dashed #DEDEDE;
+    margin-top: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    margin-right: 29px;
+  }
+
+  .nodeError {
+    background-color: #d93026;
+  }
+   
+  .nodeSuccess {
+    background-color: #79B3F3;
+  }
+
+  .addNode:nth-child(5n) {
+    margin-left: 0px;
+  }
+
+  :global(.next-icon.next-medium:before) {
+    width: 12px !important;
+    font-size: 12px !important;
+  }
+
+  .arrowIcon{
+    color: #DEDEDE;
+    text-align: right;
+    position: absolute;
+    top: 32%;
+    right: 14px;
+  }
+  
+  .deleteIcon{
+    font-size: 15px;
+    position: absolute;
+    top: -10px;
+    right: -2px;
+    opacity: 0.8;
+    display: none;
+  }
+}
+.addNode:hover .deleteIcon{
+  display: block;
+}
+
+.globalNodes {
+  max-width: 807px;
+  :global(.next-dialog-header) {
+    padding: 16px 16px !important;
+  }
+
+  :global(.next-dialog-body) {
+    padding: 0 16px 16px 16px !important;
+  }
+}
+
+.drawerCon {
+  padding-left: 20px;
+
+  :global(.next-dialog-body) {
+    padding: 0 24px 16px 24px !important;
+  }
+
+  .rules {
+    font-size: 12px;
+    color: #555555;
+    margin-top: 11px;
+
+    .item_fir {
+      margin-bottom: 16px;
+    }
+
+    .rulesItem {
+      width: 404px;
+      display: flex;
+      justify-content : space-between;
+
+    }
+
+    .rulesItem:nth-child(2n) {
+      margin: 16px 0 13px 0;
+    }
+
+    .radioGroup {
+      margin-top: 13px;
+      margin-bottom: 13px;
+    }
+
+    .addIcon {
+      margin-top: 14px;
+      width: 12px;
+      height: 12px;
+      font-size: 12px;
+      border: 1px solid #1890FF;
+      border-radius: 50%;
+      color: #1890FF;
+      text-align: center;
+      line-height: 9px;
+      cursor: pointer;
+    }
+
+    .iconPren {
+      line-height: 32px;
+    }
+
+    .rulesItemWid {
+      width: 124px;
+    }
+
+    .backStr {
+      width: 280px;
+      display: flex;
+      justify-content : space-between;
+    }
+
+    .backStr:nth-child(2n) {
+      margin-top: 16px;
+    }
+
+  }
+}
+
+.successDialog {
+  width: 360px;
+}
+
+.success {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.successIcon {
+  color: #1E8E3E;
+  width: 24px;
+  height: 24px;
+
+  &::before {
+    color: #1E8E3E;
+    font-size: 24px !important;
+    width: 24px;
+  }
+}
+
+.successTitle {
+  color: #333;
+  font-size: 18px;
+  margin-left: 16px;
+}
+
+.successContent {
+  font-size: 14px;
+  color: #555;
+  margin-left: 13%;
+}

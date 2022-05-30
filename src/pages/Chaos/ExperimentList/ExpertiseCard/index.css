@@ -1,0 +1,83 @@
+.DialogExperience {
+  width: 80%;
+  :global(.next-dialog-body) {
+    height: 600px;
+    overflow-y: scroll;
+    padding-top: 0px;
+    width: 100%;
+  }
+}
+
+.warp {
+  width: 100%;
+  padding: 0px 0px 16px 16px;
+
+  .search {
+    width: 33.8%;
+  }
+
+  .TemplatesContent {
+    width: 100%;
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    .cardList {
+      width: 23.5%;
+      height: 26.9%; 
+      margin-right: 16px;
+      margin-bottom: 16px;
+
+      &:nth-child(4n) {
+        margin-right: 0px !important;
+      }
+
+    } 
+  }
+
+  .Pagination {
+    margin-top: 20px;
+    float: right;
+  }
+
+  .textCenter {
+    margin-left: 45%;
+    margin-top: 20%;
+  }
+
+  .emptyCard {
+    padding: 16px;
+    border: 1px solid #dedede;
+    cursor: pointer;
+    width: 23.5%;
+    /* height: 262px; */
+    margin-right: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      border: 1px solid #0070CC;
+      box-shadow: 0 0 4px 0 #0070CC;
+      border-radius: 3px;
+    }
+
+    .iconContent {
+      text-align: center;
+      color: #888;
+    }
+
+    .addIcon {
+      font-size: 36px;
+      margin-bottom: 5px;
+      &::before {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 36px !important;
+      }
+    }
+
+  }
+}

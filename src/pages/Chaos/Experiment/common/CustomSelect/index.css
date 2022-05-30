@@ -1,0 +1,25 @@
+.itemContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scopeTip {
+  color: #c1c1c1;
+  margin-right: 8px;
+}
+
+.appName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.appSelect {
+  em {
+    display: block;
+    width: 100%;
+  }
+  .scopeTip{
+    display: none;
+  }
+}

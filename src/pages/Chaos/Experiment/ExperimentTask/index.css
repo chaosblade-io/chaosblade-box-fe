@@ -1,0 +1,278 @@
+.warper {
+  padding: 0 0 40px 0;
+
+  .charts {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    > div {
+      padding: 6px;
+    }
+  }
+
+  .stableCharts {
+    padding-bottom: 16px;
+    /* box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.13); */
+    margin-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+
+    .stableItem {
+      /* height: 320px; */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .stableIcon {
+        float: right;
+        margin-right: 16px;
+      }
+      .scTitle {
+        font-size: 14px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      .sCharts {
+        width: 68%;
+        padding-right: 10px;
+        border-right: 1px solid #ddd;
+      }
+      .sTableInfo {
+        width: 30%;
+        margin-left: 20px;
+      }
+      .sTable {
+        width: 100%;
+        border: 1px solid #ddd;
+        tr {
+          height: 32px;
+          line-height: 32px;
+          border-bottom: 1px solid #ddd;
+          th, td {
+            padding: 2px 12px;
+            border-right: 1px solid #ddd;
+          }
+          td {
+            text-align: center;
+          }
+        }
+        th {
+          background: #FAFAFA;
+        }
+        
+      }
+    }
+    
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    background: #dedede 100%;
+    margin: 25px 0;
+  }
+
+  .strategies {
+    width: 100%;
+    margin-bottom: 32px;
+  }
+
+  .iconContent {
+    position: relative;
+
+    .circle {
+      width: 28px;
+      height: 28px;
+      border-top: 2px solid #dde4ed;
+      border-left: 2px solid #dde4ed;
+      border-right: 2px solid #1e8e3e;
+      border-bottom: 2px solid #1e8e3e;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
+      animation: circle 2s linear infinite;
+      -webkit-animation: circle 2s linear infinite;
+    }
+
+    .circleStill {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #1e8e3e;
+      border-radius: 50%;
+    }
+
+    .svg {
+      position: absolute;
+      top: 6px;
+      left: 7px;
+    }
+  }
+
+  .triggered {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .svgFail {
+      &::before {
+        font-size: 14px !important;
+      }
+
+      margin-right: 8px;
+      color: #f15533;
+    }
+  }
+
+  .taskDetail {
+    .timeRange {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+
+      .start {
+        margin-right: 30px;
+      }
+    }
+
+    .taskContent {
+      width: 100%;
+      min-height: 300px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+
+      .flows {
+        width: 70%;
+        padding: 24px;
+        background: #f7f7f7;
+        margin-right: 24px;
+        max-height: 300px;
+        overflow-y: scroll;
+
+        .flowLoading {
+          width: 100%;
+          height: 300px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .taskInfo {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.titleTips {
+  font-family: PingFangSC-Medium;
+  font-size: 14px;
+  color: #333333;
+  line-height: 32px;
+  margin-bottom: 8px;
+}
+
+.ruleDetail {
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #0070cc;
+  cursor: pointer;
+  line-height: 50px;
+}
+
+.showStrategy {
+  font-size: 14px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.showTolerance {
+  background: #f7f7f7;
+  padding: 8px;
+  border: 1px solid #f5f5f5;
+}
+
+.tolerance {
+  line-height: 20px;
+}
+
+.showRules {
+  background: #f7f7f7;
+  padding: 8px;
+  border: 1px solid #f5f5f5;
+}
+
+.buttonSecond {
+  margin: 0 8px !important;
+}
+
+.feedBack {
+  width: 100%;
+  padding: 20px 0;
+
+  .feedTitle {
+    color: #333;
+    font-size: 14px;
+    line-height: 32px;
+    margin-bottom: 8px;
+    font-family: PingFangSC-Medium;
+  }
+
+  .feedItem {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 12px;
+    color: #555;
+    line-height: 20px;
+    margin-bottom: 8px;
+
+    .label {
+      width: 7%;
+      margin-right: 24px;
+    }
+
+    .value {
+      width: 90%;
+    }
+  }
+}
+
+.dependenceDialog {
+  width: 640px;
+  :global(.next-dialog-body) {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
+  .DialogFrom {
+    width: 100%;
+    height: 100%;
+    /* overflow: scroll; */
+  }
+}
+
+.specialDom {
+  width: 100%;
+  min-height: 57px;
+  background: #f7f7f7;
+  padding: 12px;
+}
+
+.normalBtn {
+  margin-left: 8px !important;
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

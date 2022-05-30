@@ -1,0 +1,41 @@
+.warp {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+}
+
+.item {
+  display: flex;
+  margin-top: 16px;
+  justify-content: space-between;
+  .itemLeft {
+    width: 100px;
+    color: #555555;
+  }
+  .itemRight {
+    color: #333333;
+    width: 92%;
+  }
+  .itemInfo {
+    width: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+  }
+}
+
+.backIcon {
+  position: relative;
+  bottom: 3px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.userIcon {
+  margin-right: 4px;
+  color: #c1c1c1;
+  cursor: pointer;
+  &:hover {
+    color: #555555;
+  }
+}

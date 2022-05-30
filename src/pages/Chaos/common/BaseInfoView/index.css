@@ -1,0 +1,87 @@
+.item {
+  width: 100%;
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  line-height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; 
+}
+
+.item .label {
+  min-width: 100px;
+  color: #8C8C8C;
+  margin-right: 22px;
+  text-align: left;
+}
+
+.infomation {
+  font-size: 14px;
+  color: #333;
+  margin-right: 62px;
+  text-align: left;
+}
+
+.editInfo {
+  text-decoration: none;
+  color: #0070CC;
+  cursor:pointer;
+  line-height: 20px;
+}
+
+.Icon {
+  font-size: 14px;
+  color: #0070CC;
+  margin-right: 8px;
+}
+
+.nameLong {
+  width: 50%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.valueLong {
+  color: #262626;
+  width: 50%;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.value {
+  width: 50%;
+  color: #262626;
+}
+
+.tag {
+  margin-right: 5px;
+  max-width: 150px;
+}
+
+.infoContent {
+  width: 100%;
+  display: flex;
+  justify-content : flex-start;
+}
+
+.infoList {
+  width: 50%;
+}
+
+.infoList:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.Divider {
+  width: 100%;
+  height: 1px;
+  background: #e8e8e8;
+  margin: 24px 0;
+}

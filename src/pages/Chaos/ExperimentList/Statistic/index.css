@@ -1,0 +1,135 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  background: #fff;
+}
+
+.icon {
+  margin-right: 8px;
+  position: relative;
+  bottom: 1px;
+}
+
+.statisticDone,
+.statisticUnDone,
+.statisticTotal {
+  height: 80px;
+  border: 1px solid #ebebeb;
+}
+
+/* .doneBox {
+  width: 240px;
+} */
+
+.statisticTotal,
+.doneBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.statisticTotal {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.statisticUnDone {
+  width: 22%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.statisticDone {
+  width: 60%;
+  display: flex;
+  /* flex-direction: row; */
+  margin-right: 20px;
+
+  .doneBox {
+    width: 30%;
+  }
+
+  .separator {
+    margin-top: 20px;
+    width: 1px;
+    height: 40px;
+    background: #d8d8d8;
+  }
+
+  .detailBox {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .topTip {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 18px;
+    text-align: center;
+  }
+
+  .failedBox,
+  .runningBox,
+  .successBox {
+    padding-left: 26px;
+    padding-top: 30px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: -0.23px;
+  }
+
+  .successBox {
+    padding-right: 26px;
+  }
+
+  .detailFont {
+    font-weight: 700;
+  }
+}
+
+.title {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #333333;
+  position: relative;
+  margin: auto 0;
+  padding-left: 16px;
+}
+
+.title:before {
+  position: relative;
+  top: -1px;
+  margin-right: 5px;
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.statisticDone .title:before {
+  background: #0070cc;
+}
+
+.statisticUnDone .title:before {
+  background: #aaa;
+}
+
+.statisticTotal .title:before {
+  background: #a5c3de;
+}
+
+.number {
+  margin-right: 24px;
+  font-family: PingFangSC-Semibold;
+  font-size: 28px;
+  color: #333;
+  letter-spacing: 0;
+  text-align: right;
+  line-height: 80px;
+}

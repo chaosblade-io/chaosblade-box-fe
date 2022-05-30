@@ -1,0 +1,76 @@
+.TemplatesContent {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.cardList {
+  width: 23.5%;
+  height: 26.9%;
+  margin-right: 16px;
+  margin-bottom: 16px;
+
+  &:nth-child(4n) {
+    margin-right: 0px !important;
+  }
+}
+
+.Pagination {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: right;
+}
+
+.searchOpt {
+  display: flex;
+  justify-content: space-between;
+  > div {
+    display: flex;
+  }
+}
+
+.noData {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyCard {
+  padding: 16px;
+  border: 1px solid #dedede;
+  cursor: pointer;
+  width: 23.5%;
+  /* height: 262px; */
+  margin-right: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    /* border: 1px solid #0070cc; */
+    /* box-shadow: 0 0 4px 0 #0070cc; */
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.21);
+    border-radius: 3px;
+  }
+
+  .iconContent {
+    text-align: center;
+    color: #888;
+  }
+
+  .addIcon {
+    font-size: 36px;
+    margin-bottom: 5px;
+    &::before {
+      width: 36px !important;
+      height: 36px !important;
+      font-size: 36px !important;
+    }
+  }
+}

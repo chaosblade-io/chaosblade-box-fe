@@ -1,0 +1,34 @@
+.boxContainer, .boxContainerReadOnly {
+  display: flex;
+  background-color: #f7f7f7;
+  margin-right: 70px;
+}
+
+.boxContainerReadOnly {
+  background-color: transparent;
+}
+
+.boxContainerReadOnly .box {
+  padding: 0;
+}
+
+.boxContainer {
+  margin-top: 20px;
+}
+
+.box {
+  padding: 24px 23px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.deleteFlowBox {
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}

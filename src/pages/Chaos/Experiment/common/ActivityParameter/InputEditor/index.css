@@ -1,0 +1,21 @@
+.paramesContro {
+  margin-left: 36px;
+  display: flex;
+  justify-content: flex-start;
+  min-width: 21%;
+}
+
+.switchEditStyle {
+  width: 90%;
+}
+
+.switchValue {
+  margin-right: 8px;
+}
+
+.paramesItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

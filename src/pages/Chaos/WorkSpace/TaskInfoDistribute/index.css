@@ -1,0 +1,44 @@
+.left {
+  width: 60%;
+  height: 288px;
+  padding: 16px;
+  border: 1px solid #dedede;
+  margin-right: 16px;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .total {
+    color: #888888;
+    font-size: 12px;
+    .itemLeft {
+      display: inline-block;
+      width: 36px;
+    }
+    .itemRight {
+      display: inline-block;
+      margin-right: 8px;
+      color: #333333;
+    }
+  }
+}
+
+.empty {
+  margin-top: 60px;
+  text-align: center;
+  img {
+    width: 100px;
+  }
+  .info {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}

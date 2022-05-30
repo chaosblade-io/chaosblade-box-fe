@@ -1,0 +1,130 @@
+.container {
+  max-width: 968px;
+  overflow: hidden;
+}
+
+.searchBox {
+  position: relative;
+  width: 950px;
+  margin-bottom: 22px;
+}
+
+.searchBox .icon {
+  position: absolute;
+  opacity: 0.5;
+  color: #888;
+  top: 8px;
+  left: 17px;
+}
+
+.search {
+  width: 100%;
+  :global(.next-input input) {
+    padding-left: 33px;
+  }
+  :global(.next-input-group .next-input:hover) {
+    position: inherit !important;
+  }
+}
+
+.search:global(.next-search-btn) {
+  font-size: 12px !important;
+}
+
+.contentBox {
+  /* margin-top: 22px; */
+  height: 510px;
+  /* max-height: 530px; */
+  display: flex;
+  flex-direction: row;
+}
+
+.categoryBox {
+  width: 160px;
+  min-width: 160px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.categoryBox .categoryList {
+  height: 100%;
+  padding-top: 0;
+  border: none;
+  border-right: 1px solid #dedede;
+}
+
+.categoryBox .categoryList:global(.next-selected) {
+  border-right: 2px solid #0070cc;
+}
+
+.categoryBox .categoryList li.selectedCate {
+  border-right: 2px solid #0070cc;
+}
+
+.clearSearch {
+  margin-left: 10px;
+  color: #0070cc;
+  cursor: pointer;
+}
+
+.listBox {
+  position: relative;
+  overflow: hidden;
+  flex-grow: 1;
+  padding-left: 4px;
+
+  .functionList {
+    list-style: none;
+    overflow: hidden;
+    min-height: 224px;
+  }
+
+  .functionList li {
+    width: 257px;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #dedede;
+    margin: 0 8px 16px 0;
+    cursor: pointer;
+    float: left;
+  }
+
+  :global(.next-pagination) {
+    float: none;
+    text-align: right;
+    margin-bottom: 8px;
+    margin-top: -8px;
+    margin-right: 17px;
+  }
+}
+
+.listBox .functionList li.selectedFunc {
+  color: #0070cc;
+  border: 1px solid #0070cc;
+}
+
+.loading {
+  width: 100%;
+}
+
+.descriptionBox {
+  margin-right: 16px;
+  padding: 5px;
+  height: 220px;
+  overflow-y: auto;
+  font-size: 12px;
+  color: #000;
+  letter-spacing: 0;
+  line-height: 18px;
+  border: 1px solid #dedede;
+}
+
+.btnRow {
+  text-align: right;
+}
+
+.btn {
+  margin-left: 8px;
+}

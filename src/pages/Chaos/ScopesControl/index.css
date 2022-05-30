@@ -1,0 +1,93 @@
+.warp {
+  .tabStyle {
+    position: relative;
+
+    :global(.next-tabs-tab) {
+      min-width: 118px !important;
+      text-align: center;
+    }
+
+    :global(.next-tabs-nav-extra) {
+      width: 77% !important;
+      z-index: 5 !important;
+    }
+  }
+
+  .tabContent {
+    margin-top: 8px;
+
+    .searchContent {
+      margin-bottom: 8px;
+
+      :global(.next-search-input) {
+        width: 360px;
+      }
+    }
+  }
+
+  .href {
+    color: #0070cc;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .extra {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .pagination {
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  .icon {
+    font-size: 14px;
+    margin-right: 8px;
+
+    &::before{
+      font-size: 14px !important;
+      width: 14px !important;
+    }
+  }
+
+  .onLineState {
+    color: #1E8E3E;
+  }
+
+  .notInstall {
+    color: #888;
+  }
+
+  .offLineState {
+    color: #D93026;
+  }
+}
+
+.paginationK8s {
+  margin: 8px 0px;
+  text-align: right;
+}
+
+.content {
+
+  .ml10 {
+    margin-left: 10px;
+  }
+
+  .mr10 {
+    margin-right: 10px;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .v_a_b {
+    vertical-align: bottom;
+  }
+
+}

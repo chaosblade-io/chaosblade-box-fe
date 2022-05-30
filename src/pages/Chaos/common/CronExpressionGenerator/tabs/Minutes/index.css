@@ -1,0 +1,13 @@
+.container {
+  padding: 16px;
+}
+
+.prefix {
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.suffix {
+  font-size: 12px;
+  margin-left: 5px;
+}

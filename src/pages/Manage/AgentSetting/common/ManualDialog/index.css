@@ -1,0 +1,48 @@
+.content {
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.428571429;
+  color: #333333;
+  word-break: break-all;
+  word-wrap: break-word;
+  border: 1px solid #cccccc;
+}
+
+.title {
+  color: #000;
+  font-size: 14px; 
+  margin-bottom: 6px;
+}
+
+.item {
+  font-size: 12px;
+  line-height: 22px;
+  color: #333333;
+  margin-bottom: 4px;
+}
+
+.code {
+  width: 100%;
+  padding: 18px 12px;
+  background: #f9f9f9;
+  border: 1px solid #e8e8e8;
+  margin-bottom: 16px;
+  position: relative;
+}
+.copyBtn {
+  font-size: 12px;
+  float: right;
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  cursor: pointer;
+}
+
+.command {
+  width: 70%;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}

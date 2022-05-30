@@ -1,0 +1,131 @@
+  .codeContent {
+    width: 100%;
+    padding: 16px 0 16px 24px;
+    background: #F2F4F5;
+    font-size: 12px;
+    color: #333333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.copy {
+      cursor: pointer;
+      width: 48px;
+      height: 36px;
+      background: #dedede;
+      padding: 10px 17px;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      .copyIcon {
+        width: 14px !important;
+        height: 16px !important;
+
+        &::before{
+          width: 14px !important;
+          height: 16px !important;
+          color: #fff;
+        }
+      }
+    }
+
+  .codeLine {
+    line-height: 20px;
+  }
+
+  .jvmParam {
+    font-size: 12px;
+    color: #333333;
+    font-family: PingFangSC-Medium;
+    margin-bottom: 6px;
+  }
+  .jvmWaring {
+    margin-top: 16px;
+  }
+
+  .podWord {
+    font-size: 12px;
+    color: #333333;
+    line-height: 22px;
+
+    .tag {
+      display: inline-block;
+      height: 20px;
+      padding: 0 8px;
+      color: #333;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -ms-border-radius: 2px;
+      -o-border-radius: 2px;
+      margin: 0 2px;
+    }
+
+    .nameStyle {
+      font-family: PingFangSC-Medium;
+      font-size: 12px;
+      color: #333333;
+    }
+  }
+
+  .imageContent {
+    width: 960px;
+    min-height: 154px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .altWord {
+    font-size: 12px;
+    color: #555;
+    line-height: 24px;
+  }
+
+  .guide {
+    font-size: 12px;
+    color: #333;
+    margin-top: 24px;
+    font-family: PingFangSC-Regular;
+  }
+
+.ulList {
+    margin-top: 6px;
+    li {
+      line-height: 22px;
+
+      &:before {
+        content: "";
+        width: 4px;
+        height: 4px;
+        display: inline-block;
+        border-radius: 50%;
+        background: #0070cc;
+        vertical-align: middle;
+        margin-right: 6px;
+        }
+    }
+  }
+
+
+.stepContent {
+    margin-top: 24px;
+
+    :global(.next-step-item-wait .next-step-item-container .next-step-item-node-placeholder .next-step-item-node .next-step-item-node-circle) {
+      background: #0070cc;
+      border-color: #0070cc;
+      color: #fff;
+    } 
+
+    :global(.next-step-item-wait .next-step-item-body .next-step-item-title) {
+      color: #333;
+    } 
+  }

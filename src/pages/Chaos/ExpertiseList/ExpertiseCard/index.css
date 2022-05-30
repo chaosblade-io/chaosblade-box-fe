@@ -1,0 +1,139 @@
+.card {
+  padding: 16px;
+  border: 1px solid #dedede;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.21);
+    border-radius: 3px;
+  }
+
+  .title {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+
+    .logo {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+
+    .titleWords {
+      width: 86%;
+      font-size: 14px;
+      color: #333;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+  }
+
+  .describe {
+    height: 40px;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #888;
+    line-height: 20px;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .thumbnail {
+    margin-top: 12px;
+    height: 54%;
+    max-width: 100%;
+    height: 123px;
+  }
+
+  .ButtonGroup {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-start;
+
+    .addRun {
+      margin-right: 8px;
+      width: 64.8%;
+    }
+  }
+}
+
+.hoverBorder:hover {
+  /* border: 1px solid #0070cc; */
+  /* box-shadow: 0 0 4px 0 #0070cc; */
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.21);
+  border-radius: 3px;
+}
+
+.foucsBorder {
+  position: relative;
+  border: 1px solid #0070cc;
+  /* box-shadow: 0 0 4px 0 rgba(0, 112, 204, 0.75); */
+  border-radius: 3px;
+  position: relative;
+}
+
+.horn {
+  position: absolute;
+  left: 0px;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border-top: 10px solid transparent;
+  border-left: 10px solid #0070cc;
+}
+
+.machinetype {
+  margin-right: 4px;
+  height: 16px;
+}
+
+.recommend_icon {
+  position: absolute;
+  right: -52px;
+  top: -30px;
+  transform: rotateZ(45deg);
+
+  .recommend_container {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 30px 30px 30px;
+    border-color: transparent transparent #20c05c transparent;
+  }
+  span {
+    position: absolute;
+    top: 27px;
+    right: 13px;
+    display: inline-block;
+    width: 30px;
+    color: #fff;
+  }
+}
+
+.createType {
+  position: absolute;
+  right: -18px;
+  width: 30px;
+  height: 18px;
+  background: #e6eef5;
+  color: #0064c8;
+  top: -17px;
+  text-align: center;
+  transform: scale(0.9);
+  font-size: 12px;
+}
+
+.message {
+  background: #fff;
+  padding: 4px 8px;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.13);
+  border-style: solid;
+  border-color: #ffffff;
+  border-radius: 2px;
+}

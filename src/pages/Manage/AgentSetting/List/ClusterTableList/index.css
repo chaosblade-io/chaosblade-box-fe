@@ -1,0 +1,19 @@
+.content {
+  
+  .ml10 {
+    margin-left: 10px;
+  }
+
+  .mr10 {
+    margin-right: 10px;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .v_a_b {
+    vertical-align: bottom;
+  }
+
+}
