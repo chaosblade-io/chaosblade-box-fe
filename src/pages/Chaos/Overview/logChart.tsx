@@ -226,7 +226,7 @@ const LogChart: React.FC<Props> = () => {
             tooltip={[
               'commits', (date: string) => {
                 return {
-                  name: <Translation>Number of drills</Translation> + ':',
+                  name: i18n.t('Number of drills') + ':',
                   value: date,
                 };
               },
