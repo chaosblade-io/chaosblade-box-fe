@@ -98,8 +98,8 @@ const Experiments: FC<IProps> = props => {
   }
 
   async function queryExperimentAmount(experimentId: string, value: IExperimentInfo) {
-    const { Data: { remainingAmount, forecastAmount } } = await dispatch.experimentList.queryExperimentAmount({ experimentId });
-    if (isNaN(remainingAmount) || isNaN(forecastAmount)) {
+    const { Data: { forecastAmount } } = await dispatch.experimentList.queryExperimentAmount({ experimentId });
+    if (isNaN(forecastAmount)) {
       Dialog.alert({
         title: i18n.t('Failed to query resource').toString(),
         content: i18n.t('Please try again').toString(),
