@@ -31,7 +31,7 @@ const NamespaceManage: FC<ExpandedNamespaceProps> = props => {
     const res = await dispatch.homeModel.DeleteNamespace({ NamespaceId: delnamespace });
     const errorMessage = i18n.t('Failed to delete');
 
-    if (res && res.Data) {
+    if (res) {
       Message.success(i18n.t('Successfully deleted'));
       props.onCancel && props.onCancel();
       props.onChange && props.onChange();
