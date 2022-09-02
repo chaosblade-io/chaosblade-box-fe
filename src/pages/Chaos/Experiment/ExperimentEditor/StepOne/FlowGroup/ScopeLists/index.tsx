@@ -265,7 +265,6 @@ const ScopeList: FC<IProps> = props => {
             <li>1. <Translation>Go to</Translation><a onClick={handleHref}><Translation>Probe Management</Translation></a>，<Translation>Verify that the machine's fault drill probe is functioning properly</Translation></li>
             <li>2. <Translation>If the probe installation fails or has expired, please re-install</Translation><a onClick={handleHref}><Translation>Install the probe</Translation></a></li>
             <li>3. <Translation>If the probe is installed normally, please confirm that the machine type is selected correctly. If the probe type is Kubernetes, please select Kubernetes for the machine type, otherwise please select the host</Translation></li>
-            <li>4. <Translation>If it is a sub-account, configure the drill creation permission of the host</Translation></li>
           </ul>
         </Balloon>
       </div>
