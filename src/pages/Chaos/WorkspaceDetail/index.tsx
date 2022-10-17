@@ -10,11 +10,11 @@ const WorkspaceDetail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle(i18n.t('My spac').toString());
+    dispatch.pageHeader.setTitle(i18n.t('My space').toString());
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'workspace_detail',
-        value: i18n.t('My spac').toString(),
+        value: i18n.t('My space').toString(),
         path: '',
       },
     ]));
