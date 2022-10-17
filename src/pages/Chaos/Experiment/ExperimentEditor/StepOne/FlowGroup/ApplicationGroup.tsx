@@ -62,7 +62,7 @@ function ApplicationGroup(props: ApplicationGroupProps) {
   return (
     <Form {...formItemLayout}>
       {!disableAppSel &&
-        <FormItem label={<Translation>Drill application</Translation>} className={styles.itemLine}>
+        <FormItem label={<Translation>{i18n.t('Drill application').toString()}</Translation>} className={styles.itemLine}>
           <CustomSelect params={{ filterDisabled: true, appType: scopeType, osType }} appInfo={data} value={appId} placeholder={renderPlaceholder()} onChange={props.onAppChange} />
           <Balloon trigger={
             <span className={styles.applications} style={{ left: '50%' }}><Translation>Can't find app</Translation>?</span>
