@@ -29,7 +29,7 @@ const TaskList: FC = () => {
   });
 
   useEffect(() => {
-    dispatch.pageHeader.setTitle(<Translation>Exercise recode</Translation>);
+    dispatch.pageHeader.setTitle(<Translation>{i18n.t('Exercise record').toString()}</Translation>);
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
         key: 'application',
