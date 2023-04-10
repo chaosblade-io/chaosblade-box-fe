@@ -47,7 +47,10 @@ export default function functionsList(props: IFunctionsProps) {
     }
   }, [ searchKey, page ]);
   useEffect(() => {
-    const categoryId = selTabs?.[1];
+    if (!selTabs || !selTabs.length) {
+      return;
+    }
+    const categoryId = selTabs[selTabs.length - 1];
     if (!categoryId) {
       return;
     }
