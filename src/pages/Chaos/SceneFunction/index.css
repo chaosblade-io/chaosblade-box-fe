@@ -32,7 +32,7 @@
       align-items: center;
       margin-right: 16px;
       margin-bottom: 16px;
-      
+
       &:hover {
         cursor: pointer;
       }
@@ -60,7 +60,7 @@
   align-items: center;
 }
 
-.seleted {
+.selected {
   height: 14px;
   width: 14px;
   background: #FFFFFF;
@@ -72,7 +72,7 @@
   align-items: center;
 }
 
-.seletedCard {
+.selectedCard {
   background: #E5F3FF;
   border: 1px solid #0070CC;
   box-shadow: 0 1px 4px 0 rgba(0,0,0,0.13);

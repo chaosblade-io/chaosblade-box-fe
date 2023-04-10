@@ -12,18 +12,18 @@ interface IFunctionsProps {
   selTabs?: string[];
   scopeType: number|string,
   onSelected: (fun: any) => void;
-  seletedFun: IFunction;
+  selectedFun: IFunction;
 }
 
 export default function functionsList(props: IFunctionsProps) {
-  const { onSelected, seletedFun, searchKey, selTabs, scopeType } = props;
+  const { onSelected, selectedFun, searchKey, selTabs, scopeType } = props;
   const dispatch = useDispatch();
   const [ pageSize, setPageSize ] = useState(16);
   const [ total, setTotal ] = useState(0);
   const [ page, setPage ] = useState(1);
   const [ functions, setFunctions ] = useState<any[]>([]);
-  const seletStyle = styles.seleted;
-  const seletedCard = styles.seletedCard;
+  const selectStyle = styles.selected;
+  const selectedCard = styles.selectedCard;
   const noSelected = styles.Card;
 
   useEffect(() => {
@@ -87,8 +87,8 @@ export default function functionsList(props: IFunctionsProps) {
   }
 
   function isSelectStyle(fun: any) {
-    if (seletedFun?.functionId === fun.functionId) {
-      return seletedCard;
+    if (selectedFun?.functionId === fun.functionId) {
+      return selectedCard;
     }
     return noSelected;
   }
@@ -97,8 +97,8 @@ export default function functionsList(props: IFunctionsProps) {
     <div className={styles.funContent}>
       <div className={styles.funList}>
         {!_.isEmpty(functions) ? _.map(functions, fun => <div key={fun.functionId} className={classnames(styles.listCard, isSelectStyle(fun))} onClick={() => handleSelectFun(fun)}>
-          <div className={seletedFun?.functionId === fun.functionId ? seletStyle : styles.radio}>
-            {(seletedFun?.functionId === fun.functionId) && <div className={styles.selectedCon}></div>}
+          <div className={selectedFun?.functionId === fun.functionId ? selectStyle : styles.radio}>
+            {(selectedFun?.functionId === fun.functionId) && <div className={styles.selectedCon}></div>}
           </div>
           <span>{fun && fun.name}</span>
         </div>) : <div className={styles.noDate}>
@@ -116,7 +116,7 @@ export default function functionsList(props: IFunctionsProps) {
         locale={locale().Pagination}
       />
       {!_.isEmpty(functions) && <div className={styles.funInfo}>
-        {seletedFun && seletedFun.description}
+        {selectedFun && selectedFun.description}
       </div>}
     </div>
   );

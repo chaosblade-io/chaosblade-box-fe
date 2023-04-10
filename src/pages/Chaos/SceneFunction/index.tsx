@@ -24,7 +24,7 @@ export default function SceneFunctions() {
   const [ selTabs, setSelTabs ] = useState<string[]>([]);
 
   const [ searchKey, setSearchKey ] = useState(''); // 搜索内容，如果为空，显示类目，否则显示搜索结果
-  const [ seletedFun, setSeletedFun ] = useState<any>(); // 被选择的场景
+  const [ selectedFun, setSelectedFun ] = useState<any>(); // 被选择的场景
   const [ ballonVisible, setBallonVisible ] = useState(() => {
     if (localStorage.getItem('createByCode')) {
       return false;
@@ -93,11 +93,11 @@ export default function SceneFunctions() {
   }
 
   function handleSelected(fun: IFunction) {
-    fun && setSeletedFun(fun);
+    fun && setSelectedFun(fun);
   }
 
   const handleCreateByFunction = () => {
-    const { code = '' } = seletedFun;
+    const { code = '' } = selectedFun;
     dispatch.experimentEditor.setClearExperiment();
     code && pushUrl(history, '/chaos/experiment/editor', {
       code,
@@ -174,7 +174,7 @@ export default function SceneFunctions() {
           <FunctionsList
             searchKey={searchKey}
             scopeType={scopeType}
-            seletedFun={seletedFun}
+            selectedFun={selectedFun}
             onSelected={handleSelected}
           />
         </> ||
@@ -183,7 +183,7 @@ export default function SceneFunctions() {
           <FunctionsList
             selTabs={selTabs}
             scopeType={scopeType}
-            seletedFun={seletedFun}
+            selectedFun={selectedFun}
             onSelected={handleSelected}
           />
         </>
