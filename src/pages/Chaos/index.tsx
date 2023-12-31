@@ -29,8 +29,6 @@ const WorkspaceDetail = lazy(() => import('./WorkspaceDetail'));
 const SceneFunction = lazy(() => import('./SceneFunction'));
 const Overview = lazy(() => import('./Overview'));
 
-const Migration = lazy(() => import('./Migration'));
-
 const { Switch, Route, useRouteMatch } = router;
 const Arch: FC = () => {
   const { path = '/chaos' } = useRouteMatch();
@@ -65,8 +63,6 @@ const Arch: FC = () => {
       <Route exact path={`${path}/expertises`} component={ExpertiseList} />
       <Route exact path={`${path}/scenes`} component={SceneFunction} />
       <Route exact path={`${path}/overview`} component={Overview} />
-      <Route exact path={`${path}/migration`} component={Migration} />
-
     </Switch>
   );
 };

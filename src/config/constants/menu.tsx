@@ -56,12 +56,6 @@ const menuConfig = [
         to: `/chaos/expertise/admin?${commonUrlStr}`,
         activePathPatterns: [ '/chaos/expertise/editor' ],
       },
-      {
-        key: '/chaos/migration',
-        label: i18n.t('Data Migration'),
-        to: `/chaos/migration?${commonUrlStr}`,
-        activePathPatterns: [ '/chaos/migration' ],
-      },
     ],
   },
 ];
