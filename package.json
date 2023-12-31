@@ -26,6 +26,7 @@
     "@antv/data-set": "^0.11.1",
     "@antv/g2plot": "^2.3.39",
     "@antv/g6": "^4.3.4",
+    "@arms/js-sdk": "^1.8.35",
     "@svgdotjs/svg.js": "^3.0.16",
     "@types/fbemitter": "^2.0.32",
     "bizcharts": "^3.5.7",

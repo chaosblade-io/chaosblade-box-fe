@@ -14,7 +14,6 @@ import expertises from './Chaos/expertises';
 import functionParameters from './Chaos/functionParameter';
 import homeModel from './home';
 import loginUser from './Chaos/loginUser';
-import migration from './Chaos/migration';
 import pageHeader from './pageHeader';
 import scene from './Chaos/scene';
 import scopesControl from './Chaos/scopesControl';
@@ -41,7 +40,6 @@ const models = [
   workspace,
   category,
   agentTools,
-  migration,
 ];
 
 export default models;

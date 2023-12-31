@@ -1,7 +1,3 @@
-export interface IMigrationState {
-  finishInfo: any;
-}
-
 export interface IConfigInfo {
   cloudInfo?: any;
   dbInfo?: any;
