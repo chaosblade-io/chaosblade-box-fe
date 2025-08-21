@@ -59,6 +59,13 @@ function StepTwo(props: StepTwoProps) {
   const [ nodeDetail, setNodeDetail ] = useState<any[]>([]); // 流程节点详情
   const [ cronVisible, setCronVisible ] = useState(false); // 定时运行配置弹窗
   const [ createVisible, setCreateVisible ] = useState(false); // 提交成功弹窗
+  const [ loadTestConfig, setLoadTestConfig ] = useState({
+    selectedDefinitions: [] as string[],
+    preStartTime: 5,
+    preStartUnit: 'minute',
+    duration: 10,
+    durationUnit: 'minute',
+  });
   const [ updateVisible, setUpdateVisible ] = useState(false); // 更新成功弹窗；
   const workspaceId = getParams('workspaceId');
 
@@ -122,6 +129,140 @@ function StepTwo(props: StepTwoProps) {
           <Option value="minute"><Translation>Minute</Translation></Option>
           <Option value="hour"><Translation>Hour</Translation></Option>
         </Select>
+      </div>
+    );
+  }
+
+  function renderLoadTestStrategy() {
+    // 模拟压测定义数据，实际应从后端获取
+    const mockLoadTestDefinitions = [
+      { id: '1', name: '示例压测-HTTP', type: 'HTTP', engine: 'JMeter' },
+      { id: '2', name: '示例压测-文件', type: 'FILE', engine: 'Locust' },
+      { id: '3', name: 'API性能测试', type: 'HTTP', engine: 'Gatling' },
+    ];
+
+    const dataSource = mockLoadTestDefinitions.map(def => ({
+      value: def.id,
+      label: `${def.name} (${def.type} - ${def.engine})`,
+    }));
+
+    return (
+      <div className={styles.loadTestStrategy}>
+        <div className={styles.loadTestSection}>
+          <div className={styles.sectionTitle}>
+            <Translation>Load Test Definition Selection</Translation>
+          </div>
+          <Select
+            mode="multiple"
+            value={loadTestConfig.selectedDefinitions}
+            onChange={(value: string[]) => setLoadTestConfig({ ...loadTestConfig, selectedDefinitions: value })}
+            dataSource={dataSource}
+            placeholder={i18n.t('Please select load test definitions').toString()}
+            style={{ width: '100%', marginBottom: 16 }}
+          />
+          {loadTestConfig.selectedDefinitions.length > 0 && (
+            <div className={styles.selectedPreview}>
+              <div className={styles.previewTitle}><Translation>Selected Definitions</Translation>:</div>
+              {loadTestConfig.selectedDefinitions.map(id => {
+                const def = mockLoadTestDefinitions.find(d => d.id === id);
+                return def ? (
+                  <div key={id} className={styles.previewItem}>
+                    <span className={styles.defName}>{def.name}</span>
+                    <span className={styles.defMeta}>({def.type} - {def.engine})</span>
+                  </div>
+                ) : null;
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className={styles.loadTestSection}>
+          <div className={styles.sectionTitle}>
+            <Translation>Load Test Timing Configuration</Translation>
+          </div>
+          <div className={styles.timingConfig}>
+            <div className={styles.timingItem}>
+              <span className={styles.timingLabel}><Translation>Pre-start time</Translation>:</span>
+              <div className={styles.timeOutContent}>
+                <NumberPicker
+                  className={styles.timeNumber}
+                  value={loadTestConfig.preStartTime}
+                  onChange={value => setLoadTestConfig({ ...loadTestConfig, preStartTime: value as number })}
+                  min={0}
+                  max={60}
+                />
+                <Select
+                  className={styles.timeUnitOption}
+                  value={loadTestConfig.preStartUnit}
+                  onChange={value => setLoadTestConfig({ ...loadTestConfig, preStartUnit: value as string })}
+                >
+                  <Option value="minute"><Translation>Minute</Translation></Option>
+                  <Option value="second"><Translation>Second</Translation></Option>
+                </Select>
+              </div>
+            </div>
+            <div className={styles.timingItem}>
+              <span className={styles.timingLabel}><Translation>Duration</Translation>:</span>
+              <div className={styles.timeOutContent}>
+                <NumberPicker
+                  className={styles.timeNumber}
+                  value={loadTestConfig.duration}
+                  onChange={value => setLoadTestConfig({ ...loadTestConfig, duration: value as number })}
+                  min={1}
+                  max={120}
+                />
+                <Select
+                  className={styles.timeUnitOption}
+                  value={loadTestConfig.durationUnit}
+                  onChange={value => setLoadTestConfig({ ...loadTestConfig, durationUnit: value as string })}
+                >
+                  <Option value="minute"><Translation>Minute</Translation></Option>
+                  <Option value="second"><Translation>Second</Translation></Option>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          {loadTestConfig.selectedDefinitions.length > 0 && (
+            <div className={styles.timelinePreview}>
+              <div className={styles.previewTitle}><Translation>Timeline Preview</Translation>:</div>
+              <div className={styles.timeline}>
+                <div className={styles.timelineItem}>
+                  <div
+                    className={styles.timelineBar}
+                    style={{
+                      backgroundColor: '#52c41a',
+                      width: `${Math.max(30, (loadTestConfig.duration / (loadTestConfig.duration + loadTestConfig.preStartTime + 10)) * 100)}%`,
+                    }}
+                  >
+                    <span><Translation>Load Test</Translation></span>
+                  </div>
+                </div>
+                <div className={styles.timelineItem}>
+                  <div
+                    className={styles.timelineBar}
+                    style={{
+                      backgroundColor: '#ff4d4f',
+                      width: '40%',
+                      marginLeft: `${(loadTestConfig.preStartTime / (loadTestConfig.duration + loadTestConfig.preStartTime + 10)) * 100}%`,
+                    }}
+                  >
+                    <span><Translation>Fault Injection</Translation></span>
+                  </div>
+                </div>
+                <div className={styles.timelineLabels}>
+                  <span>0</span>
+                  <span>{loadTestConfig.preStartTime}{loadTestConfig.preStartUnit === 'minute' ? 'min' : 's'}</span>
+                  <span>{loadTestConfig.preStartTime + loadTestConfig.duration}{loadTestConfig.durationUnit === 'minute' ? 'min' : 's'}</span>
+                </div>
+              </div>
+              <div className={styles.timelineDescription}>
+                <div><Translation>Load Test</Translation>: {i18n.t('Start').toString()} {loadTestConfig.preStartTime}{loadTestConfig.preStartUnit === 'minute' ? i18n.t('minutes').toString() : i18n.t('seconds').toString()} {i18n.t('before fault injection').toString()}</div>
+                <div><Translation>Duration</Translation>: {loadTestConfig.duration} {loadTestConfig.durationUnit === 'minute' ? i18n.t('minutes').toString() : i18n.t('seconds').toString()}</div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -545,6 +686,26 @@ function StepTwo(props: StepTwoProps) {
           Message.error(i18n.t('Please fill in the exercise name'));
           return false;
         }
+
+        // 压测配置校验
+        if (loadTestConfig.selectedDefinitions.length > 0) {
+          if (loadTestConfig.preStartTime < 0) {
+            Message.error(i18n.t('Pre-start time must be greater than or equal to 0'));
+            return false;
+          }
+          if (loadTestConfig.duration <= 0) {
+            Message.error(i18n.t('Duration must be greater than 0'));
+            return false;
+          }
+          if (loadTestConfig.preStartTime > 60) {
+            Message.error(i18n.t('Pre-start time should not exceed 60 minutes'));
+            return false;
+          }
+          if (loadTestConfig.duration > 120) {
+            Message.error(i18n.t('Duration should not exceed 120 minutes'));
+            return false;
+          }
+        }
         setToBeFillNode([]);
         if (isEdit) {
           (async function() {
@@ -559,6 +720,7 @@ function StepTwo(props: StepTwoProps) {
               await dispatch.experimentEditor.workspaceCreateExperiment({
                 ...baseInfo,
                 definition: { ...convertFilter.convertFilterSubmit(flow as any) } as any,
+                loadTestConfig: loadTestConfig.selectedDefinitions.length > 0 ? loadTestConfig : undefined,
                 workspaceId,
               } as any, () => {
                 setCreateVisible(true);
@@ -567,6 +729,7 @@ function StepTwo(props: StepTwoProps) {
               await dispatch.experimentEditor.createExperiment({
                 ...baseInfo,
                 definition: { ...convertFilter.convertFilterSubmit(flow as any) },
+                loadTestConfig: loadTestConfig.selectedDefinitions.length > 0 ? loadTestConfig : undefined,
               } as any, () => {
                 setCreateVisible(true);
               });
@@ -611,6 +774,9 @@ function StepTwo(props: StepTwoProps) {
         </FormItem>
         <FormItem label={i18n.t('Recovery strategy').toString()}>
           {renderNodes(NODE_TYPE.RECOVER, recoverNodes)}
+        </FormItem>
+        <FormItem label={i18n.t('Load Test Strategy').toString()}>
+          {renderLoadTestStrategy()}
         </FormItem>
         <FormItem label={i18n.t('Auto recovery time').toString()}>
           {renderTimeOut()}

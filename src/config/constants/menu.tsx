@@ -56,6 +56,12 @@ const menuConfig = [
         to: `/chaos/expertise/admin?${commonUrlStr}`,
         activePathPatterns: [ '/chaos/expertise/editor' ],
       },
+      {
+        key: '/chaos/loadtest/admin',
+        label: i18n.t('Load Testing Management'),
+        to: `/chaos/loadtest/admin?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/loadtest/admin' ],
+      },
     ],
   },
 ];
@@ -111,4 +117,5 @@ export function setMenuConfig(key: string) {
 export const activeKeys: {[key: string]: string} = {
   '/chaos/expertise/admin': '/chaos/dataAdmin',
   '/chaos/scene/list': '/chaos/dataAdmin',
+  '/chaos/loadtest/admin': '/chaos/dataAdmin',
 };

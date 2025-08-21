@@ -216,3 +216,123 @@
   color: #555;
   margin-left: 13%;
 }
+
+.loadTestStrategy {
+  .loadTestSection {
+    margin-bottom: 24px;
+
+    .sectionTitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .selectedPreview {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 4px;
+
+      .previewTitle {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 8px;
+      }
+
+      .previewItem {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+
+        .defName {
+          font-size: 12px;
+          color: #333;
+          margin-right: 8px;
+        }
+
+        .defMeta {
+          font-size: 11px;
+          color: #999;
+        }
+      }
+    }
+
+    .timingConfig {
+      .timingItem {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .timingLabel {
+          font-size: 12px;
+          color: #666;
+          width: 120px;
+          margin-right: 12px;
+        }
+      }
+    }
+
+    .timelinePreview {
+      margin-top: 16px;
+      padding: 16px;
+      background: #fafafa;
+      border-radius: 4px;
+      border: 1px solid #e8e8e8;
+
+      .previewTitle {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 12px;
+      }
+
+      .timeline {
+        position: relative;
+        height: 60px;
+
+        .timelineItem {
+          position: relative;
+          height: 20px;
+          margin-bottom: 8px;
+
+          .timelineBar {
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+          }
+        }
+
+        .timelineLabels {
+          display: flex;
+          justify-content: space-between;
+          font-size: 10px;
+          color: #999;
+          margin-top: 4px;
+        }
+      }
+
+      .timelineDescription {
+        margin-top: 12px;
+        padding: 8px 12px;
+        background: #f0f9ff;
+        border-radius: 4px;
+        border-left: 3px solid #1890ff;
+
+        div {
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 4px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

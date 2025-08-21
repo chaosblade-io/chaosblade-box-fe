@@ -1,0 +1,38 @@
+.warp {
+  width: 100%;
+
+  .searchButton {
+    margin-bottom: 18px;
+    display: flex;
+    button {
+      margin-right: 8px;
+    }
+  }
+
+  .tableContent {
+    margin-top: 8px;
+  }
+
+  .operations {
+    width: 160px;
+    .operation {
+      text-align: left !important;
+      width: 50px;
+    }
+  }
+
+  .recordName {
+    color: #0070cc;
+    font-size: 12px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.dialogContent {
+  width: 100%;
+}
+
