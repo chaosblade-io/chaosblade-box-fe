@@ -1,6 +1,7 @@
 import Chart from './Chart';
 import DialogFrom from 'pages/Chaos/Experiment/common/DialogFrom';
 import FeedBack from 'pages/Chaos/Experiment/common/FeedBack';
+import LoadTestDataCharts from './LoadTestDataCharts';
 import React, { useEffect, useState } from 'react';
 import TaskBasic from './TaskBasic';
 import TaskFlow from './TaskFlow';
@@ -60,6 +61,7 @@ export default function ExperimentTask() {
   const [ feedBackReturn, setFeedBackReturn ] = useState({}); // 反馈提交成功后刷新数据，用于页面展示
   const [ isFeedbackStatus, setIsFeedbackStatus ] = useState(false);
   const [ currentActivity, setCurrentActivity ] = useState<any>(null); // 选择查看的节点
+  const [ , setLoadTestData ] = useState<any>(null); // 压测数据
 
   const { reRunLoading } = useSelector(state => {
     return {
@@ -132,6 +134,24 @@ export default function ExperimentTask() {
     });
   };
 
+  const fetchLoadTestData = async (taskId: string, loadTestConfig: any) => {
+    try {
+      // TODO: 替换为真实的API调用
+      // const response = await dispatch.experimentTask.getLoadTestMetrics({ taskId });
+      // setLoadTestData(response);
+
+      // 暂时使用模拟数据
+      const mockData = {
+        taskId,
+        loadTestConfig,
+        hasData: true,
+      };
+      setLoadTestData(mockData);
+    } catch (error) {
+      console.error('Failed to fetch load test data:', error);
+    }
+  };
+
   useEffect(() => {
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
@@ -153,6 +173,12 @@ export default function ExperimentTask() {
           !taskRes && setIsLoop(false);
           const { feedbackStatus, state } = taskRes || {};
           !_.isEmpty(taskRes) && setExperimentTask(taskRes);
+
+          // 检查是否有压测配置，如果有则获取压测数据
+          if (taskRes && taskRes.loadTestConfig) {
+            fetchLoadTestData(taskId, taskRes.loadTestConfig);
+          }
+
           if (state === ExperimentConstants.EXPERIMENT_TASK_STATE_FINISHED) {
             setIsLoop(false);
             (async function() {
@@ -639,6 +665,12 @@ export default function ExperimentTask() {
         <Table.Column title={i18n.t('Operation').toString()} cell={renderAction} />
       </Table>}
     </div>
+
+    {/* 压测数据展示区域 */}
+    <LoadTestDataCharts
+      taskId={getTaskId()}
+    />
+
     <div className={styles.taskDetail}>
       <div className={styles.titleTips}><Translation>Implementation</Translation></div>
       <Message type='notice'>

@@ -9,6 +9,7 @@ const ExpertiseAdmin = lazy(() => import('./ExpertiseAdmin'));
 const ExpertiseList = lazy(() => import('./ExpertiseList'));
 const ExpertiseDetail = lazy(() => import('./ExpertiseList/ExpertiseDetail'));
 const ExpertiseEditor = lazy(() => import('./ExpertiseAdmin/ExpertiseEditor'));
+const LoadTestAdmin = lazy(() => import('./LoadTestAdmin'));
 const AppLication = lazy(() => import('./Application'));
 const ApplicationDetail = lazy(() => import('./Application/ApplicationDetail'));
 const ScopeList = lazy(() => import('./Application/ScopeList'));
@@ -45,6 +46,7 @@ const Arch: FC = () => {
       <Route exact path={`${path}/expertise/editor`} component={ExpertiseEditor} />
       <Route exact path={`${path}/expertise/list`} component={ExpertiseList} />
       <Route exact path={`${path}/expertise/detail`} component={ExpertiseDetail} />
+      <Route exact path={`${path}/loadtest/admin`} component={LoadTestAdmin} />
       <Route exact path={`${path}/application`} component={AppLication} />
       <Route exact path={`${path}/application/detail`} component={ApplicationDetail} />
       <Route exact path={`${path}/application/scopelist`} component={ScopeList} />

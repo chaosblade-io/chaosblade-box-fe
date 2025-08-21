@@ -41,6 +41,15 @@ export interface IExperimentTask{
   schedulerTask: boolean;
   permission?: number;
   isJvm: boolean;
+  loadTestConfig?: ILoadTestConfig;
+}
+
+export interface ILoadTestConfig {
+  selectedDefinitions: string[];
+  preStartTime: number;
+  preStartUnit: 'minute' | 'second';
+  duration: number;
+  durationUnit: 'minute' | 'second';
 }
 
 export interface ICreator{
