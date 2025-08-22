@@ -1,7 +1,7 @@
 import ActivityParameterEditor from 'pages/Chaos/Experiment/common/ActivityParameter/ActivityParameterEditor';
 import React, { useRef, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import i18n from '../../../../../i18n';

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import moment from 'moment';
 import styles from './index.css';

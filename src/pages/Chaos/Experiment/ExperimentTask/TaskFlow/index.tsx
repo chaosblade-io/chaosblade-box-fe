@@ -1,6 +1,6 @@
 import MiniFlow from 'pages/Chaos/common/MiniFlow';
 import React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { IActivity, IExperimentTask } from 'config/interfaces/Chaos/experimentTask';
 import { TASK } from 'config/constants/Chaos/Node';
 
