@@ -198,7 +198,9 @@ class LoadTestDefinition extends BaseModel {
   *deleteLoadTestDefinition(payload: IDeleteLoadTestDefinitionReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('DeleteLoadTestDefinition'), payload);
+      // 将参数拼接到URL后面，而不是放在请求体内
+      const url = `DeleteLoadTestDefinition?id=${payload.id}&namespace=${payload.Namespace || 'default'}`;
+      const { Data } = yield this.effects.call(createServiceChaos(url), {});
       yield this.effects.put(this.removeDefinition(payload.id));
       callback && callback(Data);
       return Data;
@@ -214,7 +216,9 @@ class LoadTestDefinition extends BaseModel {
   *getLoadTestDefinition(payload: IGetLoadTestDefinitionReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('GetLoadTestDefinition'), payload);
+      const url = `GetLoadTestDefinition?id=${payload.id}&namespace=${payload.Namespace || 'default'}`;
+
+      const { Data } = yield this.effects.call(createServiceChaos(url), {});
       yield this.effects.put(this.setCurrentDefinition(Data));
       callback && callback(Data);
       return Data;
@@ -281,13 +285,23 @@ class LoadTestDefinition extends BaseModel {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = yield this.effects.call(response.json.bind(response));
+      const data = yield this.effects.call(response.json.bind(response));
 
-      if (result.success) {
-        callback && callback(result.Data);
-        return result.Data;
+      console.log('Upload API response:', data);
+      console.log('Upload API result.Data:', data.result);
+
+      if (data.success && data.result) {
+        callback && callback(data.result);
+        return data.result;
       }
-      throw new Error(result.message || 'Upload failed');
+
+      if (data.success) {
+        console.warn('Upload successful but no Data field in response:', data);
+        callback && callback(data);
+        return data;
+      }
+
+      throw new Error('Upload failed');
 
     } catch (error) {
       console.error('Failed to upload JMX file:', error);

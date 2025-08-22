@@ -541,7 +541,7 @@ class ExperimentEditor extends BaseModel {
   }
 
   @effect()
-  *createExperiment(payload: any, callback: () => void) {
+  *createExperiment(payload: any, callback: (experimentId?: string) => void) {
     payload.definition?.guardConf?.guards?.map((item: any) => {
       if (item.actionType === 0) {
         item.arguments = item.arguments[0].argumentList;
@@ -549,8 +549,8 @@ class ExperimentEditor extends BaseModel {
       return item;
     });
     const { Data } = yield this.effects.call(createServiceChaos('CreateExperiment'), payload);
-    Data && callback && callback();
     yield this.effects.put(this.setCreateExperimentId(Data));
+    Data && callback && callback(Data);
   }
 
   @effect()
@@ -572,7 +572,7 @@ class ExperimentEditor extends BaseModel {
 
   // 普通空间创建演练
   @effect()
-  *workspaceCreateExperiment(payload: any, callback: () => void) {
+  *workspaceCreateExperiment(payload: any, callback: (experimentId?: string) => void) {
     payload.definition?.guardConf?.guards?.map((item: any) => {
       if (item.actionType === 0) {
         item.arguments = item.arguments[0].argumentList;
@@ -580,8 +580,8 @@ class ExperimentEditor extends BaseModel {
       return item;
     });
     const { Data } = yield this.effects.call(createServiceChaos('workspaceCreateExperiment'), payload);
-    Data && callback && callback();
     yield this.effects.put(this.setCreateExperimentId(Data));
+    Data && callback && callback(Data);
   }
 }
 

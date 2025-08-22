@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import i18n from '../../../../../i18n';
 import moment from 'moment';
 import styles from './index.css';
-import { Button, Card, Icon, Tag, Progress } from '@alicloud/console-components';
+import { Button, Card, Icon, Tag } from '@alicloud/console-components';
 import { Axis, Chart, Geom, Legend, Tooltip } from 'bizcharts';
 import { ILoadTestTask, ILoadTestMetrics } from 'config/interfaces/Chaos/experimentTask';
 

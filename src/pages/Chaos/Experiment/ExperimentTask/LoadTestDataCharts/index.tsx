@@ -55,7 +55,7 @@ interface LoadTestResults {
 
 const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
   const dispatch = useDispatch();
-  const { definitions } = useSelector((state: any) => state.loadTestDefinition);
+  const { definitions: _definitions } = useSelector((state: any) => state.loadTestDefinition);
 
   const [ metrics, setMetrics ] = useState<LoadTestMetrics | null>(null);
   const [ realMetrics, setRealMetrics ] = useState<ILoadTestMetrics | null>(null);
@@ -63,7 +63,7 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
   const [ loading, setLoading ] = useState(false);
   const [ , _setTimeRange ] = useState<[ Date, Date ] | null>(null);
   const [ percentileConfig, setPercentileConfig ] = useState([ 'P90', 'P95', 'P99' ]);
-  const [ selectedDefinitions, setSelectedDefinitions ] = useState<string[]>([]);
+  const [ _selectedDefinitions, _setSelectedDefinitions ] = useState<string[]>([]);
   const [ loadTestStatus, setLoadTestStatus ] = useState<LoadTestStatus>({
     status: 'stopped',
     duration: 0,
@@ -358,7 +358,7 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
   };
 
   // 开始轮询
-  const startPolling = (task: ILoadTestTask) => {
+  const startPolling = (_task: ILoadTestTask) => {
     if (pollingInterval) return; // 避免重复轮询
 
     const interval = setInterval(async () => {
@@ -676,7 +676,7 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
   }
 
   // 已禁用：不再使用模拟数据，只使用真实API数据
-  function generateRealisticMockData(): LoadTestMetrics {
+  function _generateRealisticMockData(): LoadTestMetrics {
     const now = Date.now();
     const totalMinutes = 60;
     const timestamps = Array.from({ length: totalMinutes }, (_, i) => now - (totalMinutes - 1 - i) * 60000);

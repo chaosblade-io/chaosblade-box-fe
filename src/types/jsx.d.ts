@@ -1,4 +1,5 @@
 // 修复JSX命名空间问题
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as React from 'react';
 
 declare global {
