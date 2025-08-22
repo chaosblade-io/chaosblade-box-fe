@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { IArgs, IFlow, IFlowGroup, INode, IStage } from 'config/interfaces/Chaos/experiment';
 import { NODE_TYPE, STAGES } from 'pages/Chaos/lib/FlowConstants';
 import { v4 as uuidv4 } from 'uuid';
