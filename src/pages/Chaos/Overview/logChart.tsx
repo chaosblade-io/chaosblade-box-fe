@@ -6,7 +6,7 @@ import { Loading } from '@alicloud/console-components';
 import { isEmpty } from 'lodash';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 import styles from './index.css';
 const months = [ i18n.t('January'), i18n.t('February'), i18n.t('March'), i18n.t('April'), i18n.t('May'), i18n.t('June'), i18n.t('July'), i18n.t('August'), i18n.t('September'), i18n.t('October'), i18n.t('November'), i18n.t('December') ];

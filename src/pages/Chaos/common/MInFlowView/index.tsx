@@ -1,6 +1,6 @@
 import MiniFlow from '../MiniFlow';
 import React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../i18n';
 import styles from './index.css';
 import { IActivity } from 'config/interfaces/Chaos/experimentTask';

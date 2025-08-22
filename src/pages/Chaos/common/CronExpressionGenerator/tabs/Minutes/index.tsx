@@ -1,6 +1,6 @@
 import React from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import styles from './index.css';
 import { NumberPicker } from '@alicloud/console-components';
 

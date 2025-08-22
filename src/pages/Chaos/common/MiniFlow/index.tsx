@@ -3,7 +3,7 @@ import AddFunction from 'pages/Chaos/Experiment/common/AddFunction';
 import Node from 'pages/Chaos/common/Node';
 import React, { useEffect, useRef, useState } from 'react';
 import SwitchArrow from 'pages/Chaos/common/Node/SwitchArrow';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../i18n';
 import styles from './index.css';
 import { IActivity } from 'config/interfaces/Chaos/experimentTask';

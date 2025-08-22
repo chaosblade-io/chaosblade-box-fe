@@ -1,6 +1,6 @@
 import DataSet from '@antv/data-set';
 import React, { memo, useEffect, useState } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import {
   Axis,
   Chart,
