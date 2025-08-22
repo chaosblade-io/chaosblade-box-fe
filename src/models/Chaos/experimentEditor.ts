@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import createServiceChaos from 'utils/createServiceChaos';
 import { BaseModel, dvaModel, effect, reducer } from 'utils/libs/sre-utils-dva';
 import { IAppCode, IExpertiseId } from 'config/interfaces/Chaos/expertiseEditor';
