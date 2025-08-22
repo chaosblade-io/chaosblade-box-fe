@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import convertFilter from 'pages/Chaos/lib/ConvertFilter';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';
