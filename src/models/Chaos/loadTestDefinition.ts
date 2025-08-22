@@ -55,7 +55,7 @@ class LoadTestDefinition extends BaseModel {
   state: ILoadTestDefinitionState = DEFAULT_STATE;
 
   @reducer
-  setDefinitions(definitions: ILoadTestDefinition[], total: number = 0) {
+  setDefinitions(definitions: ILoadTestDefinition[], total = 0) {
     return {
       ...this.state,
       definitions,
@@ -83,7 +83,7 @@ class LoadTestDefinition extends BaseModel {
   addDefinition(definition: ILoadTestDefinition) {
     return {
       ...this.state,
-      definitions: [definition, ...this.state.definitions],
+      definitions: [ definition, ...this.state.definitions ],
       total: this.state.total + 1,
     };
   }
@@ -91,13 +91,13 @@ class LoadTestDefinition extends BaseModel {
   @reducer
   updateDefinition(updatedDefinition: ILoadTestDefinition) {
     const definitions = this.state.definitions.map(def =>
-      def.id === updatedDefinition.id ? updatedDefinition : def
+      (def.id === updatedDefinition.id ? updatedDefinition : def),
     );
     return {
       ...this.state,
       definitions,
-      currentDefinition: this.state.currentDefinition?.id === updatedDefinition.id 
-        ? updatedDefinition 
+      currentDefinition: this.state.currentDefinition?.id === updatedDefinition.id
+        ? updatedDefinition
         : this.state.currentDefinition,
     };
   }
@@ -135,7 +135,7 @@ class LoadTestDefinition extends BaseModel {
   addStrategy(strategy: ILoadTestStrategy) {
     return {
       ...this.state,
-      strategies: [strategy, ...this.state.strategies],
+      strategies: [ strategy, ...this.state.strategies ],
     };
   }
 
@@ -286,9 +286,9 @@ class LoadTestDefinition extends BaseModel {
       if (result.success) {
         callback && callback(result.Data);
         return result.Data;
-      } else {
-        throw new Error(result.message || 'Upload failed');
       }
+      throw new Error(result.message || 'Upload failed');
+
     } catch (error) {
       console.error('Failed to upload JMX file:', error);
       throw error;
@@ -350,14 +350,14 @@ class LoadTestDefinition extends BaseModel {
       console.log('API Response:', data);
 
       if (data && data.success) {
-        const strategies = data.result ? (Array.isArray(data.result) ? data.result : [data.result]) : [];
+        const strategies = data.result ? (Array.isArray(data.result) ? data.result : [ data.result ]) : [];
         yield this.effects.put(this.setStrategies(strategies));
         callback && callback(strategies);
         return strategies;
-      } else {
-        console.error('API returned unsuccessful response:', data);
-        throw new Error(data?.message || 'Get load test strategies failed');
       }
+      console.error('API returned unsuccessful response:', data);
+      throw new Error(data?.message || 'Get load test strategies failed');
+
     } catch (error) {
       console.error('Failed to get load test strategies by experiment id:', error);
       throw error;
@@ -418,9 +418,9 @@ class LoadTestDefinition extends BaseModel {
         yield this.effects.put(this.setCurrentTask(result.result));
         callback && callback(result.result);
         return result.result;
-      } else {
-        throw new Error(result.message || 'Get load test task failed');
       }
+      throw new Error(result.message || 'Get load test task failed');
+
     } catch (error) {
       console.error('Failed to get load test task:', error);
       throw error;
@@ -448,9 +448,9 @@ class LoadTestDefinition extends BaseModel {
       if (data.success) {
         callback && callback(data.result);
         return data.result;
-      } else {
-        throw new Error(data.success || 'Get load test results failed');
       }
+      throw new Error(data.success || 'Get load test results failed');
+
     } catch (error) {
       console.error('Failed to get load test results:', error);
       throw error;
@@ -481,15 +481,14 @@ class LoadTestDefinition extends BaseModel {
         yield this.effects.put(this.setMetrics(metricsData));
         callback && callback(metricsData);
         return metricsData;
-      } else {
-        throw new Error(result.message || 'Get metrics failed');
       }
+      throw new Error(result.message || 'Get metrics failed');
+
     } catch (error) {
       console.error('Failed to get load test metrics:', error);
       throw error;
     }
   }
-
 
 
   @effect()
@@ -518,9 +517,9 @@ class LoadTestDefinition extends BaseModel {
       if (result.success) {
         callback && callback(result.result);
         return result.result;
-      } else {
-        throw new Error(result.message || 'Stop load test task failed');
       }
+      throw new Error(result.message || 'Stop load test task failed');
+
     } catch (error) {
       console.error('Failed to stop load test task:', error);
       throw error;
