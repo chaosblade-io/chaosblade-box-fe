@@ -1,7 +1,7 @@
 import HitsChart from './HitsChart';
 import MetricChart from './MetricChart';
 import React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 const CUSTOM_APP_CODE_PREFIX = 'mkapp';
 

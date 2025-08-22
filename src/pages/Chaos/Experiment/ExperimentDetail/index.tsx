@@ -6,7 +6,7 @@ import MiniFlowView from 'pages/Chaos/common/MInFlowView';
 import Node from 'pages/Chaos/common/Node';
 import React, { useEffect, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';
@@ -24,6 +24,7 @@ import { hostPreCheck } from 'pages/Chaos/lib/HostPreCheck';
 import { parseQuery, pushUrl, removeParams } from 'utils/libs/sre-utils';
 import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
 import { useHistory } from 'dva';
+import { ILoadTestStrategy } from 'config/interfaces/Chaos/experimentTask';
 
 import CopyHostDialog from '../ExperimentEditor/StepOne/copyHostDialog';
 
@@ -52,10 +53,12 @@ function ExperimentDetail() {
   const [ saveExperience, setSaveExperience ] = useState(false);
 
   const [ editHost, setEditHost ] = useState<any>(null);
+  const [ loadTestStrategies, setLoadTestStrategies ] = useState<ILoadTestStrategy[]>([]);
 
-  const { runLoading } = useSelector(state => {
+  const { runLoading, strategiesFromStore } = useSelector(state => {
     return {
       runLoading: state.loading.effects['experimentTask/runExperiment'],
+      strategiesFromStore: state.loadTestDefinition.strategies,
     };
   });
 
@@ -94,12 +97,44 @@ function ExperimentDetail() {
                 pushUrl(history, '/chaos');
               }
               setStartRender(true);
+
+              // 加载压测策略
+              console.log('About to load load test strategies for experimentId:', experimentId);
+              loadLoadTestStrategies(experimentId);
             }
           });
         })();
       }
     }
   }, [ updateExperiment ]);
+
+  // 监听Redux store中的strategies变化
+  useEffect(() => {
+    console.log('Strategies from store updated:', strategiesFromStore);
+    if (strategiesFromStore && strategiesFromStore.length > 0) {
+      setLoadTestStrategies(strategiesFromStore);
+    }
+  }, [ strategiesFromStore ]);
+
+  // 加载压测策略
+  async function loadLoadTestStrategies(experimentId: string) {
+    try {
+      console.log('Loading load test strategies for experimentId:', experimentId);
+
+      // 调用API，数据会自动存储到Redux store中
+      dispatch.loadTestDefinition.getLoadTestStrategyByExperimentId({
+        experimentId,
+        NameSpace: 'default',
+      });
+
+      // 注意：由于这是异步操作，我们需要监听Redux store的变化
+      // 或者使用useSelector来获取strategies数据
+      console.log('Load test strategies API called');
+    } catch (error) {
+      console.error('Failed to load load test strategies:', error);
+      setLoadTestStrategies([]);
+    }
+  }
 
   useEffect(() => {
     const name = _.get(experiment, 'baseInfo.name', '');
@@ -355,6 +390,86 @@ function ExperimentDetail() {
   }
   const renderGroupNum: any = (value: string, index: number) => <span><Translation>Group</Translation>{index + 1}</span>;
 
+  function renderLoadTestStrategies() {
+    // 检查loadTestStrategies是否为空数组或不存在
+    if (!loadTestStrategies || !Array.isArray(loadTestStrategies) || loadTestStrategies.length === 0) {
+      return (
+        <div style={{ color: '#999', fontStyle: 'italic' }}>
+          <Translation>No load test strategies configured</Translation>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.loadTestStrategies}>
+        {loadTestStrategies.map((strategy: ILoadTestStrategy, index: number) => (
+          <div key={strategy.id} className={styles.strategyItem}>
+            <div className={styles.strategyInfo}>
+              <div className={styles.strategyHeader}>
+                <span className={styles.strategyName}>
+                  <Translation>Strategy</Translation> #{index + 1}
+                </span>
+                <span className={styles.strategyStatus}>
+                  {strategy.enable ? (
+                    <Tag color="green" size="small">
+                      <Translation>Enabled</Translation>
+                    </Tag>
+                  ) : (
+                    <Tag color="default" size="small">
+                      <Translation>Disabled</Translation>
+                    </Tag>
+                  )}
+                </span>
+              </div>
+              <div className={styles.strategyDetails}>
+                <div className={styles.strategyDetail}>
+                  <span className={styles.detailLabel}>
+                    <Translation>Definition ID</Translation>:
+                  </span>
+                  <span className={styles.detailValue}>{strategy.definitionId}</span>
+                </div>
+                <div className={styles.strategyDetail}>
+                  <span className={styles.detailLabel}>
+                    <Translation>Pre-start Time</Translation>:
+                  </span>
+                  <span className={styles.detailValue}>{strategy.startBeforeFaultSec}s</span>
+                </div>
+                <div className={styles.strategyDetail}>
+                  <span className={styles.detailLabel}>
+                    <Translation>Duration</Translation>:
+                  </span>
+                  <span className={styles.detailValue}>{strategy.trafficDurationSec}s</span>
+                </div>
+                <div className={styles.strategyDetail}>
+                  <span className={styles.detailLabel}>
+                    <Translation>Abort on Failure</Translation>:
+                  </span>
+                  <span className={styles.detailValue}>
+                    {strategy.abortOnLoadFailure ? (
+                      <span style={{ color: '#fa8c16' }}><Translation>Yes</Translation></span>
+                    ) : (
+                      <span style={{ color: '#52c41a' }}><Translation>No</Translation></span>
+                    )}
+                  </span>
+                </div>
+                {strategy.createdAt && (
+                  <div className={styles.strategyDetail}>
+                    <span className={styles.detailLabel}>
+                      <Translation>Created At</Translation>:
+                    </span>
+                    <span className={styles.detailValue}>
+                      {new Date(strategy.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   function renderFlow() {
     const experimentDetail = functionDirectExperiment();
     const state = _.get(experimentDetail, 'baseInfo.state', '');
@@ -437,6 +552,15 @@ function ExperimentDetail() {
               return <Node key={re.id} data={re} onClick={handleNodeClick} permission={experiment.permission}/>;
             }) : <Translation>None</Translation>
           }
+        </div>
+        <div className={styles.detailLabel}>
+          <Translation>Load Test Strategy</Translation>
+          <span style={{ marginLeft: 8, fontSize: '10px', color: '#999' }}>
+            (Count: {loadTestStrategies.length})
+          </span>
+        </div>
+        <div className={classnames(styles.detailValue, styles.nodeConfig)}>
+          {renderLoadTestStrategies()}
         </div>
         <div className={styles.detailLabel}><Translation>Auto recovery time</Translation></div>
         <div className={styles.detailValue}>

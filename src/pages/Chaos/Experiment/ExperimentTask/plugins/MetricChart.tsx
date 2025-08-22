@@ -1,6 +1,6 @@
 import ChartContainer from './ChartContainer';
 import React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import moment from 'moment';
 import { Axis, Chart, Geom, Tooltip } from 'bizcharts';
 

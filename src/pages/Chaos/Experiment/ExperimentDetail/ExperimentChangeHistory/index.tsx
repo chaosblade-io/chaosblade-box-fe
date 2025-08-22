@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import i18n from '../../../../../i18n';
 import locale from 'utils/locale';
