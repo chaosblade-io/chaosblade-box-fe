@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import SlidePanel from '@alicloud/console-components-slide-panel';
 import SlidePanelClose from 'config/constants/Chaos/SlidePanelClose';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../../i18n';
 import styles from './index.css';
 import { Button, Icon, Input, Loading, NumberPicker, Switch } from '@alicloud/console-components';

@@ -4,7 +4,7 @@ import ExperimentTaskHistory from 'pages/Chaos/Experiment/common/ExperimentTaskH
 import React, { FC, useEffect, useState } from 'react';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../i18n';
 import styles from './index.css';
 import { IBaseInfo, ISearchKey } from 'config/interfaces/Chaos/experiment';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import locale from 'utils/locale';
 import styles from './ActivityRecoverEditor.css';
 import { FunctionParameterConstants } from 'config/constants/Chaos/FunctionParameterConstants';

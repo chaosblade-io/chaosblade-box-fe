@@ -1,6 +1,6 @@
 import React from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import locale from 'utils/locale';
 import styles from './index.css';
 import { Dialog, Icon } from '@alicloud/console-components';

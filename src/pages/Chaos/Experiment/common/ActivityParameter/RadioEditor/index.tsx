@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../../../i18n';
 import styles from './index.css';
 import { FunctionParameterConstants } from 'config/constants/Chaos/FunctionParameterConstants';

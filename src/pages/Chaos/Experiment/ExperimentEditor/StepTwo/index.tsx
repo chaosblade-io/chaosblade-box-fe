@@ -5,7 +5,7 @@ import MiniFlowView from 'pages/Chaos/common/MInFlowView';
 import Node from 'pages/Chaos/common/Node';
 import React, { useEffect, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import convertFilter from 'pages/Chaos/lib/ConvertFilter';
 import i18n from '../../../../../i18n';
 import locale from 'utils/locale';
@@ -16,6 +16,7 @@ import { NODE_TYPE, SCOPE_TYPE } from 'pages/Chaos/lib/FlowConstants';
 import { getActiveNamespace, getParams, parseQuery, pushUrl } from 'utils/libs/sre-utils';
 import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
 import { useHistory } from 'dva';
+import { ILoadTestDefinition, ILoadTestStrategy } from 'config/interfaces/Chaos/experimentTask';
 
 const { Group: ButtonGroup } = Button;
 const { Group: RadioGroup } = Radio;
@@ -47,6 +48,7 @@ function StepTwo(props: StepTwoProps) {
   const expertise = useSelector(({ expertiseEditor }) => expertiseEditor.expertise, (preProps, state) => {
     return preProps === state;
   });
+  const loadTestDefinitions = useSelector(({ loadTestDefinition }) => loadTestDefinition.definitions);
 
   const [ addNodeVisible, setAddNodeVisible ] = useState(false);
   const [ editNodeVisible, setEditNodeVisible ] = useState(false);
@@ -67,7 +69,147 @@ function StepTwo(props: StepTwoProps) {
     durationUnit: 'minute',
   });
   const [ updateVisible, setUpdateVisible ] = useState(false); // 更新成功弹窗；
+  const [ existingStrategies, setExistingStrategies ] = useState<ILoadTestStrategy[]>([]); // 现有的压测策略
   const workspaceId = getParams('workspaceId');
+
+  // 加载压测定义列表
+  useEffect(() => {
+    dispatch.loadTestDefinition.listAllLoadTestDefinitions({});
+  }, []);
+
+  // 编辑模式下加载现有的压测策略
+  useEffect(() => {
+    if (props.isEdit && props.experimentId) {
+      loadExistingStrategies(props.experimentId);
+    }
+  }, [ props.isEdit, props.experimentId ]);
+
+  // 加载现有的压测策略
+  async function loadExistingStrategies(experimentId: string) {
+    try {
+      const strategies = await dispatch.loadTestDefinition.getLoadTestStrategyByExperimentId({
+        experimentId,
+        Namespace: 'default', // 添加Namespace参数（大写N）
+      });
+
+      if (strategies && strategies.length > 0) {
+        setExistingStrategies(strategies);
+
+        // 回显压测配置
+        const selectedDefinitions = strategies.map((s: ILoadTestStrategy) => s.definitionId);
+        const firstStrategy = strategies[0];
+
+        // 将秒转换为分钟（如果能整除60）或保持秒
+        const preStartTime = firstStrategy.startBeforeFaultSec;
+        const duration = firstStrategy.trafficDurationSec;
+
+        const preStartUnit = preStartTime % 60 === 0 ? 'minute' : 'second';
+        const durationUnit = duration % 60 === 0 ? 'minute' : 'second';
+
+        setLoadTestConfig({
+          selectedDefinitions,
+          preStartTime: preStartUnit === 'minute' ? preStartTime / 60 : preStartTime,
+          preStartUnit,
+          duration: durationUnit === 'minute' ? duration / 60 : duration,
+          durationUnit,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load existing strategies:', error);
+    }
+  }
+
+  // 创建压测策略
+  async function createLoadTestStrategies(experimentId: string, config: any) {
+    try {
+      // 将时间单位转换为秒
+      const preStartTimeSec = config.preStartUnit === 'minute'
+        ? config.preStartTime * 60
+        : config.preStartTime;
+      const durationSec = config.durationUnit === 'minute'
+        ? config.duration * 60
+        : config.duration;
+
+      // 为每个选中的压测定义创建策略
+      const promises = config.selectedDefinitions.map((definitionId: string) => {
+        return dispatch.loadTestDefinition.createLoadTestStrategy({
+          enable: true,
+          definitionId,
+          experimentId,
+          startBeforeFaultSec: preStartTimeSec,
+          trafficDurationSec: durationSec,
+          abortOnLoadFailure: true,
+        });
+      });
+
+      await Promise.all(promises);
+      console.log('Load test strategies created successfully');
+    } catch (error) {
+      console.error('Failed to create load test strategies:', error);
+      Message.error(i18n.t('Failed to create load test strategies').toString());
+    }
+  }
+
+  // 编辑模式下处理压测策略的更新
+  async function handleLoadTestStrategiesForUpdate(experimentId: string, config: any) {
+    try {
+      // 将时间单位转换为秒
+      const preStartTimeSec = config.preStartUnit === 'minute'
+        ? config.preStartTime * 60
+        : config.preStartTime;
+      const durationSec = config.durationUnit === 'minute'
+        ? config.duration * 60
+        : config.duration;
+
+      // 获取当前选中的定义ID
+      const selectedDefinitionIds = new Set(config.selectedDefinitions);
+
+      // 获取现有策略的定义ID
+      const existingDefinitionIds = new Set(existingStrategies.map(s => s.definitionId));
+
+      // 需要删除的策略（现有的但未选中的）
+      const strategiesToDelete = existingStrategies.filter(s => !selectedDefinitionIds.has(s.definitionId));
+
+      // 需要创建的策略（选中的但不存在的）
+      const definitionsToCreate = config.selectedDefinitions.filter((id: string) => !existingDefinitionIds.has(id));
+
+      // 需要更新的策略（既存在又选中的）
+      const strategiesToUpdate = existingStrategies.filter(s => selectedDefinitionIds.has(s.definitionId));
+
+      // 删除不需要的策略
+      for (const strategy of strategiesToDelete) {
+        await dispatch.loadTestDefinition.deleteLoadTestStrategy({ id: strategy.id });
+      }
+
+      // 创建新的策略
+      for (const definitionId of definitionsToCreate) {
+        await dispatch.loadTestDefinition.createLoadTestStrategy({
+          enable: true,
+          definitionId,
+          experimentId,
+          startBeforeFaultSec: preStartTimeSec,
+          trafficDurationSec: durationSec,
+          abortOnLoadFailure: true,
+        });
+      }
+
+      // 更新现有的策略
+      for (const strategy of strategiesToUpdate) {
+        await dispatch.loadTestDefinition.updateLoadTestStrategy({
+          id: strategy.id,
+          enable: true,
+          startBeforeFaultSec: preStartTimeSec,
+          trafficDurationSec: durationSec,
+          abortOnLoadFailure: true,
+        });
+      }
+
+      console.log('Load test strategies updated successfully');
+    } catch (error) {
+      console.error('Failed to update load test strategies:', error);
+      Message.error(i18n.t('Failed to update load test strategies').toString());
+    }
+  }
 
   useEffect(() => {
     // 节点改变后进行数据更新
@@ -103,7 +245,7 @@ function StepTwo(props: StepTwoProps) {
       }
       const exist = _.find(searchNodes, (node: INode) => node.id === currentNode.id);
       if (exist) {
-        setCurrentNode({ ...exist });
+        setCurrentNode({ ...exist } as INode);
       }
     }
     return;
@@ -134,16 +276,10 @@ function StepTwo(props: StepTwoProps) {
   }
 
   function renderLoadTestStrategy() {
-    // 模拟压测定义数据，实际应从后端获取
-    const mockLoadTestDefinitions = [
-      { id: '1', name: '示例压测-HTTP', type: 'HTTP', engine: 'JMeter' },
-      { id: '2', name: '示例压测-文件', type: 'FILE', engine: 'Locust' },
-      { id: '3', name: 'API性能测试', type: 'HTTP', engine: 'Gatling' },
-    ];
-
-    const dataSource = mockLoadTestDefinitions.map(def => ({
+    // 使用真实的压测定义数据
+    const dataSource = loadTestDefinitions.map((def: ILoadTestDefinition) => ({
       value: def.id,
-      label: `${def.name} (${def.type} - ${def.engine})`,
+      label: `${def.name} (${def.entry} - ${def.engineType})`,
     }));
 
     return (
@@ -164,11 +300,11 @@ function StepTwo(props: StepTwoProps) {
             <div className={styles.selectedPreview}>
               <div className={styles.previewTitle}><Translation>Selected Definitions</Translation>:</div>
               {loadTestConfig.selectedDefinitions.map(id => {
-                const def = mockLoadTestDefinitions.find(d => d.id === id);
+                const def = loadTestDefinitions.find((d: ILoadTestDefinition) => d.id === id);
                 return def ? (
                   <div key={id} className={styles.previewItem}>
                     <span className={styles.defName}>{def.name}</span>
-                    <span className={styles.defMeta}>({def.type} - {def.engine})</span>
+                    <span className={styles.defMeta}>({def.entry} - {def.engineType})</span>
                   </div>
                 ) : null;
               })}
@@ -679,7 +815,7 @@ function StepTwo(props: StepTwoProps) {
         if (!_.isEmpty(submitNodes) && _.find(submitNodes, (node: INode) => !node.argsValid)) {
           const checkNodes = _.filter(submitNodes, (node: INode) => !node.argsValid);
           setToBeFillNode(checkNodes);
-          const errorName = checkNodes[0].name;
+          const errorName = (checkNodes[0] as INode).name;
           Message.error(`"${errorName}"${i18n.t('Node parameters are not configured')}`);
           return false;
         } else if (!baseInfo.name) {
@@ -709,7 +845,11 @@ function StepTwo(props: StepTwoProps) {
         setToBeFillNode([]);
         if (isEdit) {
           (async function() {
-            await dispatch.experimentEditor.updateExperiment({ ...convertFilter.convertFilterSubmit(flow as any) }, () => {
+            await dispatch.experimentEditor.updateExperiment({ ...convertFilter.convertFilterSubmit(flow as any) }, async () => {
+              // 演练更新成功后，处理压测策略
+              if (loadTestConfig.selectedDefinitions.length > 0 && props.experimentId) {
+                await handleLoadTestStrategiesForUpdate(props.experimentId, loadTestConfig);
+              }
               setUpdateVisible(true);
             });
           })();
@@ -722,7 +862,11 @@ function StepTwo(props: StepTwoProps) {
                 definition: { ...convertFilter.convertFilterSubmit(flow as any) } as any,
                 loadTestConfig: loadTestConfig.selectedDefinitions.length > 0 ? loadTestConfig : undefined,
                 workspaceId,
-              } as any, () => {
+              } as any, async () => {
+                // 创建实验成功后，如果有压测配置，则创建压测策略
+                if (loadTestConfig.selectedDefinitions.length > 0 && createExperimentId) {
+                  await createLoadTestStrategies(createExperimentId, loadTestConfig);
+                }
                 setCreateVisible(true);
               });
             } else {
@@ -730,7 +874,11 @@ function StepTwo(props: StepTwoProps) {
                 ...baseInfo,
                 definition: { ...convertFilter.convertFilterSubmit(flow as any) },
                 loadTestConfig: loadTestConfig.selectedDefinitions.length > 0 ? loadTestConfig : undefined,
-              } as any, () => {
+              } as any, async () => {
+                // 创建实验成功后，如果有压测配置，则创建压测策略
+                if (loadTestConfig.selectedDefinitions.length > 0 && createExperimentId) {
+                  await createLoadTestStrategies(createExperimentId, loadTestConfig);
+                }
                 setCreateVisible(true);
               });
             }
