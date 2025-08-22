@@ -2,7 +2,7 @@ import CategoryDialog from './CategoryDialog';
 import React, { useEffect, useState } from 'react';
 import Translation from 'components/Translation';
 import TreeNodeLabel from './TreeNodeLabel';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../i18n';
 import styles from './index.css';
 import { Button, Message, Tree } from '@alicloud/console-components';

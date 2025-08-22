@@ -2,7 +2,7 @@ import ActivityEditor from 'pages/Chaos/Experiment/common/ActivityEditor';
 import MiniFlowView from 'pages/Chaos/common/MInFlowView';
 import React, { FC, useEffect, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../i18n';
 import styles from './index.css';
 import { Button, Tag } from '@alicloud/console-components';

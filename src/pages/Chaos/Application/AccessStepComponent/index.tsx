@@ -1,6 +1,6 @@
 import React from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import copy from 'copy-to-clipboard';
 import i18n from '../../../../i18n';
 import styles from './index.css';

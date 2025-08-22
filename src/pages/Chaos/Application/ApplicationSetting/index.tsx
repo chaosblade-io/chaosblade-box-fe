@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import SettingDetail from './SettingDetail';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';

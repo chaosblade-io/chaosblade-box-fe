@@ -3,7 +3,7 @@ import CreateExpertiseInfo from 'pages/Chaos/ExpertiseAdmin/CreateExpertiseInfo'
 import React, { useEffect, useState } from 'react';
 import StepOne from 'pages/Chaos/Experiment/ExperimentEditor/StepOne';
 import StepTwo from 'pages/Chaos/Experiment/ExperimentEditor/StepTwo';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../i18n';
 import styles from './index.css';
 import { IBasicInfo } from 'config/interfaces/Chaos/expertiseEditor';
