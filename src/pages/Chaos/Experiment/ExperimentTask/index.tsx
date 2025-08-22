@@ -2,19 +2,20 @@ import Chart from './Chart';
 import DialogFrom from 'pages/Chaos/Experiment/common/DialogFrom';
 import FeedBack from 'pages/Chaos/Experiment/common/FeedBack';
 import LoadTestDataCharts from './LoadTestDataCharts';
+import LoadTestTaskStatus from './LoadTestTaskStatus';
 import React, { useEffect, useState } from 'react';
 import TaskBasic from './TaskBasic';
 import TaskFlow from './TaskFlow';
 import TaskInfo from './TaskInfo';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';
 import { Button, Dialog, Icon, Message, Table } from '@alicloud/console-components';
 import { ExperimentConstants } from 'config/constants/Chaos/ExperimentConstants';
-import { IActivity, IExperimentTask, IMetrics, IStrategies, IToleranceValue } from 'config/interfaces/Chaos/experimentTask';
+import { IActivity, IExperimentTask, IMetrics, IStrategies, IToleranceValue, ILoadTestTask, ILoadTestMetrics } from 'config/interfaces/Chaos/experimentTask';
 import { IField, ITolerance } from 'config/interfaces/Chaos/experiment';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { handleIsAdmin } from 'pages/Chaos/lib/BetaFlag';
@@ -62,6 +63,10 @@ export default function ExperimentTask() {
   const [ isFeedbackStatus, setIsFeedbackStatus ] = useState(false);
   const [ currentActivity, setCurrentActivity ] = useState<any>(null); // 选择查看的节点
   const [ , setLoadTestData ] = useState<any>(null); // 压测数据
+  const [ loadTestTasks, setLoadTestTasks ] = useState<ILoadTestTask[]>([]);
+  const [ loadTestMetrics, setLoadTestMetrics ] = useState<ILoadTestMetrics | null>(null);
+  const [ loadTestPolling, setLoadTestPolling ] = useState(false);
+  const [ pollIntervalRef, setPollIntervalRef ] = useState<NodeJS.Timeout | null>(null);
 
   const { reRunLoading } = useSelector(state => {
     return {
@@ -152,6 +157,115 @@ export default function ExperimentTask() {
     }
   };
 
+  // 获取压测任务状态
+  const fetchLoadTestTasks = async (experimentTaskId: string) => {
+    try {
+      console.log('Fetching load test tasks for experimentTaskId:', experimentTaskId);
+      const task = await dispatch.loadTestDefinition.getLoadTestTask({ taskId: experimentTaskId });
+      if (task) {
+        console.log('Load test task found:', task);
+        setLoadTestTasks([ task ]);
+
+        // 如果任务正在运行，开始轮询
+        if (task.status === 'RUNNING' || task.status === 'PENDING') {
+          startLoadTestPolling(task);
+        } else {
+          // 如果任务已完成，获取结果和指标
+          if (task.status === 'COMPLETED' || task.status === 'FAILED' || task.status === 'STOPPED') {
+            await fetchLoadTestResults(experimentTaskId);
+            if (task.executionId) {
+              await fetchLoadTestMetrics(task.executionId);
+            }
+          }
+        }
+      } else {
+        console.log('No load test task found for experimentTaskId:', experimentTaskId);
+        setLoadTestTasks([]); // 清空任务列表
+      }
+    } catch (error) {
+      console.error('Failed to fetch load test tasks for experimentTaskId:', experimentTaskId, error);
+      // 如果是404错误，说明没有压测任务，这是正常情况
+      if (error.message && error.message.includes('404')) {
+        console.log('No load test tasks found (404), this is normal for experiments without load test strategies');
+        setLoadTestTasks([]);
+      }
+    }
+  };
+
+  // 获取压测结果
+  const fetchLoadTestResults = async (taskId: string) => {
+    try {
+      console.log('Fetching load test results for taskId:', taskId);
+      const results = await dispatch.loadTestDefinition.getLoadTestResults({ taskId: '1958681761508659201' });
+      console.log('Load test results:', results);
+    } catch (error) {
+      console.error('Failed to fetch load test results for taskId:', taskId, error);
+    }
+  };
+
+  // 获取压测指标
+  const fetchLoadTestMetrics = async (executionId: string) => {
+    try {
+      const metrics = await dispatch.loadTestDefinition.getLoadTestMetrics({ executionId });
+      setLoadTestMetrics(metrics);
+    } catch (error) {
+      console.error('Failed to fetch load test metrics for executionId:', executionId, error);
+    }
+  };
+
+  // 开始压测轮询
+  const startLoadTestPolling = (task: ILoadTestTask) => {
+    if (loadTestPolling) return; // 避免重复轮询
+    setLoadTestPolling(true);
+    const pollInterval = setInterval(async () => {
+      try {
+        // 使用taskId来轮询任务状态
+        const updatedTask = await dispatch.loadTestDefinition.getLoadTestTask({ taskId: task.taskId });
+        if (updatedTask) {
+          setLoadTestTasks([ updatedTask ]);
+
+          // 如果任务完成，停止轮询并获取结果
+          if (updatedTask.status !== 'RUNNING' && updatedTask.status !== 'PENDING') {
+            clearInterval(pollInterval);
+            setLoadTestPolling(false);
+            setPollIntervalRef(null);
+
+            if (updatedTask.status === 'COMPLETED' || updatedTask.status === 'FAILED' || updatedTask.status === 'STOPPED') {
+              // 使用taskId获取结果
+              await fetchLoadTestResults(updatedTask.taskId);
+              if (updatedTask.executionId) {
+                await fetchLoadTestMetrics(updatedTask.executionId);
+              }
+            }
+          } else {
+            // 如果任务正在运行且有executionId，获取实时指标
+            if (updatedTask.status === 'RUNNING' && updatedTask.executionId) {
+              await fetchLoadTestMetrics(updatedTask.executionId);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Load test polling error:', error);
+      }
+    }, 5000); // 5秒轮询一次
+
+    setPollIntervalRef(pollInterval);
+  };
+
+  // 停止压测任务
+  const stopLoadTestTask = async (experimentTaskId: string) => {
+    try {
+      console.log('Stopping load test task for experimentTaskId:', experimentTaskId);
+      await dispatch.loadTestDefinition.stopLoadTestTask({ taskId: experimentTaskId });
+      Message.success(i18n.t('Load test task stopped successfully').toString());
+      // 重新获取任务状态
+      await fetchLoadTestTasks(experimentTaskId);
+    } catch (error) {
+      console.error('Failed to stop load test task for experimentTaskId:', experimentTaskId, error);
+      Message.error(i18n.t('Failed to stop load test task').toString());
+    }
+  };
+
   useEffect(() => {
     dispatch.pageHeader.setBreadCrumbItems(chaosDefaultBreadCrumb.concat([ // 修改面包屑
       {
@@ -174,9 +288,15 @@ export default function ExperimentTask() {
           const { feedbackStatus, state } = taskRes || {};
           !_.isEmpty(taskRes) && setExperimentTask(taskRes);
 
-          // 检查是否有压测配置，如果有则获取压测数据
+          // 检查是否有压测配置，如果有则获取压测数据（保留原有逻辑）
           if (taskRes && taskRes.loadTestConfig) {
             fetchLoadTestData(taskId, taskRes.loadTestConfig);
+          }
+
+          // 使用experimentTaskId获取压测任务状态（无论是否有loadTestConfig都尝试获取）
+          // 因为压测策略可能是在演练配置时设置的，而不是在loadTestConfig中
+          if (taskRes && taskRes.taskId) {
+            fetchLoadTestTasks(taskRes.taskId); // 使用experimentTaskId作为taskId参数
           }
 
           if (state === ExperimentConstants.EXPERIMENT_TASK_STATE_FINISHED) {
@@ -251,6 +371,17 @@ export default function ExperimentTask() {
       }
     };
   }, [ autoRefresh, isLoop, currentActivity ]);
+
+  // 清理压测轮询
+  useEffect(() => {
+    return () => {
+      if (pollIntervalRef) {
+        clearInterval(pollIntervalRef);
+        setLoadTestPolling(false);
+        setPollIntervalRef(null);
+      }
+    };
+  }, [ pollIntervalRef ]);
 
   function handleLoop() {
     let activityTaskId;
@@ -433,7 +564,7 @@ export default function ExperimentTask() {
         <div className={styles.showStrategy}><Translation>Rules</Translation></div>
         <div className={styles.showRules}>
           {!_.isEmpty(fields) && fields.map((item: IField, idx: number) => {
-            const operator = _.findKey(item as any, (i: boolean) => i === true);
+            const operator = Object.keys(item as any).find(key => (item as any)[key] === true);
             let operatorLabel;
             if (operator === 'and') {
               operatorLabel = i18n.t('And');
@@ -504,7 +635,7 @@ export default function ExperimentTask() {
   }
 
   function renderDialogFooter() {
-    const source = _.get(experimentTask, 'source', '');
+    const source = _.get(experimentTask, 'source', 0) as number;
     if (source === 1) {
       return <Button.Group>
         <Button type="primary" onClick={() => handleSubmitFeebBack(true)}><Translation>OK, return to strong and weak dependency governance</Translation></Button>
@@ -575,7 +706,8 @@ export default function ExperimentTask() {
     const value = _.get(item, 'value', '');
     const itemOptions = _.get(item, 'format.options');
     if (itemOptions) {
-      return _.find(itemOptions, (i: any) => i.key === value) && _.find(itemOptions, (i: any) => i.key === value).value;
+      const foundOption = _.find(itemOptions, (i: any) => i.key === value);
+      return foundOption ? foundOption.value : value;
     }
     return value;
   }
@@ -612,13 +744,13 @@ export default function ExperimentTask() {
     return `${i18n.t('Protect')}${val}`;
   };
 
-  const source = _.get(experimentTask, 'source', '');
-  const feedbackStatus = _.get(experimentTask, 'feedbackStatus', 0);
-  const expectationStatus = _.get(feedBackReturn, 'expectationStatus', 0);
-  const businessStatus = _.get(feedBackReturn, 'businessStatus', 0);
-  const memo = _.get(feedBackReturn, 'memo', '');
-  const options = _.get(feedBackReturn, 'extra.options', []);
-  const extInfo = _.get(experimentTask, 'extInfo', {});
+  const source = _.get(experimentTask, 'source', 0) as number;
+  const feedbackStatus = _.get(experimentTask, 'feedbackStatus', 0) as number;
+  const expectationStatus = _.get(feedBackReturn, 'expectationStatus', 0) as number;
+  const businessStatus = _.get(feedBackReturn, 'businessStatus', 0) as number;
+  const memo = _.get(feedBackReturn, 'memo', '') as string;
+  const options = _.get(feedBackReturn, 'extra.options', []) as any[];
+  const extInfo = _.get(experimentTask, 'extInfo', {}) as any;
 
   const startTime = _.get(activityTask, 'startTime', '');
   const endTime = _.get(activityTask, 'endTime', '');

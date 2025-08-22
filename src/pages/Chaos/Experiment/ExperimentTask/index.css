@@ -276,3 +276,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* 压测任务状态区域 */
+.loadTestSection {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e1e4e8;
+}
