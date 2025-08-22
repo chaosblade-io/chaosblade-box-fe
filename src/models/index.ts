@@ -13,6 +13,7 @@ import expertiseEditor from './Chaos/expertiseEditor';
 import expertises from './Chaos/expertises';
 import functionParameters from './Chaos/functionParameter';
 import homeModel from './home';
+import loadTestDefinition from './Chaos/loadTestDefinition';
 import loginUser from './Chaos/loginUser';
 import pageHeader from './pageHeader';
 import scene from './Chaos/scene';
@@ -40,6 +41,7 @@ const models = [
   workspace,
   category,
   agentTools,
+  loadTestDefinition,
 ];
 
 export default models;
