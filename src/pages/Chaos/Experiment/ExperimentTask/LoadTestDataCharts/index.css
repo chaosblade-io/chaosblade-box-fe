@@ -55,6 +55,13 @@
   flex-wrap: wrap;
 }
 
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .chartsGrid {
   display: grid;
   grid-template-columns: 1fr;
@@ -394,4 +401,61 @@
     align-items: flex-start;
     gap: 12px;
   }
+}
+
+/* 压测结果样式 */
+.resultsSection {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e8e8e8;
+}
+
+.resultsSectionHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.resultsSectionTitle {
+  margin-left: 8px;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  transition: all 0.2s ease;
+}
+
+.resultItem:hover {
+  border-color: #1890ff;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
+}
+
+.resultLabel {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.resultLabel i {
+  margin-right: 8px;
+  color: #1890ff;
 }
