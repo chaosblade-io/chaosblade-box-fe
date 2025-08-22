@@ -9,6 +9,12 @@
     }
   }
 
+  .searchFilters {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
   .tableContent {
     margin-top: 8px;
   }
