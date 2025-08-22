@@ -2,7 +2,7 @@ import Actions, { LinkButton } from '@alicloud/console-components-actions';
 import ManualDialog from 'pages/Manage/AgentSetting/common/ManualDialog';
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import i18n from '../../../../../i18n';
 import locale from 'utils/locale';
