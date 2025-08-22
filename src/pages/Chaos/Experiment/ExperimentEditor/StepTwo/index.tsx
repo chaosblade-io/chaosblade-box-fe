@@ -862,10 +862,18 @@ function StepTwo(props: StepTwoProps) {
                 definition: { ...convertFilter.convertFilterSubmit(flow as any) } as any,
                 loadTestConfig: loadTestConfig.selectedDefinitions.length > 0 ? loadTestConfig : undefined,
                 workspaceId,
-              } as any, async () => {
-                // 创建实验成功后，如果有压测配置，则创建压测策略
-                if (loadTestConfig.selectedDefinitions.length > 0 && createExperimentId) {
-                  await createLoadTestStrategies(createExperimentId, loadTestConfig);
+              } as any, async (createdExperimentId?: string) => {
+                console.log('Experiment created successfully with ID:', createdExperimentId);
+
+                // 如果有压测配置，则创建压测策略
+                if (loadTestConfig.selectedDefinitions.length > 0 && createdExperimentId) {
+                  try {
+                    await createLoadTestStrategies(createdExperimentId, loadTestConfig);
+                    console.log('Load test strategies created successfully for experiment:', createdExperimentId);
+                  } catch (error) {
+                    console.error('Failed to create load test strategies:', error);
+                    Message.warning(i18n.t('Experiment created successfully, but load test configuration failed. You can configure it later.'));
+                  }
                 }
                 setCreateVisible(true);
               });
@@ -874,10 +882,18 @@ function StepTwo(props: StepTwoProps) {
                 ...baseInfo,
                 definition: { ...convertFilter.convertFilterSubmit(flow as any) },
                 loadTestConfig: loadTestConfig.selectedDefinitions.length > 0 ? loadTestConfig : undefined,
-              } as any, async () => {
-                // 创建实验成功后，如果有压测配置，则创建压测策略
-                if (loadTestConfig.selectedDefinitions.length > 0 && createExperimentId) {
-                  await createLoadTestStrategies(createExperimentId, loadTestConfig);
+              } as any, async (createdExperimentId?: string) => {
+                console.log('Experiment created successfully with ID:', createdExperimentId);
+
+                // 如果有压测配置，则创建压测策略
+                if (loadTestConfig.selectedDefinitions.length > 0 && createdExperimentId) {
+                  try {
+                    await createLoadTestStrategies(createdExperimentId, loadTestConfig);
+                    console.log('Load test strategies created successfully for experiment:', createdExperimentId);
+                  } catch (error) {
+                    console.error('Failed to create load test strategies:', error);
+                    Message.warning(i18n.t('Experiment created successfully, but load test configuration failed. You can configure it later.'));
+                  }
                 }
                 setCreateVisible(true);
               });

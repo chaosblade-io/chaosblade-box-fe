@@ -9,6 +9,7 @@ import styles from './index.css';
 import { Button, Dialog, Field, Form, Input, Message, Radio, Select, Table, Upload, Pagination, Icon } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
+import { getActiveNamespace } from 'utils/libs/sre-utils';
 import { ILoadTestDefinition } from 'config/interfaces/Chaos/experimentTask';
 
 const { Item: FormItem } = Form;
@@ -20,6 +21,7 @@ const LoadTestAdmin: FC = () => {
 
   const [ addVisible, setAddVisible ] = useState(false);
   const [ editVisible, setEditVisible ] = useState(false);
+  const [ viewVisible, setViewVisible ] = useState(false);
   const [ currentRecord, setCurrentRecord ] = useState<ILoadTestDefinition | null>(null);
   const [ formType, setFormType ] = useState<'URL'|'SCRIPT'>('URL');
   const [ pageNum, setPageNum ] = useState(1);
@@ -72,12 +74,12 @@ const LoadTestAdmin: FC = () => {
   }
 
   function handleAdd() {
-    setFormType('URL');
+    setFormType('SCRIPT');
     field.setValues({
       name: '',
       engineType: 'JMETER',
       endpoint: '',
-      entry: 'URL',
+      entry: 'SCRIPT',
       method: 'GET',
       path: '',
       headers: '{}',
@@ -89,6 +91,7 @@ const LoadTestAdmin: FC = () => {
   function handleCancel() {
     setAddVisible(false);
     setEditVisible(false);
+    setViewVisible(false);
     setCurrentRecord(null);
     setUploadedFile(null);
     setEditUploadedFile(null);
@@ -108,7 +111,18 @@ const LoadTestAdmin: FC = () => {
         endpoint,
       });
 
-      setFileState(result);
+      console.log('Upload result:', result);
+      console.log('Upload result type:', typeof result);
+      console.log('Upload result keys:', result ? Object.keys(result) : 'null');
+
+      // 确保设置正确的文件状态
+      if (result) {
+        setFileState(result);
+        console.log('File state set successfully:', result);
+      } else {
+        console.error('Upload result is null or undefined');
+      }
+
       Message.success(i18n.t('File uploaded successfully').toString());
       return result;
     } catch (error) {
@@ -170,13 +184,37 @@ const LoadTestAdmin: FC = () => {
         };
       }
 
-      // 如果是脚本类型，添加contentRef
+      // 如果是脚本类型，添加contentRef（使用uploadPath而不是accessUrl）
       if (values.entry === 'SCRIPT') {
-        if (uploadedFile && uploadedFile.accessUrl) {
+        console.log('=== SCRIPT TYPE DEBUG ===');
+        console.log('uploadedFile:', uploadedFile);
+        console.log('uploadedFile type:', typeof uploadedFile);
+        console.log('values.contentRef:', values.contentRef);
+        console.log('uploading state:', uploading);
+        console.log('uploadedFile keys:', uploadedFile ? Object.keys(uploadedFile) : 'null');
+
+        if (uploadedFile && uploadedFile.uploadPath) {
+          params.contentRef = uploadedFile.uploadPath;
+          console.log('✅ Using uploadedFile.uploadPath:', uploadedFile.uploadPath);
+        } else if (uploadedFile && uploadedFile.accessUrl) {
+          // 临时兼容：如果没有uploadPath但有accessUrl，也使用accessUrl
           params.contentRef = uploadedFile.accessUrl;
+          console.log('⚠️ Using uploadedFile.accessUrl:', uploadedFile.accessUrl);
+        } else if (uploadedFile && uploadedFile.fileName) {
+          // 尝试使用fileName作为fallback
+          params.contentRef = uploadedFile.fileName;
+          console.log('⚠️ Using uploadedFile.fileName:', uploadedFile.fileName);
         } else if (values.contentRef) {
           params.contentRef = values.contentRef;
+          console.log('⚠️ Using values.contentRef:', values.contentRef);
+        } else {
+          console.error('❌ No file uploaded or contentRef found');
+          console.error('Available uploadedFile properties:', uploadedFile ? Object.keys(uploadedFile) : 'uploadedFile is null/undefined');
+          Message.error(i18n.t('Please upload JMX script file first').toString());
+          return;
         }
+        console.log('Final contentRef:', params.contentRef);
+        console.log('=== END DEBUG ===');
       }
 
       await dispatch.loadTestDefinition.createLoadTestDefinition(params);
@@ -210,10 +248,25 @@ const LoadTestAdmin: FC = () => {
       }
 
       if (values.entry === 'SCRIPT') {
-        if (editUploadedFile && editUploadedFile.accessUrl) {
+        console.log('editUploadedFile:', editUploadedFile);
+        console.log('values.contentRef:', values.contentRef);
+
+        if (editUploadedFile && editUploadedFile.uploadPath) {
+          // 如果重新上传了文件，使用新的uploadPath
+          params.contentRef = editUploadedFile.uploadPath;
+          console.log('Using editUploadedFile.uploadPath:', editUploadedFile.uploadPath);
+        } else if (editUploadedFile && editUploadedFile.accessUrl) {
+          // 临时兼容：如果没有uploadPath但有accessUrl，也使用accessUrl
           params.contentRef = editUploadedFile.accessUrl;
+          console.log('Using editUploadedFile.accessUrl:', editUploadedFile.accessUrl);
         } else if (values.contentRef) {
+          // 如果没有重新上传，保持原有的contentRef
           params.contentRef = values.contentRef;
+          console.log('Using values.contentRef:', values.contentRef);
+        } else {
+          console.error('No file uploaded or contentRef found');
+          Message.error(i18n.t('Please upload JMX script file first').toString());
+          return;
         }
       }
 
@@ -230,8 +283,12 @@ const LoadTestAdmin: FC = () => {
 
   function handleView(record: ILoadTestDefinition) {
     // 查看详情的逻辑
-    dispatch.loadTestDefinition.getLoadTestDefinition({ id: record.id });
-    Message.notice(`${i18n.t('View').toString()}: ${record.name}`);
+    dispatch.loadTestDefinition.getLoadTestDefinition({
+      id: record.id,
+      Namespace: getActiveNamespace(),
+    }, () => {
+      setViewVisible(true);
+    });
   }
 
   function handleEdit(record: ILoadTestDefinition) {
@@ -331,7 +388,7 @@ const LoadTestAdmin: FC = () => {
 
             <FormItem label={i18n.t('Entry Type').toString()} required>
               <RadioGroup value={formType} onChange={v => setFormType(v as any)}>
-                <Radio value='URL'><Translation>URL Configuration</Translation></Radio>
+                {/* <Radio value='URL'><Translation>URL Configuration</Translation></Radio> */}
                 <Radio value='SCRIPT'><Translation>Script File</Translation></Radio>
               </RadioGroup>
             </FormItem>
@@ -490,6 +547,116 @@ const LoadTestAdmin: FC = () => {
     );
   }
 
+  function renderViewDialog() {
+    const { currentDefinition } = useSelector((state: any) => state.loadTestDefinition);
+
+    if (!currentDefinition) return null;
+
+    // 解析 urlCase 如果存在
+    let urlCaseData = null;
+    if (currentDefinition.urlCase) {
+      try {
+        urlCaseData = typeof currentDefinition.urlCase === 'string'
+          ? JSON.parse(currentDefinition.urlCase)
+          : currentDefinition.urlCase;
+      } catch (e) {
+        console.error('Failed to parse urlCase:', e);
+      }
+    }
+
+    return (
+      <Dialog
+        visible={viewVisible}
+        title={i18n.t('View Load Testing Definition').toString()}
+        onClose={() => setViewVisible(false)}
+        onCancel={() => setViewVisible(false)}
+        footer={
+          <Button onClick={() => setViewVisible(false)}>
+            <Translation>Close</Translation>
+          </Button>
+        }
+        style={{ width: 800 }}
+        locale={locale().Dialog}
+      >
+        <div className={styles.dialogContent}>
+          <div style={{ padding: '16px 0' }}>
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Name').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{currentDefinition.name}</span>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Engine Type').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{currentDefinition.engineType}</span>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Entry Type').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{currentDefinition.entry}</span>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Endpoint').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{currentDefinition.endpoint}</span>
+            </div>
+
+            {currentDefinition.entry === 'URL' && urlCaseData && (
+              <>
+                <div style={{ marginBottom: 16 }}>
+                  <strong>{i18n.t('Request method').toString()}:</strong>
+                  <span style={{ marginLeft: 8 }}>{urlCaseData.method || 'GET'}</span>
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <strong>{i18n.t('Path').toString()}:</strong>
+                  <span style={{ marginLeft: 8 }}>{urlCaseData.path || '/'}</span>
+                </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <strong>{i18n.t('Headers').toString()}:</strong>
+                  <pre style={{
+                    marginLeft: 8,
+                    marginTop: 8,
+                    padding: 8,
+                    background: '#f6f8fa',
+                    borderRadius: 4,
+                    fontSize: 12,
+                    maxHeight: 200,
+                    overflow: 'auto',
+                  }}>
+                    {JSON.stringify(urlCaseData.headers || {}, null, 2)}
+                  </pre>
+                </div>
+              </>
+            )}
+
+            {currentDefinition.entry === 'SCRIPT' && currentDefinition.contentRef && (
+              <div style={{ marginBottom: 16 }}>
+                <strong>{i18n.t('Script Reference').toString()}:</strong>
+                <span style={{ marginLeft: 8 }}>{currentDefinition.contentRef}</span>
+              </div>
+            )}
+
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Created By').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{currentDefinition.createdBy}</span>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Create Time').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{formatDate(currentDefinition.createdAt)}</span>
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <strong>{i18n.t('Update Time').toString()}:</strong>
+              <span style={{ marginLeft: 8 }}>{formatDate(currentDefinition.updatedAt)}</span>
+            </div>
+          </div>
+        </div>
+      </Dialog>
+    );
+  }
+
   return (
     <div className={styles.warp}>
       <div className={styles.searchButton}>
@@ -548,9 +715,9 @@ const LoadTestAdmin: FC = () => {
       </div>
       {renderAddDialog()}
       {renderEditDialog()}
+      {renderViewDialog()}
     </div>
   );
 };
 
 export default LoadTestAdmin;
-

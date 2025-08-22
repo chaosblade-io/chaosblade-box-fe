@@ -2,7 +2,7 @@ import Chart from './Chart';
 import DialogFrom from 'pages/Chaos/Experiment/common/DialogFrom';
 import FeedBack from 'pages/Chaos/Experiment/common/FeedBack';
 import LoadTestDataCharts from './LoadTestDataCharts';
-import LoadTestTaskStatus from './LoadTestTaskStatus';
+// import LoadTestTaskStatus from './LoadTestTaskStatus';
 import React, { useEffect, useState } from 'react';
 import TaskBasic from './TaskBasic';
 import TaskFlow from './TaskFlow';
@@ -63,8 +63,8 @@ export default function ExperimentTask() {
   const [ isFeedbackStatus, setIsFeedbackStatus ] = useState(false);
   const [ currentActivity, setCurrentActivity ] = useState<any>(null); // 选择查看的节点
   const [ , setLoadTestData ] = useState<any>(null); // 压测数据
-  const [ loadTestTasks, setLoadTestTasks ] = useState<ILoadTestTask[]>([]);
-  const [ loadTestMetrics, setLoadTestMetrics ] = useState<ILoadTestMetrics | null>(null);
+  const [ _loadTestTasks, setLoadTestTasks ] = useState<ILoadTestTask[]>([]);
+  const [ _loadTestMetrics, setLoadTestMetrics ] = useState<ILoadTestMetrics | null>(null);
   const [ loadTestPolling, setLoadTestPolling ] = useState(false);
   const [ pollIntervalRef, setPollIntervalRef ] = useState<NodeJS.Timeout | null>(null);
 
@@ -253,7 +253,7 @@ export default function ExperimentTask() {
   };
 
   // 停止压测任务
-  const stopLoadTestTask = async (experimentTaskId: string) => {
+  const _stopLoadTestTask = async (experimentTaskId: string) => {
     try {
       console.log('Stopping load test task for experimentTaskId:', experimentTaskId);
       await dispatch.loadTestDefinition.stopLoadTestTask({ taskId: experimentTaskId });
