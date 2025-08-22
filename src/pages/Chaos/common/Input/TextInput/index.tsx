@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import styles from './index.css';
 import { Balloon, Icon, Input } from '@alicloud/console-components';

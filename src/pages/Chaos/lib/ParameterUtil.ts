@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../i18n';
 import { FunctionParameterConstants } from 'config/constants/Chaos/FunctionParameterConstants';
 import { IArgs, INode } from 'config/interfaces/Chaos/experiment';

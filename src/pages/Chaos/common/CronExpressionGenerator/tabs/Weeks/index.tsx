@@ -3,7 +3,7 @@ import Translation from '../../../../../../components/Translation';
 import i18n from '../../../../../../i18n';
 import styles from './index.css';
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 import moment from 'moment';
 import { Checkbox, TimePicker } from '@alicloud/console-components';
 import { ILabel } from 'config/interfaces/Chaos/components';

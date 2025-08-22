@@ -1,7 +1,7 @@
 import HeatmapChartItem from './HeatmapChartItem';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import moment from 'moment';
 import styles from './index.css';

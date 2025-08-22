@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { IFlowGroup, IHost } from 'config/interfaces/Chaos/experiment';
 
 export const hostPreCheck = (flowGroup: IFlowGroup[], hostInfo: any[]) => {

@@ -1,6 +1,6 @@
 
 // 流程提交数据处理；args赋值为arguments
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { IFlow, IFlowGroup, INode } from 'config/interfaces/Chaos/experiment';
 import { STAGES } from './FlowConstants';
 

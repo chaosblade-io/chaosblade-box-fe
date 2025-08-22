@@ -3,7 +3,7 @@ import i18n from '../../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { Dialog, Tab } from '@alicloud/console-components';
 
 import Days from './tabs/Days';

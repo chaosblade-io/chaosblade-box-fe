@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TaskChart from './TaskChart';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import styles from './index.css';
 import { IExperimentSummaryInfo } from 'config/interfaces/Chaos/workspace';
 import { useDispatch } from 'utils/libs/sre-utils-dva';

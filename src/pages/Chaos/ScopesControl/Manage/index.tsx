@@ -8,7 +8,7 @@ const AgentSettingStep = lazy(() => import('pages/Manage/AgentSetting/Step'));
 const AgentSettingTools = lazy(() => import('pages/Manage/AgentSetting/Tools'));
 const { Switch, Route, useRouteMatch } = router;
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 const Manage: FC = () => {
   const dispatch = useDispatch();
