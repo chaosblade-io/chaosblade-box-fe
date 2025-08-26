@@ -54,12 +54,12 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
   currentStep,
   isRealTime,
 }) => {
-  const [logs, setLogs] = useState<LogEntry[]>([]);
-  const [filteredLogs, setFilteredLogs] = useState<LogEntry[]>([]);
-  const [logFilter, setLogFilter] = useState<string>('');
-  const [autoScroll, setAutoScroll] = useState(true);
-  const [expandedServices, setExpandedServices] = useState<string[]>([]);
-  
+  const [ logs, setLogs ] = useState<LogEntry[]>([]);
+  const [ filteredLogs, setFilteredLogs ] = useState<LogEntry[]>([]);
+  const [ logFilter, setLogFilter ] = useState<string>('');
+  const [ autoScroll, setAutoScroll ] = useState(true);
+  const [ expandedServices, setExpandedServices ] = useState<string[]>([]);
+
   const logsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -168,12 +168,12 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
     ];
 
     setLogs(mockLogs);
-  }, [runId, progress.total]);
+  }, [ runId, progress.total ]);
 
   useEffect(() => {
     // Filter logs based on selected filter
     let filtered = logs;
-    
+
     if (logFilter === 'FAILED') {
       filtered = logs.filter(log => log.level === 'ERROR');
     } else if (logFilter === 'CURRENT_LAYER') {
@@ -183,22 +183,22 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
       const serviceId = logFilter.replace('SERVICE_', '');
       filtered = logs.filter(log => log.serviceId === serviceId);
     }
-    
+
     setFilteredLogs(filtered);
-  }, [logs, logFilter]);
+  }, [ logs, logFilter ]);
 
   useEffect(() => {
     // Auto-scroll to bottom when new logs arrive
     if (autoScroll && logsContainerRef.current) {
       logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
     }
-  }, [filteredLogs, autoScroll]);
+  }, [ filteredLogs, autoScroll ]);
 
   const toggleServiceExpansion = (serviceId: string) => {
-    setExpandedServices(prev => 
-      prev.includes(serviceId) 
+    setExpandedServices(prev =>
+      (prev.includes(serviceId)
         ? prev.filter(id => id !== serviceId)
-        : [...prev, serviceId]
+        : [ ...prev, serviceId ]),
     );
   };
 
@@ -246,7 +246,7 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
         {log.message}
         {log.details && (
           <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
-            {Object.entries(log.details).map(([key, value]) => (
+            {Object.entries(log.details).map(([ key, value ]) => (
               <span key={key} style={{ marginRight: 12 }}>
                 {key}: {JSON.stringify(value)}
               </span>
@@ -266,14 +266,14 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
           </div>
           {layer.services.map(service => (
             <div key={service.serviceId} className={styles.treeService}>
-              <div 
+              <div
                 className={styles.serviceName}
                 onClick={() => toggleServiceExpansion(service.serviceId)}
                 style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
               >
-                <Icon 
-                  type={expandedServices.includes(service.serviceId) ? 'arrow-down' : 'arrow-right'} 
-                  size="xs" 
+                <Icon
+                  type={expandedServices.includes(service.serviceId) ? 'arrow-down' : 'arrow-right'}
+                  size="xs"
                 />
                 {service.serviceName}
               </div>
@@ -330,12 +330,12 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
                   <Select.Option value="">All Logs</Select.Option>
                   <Select.Option value="FAILED">Failed Only</Select.Option>
                   <Select.Option value="CURRENT_LAYER">Current Layer</Select.Option>
-                  {executionPlan.flatMap(layer => 
+                  {executionPlan.flatMap(layer =>
                     layer.services.map(service => (
                       <Select.Option key={service.serviceId} value={`SERVICE_${service.serviceId}`}>
                         {service.serviceName}
                       </Select.Option>
-                    ))
+                    )),
                   )}
                 </Select>
                 <Switch
@@ -348,7 +348,7 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({
                 </span>
               </div>
             </div>
-            <div 
+            <div
               ref={logsContainerRef}
               className={styles.logsContent}
             >

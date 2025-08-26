@@ -17,7 +17,7 @@ import {
   Checkbox,
   Icon,
   MenuButton,
-  Badge
+  Badge,
 } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
@@ -61,29 +61,29 @@ const DetectionTasks: FC = () => {
   const history = useHistory();
 
   // Search and filter states
-  const [searchKey, setSearchKey] = useState('');
-  const [advancedFiltersVisible, setAdvancedFiltersVisible] = useState(false);
-  const [applicationSystemFilter, setApplicationSystemFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string[]>([]);
-  const [tagsFilter, setTagsFilter] = useState<string[]>([]);
-  const [creationDateRange, setCreationDateRange] = useState<[Date, Date] | null>(null);
-  const [executionDateRange, setExecutionDateRange] = useState<[Date, Date] | null>(null);
+  const [ searchKey, setSearchKey ] = useState('');
+  const [ advancedFiltersVisible, setAdvancedFiltersVisible ] = useState(false);
+  const [ applicationSystemFilter, setApplicationSystemFilter ] = useState('');
+  const [ statusFilter, setStatusFilter ] = useState<string[]>([]);
+  const [ tagsFilter, setTagsFilter ] = useState<string[]>([]);
+  const [ creationDateRange, setCreationDateRange ] = useState<[Date, Date] | null>(null);
+  const [ executionDateRange, setExecutionDateRange ] = useState<[Date, Date] | null>(null);
 
   // Table states
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(20);
-  const [loading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState<DetectionTask[]>([]);
-  const [total, setTotal] = useState(0);
+  const [ page, setPage ] = useState(1);
+  const [ pageSize ] = useState(20);
+  const [ loading, setLoading ] = useState(false);
+  const [ tasks, setTasks ] = useState<DetectionTask[]>([]);
+  const [ total, setTotal ] = useState(0);
 
   // Selection and batch operations
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
-  const [batchActionVisible, setBatchActionVisible] = useState(false);
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState<string[]>([]);
+  const [ batchActionVisible, setBatchActionVisible ] = useState(false);
 
   // Dialog states
-  const [executeDialogVisible, setExecuteDialogVisible] = useState(false);
-  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
-  const [currentTask, setCurrentTask] = useState<DetectionTask | null>(null);
+  const [ executeDialogVisible, setExecuteDialogVisible ] = useState(false);
+  const [ deleteDialogVisible, setDeleteDialogVisible ] = useState(false);
+  const [ currentTask, setCurrentTask ] = useState<DetectionTask | null>(null);
 
   useEffect(() => {
     // 设置页面标题和面包屑
@@ -92,13 +92,13 @@ const DetectionTasks: FC = () => {
       { key: 'fault_space_detection', value: i18n.t('Fault Space Detection').toString(), path: '/chaos/fault-space-detection/tasks' },
       { key: 'detection_tasks', value: i18n.t('Detection Tasks').toString(), path: '/chaos/fault-space-detection/tasks' },
     ]));
-    
+
     fetchTasks();
   }, []);
 
   useEffect(() => {
     fetchTasks();
-  }, [searchKey, statusFilter, applicationSystemFilter, tagsFilter, creationDateRange, executionDateRange, page]);
+  }, [ searchKey, statusFilter, applicationSystemFilter, tagsFilter, creationDateRange, executionDateRange, page ]);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -141,7 +141,7 @@ const DetectionTasks: FC = () => {
           createdAt: new Date(Date.now() - 86400000).toISOString(),
           creator: 'admin',
           status: 'COMPLETED',
-          tags: ['高优先级', '核心API'],
+          tags: [ '高优先级', '核心API' ],
         },
         {
           id: '2',
@@ -167,7 +167,7 @@ const DetectionTasks: FC = () => {
           createdAt: new Date(Date.now() - 172800000).toISOString(),
           creator: 'user1',
           status: 'RUNNING',
-          tags: ['订单', '查询'],
+          tags: [ '订单', '查询' ],
         },
         {
           id: '3',
@@ -193,7 +193,7 @@ const DetectionTasks: FC = () => {
           createdAt: new Date(Date.now() - 259200000).toISOString(),
           creator: 'admin',
           status: 'FAILED',
-          tags: ['支付', '高优先级', '核心API'],
+          tags: [ '支付', '高优先级', '核心API' ],
         },
       ];
       setTasks(mockTasks);
@@ -367,9 +367,6 @@ const DetectionTasks: FC = () => {
   };
 
 
-
-
-
   const renderSLOTarget = (value: string, index: number, record: DetectionTask) => {
     return (
       <div>
@@ -533,7 +530,7 @@ const DetectionTasks: FC = () => {
                 value={creationDateRange}
                 onChange={handleCreationDateRangeChange}
                 style={{ width: 250 }}
-                placeholder={[i18n.t('Start Date').toString(), i18n.t('End Date').toString()]}
+                placeholder={[ i18n.t('Start Date').toString(), i18n.t('End Date').toString() ]}
               />
             </div>
 
@@ -543,7 +540,7 @@ const DetectionTasks: FC = () => {
                 value={executionDateRange}
                 onChange={handleExecutionDateRangeChange}
                 style={{ width: 250 }}
-                placeholder={[i18n.t('Start Date').toString(), i18n.t('End Date').toString()]}
+                placeholder={[ i18n.t('Start Date').toString(), i18n.t('End Date').toString() ]}
               />
             </div>
           </div>

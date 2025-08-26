@@ -15,17 +15,17 @@ const { RangePicker } = DatePicker;
 const DetectionRecords: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  
-  const [searchKey, setSearchKey] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(20);
-  const [loading, setLoading] = useState(false);
-  const [records, setRecords] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [detailVisible, setDetailVisible] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+
+  const [ searchKey, setSearchKey ] = useState('');
+  const [ statusFilter, setStatusFilter ] = useState('');
+  const [ dateRange, setDateRange ] = useState<[Date, Date] | null>(null);
+  const [ page, setPage ] = useState(1);
+  const [ pageSize ] = useState(20);
+  const [ loading, setLoading ] = useState(false);
+  const [ records, setRecords ] = useState([]);
+  const [ total, setTotal ] = useState(0);
+  const [ detailVisible, setDetailVisible ] = useState(false);
+  const [ currentRecord, setCurrentRecord ] = useState<any>(null);
 
   useEffect(() => {
     // 设置页面标题和面包屑
@@ -34,13 +34,13 @@ const DetectionRecords: FC = () => {
       { key: 'fault_space_detection', value: i18n.t('Fault Space Detection').toString(), path: '/chaos/fault-space-detection/tasks' },
       { key: 'detection_records', value: i18n.t('Detection Records').toString(), path: '/chaos/fault-space-detection/records' },
     ]));
-    
+
     fetchRecords();
   }, []);
 
   useEffect(() => {
     fetchRecords();
-  }, [searchKey, statusFilter, dateRange, page]);
+  }, [ searchKey, statusFilter, dateRange, page ]);
 
   const fetchRecords = async () => {
     setLoading(true);
@@ -54,7 +54,7 @@ const DetectionRecords: FC = () => {
       //   page,
       //   pageSize,
       // });
-      
+
       // Mock drill records data
       const mockRecords = [
         {
@@ -154,7 +154,7 @@ const DetectionRecords: FC = () => {
           },
         },
       ];
-      
+
       setRecords(mockRecords);
       setTotal(mockRecords.length);
     } catch (error) {
@@ -218,9 +218,9 @@ const DetectionRecords: FC = () => {
 
     if (hours > 0) {
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    } else {
-      return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
   };
 
   const renderResultSummary = (record: any) => {
@@ -245,16 +245,16 @@ const DetectionRecords: FC = () => {
     const start = new Date(startTime);
     const end = new Date(endTime);
     const duration = Math.floor((end.getTime() - start.getTime()) / 1000);
-    
+
     if (duration < 60) {
       return `${duration}s`;
     } else if (duration < 3600) {
       return `${Math.floor(duration / 60)}m ${duration % 60}s`;
-    } else {
-      const hours = Math.floor(duration / 3600);
-      const minutes = Math.floor((duration % 3600) / 60);
-      return `${hours}h ${minutes}m`;
     }
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+
   };
 
   const renderStartTime = (value: string) => {
@@ -385,7 +385,7 @@ const DetectionRecords: FC = () => {
             value={dateRange}
             onChange={handleDateRangeChange}
             style={{ width: 250 }}
-            placeholder={[i18n.t('Start Date').toString(), i18n.t('End Date').toString()]}
+            placeholder={[ i18n.t('Start Date').toString(), i18n.t('End Date').toString() ]}
           />
         </div>
       </div>
@@ -409,7 +409,7 @@ const DetectionRecords: FC = () => {
                   padding: 5,
                   fontSize: 12,
                   fontFamily: 'Monaco, Consolas, monospace',
-                  fontWeight: 500
+                  fontWeight: 500,
                 }}
               >
                 {value}

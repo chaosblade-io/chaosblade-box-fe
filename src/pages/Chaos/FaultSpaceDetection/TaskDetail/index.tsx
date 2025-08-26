@@ -3,15 +3,14 @@ import Translation from 'components/Translation';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';
-import { 
-  Tab, 
-  Button, 
-  Message, 
+import {
+  Tab,
+  Button,
+  Message,
   Icon,
   Loading,
   Dialog,
   Tag,
-  Balloon
 } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
@@ -58,23 +57,13 @@ interface TaskDetailData {
       requestBody: string;
     };
     traceConfig: {
-      dagId: string;
-      version: string;
-      sampleCount: number;
-      baselineMetrics: {
-        p95Latency: number;
-        p99Latency: number;
-        avgLatency: number;
-        errorRate: number;
-      };
+      baselineTrace: any;
       faultConfigurations: Array<{
         serviceId: string;
         serviceName: string;
         layer: number;
-        protocol: string;
         faultTemplates: Array<{
           type: string;
-          name: string;
           enabled: boolean;
           parameters: Record<string, any>;
         }>;
@@ -86,7 +75,7 @@ interface TaskDetailData {
         jsonPathAssertions: Array<{
           id: string;
           path: string;
-          operator: string;
+          operator: 'exists' | 'equals' | 'contains' | 'regex' | 'not_exists';
           expectedValue: any;
           description: string;
         }>;
@@ -99,21 +88,7 @@ interface TaskDetailData {
       };
     };
     executionConfig: {
-      totalRequests: number;
       concurrency: number;
-      requestTimeout: number;
-      retryConfig: {
-        count: number;
-        interval: number;
-      };
-      warmupCooldown: {
-        warmupSeconds: number;
-        cooldownSeconds: number;
-      };
-      virtualizationStrategy: {
-        replayStrategy: 'EXACT' | 'TEMPLATE' | 'APPROXIMATE';
-        missStrategy: 'FALLBACK' | 'REJECT';
-      };
     };
   };
   currentExecution?: {
@@ -133,19 +108,20 @@ interface TaskDetailParams {
 const TaskDetail: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { taskId } = useParams<TaskDetailParams>();
-  
-  const [taskData, setTaskData] = useState<TaskDetailData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('configuration');
-  const [executeDialogVisible, setExecuteDialogVisible] = useState(false);
-  const [copyDialogVisible, setCopyDialogVisible] = useState(false);
+  const params = useParams() as TaskDetailParams;
+  const { taskId } = params;
+
+  const [ taskData, setTaskData ] = useState<TaskDetailData | null>(null);
+  const [ loading, setLoading ] = useState(true);
+  const [ activeTab, setActiveTab ] = useState('configuration');
+  const [ executeDialogVisible, setExecuteDialogVisible ] = useState(false);
+  const [ copyDialogVisible, setCopyDialogVisible ] = useState(false);
 
   useEffect(() => {
     if (taskId) {
       loadTaskDetail(taskId);
     }
-  }, [taskId]);
+  }, [ taskId ]);
 
   useEffect(() => {
     if (taskData) {
@@ -157,17 +133,17 @@ const TaskDetail: FC = () => {
         { key: 'task_detail', value: taskData.name, path: `/chaos/fault-space-detection/tasks/${taskId}` },
       ]));
     }
-  }, [taskData, taskId]);
+  }, [ taskData, taskId ]);
 
   const loadTaskDetail = async (id: string) => {
     setLoading(true);
     try {
       // TODO: Replace with actual API call
       // const result = await dispatch.faultSpaceDetection.getTaskDetail({ taskId: id });
-      
+
       // Mock data for development
       const mockTaskData: TaskDetailData = {
-        id: id,
+        id,
         name: '用户登录API故障空间探测',
         creator: 'admin',
         createdAt: new Date(Date.now() - 86400000).toISOString(),
@@ -192,8 +168,8 @@ const TaskDetail: FC = () => {
           apiParameters: {
             pathParams: {},
             queryParams: {
-              'client_id': ['web-app'],
-              'scope': ['read', 'write'],
+              client_id: [ 'web-app' ],
+              scope: [ 'read', 'write' ],
             },
             headers: {
               authType: 'TOKEN',
@@ -209,25 +185,25 @@ const TaskDetail: FC = () => {
             }, null, 2),
           },
           traceConfig: {
-            dagId: 'DAG_20241225_001',
-            version: '1.0.0',
-            sampleCount: 1000,
-            baselineMetrics: {
-              p95Latency: 156,
-              p99Latency: 234,
-              avgLatency: 89,
-              errorRate: 0.2,
+            baselineTrace: {
+              dagId: 'DAG_20241225_001',
+              version: '1.0.0',
+              sampleCount: 1000,
+              baselineMetrics: {
+                p95Latency: 156,
+                p99Latency: 234,
+                avgLatency: 89,
+                errorRate: 0.2,
+              },
             },
             faultConfigurations: [
               {
                 serviceId: 'user-service',
                 serviceName: 'User Service',
                 layer: 1,
-                protocol: 'HTTP',
                 faultTemplates: [
                   {
                     type: 'network_delay',
-                    name: '网络延迟',
                     enabled: true,
                     parameters: {
                       delay: 200,
@@ -236,7 +212,6 @@ const TaskDetail: FC = () => {
                   },
                   {
                     type: 'cpu_stress',
-                    name: 'CPU压力',
                     enabled: true,
                     parameters: {
                       cpuPercent: 80,
@@ -249,11 +224,9 @@ const TaskDetail: FC = () => {
                 serviceId: 'auth-db',
                 serviceName: 'Auth Database',
                 layer: 2,
-                protocol: 'DB',
                 faultTemplates: [
                   {
                     type: 'network_delay',
-                    name: '网络延迟',
                     enabled: true,
                     parameters: {
                       delay: 50,
@@ -266,19 +239,19 @@ const TaskDetail: FC = () => {
           },
           sloConfig: {
             functionalAssertions: {
-              statusCodes: [200, 201],
+              statusCodes: [ 200, 201 ],
               jsonPathAssertions: [
                 {
                   id: 'assertion_1',
                   path: '$.success',
-                  operator: 'equals',
+                  operator: 'equals' as const,
                   expectedValue: true,
                   description: '响应成功标识',
                 },
                 {
                   id: 'assertion_2',
                   path: '$.data.token',
-                  operator: 'exists',
+                  operator: 'exists' as const,
                   expectedValue: null,
                   description: '返回访问令牌',
                 },
@@ -292,21 +265,7 @@ const TaskDetail: FC = () => {
             },
           },
           executionConfig: {
-            totalRequests: 100,
             concurrency: 10,
-            requestTimeout: 30000,
-            retryConfig: {
-              count: 3,
-              interval: 1000,
-            },
-            warmupCooldown: {
-              warmupSeconds: 10,
-              cooldownSeconds: 10,
-            },
-            virtualizationStrategy: {
-              replayStrategy: 'TEMPLATE',
-              missStrategy: 'FALLBACK',
-            },
           },
         },
         currentExecution: Math.random() > 0.5 ? {
@@ -318,7 +277,7 @@ const TaskDetail: FC = () => {
           currentStep: '执行故障注入 - User Service',
         } : undefined,
       };
-      
+
       setTaskData(mockTaskData);
     } catch (error) {
       console.error('Failed to load task detail:', error);
@@ -345,7 +304,7 @@ const TaskDetail: FC = () => {
     try {
       // TODO: Implement copy task logic
       // const newTaskId = await dispatch.faultSpaceDetection.copyTask({ taskId });
-      
+
       Message.success(i18n.t('Task copied successfully').toString());
       setCopyDialogVisible(false);
       // Navigate to new task or stay on current page
@@ -359,7 +318,7 @@ const TaskDetail: FC = () => {
     try {
       // TODO: Implement execute task logic
       // const runId = await dispatch.faultSpaceDetection.executeTask({ taskId });
-      
+
       Message.success(i18n.t('Task execution started successfully').toString());
       setExecuteDialogVisible(false);
       // Refresh task data to show running status
@@ -422,14 +381,14 @@ const TaskDetail: FC = () => {
               </span>
               <Tag color={
                 taskData.status === 'ACTIVE' ? '#52c41a' :
-                taskData.status === 'DRAFT' ? '#faad14' :
-                taskData.status === 'PAUSED' ? '#1890ff' : '#666'
+                  taskData.status === 'DRAFT' ? '#faad14' :
+                    taskData.status === 'PAUSED' ? '#1890ff' : '#666'
               }>
                 {taskData.status}
               </Tag>
             </div>
           </div>
-          
+
           <div className={styles.headerActions}>
             <Button onClick={handleEditConfiguration}>
               <Icon type="edit" />
@@ -439,8 +398,8 @@ const TaskDetail: FC = () => {
               <Icon type="copy" />
               <Translation>Copy as New Task</Translation>
             </Button>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               onClick={handleExecuteImmediately}
               disabled={!!taskData.currentExecution}
             >
@@ -465,7 +424,7 @@ const TaskDetail: FC = () => {
                   </Tag>
                 </div>
                 <div className={styles.progressInfo}>
-                  <Translation>Progress</Translation>: {taskData.currentExecution.progress}% | 
+                  <Translation>Progress</Translation>: {taskData.currentExecution.progress}% |
                   <Translation>Current Step</Translation>: {taskData.currentExecution.currentStep} |
                   <Translation>ETA</Translation>: {formatDate(new Date(taskData.currentExecution.estimatedEndTime).getTime())}
                 </div>
@@ -480,28 +439,28 @@ const TaskDetail: FC = () => {
 
       {/* Tab Content */}
       <div className={styles.tabContainer}>
-        <Tab 
-          activeKey={activeTab} 
-          onChange={setActiveTab}
+        <Tab
+          activeKey={activeTab}
+          onChange={key => setActiveTab(key as string)}
           size="medium"
           contentStyle={{ padding: 0 }}
         >
-          <Tab.Item 
-            title={i18n.t('Configuration Information').toString()} 
+          <Tab.Item
+            title={i18n.t('Configuration Information').toString()}
             key="configuration"
           >
             <ConfigurationTab data={taskData.configuration} />
           </Tab.Item>
-          
-          <Tab.Item 
-            title={i18n.t('Drill Records').toString()} 
+
+          <Tab.Item
+            title={i18n.t('Drill Records').toString()}
             key="drillRecords"
           >
             <DrillRecordsTab taskId={taskId} />
           </Tab.Item>
-          
-          <Tab.Item 
-            title={i18n.t('Change History').toString()} 
+
+          <Tab.Item
+            title={i18n.t('Change History').toString()}
             key="changeHistory"
           >
             <ChangeHistoryTab taskId={taskId} />

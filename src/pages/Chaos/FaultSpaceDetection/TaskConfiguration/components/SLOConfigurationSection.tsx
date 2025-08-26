@@ -2,15 +2,15 @@ import React, { FC, useState } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Input, 
-  Button, 
-  Message, 
+import {
+  Input,
+  Button,
+  Message,
   Icon,
   Select,
   NumberPicker,
   Tag,
-  Checkbox
+  Checkbox,
 } from '@alicloud/console-components';
 
 interface SLOConfigData {
@@ -39,7 +39,7 @@ interface SLOConfigurationSectionProps {
 }
 
 const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, errors, onChange }) => {
-  const [newJsonPathAssertion, setNewJsonPathAssertion] = useState({
+  const [ newJsonPathAssertion, setNewJsonPathAssertion ] = useState({
     path: '',
     operator: 'exists' as const,
     expectedValue: '',
@@ -48,10 +48,10 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
 
   // Predefined status code groups
   const statusCodeGroups = [
-    { label: '2xx Success', codes: [200, 201, 202, 204] },
-    { label: '3xx Redirect', codes: [301, 302, 304] },
-    { label: '4xx Client Error', codes: [400, 401, 403, 404, 409, 422] },
-    { label: '5xx Server Error', codes: [500, 502, 503, 504] },
+    { label: '2xx Success', codes: [ 200, 201, 202, 204 ] },
+    { label: '3xx Redirect', codes: [ 301, 302, 304 ] },
+    { label: '4xx Client Error', codes: [ 400, 401, 403, 404, 409, 422 ] },
+    { label: '5xx Server Error', codes: [ 500, 502, 503, 504 ] },
   ];
 
   const jsonPathOperators = [
@@ -74,9 +74,9 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
   const handleStatusCodeGroupToggle = (groupCodes: number[], checked: boolean) => {
     const currentCodes = data.functionalAssertions.statusCodes;
     const newCodes = checked
-      ? [...new Set([...currentCodes, ...groupCodes])]
+      ? [ ...new Set([ ...currentCodes, ...groupCodes ]) ]
       : currentCodes.filter(code => !groupCodes.includes(code));
-    
+
     handleStatusCodeChange(newCodes);
   };
 
@@ -96,7 +96,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
     onChange({
       functionalAssertions: {
         ...data.functionalAssertions,
-        jsonPathAssertions: [...data.functionalAssertions.jsonPathAssertions, assertion],
+        jsonPathAssertions: [ ...data.functionalAssertions.jsonPathAssertions, assertion ],
       },
     });
 
@@ -152,7 +152,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       <label className={styles.fieldLabel}>
         <Translation>Expected Status Codes</Translation>
       </label>
-      
+
       {/* Status Code Groups */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 8 }}>
@@ -160,11 +160,11 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {statusCodeGroups.map(group => {
-            const isGroupSelected = group.codes.every(code => 
-              data.functionalAssertions.statusCodes.includes(code)
+            const isGroupSelected = group.codes.every(code =>
+              data.functionalAssertions.statusCodes.includes(code),
             );
-            const isPartiallySelected = group.codes.some(code => 
-              data.functionalAssertions.statusCodes.includes(code)
+            const isPartiallySelected = group.codes.some(code =>
+              data.functionalAssertions.statusCodes.includes(code),
             );
 
             return (
@@ -172,7 +172,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
                 key={group.label}
                 checked={isGroupSelected}
                 indeterminate={!isGroupSelected && isPartiallySelected}
-                onChange={(checked) => handleStatusCodeGroupToggle(group.codes, checked)}
+                onChange={checked => handleStatusCodeGroupToggle(group.codes, checked)}
               >
                 {group.label}
               </Checkbox>
@@ -192,12 +192,12 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
         showSearch
         filterLocal={false}
         dataSource={[
-          ...statusCodeGroups.flatMap(group => 
-            group.codes.map(code => ({ label: `${code}`, value: code }))
+          ...statusCodeGroups.flatMap(group =>
+            group.codes.map(code => ({ label: `${code}`, value: code })),
           ),
         ]}
       />
-      
+
       <div className={styles.fieldDescription}>
         <Translation>Select the HTTP status codes that indicate successful responses</Translation>
       </div>
@@ -212,8 +212,8 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
             {data.functionalAssertions.statusCodes.sort().map(code => (
               <Tag key={code} size="small" color={
                 code >= 200 && code < 300 ? '#52c41a' :
-                code >= 300 && code < 400 ? '#1890ff' :
-                code >= 400 && code < 500 ? '#faad14' : '#ff4d4f'
+                  code >= 300 && code < 400 ? '#1890ff' :
+                    code >= 400 && code < 500 ? '#faad14' : '#ff4d4f'
               }>
                 {code}
               </Tag>
@@ -229,17 +229,17 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       <label className={styles.fieldLabel}>
         <Translation>JSONPath Assertions</Translation>
       </label>
-      
+
       {/* Existing Assertions */}
       {data.functionalAssertions.jsonPathAssertions.length > 0 && (
         <div style={{ marginBottom: 16 }}>
           {data.functionalAssertions.jsonPathAssertions.map(assertion => (
-            <div key={assertion.id} style={{ 
-              border: '1px solid #e8e8e8', 
-              borderRadius: 6, 
-              padding: 12, 
+            <div key={assertion.id} style={{
+              border: '1px solid #e8e8e8',
+              borderRadius: 6,
+              padding: 12,
               marginBottom: 8,
-              background: '#fafafa'
+              background: '#fafafa',
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
@@ -262,8 +262,8 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
                     </div>
                   )}
                 </div>
-                <Button 
-                  type="link" 
+                <Button
+                  type="link"
                   size="small"
                   onClick={() => removeJsonPathAssertion(assertion.id)}
                 >
@@ -276,44 +276,44 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       )}
 
       {/* Add New Assertion */}
-      <div style={{ 
-        border: '1px dashed #d9d9d9', 
-        borderRadius: 6, 
+      <div style={{
+        border: '1px dashed #d9d9d9',
+        borderRadius: 6,
         padding: 16,
-        background: '#fafafa'
+        background: '#fafafa',
       }}>
         <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 12 }}>
           <Translation>Add New Assertion</Translation>
         </div>
-        
+
         <div className={styles.formRow}>
           <div className={styles.formCol}>
             <Input
               placeholder="$.data.id"
               value={newJsonPathAssertion.path}
-              onChange={(value) => setNewJsonPathAssertion(prev => ({ ...prev, path: value }))}
+              onChange={value => setNewJsonPathAssertion(prev => ({ ...prev, path: value }))}
               addonBefore="JSONPath"
             />
           </div>
           <div className={styles.formCol}>
             <Select
               value={newJsonPathAssertion.operator}
-              onChange={(value) => setNewJsonPathAssertion(prev => ({ ...prev, operator: value as any }))}
+              onChange={value => setNewJsonPathAssertion(prev => ({ ...prev, operator: value as any }))}
               dataSource={jsonPathOperators}
               style={{ width: '100%' }}
             />
           </div>
         </div>
 
-        {(newJsonPathAssertion.operator === 'equals' || 
-          newJsonPathAssertion.operator === 'contains' || 
+        {(newJsonPathAssertion.operator === 'equals' ||
+          newJsonPathAssertion.operator === 'contains' ||
           newJsonPathAssertion.operator === 'regex') && (
           <div className={styles.formRow}>
             <div className={styles.formCol}>
               <Input
                 placeholder={i18n.t('Expected value').toString()}
                 value={newJsonPathAssertion.expectedValue}
-                onChange={(value) => setNewJsonPathAssertion(prev => ({ ...prev, expectedValue: value }))}
+                onChange={value => setNewJsonPathAssertion(prev => ({ ...prev, expectedValue: value }))}
               />
             </div>
           </div>
@@ -324,7 +324,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
             <Input
               placeholder={i18n.t('Description (optional)').toString()}
               value={newJsonPathAssertion.description}
-              onChange={(value) => setNewJsonPathAssertion(prev => ({ ...prev, description: value }))}
+              onChange={value => setNewJsonPathAssertion(prev => ({ ...prev, description: value }))}
             />
           </div>
           <div style={{ width: 100 }}>
@@ -360,7 +360,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
           </label>
           <NumberPicker
             value={data.performanceTargets.p95Limit}
-            onChange={(value) => updatePerformanceTarget('p95Limit', value)}
+            onChange={value => updatePerformanceTarget('p95Limit', value)}
             min={1}
             max={30000}
             step={10}
@@ -378,7 +378,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
           </label>
           <NumberPicker
             value={data.performanceTargets.p99Limit}
-            onChange={(value) => updatePerformanceTarget('p99Limit', value)}
+            onChange={value => updatePerformanceTarget('p99Limit', value)}
             min={1}
             max={60000}
             step={10}
@@ -398,7 +398,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
           </label>
           <NumberPicker
             value={data.performanceTargets.errorRateLimit}
-            onChange={(value) => updatePerformanceTarget('errorRateLimit', value)}
+            onChange={value => updatePerformanceTarget('errorRateLimit', value)}
             min={0}
             max={100}
             step={0.1}
@@ -413,12 +413,12 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       </div>
 
       {/* Performance Target Summary */}
-      <div style={{ 
-        background: '#f0f9ff', 
-        border: '1px solid #bae7ff', 
-        borderRadius: 6, 
+      <div style={{
+        background: '#f0f9ff',
+        border: '1px solid #bae7ff',
+        borderRadius: 6,
         padding: 16,
-        marginTop: 16 
+        marginTop: 16,
       }}>
         <h5 style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>
           <Translation>SLO Summary</Translation>
@@ -480,7 +480,6 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
           ))}
         </div>
       )}
-
 
 
       {/* Performance Targets */}

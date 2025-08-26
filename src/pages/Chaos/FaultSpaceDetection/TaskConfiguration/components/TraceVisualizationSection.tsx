@@ -2,9 +2,9 @@ import React, { FC, useState, useEffect, useRef } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Button, 
-  Message, 
+import {
+  Button,
+  Message,
   Icon,
   Drawer,
   Checkbox,
@@ -12,7 +12,7 @@ import {
   Select,
   NumberPicker,
   Tag,
-  Balloon
+  Balloon,
 } from '@alicloud/console-components';
 
 interface TraceConfigData {
@@ -63,13 +63,13 @@ interface FaultTemplate {
 
 const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, errors, onChange }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [serviceNodes, setServiceNodes] = useState<ServiceNode[]>([]);
-  const [selectedService, setSelectedService] = useState<ServiceNode | null>(null);
-  const [faultDrawerVisible, setFaultDrawerVisible] = useState(false);
-  const [canvasScale, setCanvasScale] = useState(1);
-  const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [ serviceNodes, setServiceNodes ] = useState<ServiceNode[]>([]);
+  const [ selectedService, setSelectedService ] = useState<ServiceNode | null>(null);
+  const [ faultDrawerVisible, setFaultDrawerVisible ] = useState(false);
+  const [ canvasScale, setCanvasScale ] = useState(1);
+  const [ canvasOffset, setCanvasOffset ] = useState({ x: 0, y: 0 });
+  const [ isDragging, setIsDragging ] = useState(false);
+  const [ dragStart, setDragStart ] = useState({ x: 0, y: 0 });
 
   // Fault templates configuration
   const faultTemplates: FaultTemplate[] = [
@@ -122,12 +122,12 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       name: i18n.t('Process Kill').toString(),
       description: i18n.t('Terminate process to simulate service failure').toString(),
       parameters: [
-        { key: 'signal', name: i18n.t('Signal').toString(), type: 'select', default: 'SIGTERM', 
+        { key: 'signal', name: i18n.t('Signal').toString(), type: 'select', default: 'SIGTERM',
           options: [
             { label: 'SIGTERM', value: 'SIGTERM' },
             { label: 'SIGKILL', value: 'SIGKILL' },
             { label: 'SIGSTOP', value: 'SIGSTOP' },
-          ]
+          ],
         },
         { key: 'restartDelay', name: i18n.t('Restart Delay (s)').toString(), type: 'number', default: 10, min: 0, max: 300, unit: 's' },
       ],
@@ -147,7 +147,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
             { label: '502 Bad Gateway', value: 502 },
             { label: '503 Service Unavailable', value: 503 },
             { label: '504 Gateway Timeout', value: 504 },
-          ]
+          ],
         },
         { key: 'percentage', name: i18n.t('Percentage (%)').toString(), type: 'number', default: 50, min: 1, max: 100, unit: '%' },
       ],
@@ -162,7 +162,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
   useEffect(() => {
     // Redraw canvas when data changes
     drawTraceVisualization();
-  }, [serviceNodes, selectedService, canvasScale, canvasOffset]);
+  }, [ serviceNodes, selectedService, canvasScale, canvasOffset ]);
 
   const generateMockTraceData = () => {
     const mockNodes: ServiceNode[] = [
@@ -192,7 +192,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // Apply transformations
     ctx.save();
     ctx.scale(canvasScale, canvasScale);
@@ -200,7 +200,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
 
     // Draw connections between layers
     drawConnections(ctx);
-    
+
     // Draw service nodes
     serviceNodes.forEach(node => {
       drawServiceNode(ctx, node);
@@ -239,7 +239,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
     ctx.fillStyle = node.selected ? '#e6f7ff' : '#fff';
     ctx.strokeStyle = node.selected ? '#1890ff' : '#d9d9d9';
     ctx.lineWidth = node.selected ? 3 : 1;
-    
+
     ctx.fillRect(x, y, nodeWidth, nodeHeight);
     ctx.strokeRect(x, y, nodeWidth, nodeHeight);
 
@@ -250,7 +250,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       DB: '#faad14',
       MQ: '#722ed1',
     };
-    
+
     ctx.fillStyle = protocolColors[node.protocol];
     ctx.fillRect(x, y, nodeWidth, 8);
 
@@ -282,7 +282,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       const nodeHeight = 60;
       const nodeX = node.x - nodeWidth / 2;
       const nodeY = node.y - nodeHeight / 2;
-      
+
       return x >= nodeX && x <= nodeX + nodeWidth && y >= nodeY && y <= nodeY + nodeHeight;
     });
 
@@ -292,7 +292,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
         ...node,
         selected: node.id === clickedNode.id,
       })));
-      
+
       setSelectedService(clickedNode);
       setFaultDrawerVisible(true);
     } else {
@@ -315,7 +315,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
 
   const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDragging) return;
-    
+
     setCanvasOffset({
       x: event.clientX - dragStart.x,
       y: event.clientY - dragStart.y,
@@ -329,7 +329,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
   const updateFaultConfiguration = (serviceId: string, faultTemplates: any[]) => {
     const existingConfig = data.faultConfigurations.find(f => f.serviceId === serviceId);
     const service = serviceNodes.find(s => s.id === serviceId);
-    
+
     if (!service) return;
 
     const newConfig = {
@@ -340,8 +340,8 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
     };
 
     const updatedConfigurations = existingConfig
-      ? data.faultConfigurations.map(f => f.serviceId === serviceId ? newConfig : f)
-      : [...data.faultConfigurations, newConfig];
+      ? data.faultConfigurations.map(f => (f.serviceId === serviceId ? newConfig : f))
+      : [ ...data.faultConfigurations, newConfig ];
 
     onChange({
       faultConfigurations: updatedConfigurations,
@@ -360,16 +360,16 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
 
       const updatedTemplates = enabled
         ? [
-            ...currentFaultTemplates.filter(t => t.type !== templateType),
-            {
-              type: templateType,
-              enabled: true,
-              parameters: template.parameters.reduce((acc, param) => ({
-                ...acc,
-                [param.key]: param.default,
-              }), {}),
-            },
-          ]
+          ...currentFaultTemplates.filter(t => t.type !== templateType),
+          {
+            type: templateType,
+            enabled: true,
+            parameters: template.parameters.reduce((acc, param) => ({
+              ...acc,
+              [param.key]: param.default,
+            }), {}),
+          },
+        ]
         : currentFaultTemplates.filter(t => t.type !== templateType);
 
       updateFaultConfiguration(selectedService.id, updatedTemplates);
@@ -409,25 +409,25 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       >
         <div style={{ padding: '0 24px 24px 24px' }}>
           {/* Service Information */}
-          <div style={{ 
-            background: '#f5f5f5', 
-            padding: 16, 
-            borderRadius: 6, 
-            marginBottom: 24 
+          <div style={{
+            background: '#f5f5f5',
+            padding: 16,
+            borderRadius: 6,
+            marginBottom: 24,
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <span style={{ fontWeight: 600 }}>
                 <Translation>Service</Translation>: {selectedService.name}
               </span>
-              <Tag color={selectedService.protocol === 'HTTP' ? '#52c41a' : 
-                         selectedService.protocol === 'gRPC' ? '#1890ff' : 
-                         selectedService.protocol === 'DB' ? '#faad14' : '#722ed1'}>
+              <Tag color={selectedService.protocol === 'HTTP' ? '#52c41a' :
+                selectedService.protocol === 'gRPC' ? '#1890ff' :
+                  selectedService.protocol === 'DB' ? '#faad14' : '#722ed1'}>
                 {selectedService.protocol}
               </Tag>
             </div>
             <div style={{ fontSize: 12, color: '#666' }}>
-              <Translation>Layer</Translation>: L{selectedService.layer} | 
-              P95: {selectedService.p95Latency}ms | 
+              <Translation>Layer</Translation>: L{selectedService.layer} |
+              P95: {selectedService.p95Latency}ms |
               <Translation>Calls</Translation>: {selectedService.callCount}
             </div>
           </div>
@@ -437,23 +437,23 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
             <h4 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>
               <Translation>Fault Templates</Translation>
             </h4>
-            
+
             {faultTemplates.map(template => {
               const isEnabled = currentFaultTemplates.some(t => t.type === template.type && t.enabled);
               const currentTemplate = currentFaultTemplates.find(t => t.type === template.type);
 
               return (
-                <div key={template.type} style={{ 
-                  border: '1px solid #e8e8e8', 
-                  borderRadius: 6, 
+                <div key={template.type} style={{
+                  border: '1px solid #e8e8e8',
+                  borderRadius: 6,
                   marginBottom: 16,
-                  background: isEnabled ? '#f6ffed' : '#fff'
+                  background: isEnabled ? '#f6ffed' : '#fff',
                 }}>
                   <div style={{ padding: 16, borderBottom: isEnabled ? '1px solid #e8e8e8' : 'none' }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                       <Checkbox
                         checked={isEnabled}
-                        onChange={(checked) => handleTemplateToggle(template.type, checked)}
+                        onChange={checked => handleTemplateToggle(template.type, checked)}
                       />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: 600, marginBottom: 4 }}>
@@ -471,19 +471,19 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
                     <div style={{ padding: 16 }}>
                       {template.parameters.map(param => (
                         <div key={param.key} style={{ marginBottom: 16 }}>
-                          <label style={{ 
-                            display: 'block', 
-                            fontSize: 14, 
-                            fontWeight: 500, 
-                            marginBottom: 8 
+                          <label style={{
+                            display: 'block',
+                            fontSize: 14,
+                            fontWeight: 500,
+                            marginBottom: 8,
                           }}>
                             {param.name}
                           </label>
-                          
+
                           {param.type === 'number' && (
                             <NumberPicker
                               value={currentTemplate.parameters[param.key]}
-                              onChange={(value) => handleParameterChange(template.type, param.key, value)}
+                              onChange={value => handleParameterChange(template.type, param.key, value)}
                               min={param.min}
                               max={param.max}
                               step={1}
@@ -491,20 +491,20 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
                               innerAfter={param.unit && <span>{param.unit}</span>}
                             />
                           )}
-                          
+
                           {param.type === 'select' && (
                             <Select
                               value={currentTemplate.parameters[param.key]}
-                              onChange={(value) => handleParameterChange(template.type, param.key, value)}
+                              onChange={value => handleParameterChange(template.type, param.key, value)}
                               style={{ width: '100%' }}
                               dataSource={param.options}
                             />
                           )}
-                          
+
                           {param.type === 'string' && (
                             <Input
                               value={currentTemplate.parameters[param.key]}
-                              onChange={(value) => handleParameterChange(template.type, param.key, value)}
+                              onChange={value => handleParameterChange(template.type, param.key, value)}
                               style={{ width: '100%' }}
                             />
                           )}
@@ -518,11 +518,11 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
           </div>
 
           {/* Batch Operations */}
-          <div style={{ 
-            marginTop: 24, 
-            padding: 16, 
-            background: '#f9f9f9', 
-            borderRadius: 6 
+          <div style={{
+            marginTop: 24,
+            padding: 16,
+            background: '#f9f9f9',
+            borderRadius: 6,
           }}>
             <h5 style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>
               <Translation>Batch Operations</Translation>
@@ -568,23 +568,23 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       )}
 
       {/* Trace Visualization Canvas */}
-      <div style={{ 
-        border: '1px solid #e8e8e8', 
-        borderRadius: 8, 
+      <div style={{
+        border: '1px solid #e8e8e8',
+        borderRadius: 8,
         background: '#fafafa',
         marginBottom: 24,
-        position: 'relative'
+        position: 'relative',
       }}>
         {/* Canvas Controls */}
-        <div style={{ 
-          position: 'absolute', 
-          top: 16, 
-          right: 16, 
+        <div style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
           zIndex: 10,
           display: 'flex',
-          gap: 8
+          gap: 8,
         }}>
-          <Balloon 
+          <Balloon
             trigger={
               <Button size="small">
                 <Icon type="zoom-in" />
@@ -594,8 +594,8 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
           >
             <Translation>Zoom In</Translation>
           </Balloon>
-          
-          <Balloon 
+
+          <Balloon
             trigger={
               <Button size="small">
                 <Icon type="zoom-out" />
@@ -605,8 +605,8 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
           >
             <Translation>Zoom Out</Translation>
           </Balloon>
-          
-          <Balloon 
+
+          <Balloon
             trigger={
               <Button size="small">
                 <Icon type="refresh" />
@@ -623,11 +623,11 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
           ref={canvasRef}
           width={800}
           height={400}
-          style={{ 
-            width: '100%', 
-            height: 400, 
+          style={{
+            width: '100%',
+            height: 400,
             cursor: isDragging ? 'grabbing' : 'grab',
-            display: 'block'
+            display: 'block',
           }}
           onClick={handleCanvasClick}
           onWheel={handleCanvasWheel}
@@ -638,14 +638,14 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
         />
 
         {/* Legend */}
-        <div style={{ 
-          position: 'absolute', 
-          bottom: 16, 
+        <div style={{
+          position: 'absolute',
+          bottom: 16,
           left: 16,
           background: 'rgba(255, 255, 255, 0.9)',
           padding: 12,
           borderRadius: 6,
-          fontSize: 12
+          fontSize: 12,
         }}>
           <div style={{ fontWeight: 600, marginBottom: 8 }}>
             <Translation>Protocol Legend</Translation>
@@ -672,12 +672,12 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       </div>
 
       {/* Instructions */}
-      <div style={{ 
-        background: '#f0f9ff', 
-        border: '1px solid #bae7ff', 
-        borderRadius: 6, 
+      <div style={{
+        background: '#f0f9ff',
+        border: '1px solid #bae7ff',
+        borderRadius: 6,
         padding: 16,
-        marginBottom: 24 
+        marginBottom: 24,
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
           <Icon type="info-circle" style={{ color: '#1890ff', marginTop: 2 }} />
@@ -697,11 +697,11 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
 
       {/* Configuration Summary */}
       {data.faultConfigurations.length > 0 && (
-        <div style={{ 
-          background: '#f6ffed', 
-          border: '1px solid #b7eb8f', 
-          borderRadius: 6, 
-          padding: 16 
+        <div style={{
+          background: '#f6ffed',
+          border: '1px solid #b7eb8f',
+          borderRadius: 6,
+          padding: 16,
         }}>
           <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>
             <Translation>Fault Configuration Summary</Translation>

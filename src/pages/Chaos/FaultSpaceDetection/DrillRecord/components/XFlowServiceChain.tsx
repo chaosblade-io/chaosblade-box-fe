@@ -44,7 +44,7 @@ interface XFlowServiceChainProps {
 const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
   serviceNodes,
   onServiceClick,
-  selectedService
+  selectedService,
 }) => {
 
   const getStatusColor = (status: string) => {
@@ -68,18 +68,18 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
 
   const handleServiceClick = useCallback((serviceId: string) => {
     onServiceClick(serviceId);
-  }, [onServiceClick]);
+  }, [ onServiceClick ]);
 
   const renderServiceNode = (node: ServiceNode) => {
     const statusColor = getStatusColor(node.status);
     const protocolColor = getProtocolColor(node.protocol);
     const isSelected = selectedService?.id === node.id;
-    
+
     // Check if service has test results
     const hasTestResults = node.testResults && node.testResults.faultScenarios.length > 0;
     const completedScenarios = node.testResults?.faultScenarios.filter(s => s.status === 'COMPLETED').length || 0;
     const totalScenarios = node.testResults?.faultScenarios.length || 0;
-    
+
     return (
       <g key={node.id} transform={`translate(${node.x - 60}, ${node.y - 30})`}>
         {/* Selection highlight */}
@@ -97,7 +97,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
             opacity="0.8"
           />
         )}
-        
+
         {/* Node background */}
         <rect
           width="120"
@@ -109,7 +109,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => handleServiceClick(node.id)}
         />
-        
+
         {/* Protocol indicator bar */}
         <rect
           width="120"
@@ -119,7 +119,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
           style={{ cursor: 'pointer' }}
           onClick={() => handleServiceClick(node.id)}
         />
-        
+
         {/* Service name */}
         <text
           x="60"
@@ -134,7 +134,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
         >
           {node.name}
         </text>
-        
+
         {/* Protocol type */}
         <text
           x="60"
@@ -148,7 +148,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
         >
           {node.protocol}
         </text>
-        
+
         {/* Test progress indicator */}
         {hasTestResults && (
           <text
@@ -164,7 +164,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
             {completedScenarios}/{totalScenarios} tests
           </text>
         )}
-        
+
         {/* Status indicator */}
         <circle
           cx="105"
@@ -245,7 +245,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
       { from: 'api-gateway', to: 'user-service' },
       { from: 'api-gateway', to: 'auth-service' },
       { from: 'api-gateway', to: 'order-service' },
-      
+
       // Layer 1 to Layer 2
       { from: 'user-service', to: 'user-db' },
       { from: 'user-service', to: 'cache' },
@@ -258,9 +258,9 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
     return connections.map((conn, index) => {
       const fromNode = serviceNodes.find(node => node.id === conn.from);
       const toNode = serviceNodes.find(node => node.id === conn.to);
-      
+
       if (!fromNode || !toNode) return null;
-      
+
       return (
         <line
           key={index}
@@ -282,7 +282,7 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
       borderRadius: 6,
       overflow: 'hidden',
       background: '#fafafa',
-      padding: 20
+      padding: 20,
     }}>
       <svg width="100%" height="400" viewBox="0 0 900 400">
         {/* Arrow marker definition */}
@@ -301,10 +301,10 @@ const XFlowServiceChain: FC<XFlowServiceChainProps> = ({
             />
           </marker>
         </defs>
-        
+
         {/* Render connections */}
         {renderConnections()}
-        
+
         {/* Render service nodes */}
         {serviceNodes.map(renderServiceNode)}
       </svg>

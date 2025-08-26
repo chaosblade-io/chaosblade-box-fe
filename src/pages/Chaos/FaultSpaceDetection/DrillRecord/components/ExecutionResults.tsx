@@ -9,7 +9,7 @@ import {
   Tag,
   MenuButton,
   Message,
-  Balloon
+  Balloon,
 } from '@alicloud/console-components';
 import formatDate from '../../../lib/DateUtil';
 
@@ -95,26 +95,12 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
   metrics,
   onExport,
 }) => {
-  const [chartType, setChartType] = useState<'performance' | 'timeline' | 'success-rate'>('performance');
-  const [faultDetailVisible, setFaultDetailVisible] = useState(false);
-  const [selectedFaultCombination, setSelectedFaultCombination] = useState<ChainFailure | ChainHighLatency | null>(null);
+  const [ chartType, setChartType ] = useState<'performance' | 'timeline' | 'success-rate'>('performance');
+  const [ faultDetailVisible, setFaultDetailVisible ] = useState(false);
+  const [ selectedFaultCombination, setSelectedFaultCombination ] = useState<ChainFailure | ChainHighLatency | null>(null);
   const performanceCanvasRef = useRef<HTMLCanvasElement>(null);
   const timelineCanvasRef = useRef<HTMLCanvasElement>(null);
   const successRateCanvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    switch (chartType) {
-      case 'performance':
-        drawPerformanceComparison();
-        break;
-      case 'timeline':
-        drawTimelineChart();
-        break;
-      case 'success-rate':
-        drawSuccessRateChart();
-        break;
-    }
-  }, [chartType, executionPlan, metrics]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -147,7 +133,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
       { label: 'P95 Latency', baseline: metrics.baseline.p95, current: metrics.current.p95, unit: 'ms' },
       { label: 'P99 Latency', baseline: metrics.baseline.p99, current: metrics.current.p99, unit: 'ms' },
       { label: 'Error Rate', baseline: metrics.baseline.errorRate, current: metrics.current.errorRate, unit: '%' },
-      { label: 'RPS', baseline: metrics.baseline.rps, current: metrics.current.rps, unit: '' }
+      { label: 'RPS', baseline: metrics.baseline.rps, current: metrics.current.rps, unit: '' },
     ];
 
     const margin = 60;
@@ -157,7 +143,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
     const barSpacing = chartHeight / metrics_data.length;
 
     // Find max value for scaling
-    const maxValue = Math.max(...metrics_data.flatMap(m => [m.baseline, m.current]));
+    const maxValue = Math.max(...metrics_data.flatMap(m => [ m.baseline, m.current ]));
     const scale = chartWidth / maxValue;
 
     // Draw title
@@ -202,7 +188,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
       ctx.font = '10px Arial';
       ctx.textAlign = 'left';
       ctx.fillText(`${metric.baseline.toFixed(1)}${metric.unit}`, margin + metric.baseline * scale + 5, y + barHeight / 4 + 3);
-      ctx.fillText(`${metric.current.toFixed(1)}${metric.unit}`, margin + metric.current * scale + 5, y + barHeight * 3/4 + 5);
+      ctx.fillText(`${metric.current.toFixed(1)}${metric.unit}`, margin + metric.current * scale + 5, y + barHeight * 3 / 4 + 5);
 
       // Draw percentage change
       const change = ((metric.current - metric.baseline) / metric.baseline * 100);
@@ -239,11 +225,11 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
         status: fault.status,
         startTime: fault.startTime ? new Date(fault.startTime).getTime() : Date.now() + index * 60000,
         endTime: fault.endTime ? new Date(fault.endTime).getTime() : Date.now() + (index + 1) * 60000,
-      }))
+      })),
     }));
 
     // Find time range
-    const allTimes = timelineData.flatMap(s => s.faults.flatMap(f => [f.startTime, f.endTime]));
+    const allTimes = timelineData.flatMap(s => s.faults.flatMap(f => [ f.startTime, f.endTime ]));
     const minTime = Math.min(...allTimes);
     const maxTime = Math.max(...allTimes);
     const timeRange = maxTime - minTime;
@@ -279,7 +265,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
           RUNNING: '#1890ff',
           FAILED: '#ff4d4f',
           PENDING: '#d9d9d9',
-          SKIPPED: '#faad14'
+          SKIPPED: '#faad14',
         };
 
         ctx.fillStyle = statusColors[fault.status] || '#d9d9d9';
@@ -333,7 +319,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
         serviceName: service.serviceName,
         successRate,
         failureRate,
-        pendingRate: 100 - successRate - failureRate
+        pendingRate: 100 - successRate - failureRate,
       };
     });
 
@@ -348,7 +334,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
     const legendItems = [
       { label: 'Success', color: '#52c41a' },
       { label: 'Failure', color: '#ff4d4f' },
-      { label: 'Pending', color: '#d9d9d9' }
+      { label: 'Pending', color: '#d9d9d9' },
     ];
 
     legendItems.forEach((item, index) => {
@@ -540,7 +526,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}>
         <div style={{
           background: '#fff',
@@ -549,7 +535,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
           maxWidth: 800,
           width: '90%',
           maxHeight: '80vh',
-          overflow: 'auto'
+          overflow: 'auto',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <h3 style={{ margin: 0, fontSize: 18, fontWeight: 600 }}>
@@ -573,7 +559,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
                   background: '#f8f9fa',
                   border: '1px solid #e8e8e8',
                   borderRadius: 6,
-                  padding: 16
+                  padding: 16,
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                     <Tag color="#1890ff" size="medium">
@@ -583,7 +569,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
                   </div>
                   <div style={{ fontSize: 12, color: '#666' }}>
                     <Translation>Parameters</Translation>:
-                    {Object.entries(fault.faultParameters).map(([key, value]) => (
+                    {Object.entries(fault.faultParameters).map(([ key, value ]) => (
                       <span key={key} style={{ marginLeft: 8, marginRight: 12 }}>
                         {key}: <code>{JSON.stringify(value)}</code>
                       </span>
@@ -602,7 +588,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
               background: '#fff',
               border: '1px solid #e8e8e8',
               borderRadius: 6,
-              padding: 16
+              padding: 16,
             }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
                 <div>
@@ -681,7 +667,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
           <Icon type="chart" />
           <Translation>Execution Results</Translation>
         </div>
-        <MenuButton 
+        <MenuButton
           label={
             <span>
               <Icon type="download" style={{ marginRight: 4 }} />
