@@ -29,6 +29,8 @@ const WorkspaceDetail = lazy(() => import('./WorkspaceDetail'));
 
 const SceneFunction = lazy(() => import('./SceneFunction'));
 const Overview = lazy(() => import('./Overview'));
+/** 故障空间探测 */
+const FaultSpaceDetection = lazy(() => import('./FaultSpaceDetection'));
 
 const { Switch, Route, useRouteMatch } = router;
 const Arch: FC = () => {
@@ -65,6 +67,7 @@ const Arch: FC = () => {
       <Route exact path={`${path}/expertises`} component={ExpertiseList} />
       <Route exact path={`${path}/scenes`} component={SceneFunction} />
       <Route exact path={`${path}/overview`} component={Overview} />
+      <Route path={`${path}/fault-space-detection`} component={FaultSpaceDetection} />
     </Switch>
   );
 };

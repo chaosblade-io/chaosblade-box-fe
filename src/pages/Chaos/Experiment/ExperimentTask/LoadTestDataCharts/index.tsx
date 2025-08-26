@@ -463,8 +463,19 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
   async function handleStopLoadTest() {
     setStopping(true);
     try {
-      console.log('Stopping load test for taskId:', taskId);
-      await dispatch.loadTestDefinition.stopLoadTestTask({ taskId });
+      // 获取当前运行的压测任务
+      const currentTask = loadTestTasks.find(task => task.status === 'RUNNING' || task.status === 'PENDING');
+
+      if (!currentTask) {
+        Message.error(i18n.t('No running load test task found').toString());
+        return;
+      }
+
+      // 使用 ILoadTestTask 的 taskId 来停止压测任务
+      console.log('Stopping load test for task:', currentTask);
+      console.log('Using taskId:', currentTask.taskId);
+
+      await dispatch.loadTestDefinition.stopLoadTestTask({ taskId: currentTask.taskId });
 
       Message.success(i18n.t('Load test task stopped successfully').toString());
 
