@@ -1,0 +1,466 @@
+.container {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Loading and Error States */
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background: #fff;
+}
+
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background: #fff;
+}
+
+.errorContent {
+  text-align: center;
+  padding: 40px;
+}
+
+.errorContent h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.errorContent p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* Page Header */
+.pageHeader {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 24px 32px;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.taskInfo {
+  flex: 1;
+}
+
+.taskName {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.taskMeta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Running Status Banner */
+.runningBanner {
+  background: linear-gradient(90deg, #e6f7ff 0%, #bae7ff 100%);
+  border-bottom: 1px solid #91d5ff;
+  padding: 16px 32px;
+}
+
+.bannerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.statusInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.spinningIcon {
+  animation: spin 1s linear infinite;
+  color: #1890ff;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.statusText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.progressInfo {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Tab Container */
+.tabContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+/* Configuration Tab Styles */
+.configCard {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  background: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+.configRow {
+  display: flex;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.configRow:last-child {
+  margin-bottom: 0;
+}
+
+.configLabel {
+  font-weight: 500;
+  color: #666;
+  width: 140px;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.configValue {
+  flex: 1;
+  color: #333;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.configValue.code {
+  font-family: 'Monaco', 'Consolas', monospace;
+  background: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.configValue.json {
+  background: #f5f5f5;
+  padding: 16px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Fault Configuration Styles */
+.faultServiceCard {
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.faultServiceHeader {
+  background: #fafafa;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.faultServiceHeader:hover {
+  background: #f0f0f0;
+}
+
+.serviceInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.serviceName {
+  font-weight: 600;
+  color: #333;
+}
+
+.serviceLayer {
+  font-size: 12px;
+  color: #666;
+}
+
+.protocolTag {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.protocolHTTP {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.protocolDB {
+  background: #fff7e6;
+  color: #faad14;
+  border: 1px solid #ffd591;
+}
+
+.protocolGRPC {
+  background: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.faultTemplates {
+  padding: 16px;
+}
+
+.faultTemplate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.faultTemplate:last-child {
+  border-bottom: none;
+}
+
+.faultInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.faultName {
+  font-weight: 500;
+  color: #333;
+}
+
+.faultParams {
+  font-size: 12px;
+  color: #666;
+}
+
+.enabledBadge {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* SLO Configuration Styles */
+.sloSection {
+  margin-bottom: 24px;
+}
+
+.sloSectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.statusCodeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.statusCode {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.statusCode2xx {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.statusCode3xx {
+  background: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.statusCode4xx {
+  background: #fff7e6;
+  color: #faad14;
+  border: 1px solid #ffd591;
+}
+
+.statusCode5xx {
+  background: #fff2f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.jsonPathAssertion {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.assertionPath {
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 12px;
+  color: #1890ff;
+  margin-bottom: 4px;
+}
+
+.assertionDescription {
+  font-size: 12px;
+  color: #666;
+}
+
+.performanceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.performanceItem {
+  text-align: center;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.performanceLabel {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.performanceValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pageHeader {
+    padding: 16px 20px;
+  }
+  
+  .headerContent {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .headerActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .taskMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .runningBanner {
+    padding: 12px 20px;
+  }
+  
+  .bannerContent {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .tabContainer {
+    padding: 16px 20px;
+  }
+  
+  .cardContent {
+    padding: 16px;
+  }
+  
+  .configRow {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .configLabel {
+    width: auto;
+    font-weight: 600;
+  }
+  
+  .performanceGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -47,6 +47,30 @@ const menuConfig = [
     ],
   },
   {
+    key: '/chaos/fault-space-detection',
+    label: i18n.t('Fault Space Detection'),
+    items: [
+      {
+        key: '/chaos/fault-space-detection/tasks',
+        label: i18n.t('Detection Tasks'),
+        to: `/chaos/fault-space-detection/tasks?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/tasks' ],
+      },
+      {
+        key: '/chaos/fault-space-detection/add',
+        label: i18n.t('Add Detection'),
+        to: `/chaos/fault-space-detection/add?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/add' ],
+      },
+      {
+        key: '/chaos/fault-space-detection/records',
+        label: i18n.t('Detection Records'),
+        to: `/chaos/fault-space-detection/records?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/records' ],
+      },
+    ],
+  },
+  {
     key: '/chaos/dataAdmin',
     label: i18n.t('Data Management'),
     items: [
@@ -72,6 +96,10 @@ export const pathNameList = [
     index: '/chaos/application/',
     value: 'chaosApplicationMenu',
   },
+  {
+    index: '/chaos/fault-space-detection/',
+    value: 'faultSpaceDetectionMenu',
+  },
 ];
 
 // 从二级导航返回哪个菜单
@@ -79,6 +107,10 @@ export const returnMenuList = [
   {
     key: 'chaosApplicationMenu',
     value: '/chaos/application',
+  },
+  {
+    key: 'faultSpaceDetectionMenu',
+    value: '/chaos/fault-space-detection',
   },
 ];
 
@@ -111,6 +143,25 @@ export function setMenuConfig(key: string) {
       },
     ];
   }
+  if (key === 'faultSpaceDetectionMenu') {
+    return [
+      {
+        key: '/chaos/fault-space-detection/tasks',
+        label: i18n.t('Detection Tasks'),
+        to: `/chaos/fault-space-detection/tasks?${commonUrlStr}`,
+      },
+      {
+        key: '/chaos/fault-space-detection/add',
+        label: i18n.t('Add Detection'),
+        to: `/chaos/fault-space-detection/add?${commonUrlStr}`,
+      },
+      {
+        key: '/chaos/fault-space-detection/records',
+        label: i18n.t('Detection Records'),
+        to: `/chaos/fault-space-detection/records?${commonUrlStr}`,
+      },
+    ];
+  }
 }
 
 // 激活菜单
@@ -118,4 +169,7 @@ export const activeKeys: {[key: string]: string} = {
   '/chaos/expertise/admin': '/chaos/dataAdmin',
   '/chaos/scene/list': '/chaos/dataAdmin',
   '/chaos/loadtest/admin': '/chaos/dataAdmin',
+  '/chaos/fault-space-detection/tasks': '/chaos/fault-space-detection',
+  '/chaos/fault-space-detection/add': '/chaos/fault-space-detection',
+  '/chaos/fault-space-detection/records': '/chaos/fault-space-detection',
 };

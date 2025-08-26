@@ -253,15 +253,18 @@ export default function ExperimentTask() {
   };
 
   // 停止压测任务
-  const _stopLoadTestTask = async (experimentTaskId: string) => {
+  const _stopLoadTestTask = async (loadTestTaskId: string) => {
     try {
-      console.log('Stopping load test task for experimentTaskId:', experimentTaskId);
-      await dispatch.loadTestDefinition.stopLoadTestTask({ taskId: experimentTaskId });
+      console.log('Stopping load test task with taskId:', loadTestTaskId);
+
+      // 直接使用传入的 loadTestTaskId（这应该是 ILoadTestTask 的 taskId）
+      await dispatch.loadTestDefinition.stopLoadTestTask({ taskId: loadTestTaskId });
       Message.success(i18n.t('Load test task stopped successfully').toString());
+
       // 重新获取任务状态
-      await fetchLoadTestTasks(experimentTaskId);
+      await fetchLoadTestTasks(taskId);
     } catch (error) {
-      console.error('Failed to stop load test task for experimentTaskId:', experimentTaskId, error);
+      console.error('Failed to stop load test task with taskId:', loadTestTaskId, error);
       Message.error(i18n.t('Failed to stop load test task').toString());
     }
   };
