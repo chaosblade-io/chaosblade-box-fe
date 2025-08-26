@@ -46,12 +46,12 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    } else {
-      return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
   };
 
   const getStatusTag = (status: string) => {
@@ -64,7 +64,7 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
     };
 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.RUNNING;
-    
+
     return (
       <div className={`${styles.statusTag} ${config.className}`}>
         <Icon type={config.icon} size="xs" />
@@ -86,17 +86,17 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
         </div>
         <div className={styles.controlButtons}>
           {canPauseResume && (
-            <Button 
-              type={isRunning ? "normal" : "primary"}
+            <Button
+              type={isRunning ? 'normal' : 'primary'}
               onClick={onPauseResume}
             >
-              <Icon type={isRunning ? "pause" : "play"} />
+              <Icon type={isRunning ? 'pause' : 'play'} />
               <Translation>{isRunning ? 'Pause' : 'Resume'}</Translation>
             </Button>
           )}
-          
+
           {canTerminate && (
-            <Balloon 
+            <Balloon
               trigger={
                 <Button type="normal" warning onClick={onTerminate}>
                   <Icon type="stop" />
@@ -109,7 +109,7 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
               <Translation>Immediately revoke current faults and stop subsequent execution</Translation>
             </Balloon>
           )}
-          
+
           <Button onClick={onExport}>
             <Icon type="download" />
             <Translation>Export Report</Translation>

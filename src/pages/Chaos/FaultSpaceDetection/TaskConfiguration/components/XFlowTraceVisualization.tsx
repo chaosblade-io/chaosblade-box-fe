@@ -2,9 +2,9 @@ import React, { FC, useState, useEffect, useRef, useCallback } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Button, 
-  Message, 
+import {
+  Button,
+  Message,
   Icon,
   Drawer,
   Checkbox,
@@ -12,7 +12,7 @@ import {
   Select,
   NumberPicker,
   Tag,
-  Balloon
+  Balloon,
 } from '@alicloud/console-components';
 
 // XFlow imports - we'll use a simplified approach for now
@@ -66,10 +66,10 @@ interface FaultTemplate {
 }
 
 const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, errors, onChange }) => {
-  const [serviceNodes, setServiceNodes] = useState<ServiceNode[]>([]);
-  const [selectedService, setSelectedService] = useState<ServiceNode | null>(null);
-  const [faultDrawerVisible, setFaultDrawerVisible] = useState(false);
-  const [availableFaultTemplates] = useState<FaultTemplate[]>([
+  const [ serviceNodes, setServiceNodes ] = useState<ServiceNode[]>([]);
+  const [ selectedService, setSelectedService ] = useState<ServiceNode | null>(null);
+  const [ faultDrawerVisible, setFaultDrawerVisible ] = useState(false);
+  const [ availableFaultTemplates ] = useState<FaultTemplate[]>([
     {
       type: 'NETWORK_DELAY',
       name: 'Network Delay',
@@ -77,8 +77,8 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
       category: 'NETWORK',
       parameters: [
         { name: 'delay', type: 'number', required: true, defaultValue: 100, description: 'Delay in milliseconds' },
-        { name: 'variance', type: 'number', required: false, defaultValue: 10, description: 'Delay variance percentage' }
-      ]
+        { name: 'variance', type: 'number', required: false, defaultValue: 10, description: 'Delay variance percentage' },
+      ],
     },
     {
       type: 'CPU_STRESS',
@@ -87,8 +87,8 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
       category: 'RESOURCE',
       parameters: [
         { name: 'cpuPercent', type: 'number', required: true, defaultValue: 80, description: 'CPU usage percentage' },
-        { name: 'duration', type: 'number', required: true, defaultValue: 60, description: 'Duration in seconds' }
-      ]
+        { name: 'duration', type: 'number', required: true, defaultValue: 60, description: 'Duration in seconds' },
+      ],
     },
     {
       type: 'MEMORY_LEAK',
@@ -97,8 +97,8 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
       category: 'RESOURCE',
       parameters: [
         { name: 'memoryMB', type: 'number', required: true, defaultValue: 512, description: 'Memory to consume in MB' },
-        { name: 'rate', type: 'number', required: false, defaultValue: 10, description: 'Consumption rate MB/s' }
-      ]
+        { name: 'rate', type: 'number', required: false, defaultValue: 10, description: 'Consumption rate MB/s' },
+      ],
     },
     {
       type: 'PROCESS_KILL',
@@ -106,9 +106,9 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
       description: 'Terminate service processes to test recovery',
       category: 'APPLICATION',
       parameters: [
-        { name: 'signal', type: 'select', required: true, defaultValue: 'SIGTERM', options: ['SIGTERM', 'SIGKILL'], description: 'Kill signal' }
-      ]
-    }
+        { name: 'signal', type: 'select', required: true, defaultValue: 'SIGTERM', options: [ 'SIGTERM', 'SIGKILL' ], description: 'Kill signal' },
+      ],
+    },
   ]);
 
   useEffect(() => {
@@ -119,12 +119,12 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
     const mockNodes: ServiceNode[] = [
       // Layer 0 (Entry point)
       { id: 'api-gateway', name: 'API Gateway', layer: 0, protocol: 'HTTP', x: 400, y: 80, selected: false, status: 'UNTESTED' },
-      
+
       // Layer 1 (Services)
       { id: 'user-service', name: 'User Service', layer: 1, protocol: 'HTTP', x: 200, y: 200, selected: false, status: 'UNTESTED' },
       { id: 'auth-service', name: 'Auth Service', layer: 1, protocol: 'gRPC', x: 400, y: 200, selected: false, status: 'UNTESTED' },
       { id: 'order-service', name: 'Order Service', layer: 1, protocol: 'HTTP', x: 600, y: 200, selected: false, status: 'UNTESTED' },
-      
+
       // Layer 2 (Data stores)
       { id: 'user-db', name: 'User Database', layer: 2, protocol: 'DB', x: 150, y: 320, selected: false, status: 'UNTESTED' },
       { id: 'auth-db', name: 'Auth Database', layer: 2, protocol: 'DB', x: 300, y: 320, selected: false, status: 'UNTESTED' },
@@ -141,14 +141,14 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
     if (service) {
       setSelectedService(service);
       setFaultDrawerVisible(true);
-      
+
       // Update selected state
       setServiceNodes(prev => prev.map(node => ({
         ...node,
-        selected: node.id === serviceId
+        selected: node.id === serviceId,
       })));
     }
-  }, [serviceNodes]);
+  }, [ serviceNodes ]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -175,7 +175,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
 
     // Check if this service has fault configuration
     const hasFaultConfig = data.faultConfigurations.some(config =>
-      config.serviceId === node.id && config.faultTemplates.some(template => template.enabled)
+      config.serviceId === node.id && config.faultTemplates.some(template => template.enabled),
     );
 
     return (
@@ -351,7 +351,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
       { from: 'api-gateway', to: 'user-service' },
       { from: 'api-gateway', to: 'auth-service' },
       { from: 'api-gateway', to: 'order-service' },
-      
+
       // Layer 1 to Layer 2
       { from: 'user-service', to: 'user-db' },
       { from: 'user-service', to: 'cache' },
@@ -364,9 +364,9 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
     return connections.map((conn, index) => {
       const fromNode = serviceNodes.find(node => node.id === conn.from);
       const toNode = serviceNodes.find(node => node.id === conn.to);
-      
+
       if (!fromNode || !toNode) return null;
-      
+
       return (
         <line
           key={index}
@@ -410,11 +410,11 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
 
       {/* Service Topology Visualization */}
       <div style={{ marginBottom: 32 }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: 16 
+          marginBottom: 16,
         }}>
           <h4 style={{ fontSize: 16, fontWeight: 600, color: '#333', margin: 0 }}>
             <Icon type="share-alt" style={{ marginRight: 8 }} />
@@ -443,20 +443,20 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                   fontSize: 8,
                   textAlign: 'center',
                   lineHeight: '12px',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
                 }}>!</span>
                 <Translation>Fault Configured</Translation>
               </span>
             </div>
           </div>
         </div>
-        
-        <div style={{ 
-          border: '1px solid #e8e8e8', 
-          borderRadius: 8, 
+
+        <div style={{
+          border: '1px solid #e8e8e8',
+          borderRadius: 8,
           overflow: 'hidden',
           background: '#fafafa',
-          padding: 20
+          padding: 20,
         }}>
           <svg width="100%" height="400" viewBox="0 0 900 400">
             {/* Arrow marker definition */}
@@ -475,10 +475,10 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                 />
               </marker>
             </defs>
-            
+
             {/* Render connections */}
             {renderConnections()}
-            
+
             {/* Render service nodes */}
             {serviceNodes.map(renderServiceNode)}
           </svg>
@@ -510,7 +510,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                 background: '#f8f9fa',
                 border: '1px solid #e8e8e8',
                 borderRadius: 6,
-                padding: 16
+                padding: 16,
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                   <Tag color={getProtocolColor(selectedService.protocol)} size="medium">
@@ -530,7 +530,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
             {/* Current Fault Configuration Summary */}
             {(() => {
               const currentConfig = data.faultConfigurations.find(
-                config => config.serviceId === selectedService.id
+                config => config.serviceId === selectedService.id,
               );
               const enabledFaults = currentConfig?.faultTemplates.filter(t => t.enabled) || [];
 
@@ -545,7 +545,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                       border: '1px solid #b7eb8f',
                       borderRadius: 6,
                       padding: 12,
-                      marginBottom: 16
+                      marginBottom: 16,
                     }}>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                         {enabledFaults.map((fault, index) => {
@@ -579,38 +579,38 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                       border: '1px solid #e8e8e8',
                       borderRadius: 6,
                       padding: 16,
-                      background: '#fff'
+                      background: '#fff',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                       <Checkbox
                         checked={(() => {
                           const currentConfig = data.faultConfigurations.find(
-                            config => config.serviceId === selectedService.id
+                            config => config.serviceId === selectedService.id,
                           );
                           return currentConfig?.faultTemplates.some(t => t.type === template.type && t.enabled) || false;
                         })()}
-                        onChange={(checked) => {
+                        onChange={checked => {
                           // Handle fault template selection
                           const currentConfig = data.faultConfigurations.find(
-                            config => config.serviceId === selectedService.id
+                            config => config.serviceId === selectedService.id,
                           );
 
                           if (currentConfig) {
                             const updatedTemplates = checked
-                              ? [...currentConfig.faultTemplates.filter(t => t.type !== template.type), {
-                                  type: template.type,
-                                  enabled: true,
-                                  parameters: {}
-                                }]
+                              ? [ ...currentConfig.faultTemplates.filter(t => t.type !== template.type), {
+                                type: template.type,
+                                enabled: true,
+                                parameters: {},
+                              }]
                               : currentConfig.faultTemplates.filter(t => t.type !== template.type);
 
                             onChange({
                               faultConfigurations: data.faultConfigurations.map(config =>
-                                config.serviceId === selectedService.id
+                                (config.serviceId === selectedService.id
                                   ? { ...config, faultTemplates: updatedTemplates }
-                                  : config
-                              )
+                                  : config),
+                              ),
                             });
                           } else {
                             onChange({
@@ -623,10 +623,10 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                                   faultTemplates: [{
                                     type: template.type,
                                     enabled: true,
-                                    parameters: {}
-                                  }]
-                                }
-                              ]
+                                    parameters: {},
+                                  }],
+                                },
+                              ],
                             });
                           }
                         }}
@@ -685,7 +685,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
               borderTop: '1px solid #e8e8e8',
               paddingTop: 16,
               display: 'flex',
-              gap: 12
+              gap: 12,
             }}>
               <Button type="primary" onClick={() => setFaultDrawerVisible(false)}>
                 <Translation>Apply Configuration</Translation>

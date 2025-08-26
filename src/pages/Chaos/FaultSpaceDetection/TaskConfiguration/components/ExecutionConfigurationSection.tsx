@@ -4,7 +4,7 @@ import i18n from '../../../../../i18n';
 import styles from '../index.css';
 import {
   NumberPicker,
-  Icon
+  Icon,
 } from '@alicloud/console-components';
 
 interface ExecutionConfigData {
@@ -21,7 +21,6 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
   const updateConcurrency = (value: number) => {
     onChange({ concurrency: value });
   };
-
 
 
   const renderConcurrencyConfig = () => (
@@ -57,13 +56,6 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
   );
 
 
-
-
-
-
-
-
-
   return (
     <div>
       <div className={styles.sectionHeader}>
@@ -81,7 +73,7 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
       {/* Error Display */}
       {errors && Object.keys(errors).length > 0 && (
         <div className={styles.errorList}>
-          {Object.entries(errors).map(([field, error], index) => (
+          {Object.entries(errors).map(([ field, error ], index) => (
             <div key={index} className={styles.errorItem}>
               <Icon type="exclamation-circle" size="xs" />
               {error}

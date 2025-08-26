@@ -2,15 +2,15 @@ import React, { FC, useEffect, useState } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Button, 
-  Message, 
+import {
+  Button,
+  Message,
   Icon,
   Search,
   Timeline,
   Tag,
   Collapse,
-  MenuButton
+  MenuButton,
 } from '@alicloud/console-components';
 import formatDate from '../../../lib/DateUtil';
 
@@ -41,19 +41,19 @@ interface ChangeHistoryTabProps {
 }
 
 const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
-  const [events, setEvents] = useState<ChangeEvent[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchKey, setSearchKey] = useState('');
-  const [filteredEvents, setFilteredEvents] = useState<ChangeEvent[]>([]);
-  const [expandedEvents, setExpandedEvents] = useState<string[]>([]);
+  const [ events, setEvents ] = useState<ChangeEvent[]>([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ searchKey, setSearchKey ] = useState('');
+  const [ filteredEvents, setFilteredEvents ] = useState<ChangeEvent[]>([]);
+  const [ expandedEvents, setExpandedEvents ] = useState<string[]>([]);
 
   useEffect(() => {
     loadChangeHistory();
-  }, [taskId]);
+  }, [ taskId ]);
 
   useEffect(() => {
     filterEvents();
-  }, [events, searchKey]);
+  }, [ events, searchKey ]);
 
   const loadChangeHistory = async () => {
     setLoading(true);
@@ -187,20 +187,20 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
       return;
     }
 
-    const filtered = events.filter(event => 
+    const filtered = events.filter(event =>
       event.title.toLowerCase().includes(searchKey.toLowerCase()) ||
       event.description.toLowerCase().includes(searchKey.toLowerCase()) ||
-      event.user.toLowerCase().includes(searchKey.toLowerCase())
+      event.user.toLowerCase().includes(searchKey.toLowerCase()),
     );
 
     setFilteredEvents(filtered);
   };
 
   const toggleEventDetails = (eventId: string) => {
-    setExpandedEvents(prev => 
-      prev.includes(eventId) 
+    setExpandedEvents(prev =>
+      (prev.includes(eventId)
         ? prev.filter(id => id !== eventId)
-        : [...prev, eventId]
+        : [ ...prev, eventId ]),
     );
   };
 
@@ -208,7 +208,7 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
     try {
       // TODO: Implement export functionality
       // await dispatch.faultSpaceDetection.exportChangeHistory({ taskId, format });
-      
+
       Message.success(i18n.t(`Timeline exported as ${format} successfully`).toString());
     } catch (error) {
       console.error('Failed to export timeline:', error);
@@ -252,35 +252,35 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
               <Translation>Configuration Changes</Translation>:
             </div>
             {event.details.changes.map((change, index) => (
-              <div key={index} style={{ 
-                marginBottom: 8, 
-                padding: 8, 
-                background: '#fff', 
+              <div key={index} style={{
+                marginBottom: 8,
+                padding: 8,
+                background: '#fff',
                 borderRadius: 4,
-                border: '1px solid #e8e8e8'
+                border: '1px solid #e8e8e8',
               }}>
                 <div style={{ fontSize: 12, color: '#666', marginBottom: 4 }}>
                   <code>{change.field}</code>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ 
-                    padding: '2px 6px', 
-                    background: '#fff2f0', 
+                  <span style={{
+                    padding: '2px 6px',
+                    background: '#fff2f0',
                     color: '#ff4d4f',
                     borderRadius: 2,
                     fontSize: 12,
-                    fontFamily: 'Monaco, Consolas, monospace'
+                    fontFamily: 'Monaco, Consolas, monospace',
                   }}>
                     {JSON.stringify(change.oldValue)}
                   </span>
                   <Icon type="arrow-right" size="xs" />
-                  <span style={{ 
-                    padding: '2px 6px', 
-                    background: '#f6ffed', 
+                  <span style={{
+                    padding: '2px 6px',
+                    background: '#f6ffed',
                     color: '#52c41a',
                     borderRadius: 2,
                     fontSize: 12,
-                    fontFamily: 'Monaco, Consolas, monospace'
+                    fontFamily: 'Monaco, Consolas, monospace',
                   }}>
                     {JSON.stringify(change.newValue)}
                   </span>
@@ -296,18 +296,18 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
               <Translation>Additional Information</Translation>:
             </div>
-            <div style={{ 
-              background: '#fff', 
-              padding: 8, 
+            <div style={{
+              background: '#fff',
+              padding: 8,
               borderRadius: 4,
-              border: '1px solid #e8e8e8'
+              border: '1px solid #e8e8e8',
             }}>
-              {Object.entries(event.details.metadata).map(([key, value]) => (
-                <div key={key} style={{ 
-                  display: 'flex', 
+              {Object.entries(event.details.metadata).map(([ key, value ]) => (
+                <div key={key} style={{
+                  display: 'flex',
                   justifyContent: 'space-between',
                   marginBottom: 4,
-                  fontSize: 12
+                  fontSize: 12,
                 }}>
                   <span style={{ color: '#666' }}>{key}:</span>
                   <span style={{ fontFamily: 'Monaco, Consolas, monospace' }}>
@@ -335,25 +335,25 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
         title={
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Icon 
-                type={getEventIcon(event.type)} 
+              <Icon
+                type={getEventIcon(event.type)}
                 style={{ color: getEventColor(event.type) }}
               />
               <span style={{ fontWeight: 600, fontSize: 14 }}>
                 {event.title}
               </span>
-              <Tag 
-                size="small" 
+              <Tag
+                size="small"
                 color={getEventColor(event.type)}
                 style={{ fontSize: 10 }}
               >
                 {event.type}
               </Tag>
             </div>
-            
+
             {hasDetails && (
-              <Button 
-                type="link" 
+              <Button
+                type="link"
                 size="small"
                 onClick={() => toggleEventDetails(event.id)}
                 style={{ padding: 5, fontSize: 12 }}
@@ -375,7 +375,7 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
                 {event.user} • {formatDate(new Date(event.timestamp).getTime())}
               </div>
             </div>
-            
+
             {isExpanded && renderEventDetails(event)}
           </div>
         }
@@ -386,15 +386,15 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
   return (
     <div>
       {/* Search and Export */}
-      <div style={{ 
-        background: '#fff', 
-        padding: 16, 
-        marginBottom: 16, 
+      <div style={{
+        background: '#fff',
+        padding: 16,
+        marginBottom: 16,
         borderRadius: 6,
         border: '1px solid #e8e8e8',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
       }}>
         <Search
           placeholder={i18n.t('Search change events...').toString()}
@@ -403,9 +403,9 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
           style={{ width: 300 }}
           hasClear
         />
-        
+
         <div style={{ display: 'flex', gap: 8 }}>
-          <MenuButton 
+          <MenuButton
             label={
               <span>
                 <Icon type="download" style={{ marginRight: 4 }} />
@@ -425,11 +425,11 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
       </div>
 
       {/* Timeline */}
-      <div style={{ 
-        background: '#fff', 
-        padding: 24, 
+      <div style={{
+        background: '#fff',
+        padding: 24,
         borderRadius: 6,
-        border: '1px solid #e8e8e8'
+        border: '1px solid #e8e8e8',
       }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: 40 }}>
@@ -463,14 +463,14 @@ const ChangeHistoryTab: FC<ChangeHistoryTabProps> = ({ taskId }) => {
 
       {/* Summary */}
       {!loading && filteredEvents.length > 0 && (
-        <div style={{ 
-          background: '#f0f9ff', 
+        <div style={{
+          background: '#f0f9ff',
           border: '1px solid #bae7ff',
-          borderRadius: 6, 
+          borderRadius: 6,
           padding: 16,
           marginTop: 16,
           fontSize: 14,
-          color: '#666'
+          color: '#666',
         }}>
           <Translation>Showing</Translation> {filteredEvents.length} <Translation>change events</Translation>
           {searchKey && (

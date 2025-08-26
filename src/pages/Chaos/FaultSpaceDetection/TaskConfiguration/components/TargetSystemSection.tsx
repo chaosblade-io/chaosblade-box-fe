@@ -2,15 +2,15 @@ import React, { FC, useState, useEffect } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Select, 
-  Input, 
-  Button, 
-  Message, 
+import {
+  Select,
+  Input,
+  Button,
+  Message,
   Icon,
   Table,
   Search,
-  Tag
+  Tag,
 } from '@alicloud/console-components';
 
 interface TargetSystemData {
@@ -42,13 +42,13 @@ interface TargetSystemSectionProps {
 }
 
 const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onChange }) => {
-  const [availableSystems, setAvailableSystems] = useState<Array<{ id: string; name: string; environment: string }>>([]);
-  const [availableAPIs, setAvailableAPIs] = useState<APIItem[]>([]);
-  const [filteredAPIs, setFilteredAPIs] = useState<APIItem[]>([]);
-  const [apiSearchKey, setApiSearchKey] = useState('');
-  const [selectedMethodFilter, setSelectedMethodFilter] = useState<string[]>([]);
-  const [selectedTagFilter, setSelectedTagFilter] = useState<string[]>([]);
-  const [isRefreshingAPIs, setIsRefreshingAPIs] = useState(false);
+  const [ availableSystems, setAvailableSystems ] = useState<Array<{ id: string; name: string; environment: string }>>([]);
+  const [ availableAPIs, setAvailableAPIs ] = useState<APIItem[]>([]);
+  const [ filteredAPIs, setFilteredAPIs ] = useState<APIItem[]>([]);
+  const [ apiSearchKey, setApiSearchKey ] = useState('');
+  const [ selectedMethodFilter, setSelectedMethodFilter ] = useState<string[]>([]);
+  const [ selectedTagFilter, setSelectedTagFilter ] = useState<string[]>([]);
+  const [ isRefreshingAPIs, setIsRefreshingAPIs ] = useState(false);
 
   useEffect(() => {
     // Load available systems
@@ -60,12 +60,12 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
     if (data.systemId) {
       loadAvailableAPIs(data.systemId);
     }
-  }, [data.systemId]);
+  }, [ data.systemId ]);
 
   useEffect(() => {
     // Filter APIs based on search and filters
     filterAPIs();
-  }, [availableAPIs, apiSearchKey, selectedMethodFilter, selectedTagFilter]);
+  }, [ availableAPIs, apiSearchKey, selectedMethodFilter, selectedTagFilter ]);
 
   const loadAvailableSystems = async () => {
     try {
@@ -92,47 +92,47 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
           method: 'POST',
           path: '/api/v1/auth/login',
           summary: '用户登录',
-          tags: ['认证', '用户'],
+          tags: [ '认证', '用户' ],
         },
         {
           operationId: 'getUserProfile',
           method: 'GET',
           path: '/api/v1/users/{userId}',
           summary: '获取用户信息',
-          tags: ['用户'],
+          tags: [ '用户' ],
         },
         {
           operationId: 'updateUserProfile',
           method: 'PUT',
           path: '/api/v1/users/{userId}',
           summary: '更新用户信息',
-          tags: ['用户'],
+          tags: [ '用户' ],
         },
         {
           operationId: 'createOrder',
           method: 'POST',
           path: '/api/v1/orders',
           summary: '创建订单',
-          tags: ['订单'],
+          tags: [ '订单' ],
         },
         {
           operationId: 'getOrderDetails',
           method: 'GET',
           path: '/api/v1/orders/{orderId}',
           summary: '获取订单详情',
-          tags: ['订单'],
+          tags: [ '订单' ],
         },
         {
           operationId: 'processPayment',
           method: 'POST',
           path: '/api/v1/payments/process',
           summary: '处理支付',
-          tags: ['支付'],
+          tags: [ '支付' ],
         },
       ];
 
       setAvailableAPIs(mockAPIs);
-      
+
       // Update API source info
       onChange({
         apiSource: {
@@ -151,10 +151,10 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
     // Search filter
     if (apiSearchKey) {
       const searchLower = apiSearchKey.toLowerCase();
-      filtered = filtered.filter(api => 
+      filtered = filtered.filter(api =>
         api.path.toLowerCase().includes(searchLower) ||
         api.summary.toLowerCase().includes(searchLower) ||
-        api.operationId.toLowerCase().includes(searchLower)
+        api.operationId.toLowerCase().includes(searchLower),
       );
     }
 
@@ -165,8 +165,8 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
 
     // Tag filter
     if (selectedTagFilter.length > 0) {
-      filtered = filtered.filter(api => 
-        api.tags.some(tag => selectedTagFilter.includes(tag))
+      filtered = filtered.filter(api =>
+        api.tags.some(tag => selectedTagFilter.includes(tag)),
       );
     }
 
@@ -196,7 +196,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
 
   const handleRefreshAPIs = async () => {
     if (!data.systemId) return;
-    
+
     setIsRefreshingAPIs(true);
     try {
       await loadAvailableAPIs(data.systemId);
@@ -218,8 +218,8 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
     };
 
     return (
-      <Tag 
-        color={methodColors[method] || '#666'} 
+      <Tag
+        color={methodColors[method] || '#666'}
         size="small"
         style={{ fontWeight: 600, minWidth: 50, textAlign: 'center' }}
       >
@@ -269,14 +269,14 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
         title: i18n.t('Action').toString(),
         width: 80,
         cell: (value: any, index: number, record: APIItem) => (
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             size="small"
             onClick={() => handleAPISelection(record)}
             disabled={data.selectedAPI?.operationId === record.operationId}
           >
-            {data.selectedAPI?.operationId === record.operationId ? 
-              <Translation>Selected</Translation> : 
+            {data.selectedAPI?.operationId === record.operationId ?
+              <Translation>Selected</Translation> :
               <Translation>Select</Translation>
             }
           </Button>
@@ -295,7 +295,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
         })}
         emptyContent={
           <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>
-            {apiSearchKey || selectedMethodFilter.length > 0 || selectedTagFilter.length > 0 ? 
+            {apiSearchKey || selectedMethodFilter.length > 0 || selectedTagFilter.length > 0 ?
               <Translation>No APIs match the current filters</Translation> :
               <Translation>No APIs available</Translation>
             }
@@ -387,7 +387,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
                     new Date(data.apiSource.syncTime).toLocaleString() : 'N/A'}
                 </div>
               </div>
-              <Button 
+              <Button
                 onClick={handleRefreshAPIs}
                 loading={isRefreshingAPIs}
                 disabled={!data.systemId}
@@ -461,7 +461,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
               border: '1px solid #b7eb8f',
               borderRadius: 6,
               padding: 16,
-              marginBottom: 16
+              marginBottom: 16,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <Icon type="check-circle" style={{ color: '#52c41a' }} />
@@ -487,7 +487,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
             fontSize: 12,
             color: '#666',
             display: 'flex',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
           }}>
             <span>
               <Translation>Showing</Translation> {filteredAPIs.length} <Translation>of</Translation> {availableAPIs.length} <Translation>APIs</Translation>
@@ -508,7 +508,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
           padding: '40px 20px',
           background: '#fafafa',
           borderRadius: 6,
-          marginTop: 20
+          marginTop: 20,
         }}>
           <Icon type="inbox" size="large" style={{ color: '#ccc', marginBottom: 16 }} />
           <div style={{ fontSize: 16, color: '#666', marginBottom: 8 }}>

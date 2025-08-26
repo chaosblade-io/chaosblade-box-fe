@@ -3,16 +3,16 @@ import Translation from 'components/Translation';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';
-import { 
-  Button, 
-  Message, 
+import {
+  Button,
+  Message,
   Icon,
   Tag,
   Progress,
   Dialog,
   Balloon,
   Card,
-  Loading
+  Loading,
 } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
@@ -128,15 +128,15 @@ const DrillRecord: FC = () => {
   const history = useHistory();
   const params = useParams() as DrillRecordParams;
   const { runId } = params;
-  
-  const [drillData, setDrillData] = useState<DrillRecordData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [pauseDialogVisible, setPauseDialogVisible] = useState(false);
-  const [terminateDialogVisible, setTerminateDialogVisible] = useState(false);
-  const [exportDialogVisible, setExportDialogVisible] = useState(false);
-  
+
+  const [ drillData, setDrillData ] = useState<DrillRecordData | null>(null);
+  const [ loading, setLoading ] = useState(true);
+  const [ pauseDialogVisible, setPauseDialogVisible ] = useState(false);
+  const [ terminateDialogVisible, setTerminateDialogVisible ] = useState(false);
+  const [ exportDialogVisible, setExportDialogVisible ] = useState(false);
+
   // Real-time updates
-  const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(true);
+  const [ isRealTimeEnabled, setIsRealTimeEnabled ] = useState(true);
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ const DrillRecord: FC = () => {
         eventSourceRef.current.close();
       }
     };
-  }, [runId, isRealTimeEnabled]);
+  }, [ runId, isRealTimeEnabled ]);
 
   useEffect(() => {
     if (drillData) {
@@ -165,14 +165,14 @@ const DrillRecord: FC = () => {
         { key: 'drill_record', value: drillData.runId, path: `/chaos/fault-space-detection/records/${runId}` },
       ]));
     }
-  }, [drillData, runId]);
+  }, [ drillData, runId ]);
 
   const loadDrillRecord = async (id: string) => {
     setLoading(true);
     try {
       // TODO: Replace with actual API call
       // const result = await dispatch.faultSpaceDetection.getDrillRecord({ runId: id });
-      
+
       // Mock data for development
       const mockDrillData: DrillRecordData = {
         runId: id,
@@ -277,14 +277,14 @@ const DrillRecord: FC = () => {
                 serviceId: 'user-service',
                 serviceName: 'User Service',
                 faultType: 'Network Delay',
-                faultParameters: { delay: 200, variance: 10 }
+                faultParameters: { delay: 200, variance: 10 },
               },
               {
                 serviceId: 'auth-db',
                 serviceName: 'Auth Database',
                 faultType: 'Connection Pool Exhaustion',
-                faultParameters: { maxConnections: 5 }
-              }
+                faultParameters: { maxConnections: 5 },
+              },
             ],
             traceId: 'trace_12345',
             curlCommand: 'curl -X POST "https://api.example.com/v1/auth/login" -H "Content-Type: application/json" -d \'{"username":"test","password":"test"}\'',
@@ -300,14 +300,14 @@ const DrillRecord: FC = () => {
                 serviceId: 'order-service',
                 serviceName: 'Order Service',
                 faultType: 'CPU Stress',
-                faultParameters: { cpuPercent: 90, duration: 60 }
+                faultParameters: { cpuPercent: 90, duration: 60 },
               },
               {
                 serviceId: 'mq',
                 serviceName: 'Message Queue',
                 faultType: 'Message Loss',
-                faultParameters: { lossRate: 0.1 }
-              }
+                faultParameters: { lossRate: 0.1 },
+              },
             ],
             traceId: 'trace_67890',
             curlCommand: 'curl -X POST "https://api.example.com/v1/orders" -H "Content-Type: application/json" -d \'{"productId":"123","quantity":2}\'',
@@ -326,14 +326,14 @@ const DrillRecord: FC = () => {
                 serviceId: 'user-service',
                 serviceName: 'User Service',
                 faultType: 'Memory Leak',
-                faultParameters: { memoryMB: 512, rate: 10 }
+                faultParameters: { memoryMB: 512, rate: 10 },
               },
               {
                 serviceId: 'cache',
                 serviceName: 'Redis Cache',
                 faultType: 'Slow Query',
-                faultParameters: { delay: 500 }
-              }
+                faultParameters: { delay: 500 },
+              },
             ],
             traceId: 'trace_abc123',
           },
@@ -349,8 +349,8 @@ const DrillRecord: FC = () => {
                 serviceId: 'order-service',
                 serviceName: 'Order Service',
                 faultType: 'Disk I/O Stress',
-                faultParameters: { ioPercent: 80 }
-              }
+                faultParameters: { ioPercent: 80 },
+              },
             ],
             traceId: 'trace_def456',
           },
@@ -370,12 +370,12 @@ const DrillRecord: FC = () => {
     // TODO: Setup SSE connection for real-time updates
     // const eventSource = new EventSource(`/api/drill-records/${id}/events`);
     // eventSourceRef.current = eventSource;
-    
+
     // eventSource.onmessage = (event) => {
     //   const data = JSON.parse(event.data);
     //   updateDrillData(data);
     // };
-    
+
     // eventSource.onerror = (error) => {
     //   console.error('SSE connection error:', error);
     //   setIsRealTimeEnabled(false);
@@ -413,19 +413,19 @@ const DrillRecord: FC = () => {
 
   const handlePauseResume = async () => {
     if (!drillData) return;
-    
+
     try {
       if (drillData.status === 'RUNNING') {
         // TODO: Pause drill execution
         // await dispatch.faultSpaceDetection.pauseDrill({ runId });
-        
-        setDrillData(prev => prev ? { ...prev, status: 'PAUSED' } : prev);
+
+        setDrillData(prev => (prev ? { ...prev, status: 'PAUSED' } : prev));
         Message.success(i18n.t('Drill execution paused').toString());
       } else if (drillData.status === 'PAUSED') {
         // TODO: Resume drill execution
         // await dispatch.faultSpaceDetection.resumeDrill({ runId });
-        
-        setDrillData(prev => prev ? { ...prev, status: 'RUNNING' } : prev);
+
+        setDrillData(prev => (prev ? { ...prev, status: 'RUNNING' } : prev));
         Message.success(i18n.t('Drill execution resumed').toString());
       }
     } catch (error) {
@@ -438,8 +438,8 @@ const DrillRecord: FC = () => {
     try {
       // TODO: Terminate drill execution
       // await dispatch.faultSpaceDetection.terminateDrill({ runId });
-      
-      setDrillData(prev => prev ? { ...prev, status: 'TERMINATED', endTime: new Date().toISOString() } : prev);
+
+      setDrillData(prev => (prev ? { ...prev, status: 'TERMINATED', endTime: new Date().toISOString() } : prev));
       setTerminateDialogVisible(false);
       Message.success(i18n.t('Drill execution terminated').toString());
     } catch (error) {
@@ -452,7 +452,7 @@ const DrillRecord: FC = () => {
     try {
       // TODO: Export drill report
       // await dispatch.faultSpaceDetection.exportDrillReport({ runId, format });
-      
+
       Message.success(i18n.t(`Report exported as ${format} successfully`).toString());
       setExportDialogVisible(false);
     } catch (error) {
@@ -521,7 +521,7 @@ const DrillRecord: FC = () => {
           testingServices: drillData.executionPlan.reduce((total, layer) =>
             total + layer.services.filter(service =>
               service.faults.some(fault => fault.status === 'RUNNING')).length, 0),
-          sampleCount: drillData.metrics.current.sampleCount
+          sampleCount: drillData.metrics.current.sampleCount,
         }}
         status={drillData.status}
         currentStep={drillData.currentStep}
@@ -574,8 +574,8 @@ const DrillRecord: FC = () => {
         <div className={styles.exportDialogContent}>
           <p><Translation>Choose the export format for the drill report</Translation>:</p>
           <div className={styles.exportOptions}>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               onClick={() => handleExportReport('HTML')}
               style={{ marginRight: 12, marginBottom: 12 }}
             >
@@ -585,7 +585,7 @@ const DrillRecord: FC = () => {
                 <Translation>Complete report with charts and visualizations</Translation>
               </div>
             </Button>
-            <Button 
+            <Button
               onClick={() => handleExportReport('CSV')}
               style={{ marginRight: 12, marginBottom: 12 }}
             >
@@ -595,7 +595,7 @@ const DrillRecord: FC = () => {
                 <Translation>Raw data for further analysis</Translation>
               </div>
             </Button>
-            <Button 
+            <Button
               onClick={() => handleExportReport('JSON')}
               style={{ marginBottom: 12 }}
             >

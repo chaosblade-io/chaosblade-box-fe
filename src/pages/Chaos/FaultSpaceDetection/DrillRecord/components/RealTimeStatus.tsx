@@ -67,10 +67,10 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
   status,
   currentStep,
 }) => {
-  const [serviceNodes, setServiceNodes] = useState<ServiceNode[]>([]);
-  const [anomalies, setAnomalies] = useState<AnomalyAlert[]>([]);
-  const [selectedService, setSelectedService] = useState<ServiceNode | null>(null);
-  const [detailPanelVisible, setDetailPanelVisible] = useState(false);
+  const [ serviceNodes, setServiceNodes ] = useState<ServiceNode[]>([]);
+  const [ anomalies, setAnomalies ] = useState<AnomalyAlert[]>([]);
+  const [ selectedService, setSelectedService ] = useState<ServiceNode | null>(null);
+  const [ detailPanelVisible, setDetailPanelVisible ] = useState(false);
 
   useEffect(() => {
     // Generate mock service chain data
@@ -95,8 +95,8 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
               performanceComparison: {
                 before: { p95: 89, errorRate: 0.5 },
                 during: { p95: 156, errorRate: 2.1 },
-                after: { p95: 92, errorRate: 0.6 }
-              }
+                after: { p95: 92, errorRate: 0.6 },
+              },
             },
             {
               type: 'CPU Stress',
@@ -107,12 +107,12 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
               performanceComparison: {
                 before: { p95: 89, errorRate: 0.5 },
                 during: { p95: 234, errorRate: 3.2 },
-                after: { p95: 95, errorRate: 0.7 }
-              }
-            }
-          ]
+                after: { p95: 95, errorRate: 0.7 },
+              },
+            },
+          ],
         },
-        plannedFaults: ['Network Delay', 'CPU Stress']
+        plannedFaults: [ 'Network Delay', 'CPU Stress' ],
       },
       // Layer 1 (Services)
       {
@@ -131,18 +131,18 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
               status: 'COMPLETED',
               responseData: { statusCode: 200, responseTime: 123 },
               latencyMetrics: { p50: 34, p95: 123, p99: 189 },
-              errorRate: 1.5
+              errorRate: 1.5,
             },
             {
               type: 'Memory Leak',
               status: 'RUNNING',
               latencyMetrics: { p50: 45, p95: 167, p99: 245 },
-              errorRate: 2.8
-            }
+              errorRate: 2.8,
+            },
           ],
-          remainingScenarios: ['CPU Stress', 'Disk I/O']
+          remainingScenarios: [ 'CPU Stress', 'Disk I/O' ],
         },
-        plannedFaults: ['Network Delay', 'Memory Leak', 'CPU Stress', 'Disk I/O']
+        plannedFaults: [ 'Network Delay', 'Memory Leak', 'CPU Stress', 'Disk I/O' ],
       },
       {
         id: 'auth-service',
@@ -152,8 +152,8 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
         status: 'UNTESTED',
         x: 600,
         y: 150,
-        plannedFaults: ['Network Delay', 'Process Kill', 'Memory Leak'],
-        dependencies: ['auth-db', 'cache']
+        plannedFaults: [ 'Network Delay', 'Process Kill', 'Memory Leak' ],
+        dependencies: [ 'auth-db', 'cache' ],
       },
       // Layer 2 (Data stores)
       {
@@ -171,11 +171,11 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
               status: 'COMPLETED',
               responseData: { queryTime: 45, connectionCount: 89 },
               latencyMetrics: { p50: 23, p95: 45, p99: 67 },
-              errorRate: 0.8
-            }
-          ]
+              errorRate: 0.8,
+            },
+          ],
         },
-        plannedFaults: ['Connection Pool Exhaustion']
+        plannedFaults: [ 'Connection Pool Exhaustion' ],
       },
       {
         id: 'cache',
@@ -185,9 +185,9 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
         status: 'UNTESTED',
         x: 550,
         y: 250,
-        plannedFaults: ['Memory Pressure', 'Network Partition'],
-        dependencies: []
-      }
+        plannedFaults: [ 'Memory Pressure', 'Network Partition' ],
+        dependencies: [],
+      },
     ];
 
     setServiceNodes(mockServices);
@@ -210,8 +210,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
     }
 
     setAnomalies(mockAnomalies);
-  }, [testMetrics]);
-
+  }, [ testMetrics ]);
 
 
   const handleServiceClick = (serviceId: string) => {
@@ -225,7 +224,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
     }
   };
 
-  const renderTestProgressCard = (label: string, current: number, total?: number, unit: string = '') => {
+  const renderTestProgressCard = (label: string, current: number, total?: number, unit = '') => {
     const percentage = total ? (current / total) * 100 : 0;
 
     return (
@@ -267,14 +266,14 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
         type="warning"
         style={{
           color: anomaly.severity === 'CRITICAL' ? '#ff4d4f' : '#faad14',
-          fontSize: 16
+          fontSize: 16,
         }}
       />
       <div style={{ flex: 1 }}>
         <div style={{
           fontWeight: 600,
           color: anomaly.severity === 'CRITICAL' ? '#ff4d4f' : '#faad14',
-          marginBottom: 2
+          marginBottom: 2,
         }}>
           {anomaly.message}
         </div>
@@ -293,7 +292,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
     const statusColors = {
       TESTED: '#52c41a',
       TESTING: '#1890ff',
-      UNTESTED: '#d9d9d9'
+      UNTESTED: '#d9d9d9',
     };
 
     // Get fault scenarios by status
@@ -368,7 +367,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
               padding: 12,
               marginTop: 12,
               fontSize: 12,
-              color: '#666'
+              color: '#666',
             }}>
               <Translation>Real-time fault injection in progress...</Translation>
             </div>
@@ -398,7 +397,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
           border: '1px solid #e8e8e8',
           borderRadius: 6,
           padding: 16,
-          marginTop: 16
+          marginTop: 16,
         }}>
           <h6 style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: '#666' }}>
             <Translation>Testing Progress Summary</Translation>
@@ -481,7 +480,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: 12
+            marginBottom: 12,
           }}>
             <h4 style={{ fontSize: 14, fontWeight: 600, color: '#333', margin: 0 }}>
               <Icon type="share-alt" style={{ marginRight: 8 }} />

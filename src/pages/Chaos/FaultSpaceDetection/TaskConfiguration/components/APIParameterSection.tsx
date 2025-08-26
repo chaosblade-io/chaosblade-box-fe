@@ -2,15 +2,15 @@ import React, { FC, useState, useEffect } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Input, 
-  Button, 
-  Message, 
+import {
+  Input,
+  Button,
+  Message,
   Icon,
   Select,
   Tag,
   Dialog,
-  Loading
+  Loading,
 } from '@alicloud/console-components';
 
 interface APIParameterData {
@@ -45,14 +45,14 @@ interface TraceResponse {
 }
 
 const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, errors, onChange }) => {
-  const [pathParamSchema, setPathParamSchema] = useState<Record<string, any>>({});
-  const [queryParamSchema, setQueryParamSchema] = useState<Record<string, any>>({});
-  const [requestBodySchema, setRequestBodySchema] = useState<any>(null);
-  const [isExecutingBaseline, setIsExecutingBaseline] = useState(false);
-  const [baselineResponse, setBaselineResponse] = useState<TraceResponse | null>(null);
-  const [responsePreviewVisible, setResponsePreviewVisible] = useState(false);
-  const [newHeaderKey, setNewHeaderKey] = useState('');
-  const [newHeaderValue, setNewHeaderValue] = useState('');
+  const [ pathParamSchema, setPathParamSchema ] = useState<Record<string, any>>({});
+  const [ queryParamSchema, setQueryParamSchema ] = useState<Record<string, any>>({});
+  const [ requestBodySchema, setRequestBodySchema ] = useState<any>(null);
+  const [ isExecutingBaseline, setIsExecutingBaseline ] = useState(false);
+  const [ baselineResponse, setBaselineResponse ] = useState<TraceResponse | null>(null);
+  const [ responsePreviewVisible, setResponsePreviewVisible ] = useState(false);
+  const [ newHeaderKey, setNewHeaderKey ] = useState('');
+  const [ newHeaderValue, setNewHeaderValue ] = useState('');
 
   useEffect(() => {
     if (selectedAPI) {
@@ -62,7 +62,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
         resetFormData();
       }
     }
-  }, [selectedAPI?.operationId]); // Only trigger when API actually changes
+  }, [ selectedAPI?.operationId ]); // Only trigger when API actually changes
 
   const loadAPISchema = async () => {
     if (!selectedAPI) return;
@@ -81,7 +81,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
             email: { type: 'string', format: 'email', description: '邮箱地址' },
             age: { type: 'integer', minimum: 0, description: '年龄' },
           },
-          required: ['name', 'email'],
+          required: [ 'name', 'email' ],
         } : null,
       };
 
@@ -97,7 +97,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
   const extractPathParams = (path: string): Record<string, any> => {
     const params: Record<string, any> = {};
     const matches = path.match(/\{([^}]+)\}/g);
-    
+
     if (matches) {
       matches.forEach(match => {
         const paramName = match.slice(1, -1);
@@ -108,7 +108,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
         };
       });
     }
-    
+
     return params;
   };
 
@@ -181,7 +181,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
     try {
       // Validate required path parameters
       const missingParams = Object.keys(pathParamSchema).filter(
-        param => pathParamSchema[param].required && !data.pathParams[param]
+        param => pathParamSchema[param].required && !data.pathParams[param],
       );
 
       if (missingParams.length > 0) {
@@ -191,10 +191,10 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
 
       // TODO: Replace with actual API call
       const correlationId = `trace_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       const mockResponse: TraceResponse = {
         correlationId,
         statusCode: 200,
@@ -213,12 +213,12 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
 
       setBaselineResponse(mockResponse);
       Message.success(i18n.t('Baseline request executed successfully').toString());
-      
+
       // Auto-fetch trace after successful request
       setTimeout(() => {
         fetchTrace(mockResponse.traceId!);
       }, 1000);
-      
+
     } catch (error) {
       console.error('Failed to execute baseline request:', error);
       Message.error(i18n.t('Failed to execute baseline request').toString());
@@ -239,7 +239,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
 
   const renderPathParameters = () => {
     const pathParams = Object.keys(pathParamSchema);
-    
+
     if (pathParams.length === 0) {
       return (
         <div style={{ color: '#999', fontStyle: 'italic', padding: '20px 0' }}>
@@ -258,7 +258,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
               </label>
               <Input
                 value={data.pathParams[paramName] || ''}
-                onChange={(value) => handlePathParamChange(paramName, value)}
+                onChange={value => handlePathParamChange(paramName, value)}
                 placeholder={pathParamSchema[paramName].description || `Enter ${paramName}`}
                 style={{ width: '100%' }}
               />
@@ -276,7 +276,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
 
   const renderQueryParameters = () => {
     const queryParams = Object.keys(queryParamSchema);
-    
+
     if (queryParams.length === 0) {
       return (
         <div style={{ color: '#999', fontStyle: 'italic', padding: '20px 0' }}>
@@ -296,7 +296,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
               <Select
                 mode="tag"
                 value={data.queryParams[paramName] || []}
-                onChange={(values) => handleQueryParamChange(paramName, values)}
+                onChange={values => handleQueryParamChange(paramName, values)}
                 placeholder={queryParamSchema[paramName].description || `Enter ${paramName} values`}
                 style={{ width: '100%' }}
                 hasClear
@@ -326,8 +326,8 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
           </label>
           <Select
             value={data.headers.authType}
-            onChange={(value) => onChange({
-              headers: { ...data.headers, authType: value as any }
+            onChange={value => onChange({
+              headers: { ...data.headers, authType: value as any },
             })}
             style={{ width: '100%' }}
           >
@@ -346,15 +346,15 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
         <label className={styles.fieldLabel}>
           <Translation>Custom Headers</Translation>
         </label>
-        
+
         {/* Existing Headers */}
         {Object.keys(data.headers.customHeaders).length > 0 && (
           <div style={{ marginBottom: 16 }}>
-            {Object.entries(data.headers.customHeaders).map(([key, value]) => (
-              <div key={key} style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 8, 
+            {Object.entries(data.headers.customHeaders).map(([ key, value ]) => (
+              <div key={key} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
                 marginBottom: 8,
                 padding: '8px 12px',
                 background: '#f5f5f5',
@@ -363,8 +363,8 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
                 <code style={{ flex: 1, fontSize: 12 }}>
                   {key}: {value}
                 </code>
-                <Button 
-                  type="link" 
+                <Button
+                  type="link"
                   size="small"
                   onClick={() => handleRemoveCustomHeader(key)}
                 >
@@ -417,13 +417,13 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
             </div>
           </div>
         </div>
-        
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '60px 20px', 
-          background: '#fafafa', 
+
+        <div style={{
+          textAlign: 'center',
+          padding: '60px 20px',
+          background: '#fafafa',
           borderRadius: 6,
-          color: '#999'
+          color: '#999',
         }}>
           <Icon type="loading" size="large" style={{ marginBottom: 16 }} />
           <div style={{ fontSize: 16 }}>
@@ -461,12 +461,12 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
       )}
 
       {/* Selected API Info */}
-      <div style={{ 
-        background: '#f0f9ff', 
-        border: '1px solid #bae7ff', 
-        borderRadius: 6, 
-        padding: 16, 
-        marginBottom: 24 
+      <div style={{
+        background: '#f0f9ff',
+        border: '1px solid #bae7ff',
+        borderRadius: 6,
+        padding: 16,
+        marginBottom: 24,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Icon type="api" style={{ color: '#1890ff' }} />
@@ -519,7 +519,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
               </label>
               <Input.TextArea
                 value={data.requestBody}
-                onChange={(value) => onChange({ requestBody: value })}
+                onChange={value => onChange({ requestBody: value })}
                 placeholder={i18n.t('Enter JSON request body').toString()}
                 rows={8}
                 style={{ fontFamily: 'Monaco, Consolas, monospace', fontSize: 12 }}
@@ -562,7 +562,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
         border: '1px solid #e8e8e8',
         borderRadius: 8,
         padding: 24,
-        marginBottom: 24
+        marginBottom: 24,
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <div>
@@ -591,7 +591,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
             border: '1px solid #d9d9d9',
             borderRadius: 6,
             padding: 16,
-            marginTop: 16
+            marginTop: 16,
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <h5 style={{ fontSize: 14, fontWeight: 600, color: '#333', margin: 0 }}>
@@ -614,7 +614,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
                 <div style={{
                   fontSize: 16,
                   fontWeight: 600,
-                  color: baselineResponse.statusCode >= 200 && baselineResponse.statusCode < 300 ? '#52c41a' : '#ff4d4f'
+                  color: baselineResponse.statusCode >= 200 && baselineResponse.statusCode < 300 ? '#52c41a' : '#ff4d4f',
                 }}>
                   {baselineResponse.statusCode}
                 </div>
@@ -653,7 +653,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
                 padding: 12,
                 background: '#f6ffed',
                 border: '1px solid #b7eb8f',
-                borderRadius: 4
+                borderRadius: 4,
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Icon type="check-circle" style={{ color: '#52c41a' }} />
@@ -677,7 +677,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
             background: '#fff',
             border: '1px solid #d9d9d9',
             borderRadius: 6,
-            marginTop: 16
+            marginTop: 16,
           }}>
             <Loading tip={i18n.t('Executing baseline request and fetching trace data...').toString()}>
               <div style={{ height: 60 }} />
@@ -712,7 +712,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
                 fontSize: 12,
                 fontFamily: 'Monaco, Consolas, monospace',
                 maxHeight: 400,
-                overflow: 'auto'
+                overflow: 'auto',
               }}>
                 {JSON.stringify(baselineResponse.responseBody, null, 2)}
               </pre>

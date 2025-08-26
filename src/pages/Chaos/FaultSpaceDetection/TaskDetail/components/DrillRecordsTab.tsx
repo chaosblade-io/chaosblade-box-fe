@@ -2,17 +2,17 @@ import React, { FC, useEffect, useState } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { 
-  Table, 
-  Button, 
-  Message, 
+import {
+  Table,
+  Button,
+  Message,
   Icon,
   Select,
   DatePicker,
   MenuButton,
   Tag,
   Pagination,
-  Search
+  Search,
 } from '@alicloud/console-components';
 import { pushUrl } from 'utils/libs/sre-utils';
 import { useHistory } from 'dva';
@@ -43,21 +43,21 @@ interface DrillRecordsTabProps {
 
 const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
   const history = useHistory();
-  
-  const [records, setRecords] = useState<DrillRecord[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(20);
-  const [total, setTotal] = useState(0);
-  
+
+  const [ records, setRecords ] = useState<DrillRecord[]>([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ page, setPage ] = useState(1);
+  const [ pageSize ] = useState(20);
+  const [ total, setTotal ] = useState(0);
+
   // Filters
-  const [statusFilter, setStatusFilter] = useState<string>('');
-  const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
-  const [searchKey, setSearchKey] = useState('');
+  const [ statusFilter, setStatusFilter ] = useState<string>('');
+  const [ dateRange, setDateRange ] = useState<[Date, Date] | null>(null);
+  const [ searchKey, setSearchKey ] = useState('');
 
   useEffect(() => {
     loadDrillRecords();
-  }, [taskId, page, statusFilter, dateRange, searchKey]);
+  }, [ taskId, page, statusFilter, dateRange, searchKey ]);
 
   const loadDrillRecords = async () => {
     setLoading(true);
@@ -153,7 +153,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
     try {
       // TODO: Implement export functionality
       // await dispatch.faultSpaceDetection.exportDrillReport({ runId, format });
-      
+
       Message.success(i18n.t(`Report exported as ${format} successfully`).toString());
     } catch (error) {
       console.error('Failed to export report:', error);
@@ -164,7 +164,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
   const handleQuickFilter = (days: number) => {
     const endDate = new Date();
     const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-    setDateRange([startDate, endDate]);
+    setDateRange([ startDate, endDate ]);
   };
 
   const renderStatus = (status: string) => {
@@ -176,7 +176,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
     };
 
     const config = statusConfig[status as keyof typeof statusConfig] || { color: '#666', text: status };
-    
+
     return (
       <Tag color={config.color} style={{ fontWeight: 500 }}>
         {config.text}
@@ -189,34 +189,34 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
       const hours = Math.floor(duration / 3600);
       const minutes = Math.floor((duration % 3600) / 60);
       const seconds = duration % 60;
-      
+
       if (hours > 0) {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-      } else {
-        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       }
+      return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
     }
-    
+
     if (endTime) {
       const durationMs = new Date(endTime).getTime() - new Date(startTime).getTime();
       const totalSeconds = Math.floor(durationMs / 1000);
       const hours = Math.floor(totalSeconds / 3600);
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
-      
+
       if (hours > 0) {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-      } else {
-        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       }
+      return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
     }
-    
+
     return '-';
   };
 
   const renderResultSummary = (record: DrillRecord) => {
     const { resultSummary } = record;
-    
+
     return (
       <div style={{ fontSize: 12 }}>
         <div style={{ marginBottom: 2 }}>
@@ -233,7 +233,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
   };
 
   const renderActions = (value: any, index: number, record: DrillRecord) => (
-    <MenuButton 
+    <MenuButton
       label={<Icon type="ellipsis" />}
       popupProps={{ align: 'tr br' }}
     >
@@ -263,8 +263,8 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
       dataIndex: 'runId',
       width: '15%',
       cell: (value: string) => (
-        <Button 
-          type="link" 
+        <Button
+          type="link"
           onClick={() => handleViewDetails(value)}
           style={{ padding: 5, fontSize: 12, fontFamily: 'Monaco, Consolas, monospace' }}
         >
@@ -293,12 +293,12 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
       title: i18n.t('End Time').toString(),
       dataIndex: 'endTime',
       width: '15%',
-      cell: (value: string) => value ? formatDate(new Date(value).getTime()) : '-',
+      cell: (value: string) => (value ? formatDate(new Date(value).getTime()) : '-'),
     },
     {
       title: i18n.t('Duration').toString(),
       width: '10%',
-      cell: (value: any, index: number, record: DrillRecord) => 
+      cell: (value: any, index: number, record: DrillRecord) =>
         renderDuration(record.startTime, record.endTime, record.duration),
     },
     {
@@ -316,12 +316,12 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
   return (
     <div>
       {/* Filters */}
-      <div style={{ 
-        background: '#fff', 
-        padding: 16, 
-        marginBottom: 16, 
+      <div style={{
+        background: '#fff',
+        padding: 16,
+        marginBottom: 16,
         borderRadius: 6,
-        border: '1px solid #e8e8e8'
+        border: '1px solid #e8e8e8',
       }}>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
           <div>
@@ -333,7 +333,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
               hasClear
             />
           </div>
-          
+
           <div>
             <Select
               placeholder={i18n.t('Filter by status').toString()}
@@ -349,16 +349,16 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
               <Select.Option value="TERMINATED">Terminated</Select.Option>
             </Select>
           </div>
-          
+
           <div>
             <RangePicker
               value={dateRange}
               onChange={setDateRange}
-              placeholder={[i18n.t('Start Date').toString(), i18n.t('End Date').toString()]}
+              placeholder={[ i18n.t('Start Date').toString(), i18n.t('End Date').toString() ]}
               style={{ width: 250 }}
             />
           </div>
-          
+
           <div style={{ display: 'flex', gap: 8 }}>
             <Button size="small" onClick={() => handleQuickFilter(1)}>
               <Translation>Last 24h</Translation>
@@ -374,10 +374,10 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
       </div>
 
       {/* Table */}
-      <div style={{ 
-        background: '#fff', 
+      <div style={{
+        background: '#fff',
         borderRadius: 6,
-        border: '1px solid #e8e8e8'
+        border: '1px solid #e8e8e8',
       }}>
         <Table
           dataSource={records}
@@ -404,7 +404,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
               total={total}
               pageSize={pageSize}
               onChange={setPage}
-              showTotal={(total, range) => 
+              showTotal={(total, range) =>
                 `${range[0]}-${range[1]} of ${total} records`
               }
             />

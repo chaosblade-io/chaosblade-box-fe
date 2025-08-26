@@ -3,12 +3,12 @@ import Translation from 'components/Translation';
 import i18n from '../../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';
-import { 
-  Button, 
-  Message, 
+import {
+  Button,
+  Message,
   Dialog,
   Icon,
-  Affix
+  Affix,
 } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
@@ -87,7 +87,7 @@ interface ValidationErrors {
 const TaskConfiguration: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  
+
   // Refs for section scrolling
   const targetSystemRef = useRef<HTMLDivElement>(null);
   const apiParameterRef = useRef<HTMLDivElement>(null);
@@ -96,7 +96,7 @@ const TaskConfiguration: FC = () => {
   const executionConfigurationRef = useRef<HTMLDivElement>(null);
 
   // State management
-  const [formData, setFormData] = useState<TaskConfigurationData>({
+  const [ formData, setFormData ] = useState<TaskConfigurationData>({
     targetSystem: {
       systemId: '',
       environment: '',
@@ -120,7 +120,7 @@ const TaskConfiguration: FC = () => {
     },
     sloConfig: {
       functionalAssertions: {
-        statusCodes: [200],
+        statusCodes: [ 200 ],
         jsonPathAssertions: [],
       },
       performanceTargets: {
@@ -134,11 +134,11 @@ const TaskConfiguration: FC = () => {
     },
   });
 
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-  const [activeSection, setActiveSection] = useState('targetSystem');
-  const [isValidating, setIsValidating] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [executeDialogVisible, setExecuteDialogVisible] = useState(false);
+  const [ validationErrors, setValidationErrors ] = useState<ValidationErrors>({});
+  const [ activeSection, setActiveSection ] = useState('targetSystem');
+  const [ isValidating, setIsValidating ] = useState(false);
+  const [ isSaving, setIsSaving ] = useState(false);
+  const [ executeDialogVisible, setExecuteDialogVisible ] = useState(false);
 
   useEffect(() => {
     // Set page title and breadcrumb
@@ -187,7 +187,7 @@ const TaskConfiguration: FC = () => {
   const scrollToSection = (sectionId: string) => {
     const section = navigationSections.find(s => s.id === sectionId);
     if (section?.ref.current) {
-      section.ref.current.scrollIntoView({ 
+      section.ref.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
@@ -237,28 +237,28 @@ const TaskConfiguration: FC = () => {
 
     // Target System validation
     if (!formData.targetSystem.systemId) {
-      errors.targetSystem = [i18n.t('Target system is required').toString()];
+      errors.targetSystem = [ i18n.t('Target system is required').toString() ];
     }
     if (!formData.targetSystem.selectedAPI) {
-      errors.targetSystem = [...(errors.targetSystem || []), i18n.t('API selection is required').toString()];
+      errors.targetSystem = [ ...(errors.targetSystem || []), i18n.t('API selection is required').toString() ];
     }
 
     // Trace Config validation
     if (formData.traceConfig.faultConfigurations.length === 0) {
-      errors.traceConfig = [i18n.t('At least one fault configuration is required').toString()];
+      errors.traceConfig = [ i18n.t('At least one fault configuration is required').toString() ];
     }
 
     // SLO Config validation
     if (formData.sloConfig.performanceTargets.p95Limit <= 0) {
-      errors.sloConfig = [i18n.t('P95 limit must be greater than 0').toString()];
+      errors.sloConfig = [ i18n.t('P95 limit must be greater than 0').toString() ];
     }
 
     // Execution Config validation
     if (formData.executionConfig.totalRequests <= 0) {
-      errors.executionConfig = [i18n.t('Total requests must be greater than 0').toString()];
+      errors.executionConfig = [ i18n.t('Total requests must be greater than 0').toString() ];
     }
     if (formData.executionConfig.concurrency <= 0) {
-      errors.executionConfig = [...(errors.executionConfig || []), i18n.t('Concurrency must be greater than 0').toString()];
+      errors.executionConfig = [ ...(errors.executionConfig || []), i18n.t('Concurrency must be greater than 0').toString() ];
     }
 
     return errors;
@@ -273,7 +273,7 @@ const TaskConfiguration: FC = () => {
             <Translation>Configuration Sections</Translation>
           </div>
           <nav className={styles.navigation}>
-            {navigationSections.map((section) => (
+            {navigationSections.map(section => (
               <div
                 key={section.id}
                 className={`${styles.navItem} ${activeSection === section.id ? styles.navItemActive : ''}`}

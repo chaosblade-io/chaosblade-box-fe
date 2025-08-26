@@ -70,13 +70,13 @@ interface ConfigurationTabProps {
 }
 
 const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
-  const [expandedFaultServices, setExpandedFaultServices] = useState<string[]>([]);
+  const [ expandedFaultServices, setExpandedFaultServices ] = useState<string[]>([]);
 
   const toggleFaultService = (serviceId: string) => {
-    setExpandedFaultServices(prev => 
-      prev.includes(serviceId) 
+    setExpandedFaultServices(prev =>
+      (prev.includes(serviceId)
         ? prev.filter(id => id !== serviceId)
-        : [...prev, serviceId]
+        : [ ...prev, serviceId ]),
     );
   };
 
@@ -91,7 +91,6 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
     if (code >= 500) return styles.statusCode5xx;
     return '';
   };
-
 
 
   const renderConfigRow = (label: string, value: React.ReactNode, isCode = false, isJson = false) => (
@@ -141,7 +140,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         {Object.keys(data.apiParameters.pathParams).length > 0 ? (
           renderConfigRow(i18n.t('Path Parameters').toString(), (
             <div>
-              {Object.entries(data.apiParameters.pathParams).map(([key, value]) => (
+              {Object.entries(data.apiParameters.pathParams).map(([ key, value ]) => (
                 <div key={key} style={{ marginBottom: 4 }}>
                   <code>{key}</code>: {value}
                 </div>
@@ -156,7 +155,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         {Object.keys(data.apiParameters.queryParams).length > 0 ? (
           renderConfigRow(i18n.t('Query Parameters').toString(), (
             <div>
-              {Object.entries(data.apiParameters.queryParams).map(([key, values]) => (
+              {Object.entries(data.apiParameters.queryParams).map(([ key, values ]) => (
                 <div key={key} style={{ marginBottom: 4 }}>
                   <code>{key}</code>: {values.join(', ')}
                 </div>
@@ -174,7 +173,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         {Object.keys(data.apiParameters.headers.customHeaders).length > 0 ? (
           renderConfigRow(i18n.t('Custom Headers').toString(), (
             <div>
-              {Object.entries(data.apiParameters.headers.customHeaders).map(([key, value]) => (
+              {Object.entries(data.apiParameters.headers.customHeaders).map(([ key, value ]) => (
                 <div key={key} style={{ marginBottom: 4 }}>
                   <code>{key}</code>: {value}
                 </div>
@@ -196,7 +195,6 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
   );
 
 
-
   const renderFaultConfigurationCard = () => (
     <div className={styles.configCard}>
       <div className={styles.cardHeader}>
@@ -213,7 +211,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         ) : (
           data.traceConfig.faultConfigurations.map(service => (
             <div key={service.serviceId} className={styles.faultServiceCard}>
-              <div 
+              <div
                 className={styles.faultServiceHeader}
                 onClick={() => toggleFaultService(service.serviceId)}
               >
@@ -221,12 +219,12 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
                   <div className={styles.serviceName}>{service.serviceName}</div>
                   <div className={styles.serviceLayer}>Layer {service.layer}</div>
                 </div>
-                <Icon 
-                  type={expandedFaultServices.includes(service.serviceId) ? 'arrow-up' : 'arrow-down'} 
-                  size="xs" 
+                <Icon
+                  type={expandedFaultServices.includes(service.serviceId) ? 'arrow-up' : 'arrow-down'}
+                  size="xs"
                 />
               </div>
-              
+
               {expandedFaultServices.includes(service.serviceId) && (
                 <div className={styles.faultTemplates}>
                   {service.faultTemplates.filter(template => template.enabled).map((template, index) => (
@@ -234,7 +232,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
                       <div className={styles.faultInfo}>
                         <div className={styles.faultName}>{template.type}</div>
                         <div className={styles.faultParams}>
-                          {Object.entries(template.parameters).map(([key, value]) => (
+                          {Object.entries(template.parameters).map(([ key, value ]) => (
                             <span key={key} style={{ marginRight: 12 }}>
                               {key}: {value}
                             </span>
@@ -246,7 +244,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
                       </div>
                     </div>
                   ))}
-                  
+
                   {service.faultTemplates.filter(template => template.enabled).length === 0 && (
                     <em style={{ color: '#999' }}>
                       <Translation>No fault templates enabled for this service</Translation>
@@ -275,7 +273,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
           <div className={styles.sloSectionTitle}>
             <Translation>Functional Assertions</Translation>
           </div>
-          
+
           {/* Status Codes */}
           <div style={{ marginBottom: 16 }}>
             <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 8 }}>
