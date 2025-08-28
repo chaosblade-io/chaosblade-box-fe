@@ -88,6 +88,13 @@ module.exports = options => {
       port: 8082,
       client: { overlay: { errors: false, warnings: false } },
       proxy: {
+        // XFlow API 代理配置 (更具体的规则放在前面)
+        '/api/xflow': {
+          target: 'http://localhost:8106',
+          pathRewrite: {'^/api/xflow' : '/api/xflow'},
+          changeOrigin: true,
+        },
+        // 通用 API 代理配置
         '/api': {
           target: 'http://1.94.151.57:7001',
           pathRewrite: {'^/api' : ''},

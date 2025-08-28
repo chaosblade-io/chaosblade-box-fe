@@ -47,6 +47,12 @@ const menuConfig = [
     ],
   },
   {
+    key: '/chaos/topology-perception',
+    label: i18n.t('Topo Visualization'),
+    to: `/chaos/topology-perception?${commonUrlStr}`,
+    activePathPatterns: [ '/chaos/topology-perception' ],
+  },
+  {
     key: '/chaos/fault-space-detection',
     label: i18n.t('Fault Space Detection'),
     items: [
@@ -172,4 +178,5 @@ export const activeKeys: {[key: string]: string} = {
   '/chaos/fault-space-detection/tasks': '/chaos/fault-space-detection',
   '/chaos/fault-space-detection/add': '/chaos/fault-space-detection',
   '/chaos/fault-space-detection/records': '/chaos/fault-space-detection',
+  '/chaos/topology-perception': '/chaos/topology-perception',
 };

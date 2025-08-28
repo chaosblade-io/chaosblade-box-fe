@@ -1283,5 +1283,6 @@
   "You can modify the configuration after copying.": "您可以在复制后修改配置。",
   "Failed to load task detail": "加载任务详情失败",
   "Failed to copy task": "复制任务失败",
-  "Task copied successfully": "任务复制成功"
+  "Task copied successfully": "任务复制成功",
+  "Topo Visualization": "拓扑感知"
 }
