@@ -31,6 +31,8 @@ const SceneFunction = lazy(() => import('./SceneFunction'));
 const Overview = lazy(() => import('./Overview'));
 /** 故障空间探测 */
 const FaultSpaceDetection = lazy(() => import('./FaultSpaceDetection'));
+/** 拓扑感知 */
+const TopologyPerception = lazy(() => import('./TopologyPerception'));
 
 const { Switch, Route, useRouteMatch } = router;
 const Arch: FC = () => {
@@ -68,6 +70,7 @@ const Arch: FC = () => {
       <Route exact path={`${path}/scenes`} component={SceneFunction} />
       <Route exact path={`${path}/overview`} component={Overview} />
       <Route path={`${path}/fault-space-detection`} component={FaultSpaceDetection} />
+      <Route exact path={`${path}/topology-perception`} component={TopologyPerception} />
     </Switch>
   );
 };

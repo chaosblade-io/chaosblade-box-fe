@@ -26,9 +26,13 @@
     "@antv/data-set": "^0.11.1",
     "@antv/g2plot": "^2.3.39",
     "@antv/g6": "^4.3.4",
+    "@antv/x6": "^2.18.1",
+    "@antv/x6-react-shape": "^2.0.7",
+    "@antv/xflow": "^2.0.0",
     "@arms/js-sdk": "^1.8.35",
     "@svgdotjs/svg.js": "^3.0.16",
     "@types/fbemitter": "^2.0.32",
+    "antd": "^5.12.8",
     "bizcharts": "^3.5.7",
     "bx-tooltip": "^0.1.6",
     "byte-guide": "^1.0.6",
@@ -36,6 +40,7 @@
     "copy-to-clipboard": "^3.3.1",
     "css-loader": "^5.0.0",
     "css-modules-typescript-loader": "^4.0.1",
+    "dagre": "^0.8.5",
     "dva": "^2.6.0-beta.20",
     "dva-loading": "^3.0.20",
     "eslint-config-egg": "^8.1.2",
@@ -131,8 +136,5 @@
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.6.0"
-  },
-  "git-pre-hooks": {
-    "pre-commit": "npm run lint"
   }
 }
