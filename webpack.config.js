@@ -85,7 +85,7 @@ module.exports = options => {
       historyApiFallback: true,
       open: true,
       hot: true,
-      port: 8082,
+      port: 8083,
       client: { overlay: { errors: false, warnings: false } },
       proxy: {
         // XFlow API 代理配置 (更具体的规则放在前面)

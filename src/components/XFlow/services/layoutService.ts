@@ -3,12 +3,10 @@ import type {
   XFlowData,
   XFlowNode,
   XFlowEdge,
+  XFlowCombo,
   LayoutDirection,
 } from '../types/xflow';
 
-/**
- * 布局服务 - 使用dagre.js实现自动布局
- */
 export class LayoutService {
   /**
    * 应用Dagre布局算法

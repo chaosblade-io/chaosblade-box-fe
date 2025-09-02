@@ -1,14 +1,11 @@
 import React from 'react';
-import { Button, Space, Dropdown, Menu, Tooltip, Divider } from 'antd';
+import { Button, Space, Tooltip, Divider } from 'antd';
 import {
   ReloadOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
   FullscreenOutlined,
-  LayoutOutlined,
-  SaveOutlined,
   ExpandOutlined,
-  CompressOutlined,
   InfoCircleOutlined,
 } from '@ant-design/icons';
 import type { LayoutAlgorithm, LayoutDirection } from '../../types/xflow';
@@ -19,8 +16,6 @@ interface ToolbarPanelProps {
   onZoomOut: () => void;
   onFitView: () => void;
   onFullscreen: () => void;
-  onLayout: (algorithm: LayoutAlgorithm, direction?: LayoutDirection) => void;
-  onExport: () => void;
   onShowStatistics: () => void;
   loading?: boolean;
   statistics?: {
@@ -39,41 +34,10 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
   onZoomOut,
   onFitView,
   onFullscreen,
-  onLayout,
-  onExport,
   onShowStatistics,
   loading = false,
   statistics,
 }) => {
-  // 布局菜单
-  const layoutMenu = (
-    <Menu>
-      <Menu.SubMenu key="dagre" title="Dagre 布局">
-        <Menu.Item key="dagre-tb" onClick={() => onLayout('dagre', 'TB')}>
-          上下布局 (TB)
-        </Menu.Item>
-        <Menu.Item key="dagre-bt" onClick={() => onLayout('dagre', 'BT')}>
-          下上布局 (BT)
-        </Menu.Item>
-        <Menu.Item key="dagre-lr" onClick={() => onLayout('dagre', 'LR')}>
-          左右布局 (LR)
-        </Menu.Item>
-        <Menu.Item key="dagre-rl" onClick={() => onLayout('dagre', 'RL')}>
-          右左布局 (RL)
-        </Menu.Item>
-      </Menu.SubMenu>
-      <Menu.Item key="force" onClick={() => onLayout('force')}>
-        力导向布局
-      </Menu.Item>
-      <Menu.Item key="grid" onClick={() => onLayout('grid')}>
-        网格布局
-      </Menu.Item>
-      <Menu.Item key="circular" onClick={() => onLayout('circular')}>
-        环形布局
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <div
       style={{
@@ -135,44 +99,10 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             size="small"
           />
         </Tooltip>
+      </Space>
 
-        <Divider type="vertical" />
-
-        {/* 布局操作 */}
-        <Tooltip title="应用默认布局（左右方向）">
-          <Button
-            type="primary"
-            icon={<LayoutOutlined />}
-            onClick={() => onLayout('dagre', 'LR')}
-            size="small"
-          >
-            LR布局
-          </Button>
-        </Tooltip>
-
-        <Dropdown overlay={layoutMenu} trigger={[ 'click' ]}>
-          <Button
-            icon={<LayoutOutlined />}
-            size="small"
-          >
-            布局算法
-          </Button>
-        </Dropdown>
-
-        <Divider type="vertical" />
-
-        {/* 导出操作 */}
-        <Tooltip title="导出图片">
-          <Button
-            icon={<SaveOutlined />}
-            onClick={onExport}
-            size="small"
-          >
-            导出
-          </Button>
-        </Tooltip>
-
-        {/* 统计信息 */}
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+        {/* 统计信息按钮移到最右侧 */}
         <Tooltip title="查看统计信息">
           <Button
             icon={<InfoCircleOutlined />}
@@ -182,13 +112,13 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             统计
           </Button>
         </Tooltip>
-      </Space>
+      </div>
 
       {/* 右侧统计信息 */}
       {statistics && (
         <div
           style={{
-            marginLeft: 'auto',
+            marginLeft: '16px',
             display: 'flex',
             alignItems: 'center',
             fontSize: '12px',
