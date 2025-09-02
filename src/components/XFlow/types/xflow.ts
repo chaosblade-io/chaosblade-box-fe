@@ -5,11 +5,15 @@ import type { EntityType, RelationType, RedMetrics, Entity, NodeStatus } from '.
 
 // 适配 API 返回的数据结构
 export interface XFlowNodeData {
-  entity: Entity;
-  redMetrics: RedMetrics;
-  entityType: string;
-  status: NodeStatus;
-  displayName: string;
+  entity?: Entity;
+  redMetrics?: RedMetrics;
+  entityType?: string;
+  status?: NodeStatus;
+  displayName?: string;
+  // 虚拟节点特有属性
+  isVirtual?: boolean;
+  downstreamRpcNodes?: string[];
+  serviceNodeId?: string;
 }
 
 export interface XFlowEdgeData {
@@ -78,9 +82,22 @@ export interface XFlowEdge {
   data: XFlowEdgeData;
 }
 
+// Combo 接口
+export interface XFlowCombo {
+  id: string;
+  label: string;
+  parentId?: string;
+  children: string[]; // 子节点 ID 列表
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+
 export interface XFlowData {
   nodes: XFlowNode[];
   edges: XFlowEdge[];
+  combos?: XFlowCombo[]; // 添加 combo 支持
   statistics: {
     nodeCount: number;
     edgeCount: number;

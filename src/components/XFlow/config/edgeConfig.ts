@@ -42,6 +42,19 @@ export const registerCustomEdges = () => {
     },
   }, true);
 
+  // 注册虚线连接边（用于虚拟节点）
+  Graph.registerEdge('edge-virtual-connection', {
+    inherit: 'edge',
+    attrs: {
+      line: {
+        stroke: '#722ed1',
+        strokeWidth: 1,
+        strokeDasharray: '5 5',
+        targetMarker: 'block',
+      },
+    },
+  }, true);
+
   // 注册默认边
   Graph.registerEdge('edge-default', {
     inherit: 'edge',
@@ -66,6 +79,8 @@ export const getEdgeShape = (type: string): string => {
       return 'edge-containment';
     case 'INVOKES':
       return 'edge-invocation';
+    case 'VIRTUAL_CONNECTION':
+      return 'edge-virtual-connection';
     default:
       return 'edge-default';
   }
@@ -143,6 +158,17 @@ export const createEdgeAttrs = (type: string, redMetrics?: any) => {
           stroke: redMetrics?.successRate >= 95 ? '#1890ff' :
                  redMetrics?.successRate >= 90 ? '#faad14' : '#ff4d4f',
           strokeWidth: redMetrics ? Math.max(1, redMetrics.count / 50) : 1.5,
+        },
+      };
+
+    case 'VIRTUAL_CONNECTION':
+      return {
+        ...baseAttrs,
+        line: {
+          ...baseAttrs.line,
+          stroke: '#722ed1',
+          strokeWidth: 1,
+          strokeDasharray: '5 5', // 虚线表示虚拟连接
         },
       };
 

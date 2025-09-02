@@ -58,10 +58,138 @@ export const TopologyXFlow: React.FC = () => {
     }, { passive: false });
 
     // 添加事件监听
-    graph.on('node:click', ({ node }) => {
+    graph.on('node:click', ({ node, e }) => {
       // 高亮节点的所有入边和出边
       highlightNodeEdges(graph, node);
 
+      setSelectedNode({
+        id: node.id,
+        data: node.getData(),
+      });
+      setSelectedEdge(null);
+    });
+    
+    // 添加双击事件监听
+    graph.on('node:dblclick', ({ node, e }) => {
+      const nodeData = node.getData();
+      
+      // 如果双击的是 Service 节点，则折叠其下游的 RPC 节点
+      if (nodeData && nodeData.entityType === 'SERVICE') {
+        e.stopPropagation();
+        
+        // 查找该 Service 节点的所有下游 RPC 节点
+        const downstreamRpcNodes = [];
+        const edges = graph.getEdges();
+        
+        edges.forEach(edge => {
+          if (edge.getSourceCellId() === node.id) {
+            const targetNode = graph.getCellById(edge.getTargetCellId());
+            if (targetNode && targetNode.getData()?.entityType === 'RPC') {
+              downstreamRpcNodes.push(targetNode);
+            }
+          }
+        });
+        
+        // 如果找到了下游 RPC 节点
+        if (downstreamRpcNodes.length > 0) {
+          // 隐藏所有下游 RPC 节点
+          downstreamRpcNodes.forEach(childNode => {
+            childNode.setVisible(false);
+          });
+          
+          // 创建虚拟节点来代表这些被折叠的 RPC 节点
+          const virtualNodeId = `virtual-${node.id}`;
+          const nodePosition = node.getPosition();
+          
+          // 检查是否已经存在虚拟节点
+          const existingVirtualNode = graph.getCellById(virtualNodeId);
+          if (!existingVirtualNode) {
+            graph.addNode({
+              id: virtualNodeId,
+              shape: 'rect',
+              x: nodePosition.x + 150,
+              y: nodePosition.y,
+              width: 100,
+              height: 40,
+              label: `RPC组 (${downstreamRpcNodes.length})`,
+              attrs: {
+                body: {
+                  fill: '#f0f0f0',
+                  stroke: '#722ed1', // 紫色边框
+                  strokeWidth: 2,
+                },
+                label: {
+                  fontSize: 12,
+                  fill: '#722ed1', // 紫色文字
+                  textAnchor: 'middle',
+                  textVerticalAnchor: 'middle',
+                },
+              },
+              data: {
+                isVirtual: true,
+                entityType: 'VIRTUAL',
+                downstreamRpcNodes: downstreamRpcNodes.map(n => n.id),
+                serviceNodeId: node.id,
+              },
+            });
+            
+            // 创建虚线连接边
+            const edgeId = `edge-${node.id}-${virtualNodeId}`;
+            graph.addEdge({
+              id: edgeId,
+              source: node.id,
+              target: virtualNodeId,
+              attrs: {
+                line: {
+                  stroke: '#722ed1',
+                  strokeWidth: 1,
+                  strokeDasharray: '5 5', // 虚线
+                  targetMarker: 'block',
+                },
+              },
+              data: {
+                type: 'VIRTUAL_CONNECTION',
+              },
+            });
+          }
+          
+          message.info(`已折叠 ${downstreamRpcNodes.length} 个 RPC 节点`);
+        }
+        
+        return;
+      }
+      
+      // 如果双击的是虚拟节点，则展开其代表的 RPC 节点
+      if (nodeData && nodeData.isVirtual) {
+        e.stopPropagation();
+        
+        // 显示被折叠的 RPC 节点
+        const downstreamRpcNodeIds = nodeData.downstreamRpcNodes || [];
+        downstreamRpcNodeIds.forEach((nodeId: string) => {
+          const rpcNode = graph.getCellById(nodeId);
+          if (rpcNode) {
+            rpcNode.setVisible(true);
+          }
+        });
+        
+        // 删除虚拟节点及其连接边
+        const serviceNodeId = nodeData.serviceNodeId;
+        if (serviceNodeId) {
+          const edgeId = `edge-${serviceNodeId}-${node.id}`;
+          const edge = graph.getCellById(edgeId);
+          if (edge) {
+            edge.remove();
+          }
+        }
+        node.remove();
+        
+        message.info(`已展开 ${downstreamRpcNodeIds.length} 个 RPC 节点`);
+        return;
+      }
+      
+      // 对于其他节点的双击事件，仍然高亮节点
+      highlightNodeEdges(graph, node);
+      
       setSelectedNode({
         id: node.id,
         data: node.getData(),
@@ -201,12 +329,108 @@ export const TopologyXFlow: React.FC = () => {
           edge.attr('line/stroke', '#1890ff');
           edge.attr('line/strokeWidth', 1.5);
           break;
+        case 'VIRTUAL_CONNECTION':
+          edge.attr('line/stroke', '#722ed1');
+          edge.attr('line/strokeWidth', 1);
+          edge.attr('line/strokeDasharray', '5 5');
+          break;
         default:
           edge.attr('line/stroke', '#d9d9d9');
           edge.attr('line/strokeWidth', 1);
       }
     });
   };
+
+  // 自动折叠所有RPC节点
+  const autoCollapseRpcNodes = useCallback((graph: Graph, data: XFlowData) => {
+    if (!graph || !data) return;
+
+    // 获取所有Service节点
+    const serviceNodes = graph.getNodes().filter(node => {
+      const nodeData = node.getData();
+      return nodeData && nodeData.entityType === 'SERVICE';
+    });
+
+    // 为每个Service节点折叠其下游的RPC节点
+    serviceNodes.forEach(serviceNode => {
+      // 查找该Service节点的所有下游RPC节点
+      const downstreamRpcNodes = [];
+      const edges = graph.getEdges();
+      
+      edges.forEach(edge => {
+        if (edge.getSourceCellId() === serviceNode.id) {
+          const targetNode = graph.getCellById(edge.getTargetCellId());
+          if (targetNode && targetNode.getData()?.entityType === 'RPC') {
+            downstreamRpcNodes.push(targetNode);
+          }
+        }
+      });
+      
+      // 如果找到了下游RPC节点，则折叠它们
+      if (downstreamRpcNodes.length > 0) {
+        // 隐藏所有下游RPC节点
+        downstreamRpcNodes.forEach(childNode => {
+          childNode.setVisible(false);
+        });
+        
+        // 创建虚拟节点来代表这些被折叠的RPC节点
+        const virtualNodeId = `virtual-${serviceNode.id}`;
+        const nodePosition = serviceNode.getPosition();
+        
+        // 检查是否已经存在虚拟节点
+        const existingVirtualNode = graph.getCellById(virtualNodeId);
+        if (!existingVirtualNode) {
+          graph.addNode({
+            id: virtualNodeId,
+            shape: 'rect',
+            x: nodePosition.x + 150,
+            y: nodePosition.y,
+            width: 100,
+            height: 40,
+            label: `RPC组 (${downstreamRpcNodes.length})`,
+            attrs: {
+              body: {
+                fill: '#f0f0f0',
+                stroke: '#722ed1', // 紫色边框
+                strokeWidth: 2,
+              },
+              label: {
+                fontSize: 12,
+                fill: '#722ed1', // 紫色文字
+                textAnchor: 'middle',
+                textVerticalAnchor: 'middle',
+              },
+            },
+            data: {
+              isVirtual: true,
+              entityType: 'VIRTUAL',
+              downstreamRpcNodes: downstreamRpcNodes.map(n => n.id),
+              serviceNodeId: serviceNode.id,
+            },
+          });
+          
+          // 创建虚线连接边
+          const edgeId = `edge-${serviceNode.id}-${virtualNodeId}`;
+          graph.addEdge({
+            id: edgeId,
+            source: serviceNode.id,
+            target: virtualNodeId,
+            attrs: {
+              line: {
+                stroke: '#722ed1',
+                strokeWidth: 1,
+                strokeDasharray: '5 5', // 虚线
+                targetMarker: 'block',
+              },
+            },
+            data: {
+              type: 'VIRTUAL_CONNECTION',
+            },
+          });
+        }
+      }
+    });
+  }, []);
 
   // 加载拓扑数据
   const loadTopologyData = useCallback(async () => {
@@ -342,11 +566,14 @@ export const TopologyXFlow: React.FC = () => {
     // @ts-ignore - 过滤后的边可能包含null值
     graph.addEdges(edges);
 
+    // 自动折叠所有RPC节点
+    autoCollapseRpcNodes(graph, layoutedData);
+
     // 适应视图
     setTimeout(() => {
       graph.zoomToFit({ padding: 20, maxScale: 1 });
     }, 100);
-  }, []);
+  }, [autoCollapseRpcNodes]);
 
   // 刷新数据
   const handleRefresh = useCallback(async () => {
@@ -360,12 +587,14 @@ export const TopologyXFlow: React.FC = () => {
     }
   }, []);
 
+  // 缩放操作
   const handleZoomOut = useCallback(() => {
     if (graphRef.current) {
       graphRef.current.zoom(-0.1);
     }
   }, []);
 
+  // 适应视图
   const handleFitView = useCallback(() => {
     if (graphRef.current) {
       graphRef.current.zoomToFit({ padding: 20, maxScale: 1 });
@@ -381,72 +610,6 @@ export const TopologyXFlow: React.FC = () => {
         containerRef.current.requestFullscreen();
       }
     }
-  }, []);
-
-  // 应用布局算法
-  const handleLayout = useCallback(async (
-    algorithm: LayoutAlgorithm,
-    direction?: LayoutDirection,
-  ) => {
-    if (!topologyData) return;
-
-    try {
-      setLoading(true);
-
-      let layoutedData = topologyData;
-
-      // 优先使用前端布局服务，以减少服务器负载
-      if (algorithm === 'dagre' && direction) {
-        // 使用前端布局服务
-        layoutedData = LayoutService.applyDagreLayout(
-          topologyData,
-          direction,
-          {
-            nodeSpacing: 60,
-            rankSpacing: 100,
-          },
-        );
-        setTopologyData(layoutedData);
-        renderTopology(layoutedData);
-        message.success(`${algorithm} ${direction} 布局应用成功`);
-      } else {
-        // 请求后端布局服务
-        const layoutRequest = {
-          algorithm,
-          direction,
-          options: {},
-        };
-
-        const serverLayoutedData = await xflowApi.applyLayout(layoutRequest);
-        setTopologyData(serverLayoutedData);
-        renderTopology(serverLayoutedData);
-        message.success(`${algorithm} 布局应用成功`);
-      }
-    } catch (err) {
-      message.error('应用布局失败');
-    } finally {
-      setLoading(false);
-    }
-  }, [ topologyData, renderTopology ]);
-
-  // 导出图片
-  const handleExport = useCallback(() => {
-    if (!graphRef.current) return;
-
-    const graph = graphRef.current;
-
-    // 类型断言确保 TypeScript 编译通过
-    (graph as any).toPNG((dataUri: string) => {
-      const link = document.createElement('a');
-      link.download = `topology-${Date.now()}.png`;
-      link.href = dataUri;
-      link.click();
-    }, {
-      backgroundColor: '#ffffff',
-      padding: 20,
-    });
-
-    message.success('图片导出成功');
   }, []);
 
   // 显示统计信息
@@ -551,6 +714,21 @@ export const TopologyXFlow: React.FC = () => {
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* 工具栏 */}
+      <ToolbarPanel
+        onRefresh={handleRefresh}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onFitView={handleFitView}
+        onFullscreen={handleFullscreen}
+        onShowStatistics={handleShowStatistics}
+        loading={loading}
+        statistics={topologyData ? {
+          nodeCount: topologyData.statistics.nodeCount,
+          edgeCount: topologyData.statistics.edgeCount,
+        } : undefined}
+      />
+
       {/* 主要内容区域 */}
       <div style={{ flex: 1, display: 'flex', position: 'relative' }}>
         {/* 图形容器 */}
