@@ -341,6 +341,86 @@ export const TopologyXFlow: React.FC = () => {
     });
   };
 
+  // 高亮指定节点
+  const highlightNode = (graph: Graph, nodeId: string) => {
+    // 清除之前的所有高亮
+    clearHighlights(graph);
+    
+    // 查找并高亮指定节点
+    const node = graph.getCellById(nodeId);
+    if (node && node.isNode()) {
+      // 高亮节点本身
+      node.attr('body/stroke', '#ff4d4f');
+      node.attr('body/strokeWidth', 3);
+      
+      // 获取节点的所有入边和出边
+      const edges = graph.getConnectedEdges(node);
+      
+      // 高亮所有连接的边
+      edges.forEach(edge => {
+        edge.attr('line/stroke', '#ff4d4f');
+        edge.attr('line/strokeWidth', 3);
+        
+        // 高亮边的另一端节点
+        const sourceNode = edge.getSourceNode();
+        const targetNode = edge.getTargetNode();
+        
+        if (sourceNode && sourceNode.id !== nodeId) {
+          sourceNode.attr('body/stroke', '#ff4d4f');
+          sourceNode.attr('body/strokeWidth', 2);
+        }
+        
+        if (targetNode && targetNode.id !== nodeId) {
+          targetNode.attr('body/stroke', '#ff4d4f');
+          targetNode.attr('body/strokeWidth', 2);
+        }
+      });
+      
+      // 将视图滚动到节点位置并适当缩放
+      const nodePosition = node.getPosition();
+      
+      // 使用更兼容的方式获取图形尺寸
+      let width = 800;
+      let height = 600;
+      
+      // 尝试多种方式获取图形尺寸
+      try {
+        // 方法1: 使用getContainer获取容器元素尺寸
+        const container = graph.container;
+        if (container) {
+          width = container.clientWidth || width;
+          height = container.clientHeight || height;
+        }
+      } catch (e) {
+        console.warn('Failed to get graph container size, using default values', e);
+      }
+      
+      // 如果还是获取不到，尝试使用节点的尺寸
+      const nodeWidth = node.getSize().width || 120;
+      const nodeHeight = node.getSize().height || 60;
+      
+      // 计算居中位置
+      const centerX = nodePosition.x - width / 2 + nodeWidth / 2;
+      const centerY = nodePosition.y - height / 2 + nodeHeight / 2;
+      
+      // 移动到节点位置
+      graph.translate(-centerX, -centerY);
+      
+      // 设置合适的缩放级别
+      try {
+        const currentScale = graph.transform.getScale().sx;
+        if (currentScale < 0.8) {
+          graph.zoomTo(0.8);
+        }
+      } catch (e) {
+        console.warn('Failed to zoom graph', e);
+      }
+      
+      return true;
+    }
+    return false;
+  };
+
   // 自动折叠所有RPC节点
   const autoCollapseRpcNodes = useCallback((graph: Graph, data: XFlowData) => {
     if (!graph || !data) return;
@@ -580,6 +660,26 @@ export const TopologyXFlow: React.FC = () => {
     await loadTopologyData();
   }, [ loadTopologyData ]);
 
+  // 处理节点选择
+  const handleNodeSelect = useCallback((nodeId: string) => {
+    if (graphRef.current) {
+      const success = highlightNode(graphRef.current, nodeId);
+      if (success) {
+        // 设置选中的节点
+        const node = graphRef.current.getCellById(nodeId);
+        if (node && node.isNode()) {
+          setSelectedNode({
+            id: nodeId,
+            data: node.getData(),
+          });
+          setSelectedEdge(null);
+        }
+      } else {
+        message.warning('未找到指定节点');
+      }
+    }
+  }, []);
+
   // 缩放操作
   const handleZoomIn = useCallback(() => {
     if (graphRef.current) {
@@ -722,6 +822,8 @@ export const TopologyXFlow: React.FC = () => {
         onFitView={handleFitView}
         onFullscreen={handleFullscreen}
         onShowStatistics={handleShowStatistics}
+        onNodeSelect={handleNodeSelect}
+        graph={graphRef.current}
         loading={loading}
         statistics={topologyData ? {
           nodeCount: topologyData.statistics.nodeCount,

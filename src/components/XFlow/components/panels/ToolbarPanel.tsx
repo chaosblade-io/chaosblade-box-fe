@@ -9,6 +9,8 @@ import {
   InfoCircleOutlined,
 } from '@ant-design/icons';
 import type { LayoutAlgorithm, LayoutDirection } from '../../types/xflow';
+import { FilterPanel } from './FilterPanel';
+import type { Graph } from '@antv/x6';
 
 interface ToolbarPanelProps {
   onRefresh: () => void;
@@ -17,6 +19,8 @@ interface ToolbarPanelProps {
   onFitView: () => void;
   onFullscreen: () => void;
   onShowStatistics: () => void;
+  onNodeSelect: (nodeId: string) => void;
+  graph: Graph | null;
   loading?: boolean;
   statistics?: {
     nodeCount: number;
@@ -35,6 +39,8 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
   onFitView,
   onFullscreen,
   onShowStatistics,
+  onNodeSelect,
+  graph,
   loading = false,
   statistics,
 }) => {
@@ -64,6 +70,11 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             刷新
           </Button>
         </Tooltip>
+
+        <Divider type="vertical" />
+
+        {/* 过滤搜索 */}
+        <FilterPanel graph={graph} onNodeSelect={onNodeSelect} />
 
         <Divider type="vertical" />
 
