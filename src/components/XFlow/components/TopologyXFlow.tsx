@@ -3,6 +3,7 @@ import { Graph } from '@antv/x6';
 import { message, Modal, Spin } from 'antd';
 import { ToolbarPanel } from './panels/ToolbarPanel';
 import { PropertyPanel } from './panels/PropertyPanel';
+import { LegendPanel } from './panels/LegendPanel';
 import { registerCustomNodes, createGraphConfig } from '../config/nodeConfig';
 import { registerCustomEdges, getEdgeShape, createEdgeLabel } from '../config/edgeConfig';
 import { xflowApi } from '../services/xflowApi';
@@ -324,10 +325,16 @@ export const TopologyXFlow: React.FC = () => {
         case 'CONTAINS':
           edge.attr('line/stroke', '#52c41a');
           edge.attr('line/strokeWidth', 1);
+          edge.attr('line/strokeDasharray', '5 5');
           break;
         case 'INVOKES':
           edge.attr('line/stroke', '#1890ff');
           edge.attr('line/strokeWidth', 1.5);
+          break;
+        case 'RUNS_ON':
+          edge.attr('line/stroke', '#722ed1');
+          edge.attr('line/strokeWidth', 2);
+          edge.attr('line/strokeDasharray', '10 2');
           break;
         case 'VIRTUAL_CONNECTION':
           edge.attr('line/stroke', '#722ed1');
@@ -877,6 +884,9 @@ export const TopologyXFlow: React.FC = () => {
         >
           Ctrl + 滚轮缩放
         </div>
+
+        {/* 图例面板 */}
+        <LegendPanel />
 
         {/* 属性面板 */}
         <PropertyPanel
