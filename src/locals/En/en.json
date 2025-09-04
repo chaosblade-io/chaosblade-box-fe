@@ -514,5 +514,6 @@
   "Total Requests": "Total Requests",
   "Failed Requests": "Failed Requests",
   "High Latency Incidents": "High Latency Incidents",
-  "Average Latency": "Average Latency"
+  "Average Latency": "Average Latency",
+  "Apply high availability services": "Resilience Testing Platform"
 }
