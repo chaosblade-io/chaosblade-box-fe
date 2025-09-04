@@ -28,6 +28,7 @@ export const TopologyXFlow: React.FC = () => {
   const [ topologyData, setTopologyData ] = useState<XFlowData | null>(null);
   const [ selectedNode, setSelectedNode ] = useState<{ id: string; data: any } | null>(null);
   const [ selectedEdge, setSelectedEdge ] = useState<{ id: string; data: any } | null>(null);
+  const [ isLegendVisible, setIsLegendVisible ] = useState(true);
 
   // 初始化图形
   const initGraph = useCallback(() => {
@@ -154,7 +155,8 @@ export const TopologyXFlow: React.FC = () => {
             });
           }
           
-          message.info(`已折叠 ${downstreamRpcNodes.length} 个 RPC 节点`);
+          // 移除弹窗提示
+          // message.info(`已折叠 ${downstreamRpcNodes.length} 个 RPC 节点`);
         }
         
         return;
@@ -184,7 +186,8 @@ export const TopologyXFlow: React.FC = () => {
         }
         node.remove();
         
-        message.info(`已展开 ${downstreamRpcNodeIds.length} 个 RPC 节点`);
+        // 移除弹窗提示
+        // message.info(`已展开 ${downstreamRpcNodeIds.length} 个 RPC 节点`);
         return;
       }
       
@@ -548,8 +551,8 @@ export const TopologyXFlow: React.FC = () => {
 
     const graph = graphRef.current;
 
-    // 清空现有内容
-    graph.clearCells();
+    // 直接重置画布，这是更有效的方式
+    graph.fromJSON({ nodes: [], edges: [] });
 
     // 确保数据存在
     if (!data.nodes || !data.edges) {
@@ -755,14 +758,19 @@ export const TopologyXFlow: React.FC = () => {
     });
   }, [ topologyData ]);
 
+  // 切换图例可见性
+  const handleToggleLegend = useCallback(() => {
+    setIsLegendVisible(prev => !prev);
+  }, []);
+
   // 窗口大小变化处理
   useEffect(() => {
     const handleResize = () => {
       if (graphRef.current && containerRef.current) {
-        graphRef.current.resize(
-          containerRef.current.clientWidth,
-          containerRef.current.clientHeight,
-        );
+        // 调整图形尺寸以适应容器
+        const width = containerRef.current.clientWidth;
+        const height = containerRef.current.clientHeight;
+        graphRef.current.resize(width, height);
       }
     };
 
@@ -829,6 +837,7 @@ export const TopologyXFlow: React.FC = () => {
         onFitView={handleFitView}
         onFullscreen={handleFullscreen}
         onShowStatistics={handleShowStatistics}
+        onToggleLegend={handleToggleLegend}
         onNodeSelect={handleNodeSelect}
         graph={graphRef.current}
         loading={loading}
@@ -836,6 +845,7 @@ export const TopologyXFlow: React.FC = () => {
           nodeCount: topologyData.statistics.nodeCount,
           edgeCount: topologyData.statistics.edgeCount,
         } : undefined}
+        isLegendVisible={isLegendVisible}
       />
 
       {/* 主要内容区域 */}
@@ -864,7 +874,9 @@ export const TopologyXFlow: React.FC = () => {
             justifyContent: 'center',
             zIndex: 1000,
           }}>
-            <Spin size="large" tip="加载中..." />
+            <Spin size="large" tip="加载中...">
+              <div />
+            </Spin>
           </div>
         )}
 
@@ -886,7 +898,7 @@ export const TopologyXFlow: React.FC = () => {
         </div>
 
         {/* 图例面板 */}
-        <LegendPanel />
+        {isLegendVisible && <LegendPanel />}
 
         {/* 属性面板 */}
         <PropertyPanel

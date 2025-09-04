@@ -7,6 +7,8 @@ import {
   FullscreenOutlined,
   ExpandOutlined,
   InfoCircleOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
 } from '@ant-design/icons';
 import type { LayoutAlgorithm, LayoutDirection } from '../../types/xflow';
 import { FilterPanel } from './FilterPanel';
@@ -19,6 +21,7 @@ interface ToolbarPanelProps {
   onFitView: () => void;
   onFullscreen: () => void;
   onShowStatistics: () => void;
+  onToggleLegend: () => void;
   onNodeSelect: (nodeId: string) => void;
   graph: Graph | null;
   loading?: boolean;
@@ -26,6 +29,7 @@ interface ToolbarPanelProps {
     nodeCount: number;
     edgeCount: number;
   };
+  isLegendVisible: boolean;
 }
 
 /**
@@ -39,10 +43,12 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
   onFitView,
   onFullscreen,
   onShowStatistics,
+  onToggleLegend,
   onNodeSelect,
   graph,
   loading = false,
   statistics,
+  isLegendVisible,
 }) => {
   return (
     <div
@@ -70,11 +76,6 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             刷新
           </Button>
         </Tooltip>
-
-        <Divider type="vertical" />
-
-        {/* 过滤搜索 */}
-        <FilterPanel graph={graph} onNodeSelect={onNodeSelect} />
 
         <Divider type="vertical" />
 
@@ -113,20 +114,34 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
       </Space>
 
       <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-        {/* 统计信息按钮移到最右侧 */}
+        {/* 过滤搜索 */}
+        <FilterPanel graph={graph} onNodeSelect={onNodeSelect} />
+        
+        {/* 统计信息按钮 */}
         <Tooltip title="查看统计信息">
           <Button
             icon={<InfoCircleOutlined />}
             onClick={onShowStatistics}
             size="small"
+            style={{ marginLeft: '8px' }}
           >
             统计
           </Button>
         </Tooltip>
+        
+        {/* 图例切换按钮 */}
+        <Tooltip title={isLegendVisible ? "隐藏图例" : "显示图例"}>
+          <Button
+            icon={isLegendVisible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+            onClick={onToggleLegend}
+            size="small"
+            style={{ marginLeft: '8px' }}
+          />
+        </Tooltip>
       </div>
 
-      {/* 右侧统计信息 */}
-      {statistics && (
+      {/* 注释掉统计信息显示 */}
+      {/* {statistics && (
         <div
           style={{
             marginLeft: '16px',
@@ -145,7 +160,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             </span>
           </Space>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
