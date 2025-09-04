@@ -42,6 +42,19 @@ export const registerCustomEdges = () => {
     },
   }, true);
 
+  // 注册关系边
+  Graph.registerEdge('edge-runs-on', {
+    inherit: 'edge',
+    attrs: {
+      line: {
+        stroke: '#722ed1',
+        strokeWidth: 2,
+        strokeDasharray: '10 2', // 点划线表示运行关系
+        targetMarker: 'block',
+      },
+    },
+  }, true);
+
   // 注册虚线连接边（用于虚拟节点）
   Graph.registerEdge('edge-virtual-connection', {
     inherit: 'edge',
@@ -49,7 +62,7 @@ export const registerCustomEdges = () => {
       line: {
         stroke: '#722ed1',
         strokeWidth: 1,
-        strokeDasharray: '5 5',
+        strokeDasharray: '5 5', // 虚线表示虚拟连接
         targetMarker: 'block',
       },
     },
@@ -79,6 +92,8 @@ export const getEdgeShape = (type: string): string => {
       return 'edge-containment';
     case 'INVOKES':
       return 'edge-invocation';
+    case 'RUNS_ON':
+      return 'edge-runs-on';
     case 'VIRTUAL_CONNECTION':
       return 'edge-virtual-connection';
     default:
@@ -158,6 +173,18 @@ export const createEdgeAttrs = (type: string, redMetrics?: any) => {
           stroke: redMetrics?.successRate >= 95 ? '#1890ff' :
                  redMetrics?.successRate >= 90 ? '#faad14' : '#ff4d4f',
           strokeWidth: redMetrics ? Math.max(1, redMetrics.count / 50) : 1.5,
+        },
+      };
+
+    case 'RUNS_ON':
+      return {
+        ...baseAttrs,
+        line: {
+          ...baseAttrs.line,
+          stroke: redMetrics?.successRate >= 95 ? '#722ed1' :
+                 redMetrics?.successRate >= 90 ? '#faad14' : '#ff4d4f',
+          strokeWidth: redMetrics ? Math.max(1, redMetrics.count / 80) : 2,
+          strokeDasharray: '10 2', // 点划线表示运行于关系
         },
       };
 

@@ -82,7 +82,8 @@ export enum EntityType {
 export enum RelationType {
   DEPENDS_ON = 'DEPENDS_ON',
   CONTAINS = 'CONTAINS',
-  INVOKES = 'INVOKES'
+  INVOKES = 'INVOKES',
+  RUNS_ON = 'RUNS_ON'
 }
 
 export type NodeStatus = 'success' | 'warning' | 'error' | 'unknown';
