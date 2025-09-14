@@ -80,7 +80,9 @@ export interface CreateProbeTaskPayload {
   requestNum: number;
 }
 
-const BASE_PREFIX = ''; // devServer proxies /api -> starter-host
+// In production, the app is served under /chaos-blade (see history basename and webpack publicPath)
+// So API base should be /chaos-blade/api; in development keep '' so devServer proxy '/api' works.
+const BASE_PREFIX = process.env.NODE_ENV === 'production' ? '/chaos-blade' : '';
 
 async function handleResponse(res: Response) {
   const text = await res.text();
