@@ -113,7 +113,8 @@ module.exports = options => {
       extensions: ['.mjs', '.js', '.json', '.jsx', '.ts', '.tsx', '.json'],
       // 应用模块别名
       alias: Object.assign({
-        'babel-runtime': '@babel/runtime-corejs2'
+        'babel-runtime': '@babel/runtime-corejs2',
+        'react-dom/client': path.resolve(__dirname, './src/shims/react-dom-client-shim.js')
       }, resolveAlias(paths.appDir, options.alias || {})),
       plugins: [
         // 限制 src 目录以外的文件引用 (允许引用 package.json)
