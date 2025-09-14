@@ -1,0 +1,3215 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/Users/mj/study/ISCS/develop/chaosblade-box-fe",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2025-09-08 15:54:51",
+            "filesum": 522,
+            "codesum": 122928,
+            "commentsum": 2608,
+            "blanksum": 12717,
+            "statistics": {
+                ".js": {
+                    "code": 1005,
+                    "comment": 235,
+                    "blank": 161
+                },
+                ".json": {
+                    "code": 28376,
+                    "comment": 7,
+                    "blank": 116
+                },
+                ".md": {
+                    "code": 3543,
+                    "comment": 83,
+                    "blank": 725
+                },
+                "": {
+                    "code": 18,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".jmx": {
+                    "code": 99,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".ts": {
+                    "code": 11521,
+                    "comment": 633,
+                    "blank": 826
+                },
+                ".html": {
+                    "code": 11,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".example": {
+                    "code": 26,
+                    "comment": 1,
+                    "blank": 5
+                },
+                ".tsx": {
+                    "code": 31879,
+                    "comment": 1310,
+                    "blank": 2908
+                },
+                ".css": {
+                    "code": 46444,
+                    "comment": 339,
+                    "blank": 7976
+                },
+                ".svg": {
+                    "code": 6,
+                    "comment": 0,
+                    "blank": 0
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": ".eslintignore"
+                },
+                {
+                    "blank": 4,
+                    "code": 30,
+                    "comment": 23,
+                    "filename": ".eslintrc.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": ".postcssrc.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": ".stylelintrc"
+                },
+                {
+                    "blank": 1,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "abc.json"
+                },
+                {
+                    "blank": 1,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "config-overrides.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 277,
+                    "comment": 0,
+                    "filename": "docs/fault-detection-api-requirements.json"
+                },
+                {
+                    "blank": 45,
+                    "code": 282,
+                    "comment": 0,
+                    "filename": "docs/fault-detection-api-requirements.md"
+                },
+                {
+                    "blank": 25,
+                    "code": 211,
+                    "comment": 4,
+                    "filename": "docs/fault-space-detection/探测任务代理接口前端集成说明.md"
+                },
+                {
+                    "blank": 5,
+                    "code": 629,
+                    "comment": 5,
+                    "filename": "docs/fault-space-detection/探测任务创建接口详细示例.md"
+                },
+                {
+                    "blank": 59,
+                    "code": 230,
+                    "comment": 10,
+                    "filename": "docs/load/API_PARAMETER_FIX_SUMMARY.md"
+                },
+                {
+                    "blank": 41,
+                    "code": 167,
+                    "comment": 5,
+                    "filename": "docs/load/EXPERIMENT_DETAIL_LOAD_TEST_STRATEGY_FIX.md"
+                },
+                {
+                    "blank": 42,
+                    "code": 152,
+                    "comment": 0,
+                    "filename": "docs/load/FILE_UPLOAD_TEST_GUIDE.md"
+                },
+                {
+                    "blank": 31,
+                    "code": 126,
+                    "comment": 8,
+                    "filename": "docs/load/GET_LOAD_TEST_STRATEGY_POST_METHOD_FIX.md"
+                },
+                {
+                    "blank": 31,
+                    "code": 106,
+                    "comment": 8,
+                    "filename": "docs/load/LOAD_TEST_API_FIXES_SUMMARY.md"
+                },
+                {
+                    "blank": 27,
+                    "code": 133,
+                    "comment": 0,
+                    "filename": "docs/load/LOAD_TEST_API_INTEGRATION.md"
+                },
+                {
+                    "blank": 56,
+                    "code": 206,
+                    "comment": 17,
+                    "filename": "docs/load/LOAD_TEST_API_INTEGRATION_FIX.md"
+                },
+                {
+                    "blank": 69,
+                    "code": 241,
+                    "comment": 0,
+                    "filename": "docs/load/LOAD_TEST_COMPLETE_TESTING_GUIDE.md"
+                },
+                {
+                    "blank": 32,
+                    "code": 134,
+                    "comment": 1,
+                    "filename": "docs/load/LOAD_TEST_DATA_CHARTS_INTEGRATION.md"
+                },
+                {
+                    "blank": 60,
+                    "code": 202,
+                    "comment": 0,
+                    "filename": "docs/load/LOAD_TEST_FEATURES_OVERVIEW.md"
+                },
+                {
+                    "blank": 45,
+                    "code": 167,
+                    "comment": 10,
+                    "filename": "docs/load/LOAD_TEST_STRATEGY_COMPLETE_INTEGRATION.md"
+                },
+                {
+                    "blank": 52,
+                    "code": 188,
+                    "comment": 5,
+                    "filename": "docs/load/LOAD_TEST_STRATEGY_INTEGRATION.md"
+                },
+                {
+                    "blank": 57,
+                    "code": 236,
+                    "comment": 5,
+                    "filename": "docs/load/LOAD_TEST_TASK_MONITORING_IMPLEMENTATION.md"
+                },
+                {
+                    "blank": 5,
+                    "code": 26,
+                    "comment": 1,
+                    "filename": "nginx.conf.example"
+                },
+                {
+                    "blank": 34,
+                    "code": 25667,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 138,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "public/fonts.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "public/index.html"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 0,
+                    "code": 99,
+                    "comment": 0,
+                    "filename": "sample_test.jmx"
+                },
+                {
+                    "blank": 3,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "scripts/lib/babel-plugin-auto-css-modules.js"
+                },
+                {
+                    "blank": 9,
+                    "code": 37,
+                    "comment": 14,
+                    "filename": "scripts/lib/babelConfig.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 68,
+                    "comment": 6,
+                    "filename": "scripts/lib/compile.js"
+                },
+                {
+                    "blank": 12,
+                    "code": 50,
+                    "comment": 9,
+                    "filename": "scripts/lib/env.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 26,
+                    "comment": 10,
+                    "filename": "scripts/lib/getCSSModuleLocalIdent.js"
+                },
+                {
+                    "blank": 33,
+                    "code": 150,
+                    "comment": 19,
+                    "filename": "scripts/lib/helper.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 1,
+                    "filename": "scripts/lib/paths.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 15,
+                    "comment": 13,
+                    "filename": "scripts/lib/WatchMissingNodeModulesPlugin.js"
+                },
+                {
+                    "blank": 78,
+                    "code": 441,
+                    "comment": 0,
+                    "filename": "service-dependency-graph.json"
+                },
+                {
+                    "blank": 24,
+                    "code": 124,
+                    "comment": 3,
+                    "filename": "src/components/Layout/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 20,
+                    "comment": 2,
+                    "filename": "src/components/Layout/index.css.d.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 161,
+                    "comment": 11,
+                    "filename": "src/components/Layout/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/components/Loading/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 2,
+                    "filename": "src/components/Loading/index.css.d.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/components/Loading/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/components/MarkD/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 54,
+                    "comment": 0,
+                    "filename": "src/components/MyHeader/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/components/MyHeader/index.css.d.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 48,
+                    "comment": 0,
+                    "filename": "src/components/MyHeader/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/components/PageHeaderExtra/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 7,
+                    "comment": 2,
+                    "filename": "src/components/PageHeaderExtra/index.css.d.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/components/PageHeaderExtra/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 30,
+                    "comment": 2,
+                    "filename": "src/components/PageHeaderExtra/NamespaceSelector/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/components/PageHeaderExtra/NamespaceSelector/index.css.d.ts"
+                },
+                {
+                    "blank": 13,
+                    "code": 136,
+                    "comment": 5,
+                    "filename": "src/components/PageHeaderExtra/NamespaceSelector/index.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/components/PageHeaderExtra/NamespaceSelector/NamespaceManage/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/components/PageHeaderExtra/NamespaceSelector/NamespaceManage/index.css.d.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 142,
+                    "comment": 2,
+                    "filename": "src/components/PageHeaderExtra/NamespaceSelector/NamespaceManage/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 66,
+                    "comment": 0,
+                    "filename": "src/components/SwitchButton/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/components/SwitchButton/index.css.d.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 40,
+                    "comment": 0,
+                    "filename": "src/components/SwitchButton/index.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/components/Translation/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 14,
+                    "comment": 1,
+                    "filename": "src/config/constants/Chaos/chaos.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 102,
+                    "comment": 5,
+                    "filename": "src/config/constants/Chaos/ExperimentConstants.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 46,
+                    "comment": 5,
+                    "filename": "src/config/constants/Chaos/FunctionConstants.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src/config/constants/Chaos/FunctionParameterConstants.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/config/constants/Chaos/index.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 36,
+                    "comment": 2,
+                    "filename": "src/config/constants/Chaos/Node.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 19,
+                    "comment": 0,
+                    "filename": "src/config/constants/Chaos/SlidePanelClose.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 19,
+                    "comment": 1,
+                    "filename": "src/config/constants/index.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 29,
+                    "comment": 10,
+                    "filename": "src/config/constants/Manage/AgentSetting/index.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "src/config/constants/Manage/index.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 166,
+                    "comment": 4,
+                    "filename": "src/config/constants/menu.tsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 113,
+                    "comment": 6,
+                    "filename": "src/config/interfaces/Chaos/application.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 43,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/components.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/context.ts"
+                },
+                {
+                    "blank": 42,
+                    "code": 376,
+                    "comment": 13,
+                    "filename": "src/config/interfaces/Chaos/experiment.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/experimentDetail.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 62,
+                    "comment": 1,
+                    "filename": "src/config/interfaces/Chaos/experimentList.ts"
+                },
+                {
+                    "blank": 39,
+                    "code": 279,
+                    "comment": 6,
+                    "filename": "src/config/interfaces/Chaos/experimentTask.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/expertiseEditor.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/expertises.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/functionParameter.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/loginUser.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/migration.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 51,
+                    "comment": 7,
+                    "filename": "src/config/interfaces/Chaos/overview.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 43,
+                    "comment": 2,
+                    "filename": "src/config/interfaces/Chaos/scene.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 74,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/scopesControl.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 45,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Chaos/workspace.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 64,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/home.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 26,
+                    "comment": 1,
+                    "filename": "src/config/interfaces/index.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 113,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Manage/AgentSetting/index.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 31,
+                    "comment": 6,
+                    "filename": "src/config/interfaces/Manage/AgentSetting/tools.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/config/interfaces/Manage/index.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 49,
+                    "comment": 1,
+                    "filename": "src/config/styles/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 19,
+                    "comment": 2,
+                    "filename": "src/config/styles/index.css.d.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 25,
+                    "comment": 3,
+                    "filename": "src/i18n.tsx"
+                },
+                {
+                    "filename": "src/imgs/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/imgs/fileSvg.svg"
+                },
+                {
+                    "filename": "src/imgs/font_1435786_ccri5b3kw0n.woff2",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/imgs/ladeSvg.svg"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/imgs/litmusSvg.svg"
+                },
+                {
+                    "filename": "src/imgs/loginAccount.jpg",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src/imgs/logo.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/imgs/start1.svg"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/imgs/start2.svg"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/imgs/start3.svg"
+                },
+                {
+                    "filename": "src/imgs/title.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 5972,
+                    "code": 35091,
+                    "comment": 196,
+                    "filename": "src/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 2914,
+                    "comment": 2,
+                    "filename": "src/index.css.d.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 24,
+                    "comment": 1,
+                    "filename": "src/index.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 518,
+                    "comment": 0,
+                    "filename": "src/locals/En/en.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 1287,
+                    "comment": 0,
+                    "filename": "src/locals/Zh/zh.json"
+                },
+                {
+                    "blank": 17,
+                    "code": 65,
+                    "comment": 3,
+                    "filename": "src/models/Chaos/application.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "src/models/Chaos/category.ts"
+                },
+                {
+                    "blank": 27,
+                    "code": 248,
+                    "comment": 9,
+                    "filename": "src/models/Chaos/experimentDataSource.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 174,
+                    "comment": 6,
+                    "filename": "src/models/Chaos/experimentDetail.ts"
+                },
+                {
+                    "blank": 51,
+                    "code": 527,
+                    "comment": 22,
+                    "filename": "src/models/Chaos/experimentEditor.ts"
+                },
+                {
+                    "blank": 25,
+                    "code": 166,
+                    "comment": 19,
+                    "filename": "src/models/Chaos/experimentInit.ts"
+                },
+                {
+                    "blank": 29,
+                    "code": 144,
+                    "comment": 15,
+                    "filename": "src/models/Chaos/experimentList.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 118,
+                    "comment": 5,
+                    "filename": "src/models/Chaos/experimentScene.ts"
+                },
+                {
+                    "blank": 25,
+                    "code": 236,
+                    "comment": 1,
+                    "filename": "src/models/Chaos/experimentTask.ts"
+                },
+                {
+                    "blank": 48,
+                    "code": 391,
+                    "comment": 12,
+                    "filename": "src/models/Chaos/expertiseEditor.ts"
+                },
+                {
+                    "blank": 21,
+                    "code": 168,
+                    "comment": 7,
+                    "filename": "src/models/Chaos/expertises.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 26,
+                    "comment": 5,
+                    "filename": "src/models/Chaos/functionParameter.ts"
+                },
+                {
+                    "blank": 66,
+                    "code": 476,
+                    "comment": 10,
+                    "filename": "src/models/Chaos/loadTestDefinition.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 59,
+                    "comment": 0,
+                    "filename": "src/models/Chaos/loginUser.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 47,
+                    "comment": 7,
+                    "filename": "src/models/Chaos/overview.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 39,
+                    "comment": 1,
+                    "filename": "src/models/Chaos/scene.ts"
+                },
+                {
+                    "blank": 13,
+                    "code": 45,
+                    "comment": 1,
+                    "filename": "src/models/Chaos/scopesControl.ts"
+                },
+                {
+                    "blank": 18,
+                    "code": 78,
+                    "comment": 0,
+                    "filename": "src/models/Chaos/workspace.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 26,
+                    "comment": 3,
+                    "filename": "src/models/home.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 45,
+                    "comment": 0,
+                    "filename": "src/models/index.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 101,
+                    "comment": 16,
+                    "filename": "src/models/Manage/AgentSetting/index.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 32,
+                    "comment": 3,
+                    "filename": "src/models/Manage/AgentSetting/tools.ts"
+                },
+                {
+                    "blank": 23,
+                    "code": 142,
+                    "comment": 8,
+                    "filename": "src/models/pageHeader.tsx"
+                },
+                {
+                    "blank": 18,
+                    "code": 113,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/AccessStepComponent/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 18,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/AccessStepComponent/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 101,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/AccessStepComponent/index.tsx"
+                },
+                {
+                    "blank": 90,
+                    "code": 431,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/ApplicationAccess/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 70,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/ApplicationAccess/index.css.d.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 93,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/Application/ApplicationAccess/index.tsx"
+                },
+                {
+                    "blank": 76,
+                    "code": 396,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/ApplicationCard/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 66,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/ApplicationCard/index.css.d.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 41,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/Application/ApplicationCard/index.tsx"
+                },
+                {
+                    "blank": 92,
+                    "code": 437,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/Application/ApplicationDetail/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 71,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/ApplicationDetail/index.css.d.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 143,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Application/ApplicationDetail/index.tsx"
+                },
+                {
+                    "blank": 91,
+                    "code": 436,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/ApplicationSetting/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 71,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/ApplicationSetting/index.css.d.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 165,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Application/ApplicationSetting/index.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 90,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/ApplicationSetting/SettingDetail.tsx"
+                },
+                {
+                    "filename": "src/pages/Chaos/Application/imgs/agentApp.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src/pages/Chaos/Application/imgs/agentHostAuto.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src/pages/Chaos/Application/imgs/agentK8s.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 84,
+                    "code": 442,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 71,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/index.css.d.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 131,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/Application/index.tsx"
+                },
+                {
+                    "blank": 98,
+                    "code": 471,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/ScopeList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 75,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/ScopeList/index.css.d.ts"
+                },
+                {
+                    "blank": 20,
+                    "code": 270,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/Application/ScopeList/index.tsx"
+                },
+                {
+                    "blank": 91,
+                    "code": 432,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Application/TaskList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 70,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Application/TaskList/index.css.d.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 112,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Application/TaskList/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Category/CategoryDialog/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Category/CategoryDialog/index.css.d.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 136,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/Category/CategoryDialog/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Category/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Category/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 121,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Category/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 48,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Category/TreeNodeLabel/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/BaseInfo/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/BaseInfo/index.css.d.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 101,
+                    "comment": 7,
+                    "filename": "src/pages/Chaos/common/BaseInfo/index.tsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 75,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/BaseInfoView/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/BaseInfoView/index.css.d.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 77,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/common/BaseInfoView/index.tsx"
+                },
+                {
+                    "blank": 1,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/index.css.d.ts"
+                },
+                {
+                    "blank": 13,
+                    "code": 88,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Days/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Days/index.css.d.ts"
+                },
+                {
+                    "blank": 22,
+                    "code": 124,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Days/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Hours/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Hours/index.css.d.ts"
+                },
+                {
+                    "blank": 21,
+                    "code": 116,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Hours/index.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Minutes/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 7,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Minutes/index.css.d.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 47,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Minutes/index.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Months/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Months/index.css.d.ts"
+                },
+                {
+                    "blank": 21,
+                    "code": 261,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Months/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Weeks/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Weeks/index.css.d.ts"
+                },
+                {
+                    "blank": 20,
+                    "code": 99,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/CronExpressionGenerator/tabs/Weeks/index.tsx"
+                },
+                {
+                    "blank": 13,
+                    "code": 50,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/Iconfont/index.tsx"
+                },
+                {
+                    "blank": 29,
+                    "code": 121,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/common/Input/TextInput/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 27,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/Input/TextInput/index.css.d.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 132,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/Input/TextInput/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/ListSelect/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/ListSelect/index.css.d.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 49,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/ListSelect/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 29,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/common/MInFlowView/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/MInFlowView/index.css.d.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 164,
+                    "comment": 24,
+                    "filename": "src/pages/Chaos/common/MInFlowView/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/MiniFlow/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/MiniFlow/index.css.d.ts"
+                },
+                {
+                    "blank": 29,
+                    "code": 258,
+                    "comment": 16,
+                    "filename": "src/pages/Chaos/common/MiniFlow/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 44,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/common/NoData/index.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/NoData/index.tsx"
+                },
+                {
+                    "blank": 45,
+                    "code": 250,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/common/Node/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 47,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/common/Node/index.css.d.ts"
+                },
+                {
+                    "blank": 25,
+                    "code": 370,
+                    "comment": 27,
+                    "filename": "src/pages/Chaos/common/Node/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 53,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/Node/SwitchArrow.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/PageHeader/index.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/common/PageHeader/index.tsx"
+                },
+                {
+                    "blank": 20,
+                    "code": 124,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 25,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 40,
+                    "code": 636,
+                    "comment": 89,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityEditor/index.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 44,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/ActivityParameterEditor.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/ActivityParameterEditor.css.d.ts"
+                },
+                {
+                    "blank": 37,
+                    "code": 260,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/ActivityParameterEditor.tsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 65,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/ActivityRecoverEditor.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 14,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/ActivityRecoverEditor.css.d.ts"
+                },
+                {
+                    "blank": 47,
+                    "code": 387,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/ActivityRecoverEditor.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/DatePickerEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/DatePickerEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 100,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/DatePickerEditor/index.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 68,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/HighlightTextAreaEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 14,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/HighlightTextAreaEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 19,
+                    "code": 168,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/HighlightTextAreaEditor/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/InputEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/InputEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 93,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/InputEditor/index.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 44,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/NumberInputEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/NumberInputEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 81,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/NumberInputEditor/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 26,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/RadioEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/RadioEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 97,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/RadioEditor/index.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/RemotelySelectEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/RemotelySelectEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 151,
+                    "comment": 18,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/RemotelySelectEditor/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SearchEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SearchEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 18,
+                    "code": 144,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SearchEditor/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SearchEditor/search.js"
+                },
+                {
+                    "blank": 5,
+                    "code": 26,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SelectEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SelectEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 13,
+                    "code": 100,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/SelectEditor/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 26,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/TimePickerEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/TimePickerEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 18,
+                    "code": 100,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ActivityParameter/TimePickerEditor/index.tsx"
+                },
+                {
+                    "blank": 19,
+                    "code": 109,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/AddFunction/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 20,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/AddFunction/index.css.d.ts"
+                },
+                {
+                    "blank": 29,
+                    "code": 363,
+                    "comment": 19,
+                    "filename": "src/pages/Chaos/Experiment/common/AddFunction/index.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/CustomSelect/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/CustomSelect/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 161,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/Experiment/common/CustomSelect/index.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 81,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/DialogFrom/index.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 50,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/ExperimentTaskHistory/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 14,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ExperimentTaskHistory/index.css.d.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 122,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/common/ExperimentTaskHistory/index.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 89,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/common/FeedBack/index.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 54,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentDetail/ExperimentChangeHistory/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 15,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentDetail/ExperimentChangeHistory/index.css.d.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 82,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentDetail/ExperimentChangeHistory/index.tsx"
+                },
+                {
+                    "blank": 52,
+                    "code": 255,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentDetail/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 52,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentDetail/index.css.d.ts"
+                },
+                {
+                    "blank": 46,
+                    "code": 702,
+                    "comment": 13,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentDetail/index.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/BaseInfoEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 7,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/BaseInfoEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 104,
+                    "comment": 14,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/BaseInfoEditor/index.tsx"
+                },
+                {
+                    "blank": 11,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 167,
+                    "comment": 12,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/index.tsx"
+                },
+                {
+                    "blank": 16,
+                    "code": 182,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/copyHostDialog.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 62,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/ApplicationGroup.tsx"
+                },
+                {
+                    "blank": 33,
+                    "code": 137,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 30,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/index.css.d.ts"
+                },
+                {
+                    "blank": 71,
+                    "code": 918,
+                    "comment": 96,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/index.tsx"
+                },
+                {
+                    "blank": 20,
+                    "code": 103,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/ScopeLists/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 22,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/ScopeLists/index.css.d.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 248,
+                    "comment": 13,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/ScopeLists/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 38,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/FlowGroup/ScopeLists/InvalidHostsDialog.tsx"
+                },
+                {
+                    "blank": 17,
+                    "code": 91,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 19,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/index.css.d.ts"
+                },
+                {
+                    "blank": 49,
+                    "code": 362,
+                    "comment": 24,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepOne/index.tsx"
+                },
+                {
+                    "blank": 57,
+                    "code": 281,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepTwo/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 52,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepTwo/index.css.d.ts"
+                },
+                {
+                    "blank": 72,
+                    "code": 922,
+                    "comment": 43,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentEditor/StepTwo/index.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/Chart/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/Chart/index.css.d.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 177,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/Chart/index.tsx"
+                },
+                {
+                    "blank": 39,
+                    "code": 244,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 45,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/index.css.d.ts"
+                },
+                {
+                    "blank": 61,
+                    "code": 794,
+                    "comment": 62,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/index.tsx"
+                },
+                {
+                    "blank": 66,
+                    "code": 376,
+                    "comment": 19,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/LoadTestDataCharts/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 50,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/LoadTestDataCharts/index.css.d.ts"
+                },
+                {
+                    "blank": 105,
+                    "code": 947,
+                    "comment": 86,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/LoadTestDataCharts/index.tsx"
+                },
+                {
+                    "blank": 26,
+                    "code": 133,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/LoadTestTaskStatus/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 19,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/LoadTestTaskStatus/index.css.d.ts"
+                },
+                {
+                    "blank": 18,
+                    "code": 180,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/LoadTestTaskStatus/index.tsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 75,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/plugins/ChartContainer/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 14,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/plugins/ChartContainer/index.css.d.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 132,
+                    "comment": 12,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/plugins/ChartContainer/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/plugins/getPlugin.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 31,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/plugins/HitsChart.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 117,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/plugins/MetricChart.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskBasic/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskBasic/index.css.d.ts"
+                },
+                {
+                    "blank": 20,
+                    "code": 180,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskBasic/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 48,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskFlow/index.tsx"
+                },
+                {
+                    "blank": 47,
+                    "code": 268,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskInfo/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 47,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskInfo/index.css.d.ts"
+                },
+                {
+                    "blank": 22,
+                    "code": 345,
+                    "comment": 41,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskInfo/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 54,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Experiment/ExperimentTask/TaskInfo/pourLog.tsx"
+                },
+                {
+                    "blank": 1,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExperimentList/AddExperiment/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExperimentList/AddExperiment/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 107,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/ExperimentList/AddExperiment/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 53,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExperimentList/Experiments/ClonePopup.tsx"
+                },
+                {
+                    "blank": 32,
+                    "code": 162,
+                    "comment": 16,
+                    "filename": "src/pages/Chaos/ExperimentList/Experiments/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 28,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExperimentList/Experiments/index.css.d.ts"
+                },
+                {
+                    "blank": 34,
+                    "code": 473,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/ExperimentList/Experiments/index.tsx"
+                },
+                {
+                    "blank": 13,
+                    "code": 69,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/ExperimentList/ExpertiseCard/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 14,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExperimentList/ExpertiseCard/index.css.d.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 30,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/ExperimentList/ExpertiseCard/index.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 75,
+                    "comment": 6,
+                    "filename": "src/pages/Chaos/ExperimentList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 15,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExperimentList/index.css.d.ts"
+                },
+                {
+                    "blank": 26,
+                    "code": 328,
+                    "comment": 11,
+                    "filename": "src/pages/Chaos/ExperimentList/index.tsx"
+                },
+                {
+                    "blank": 20,
+                    "code": 111,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/ExperimentList/Statistic/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 19,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExperimentList/Statistic/index.css.d.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 67,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExperimentList/Statistic/index.tsx"
+                },
+                {
+                    "blank": 15,
+                    "code": 78,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExperimentList/TagsSearch/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 18,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExperimentList/TagsSearch/index.css.d.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 150,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/ExperimentList/TagsSearch/index.tsx"
+                },
+                {
+                    "blank": 14,
+                    "code": 79,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/CreateExpertiseInfo/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/CreateExpertiseInfo/index.css.d.ts"
+                },
+                {
+                    "blank": 22,
+                    "code": 220,
+                    "comment": 23,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/CreateExpertiseInfo/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/ExpertiseBaseInfo/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/ExpertiseBaseInfo/index.css.d.ts"
+                },
+                {
+                    "blank": 19,
+                    "code": 112,
+                    "comment": 19,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/ExpertiseBaseInfo/index.tsx"
+                },
+                {
+                    "blank": 26,
+                    "code": 115,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/ExpertiseEditor/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 26,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/ExpertiseEditor/index.css.d.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 155,
+                    "comment": 8,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/ExpertiseEditor/index.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 63,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/index.css.d.ts"
+                },
+                {
+                    "blank": 21,
+                    "code": 210,
+                    "comment": 8,
+                    "filename": "src/pages/Chaos/ExpertiseAdmin/index.tsx"
+                },
+                {
+                    "blank": 16,
+                    "code": 120,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/ExpertiseList/ExpertiseCard/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 20,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseList/ExpertiseCard/index.css.d.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 125,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/ExpertiseList/ExpertiseCard/index.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 53,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExpertiseList/ExpertiseDetail/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 15,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseList/ExpertiseDetail/index.css.d.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 151,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/ExpertiseList/ExpertiseDetail/index.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 62,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ExpertiseList/FlowThumbnail/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseList/FlowThumbnail/index.css.d.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 184,
+                    "comment": 16,
+                    "filename": "src/pages/Chaos/ExpertiseList/FlowThumbnail/index.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 64,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/ExpertiseList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ExpertiseList/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 183,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/ExpertiseList/index.tsx"
+                },
+                {
+                    "blank": 58,
+                    "code": 336,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/AddDetection/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 39,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/AddDetection/index.css.d.ts"
+                },
+                {
+                    "blank": 52,
+                    "code": 512,
+                    "comment": 21,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/AddDetection/index.tsx"
+                },
+                {
+                    "blank": 28,
+                    "code": 136,
+                    "comment": 6,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DetectionRecords/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 30,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DetectionRecords/index.css.d.ts"
+                },
+                {
+                    "blank": 36,
+                    "code": 448,
+                    "comment": 11,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DetectionRecords/index.tsx"
+                },
+                {
+                    "blank": 24,
+                    "code": 128,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DetectionTasks/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 27,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DetectionTasks/index.css.d.ts"
+                },
+                {
+                    "blank": 67,
+                    "code": 611,
+                    "comment": 35,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DetectionTasks/index.tsx"
+                },
+                {
+                    "blank": 24,
+                    "code": 212,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/components/ExecutionBasicInfo.tsx"
+                },
+                {
+                    "blank": 22,
+                    "code": 359,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/components/ExecutionLogs.tsx"
+                },
+                {
+                    "blank": 72,
+                    "code": 655,
+                    "comment": 29,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/components/ExecutionResults.tsx"
+                },
+                {
+                    "blank": 31,
+                    "code": 480,
+                    "comment": 8,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/components/RealTimeStatus.tsx"
+                },
+                {
+                    "blank": 26,
+                    "code": 286,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/components/XFlowServiceChain.tsx"
+                },
+                {
+                    "blank": 79,
+                    "code": 414,
+                    "comment": 7,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 71,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/index.css.d.ts"
+                },
+                {
+                    "blank": 27,
+                    "code": 426,
+                    "comment": 27,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/DrillRecord/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/index.tsx"
+                },
+                {
+                    "blank": 45,
+                    "code": 465,
+                    "comment": 7,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/components/APIParameterSection.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 73,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/components/ExecutionConfigurationSection.tsx"
+                },
+                {
+                    "blank": 39,
+                    "code": 455,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/components/SLOConfigurationSection.tsx"
+                },
+                {
+                    "blank": 35,
+                    "code": 454,
+                    "comment": 10,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/components/TargetSystemSection.tsx"
+                },
+                {
+                    "blank": 74,
+                    "code": 636,
+                    "comment": 18,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/components/TraceVisualizationSection.tsx"
+                },
+                {
+                    "blank": 49,
+                    "code": 694,
+                    "comment": 22,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/components/XFlowTraceVisualization.tsx"
+                },
+                {
+                    "blank": 49,
+                    "code": 287,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 38,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/index.css.d.ts"
+                },
+                {
+                    "blank": 51,
+                    "code": 448,
+                    "comment": 22,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskConfiguration/index.tsx"
+                },
+                {
+                    "blank": 29,
+                    "code": 453,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskDetail/components/ChangeHistoryTab.tsx"
+                },
+                {
+                    "blank": 26,
+                    "code": 334,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskDetail/components/ConfigurationTab.tsx"
+                },
+                {
+                    "blank": 35,
+                    "code": 370,
+                    "comment": 13,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskDetail/components/DrillRecordsTab.tsx"
+                },
+                {
+                    "blank": 73,
+                    "code": 385,
+                    "comment": 8,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskDetail/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 62,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskDetail/index.css.d.ts"
+                },
+                {
+                    "blank": 20,
+                    "code": 321,
+                    "comment": 13,
+                    "filename": "src/pages/Chaos/FaultSpaceDetection/TaskDetail/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 65,
+                    "comment": 6,
+                    "filename": "src/pages/Chaos/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 4,
+                    "filename": "src/pages/Chaos/lib/BetaFlag.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 53,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/lib/ConvertFilter.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/lib/DateUtil.tsx"
+                },
+                {
+                    "blank": 11,
+                    "code": 70,
+                    "comment": 37,
+                    "filename": "src/pages/Chaos/lib/FlowConstants.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 83,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/lib/FlowGroupDecorate.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 26,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/lib/HostPreCheck.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 109,
+                    "comment": 15,
+                    "filename": "src/pages/Chaos/lib/ParameterUtil.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 36,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/LoadTestAdmin/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/LoadTestAdmin/index.css.d.ts"
+                },
+                {
+                    "blank": 72,
+                    "code": 634,
+                    "comment": 19,
+                    "filename": "src/pages/Chaos/LoadTestAdmin/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 101,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Overview/constants.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 44,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Overview/customeIcon.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 111,
+                    "comment": 5,
+                    "filename": "src/pages/Chaos/Overview/guide.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 441,
+                    "comment": 8,
+                    "filename": "src/pages/Chaos/Overview/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 43,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/Overview/index.css.d.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 143,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/Overview/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 121,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Overview/logChart.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 64,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/Overview/notifyLs.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 212,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/Overview/statistics.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 118,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/SceneFunction/functionsList.tsx"
+                },
+                {
+                    "blank": 14,
+                    "code": 87,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/SceneFunction/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 18,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/SceneFunction/index.css.d.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 177,
+                    "comment": 9,
+                    "filename": "src/pages/Chaos/SceneFunction/index.tsx"
+                },
+                {
+                    "blank": 22,
+                    "code": 313,
+                    "comment": 14,
+                    "filename": "src/pages/Chaos/ScopesControl/hostTable.tsx"
+                },
+                {
+                    "blank": 21,
+                    "code": 72,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ScopesControl/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 21,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ScopesControl/index.css.d.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 95,
+                    "comment": 7,
+                    "filename": "src/pages/Chaos/ScopesControl/index.tsx"
+                },
+                {
+                    "blank": 27,
+                    "code": 228,
+                    "comment": 57,
+                    "filename": "src/pages/Chaos/ScopesControl/K8sRowRender.tsx"
+                },
+                {
+                    "blank": 13,
+                    "code": 135,
+                    "comment": 12,
+                    "filename": "src/pages/Chaos/ScopesControl/kubTable.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 46,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ScopesControl/Manage/index.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 91,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/ScopesControlDetail/HeatmapChart.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 110,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/ScopesControlDetail/HeatmapChartItem.tsx"
+                },
+                {
+                    "blank": 43,
+                    "code": 211,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/ScopesControlDetail/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 46,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/ScopesControlDetail/index.css.d.ts"
+                },
+                {
+                    "blank": 24,
+                    "code": 294,
+                    "comment": 3,
+                    "filename": "src/pages/Chaos/ScopesControlDetail/index.tsx"
+                },
+                {
+                    "blank": 11,
+                    "code": 121,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/ScopesControlDetail/RingChart.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/WorkSpace/DrillTotalStatistics/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/WorkSpace/DrillTotalStatistics/index.css.d.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 79,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/WorkSpace/DrillTotalStatistics/index.tsx"
+                },
+                {
+                    "blank": 11,
+                    "code": 116,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/WorkSpace/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 23,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/WorkSpace/index.css.d.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 33,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/WorkSpace/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 40,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/WorkSpace/TaskInfoDistribute/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "src/pages/Chaos/WorkSpace/TaskInfoDistribute/index.css.d.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 50,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/WorkSpace/TaskInfoDistribute/index.tsx"
+                },
+                {
+                    "blank": 7,
+                    "code": 84,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/WorkSpace/TaskInfoDistribute/TaskChart.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 38,
+                    "comment": 0,
+                    "filename": "src/pages/Chaos/WorkspaceDetail/index.css"
+                },
+                {
+                    "blank": 6,
+                    "code": 28,
+                    "comment": 1,
+                    "filename": "src/pages/Chaos/WorkspaceDetail/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 53,
+                    "comment": 0,
+                    "filename": "src/pages/Login/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Login/index.css.d.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 134,
+                    "comment": 2,
+                    "filename": "src/pages/Login/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 44,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/common/ManualDialog/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/common/ManualDialog/index.css.d.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 127,
+                    "comment": 7,
+                    "filename": "src/pages/Manage/AgentSetting/common/ManualDialog/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/List/ClusterTableList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/List/ClusterTableList/index.css.d.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 162,
+                    "comment": 8,
+                    "filename": "src/pages/Manage/AgentSetting/List/ClusterTableList/index.tsx"
+                },
+                {
+                    "blank": 1,
+                    "code": 44,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/List/HeadHandler/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/List/HeadHandler/index.css.d.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 119,
+                    "comment": 1,
+                    "filename": "src/pages/Manage/AgentSetting/List/HeadHandler/index.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 61,
+                    "comment": 3,
+                    "filename": "src/pages/Manage/AgentSetting/List/HeadHandler/LicenseDialog.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/List/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/List/index.css.d.ts"
+                },
+                {
+                    "blank": 24,
+                    "code": 306,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/List/index.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/List/TableList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/List/TableList/index.css.d.ts"
+                },
+                {
+                    "blank": 36,
+                    "code": 189,
+                    "comment": 12,
+                    "filename": "src/pages/Manage/AgentSetting/List/TableList/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 14,
+                    "comment": 1,
+                    "filename": "src/pages/Manage/AgentSetting/Step/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 31,
+                    "comment": 1,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/BottomBtn/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/index.css.d.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 84,
+                    "comment": 5,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/HeadHandler/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/HeadHandler/index.css.d.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 71,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/HeadHandler/index.tsx"
+                },
+                {
+                    "blank": 38,
+                    "code": 258,
+                    "comment": 6,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/index.tsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 36,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/TableList/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/TableList/index.css.d.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 244,
+                    "comment": 6,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/TableList/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/TableList/InstallDialog/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/TableList/InstallDialog/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 166,
+                    "comment": 4,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Ecs/TableList/InstallDialog/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/K8s/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/K8s/index.css.d.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 113,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/K8s/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Public/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Public/index.css.d.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 34,
+                    "comment": 1,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingChaosAgent/Public/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 52,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingSelectEnv/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingSelectEnv/index.css.d.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 64,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingSelectEnv/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Step/InstallAgent/SettingStep/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AgentSetting/Tools/index.css"
+                },
+                {
+                    "blank": 10,
+                    "code": 96,
+                    "comment": 15,
+                    "filename": "src/pages/Manage/AgentSetting/Tools/index.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/AutoInstall/index.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 2,
+                    "filename": "src/pages/Manage/AutoInstall/index.css.d.ts"
+                },
+                {
+                    "blank": 13,
+                    "code": 183,
+                    "comment": 6,
+                    "filename": "src/pages/Manage/AutoInstall/index.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src/pages/Manage/index.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 28,
+                    "comment": 3,
+                    "filename": "src/router.tsx"
+                },
+                {
+                    "blank": 15,
+                    "code": 132,
+                    "comment": 16,
+                    "filename": "src/services/faultSpaceDetection/probeProxy.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 210,
+                    "comment": 4,
+                    "filename": "src/types/jsx.d.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 54,
+                    "comment": 2,
+                    "filename": "src/types/lodash.d.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 31,
+                    "comment": 0,
+                    "filename": "src/typing.d.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 43,
+                    "comment": 6,
+                    "filename": "src/utils/createService.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 54,
+                    "comment": 4,
+                    "filename": "src/utils/createServiceChaos.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 27,
+                    "comment": 1,
+                    "filename": "src/utils/libs/sre-utils-dva/baseModel.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src/utils/libs/sre-utils-dva/container.ts"
+                },
+                {
+                    "blank": 18,
+                    "code": 143,
+                    "comment": 0,
+                    "filename": "src/utils/libs/sre-utils-dva/decorator.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 32,
+                    "comment": 3,
+                    "filename": "src/utils/libs/sre-utils-dva/hooks.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/utils/libs/sre-utils-dva/index.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "src/utils/libs/sre-utils-dva/symbol.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 45,
+                    "comment": 6,
+                    "filename": "src/utils/libs/sre-utils-dva/types.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "src/utils/libs/sre-utils-hooks/index.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 18,
+                    "comment": 11,
+                    "filename": "src/utils/libs/sre-utils-hooks/useInterval.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 18,
+                    "comment": 5,
+                    "filename": "src/utils/libs/sre-utils-hooks/useQuery.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 18,
+                    "comment": 11,
+                    "filename": "src/utils/libs/sre-utils-hooks/useTimeout.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 107,
+                    "comment": 46,
+                    "filename": "src/utils/libs/sre-utils/index.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 200,
+                    "comment": 0,
+                    "filename": "src/utils/locale.tsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 101,
+                    "comment": 11,
+                    "filename": "src/utils/request/consoleResponseInterceptor.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 12,
+                    "comment": 13,
+                    "filename": "src/utils/request/request.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 19,
+                    "comment": 7,
+                    "filename": "src/utils/util.ts"
+                },
+                {
+                    "blank": 39,
+                    "code": 238,
+                    "comment": 30,
+                    "filename": "test_load_test_api.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 37,
+                    "comment": 7,
+                    "filename": "tsconfig.json"
+                },
+                {
+                    "blank": 46,
+                    "code": 128,
+                    "comment": 5,
+                    "filename": "TYPESCRIPT_ERRORS_FIX_SUMMARY.md"
+                },
+                {
+                    "blank": 27,
+                    "code": 334,
+                    "comment": 110,
+                    "filename": "webpack.config.js"
+                }
+            ]
+        }
+    ]
+}

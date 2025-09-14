@@ -36,24 +36,16 @@ interface TaskDetailData {
       systemId: string;
       systemName: string;
       environment: string;
-      apiSource: {
-        syncTime: string;
-        version: string;
-      };
-      selectedAPI: {
-        method: string;
-        path: string;
-        operationId: string;
-        summary: string;
-      };
+      apiSource: { syncTime: string; version: string };
+      selectedAPI: { method: string; path: string; operationId: string; summary: string };
     };
+    topologyNodes?: Array<{ id: number | string; name: string; layer: number; protocol?: string }>;
+    topologyEdges?: Array<{ id?: number | string; fromNodeId: number | string; toNodeId: number | string }>;
+    faultConfigs?: Array<{ nodeId: number | string; type?: string; faultscript?: any }>;
     apiParameters: {
       pathParams: Record<string, string>;
       queryParams: Record<string, string[]>;
-      headers: {
-        authType: 'TOKEN' | 'COOKIE' | 'PROFILE';
-        customHeaders: Record<string, string>;
-      };
+      headers: { authType: 'TOKEN' | 'COOKIE' | 'PROFILE'; customHeaders: Record<string, string> };
       requestBody: string;
     };
     traceConfig: {
@@ -62,34 +54,17 @@ interface TaskDetailData {
         serviceId: string;
         serviceName: string;
         layer: number;
-        faultTemplates: Array<{
-          type: string;
-          enabled: boolean;
-          parameters: Record<string, any>;
-        }>;
+        faultTemplates: Array<{ type: string; enabled: boolean; parameters: Record<string, any> }>;
       }>;
     };
     sloConfig: {
       functionalAssertions: {
         statusCodes: number[];
-        jsonPathAssertions: Array<{
-          id: string;
-          path: string;
-          operator: 'exists' | 'equals' | 'contains' | 'regex' | 'not_exists';
-          expectedValue: any;
-          description: string;
-        }>;
+        jsonPathAssertions: Array<{ id: string; path: string; operator: 'exists' | 'equals' | 'contains' | 'regex' | 'not_exists'; expectedValue: any; description: string }>;
       };
-      performanceTargets: {
-        p95Limit: number;
-        p99Limit: number;
-        errorRateLimit: number;
-        throughputThreshold?: number;
-      };
+      performanceTargets: { p95Limit: number; p99Limit: number; errorRateLimit: number; throughputThreshold?: number };
     };
-    executionConfig: {
-      concurrency: number;
-    };
+    executionConfig: { concurrency: number };
   };
   currentExecution?: {
     runId: string;
@@ -138,147 +113,115 @@ const TaskDetail: FC = () => {
   const loadTaskDetail = async (id: string) => {
     setLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // const result = await dispatch.faultSpaceDetection.getTaskDetail({ taskId: id });
+      const { probeProxy } = await import('../../../../services/faultSpaceDetection/probeProxy');
+      const res = await probeProxy.getDetectionTaskDetails(Number(id));
+      const d = res?.data || {};
 
-      // Mock data for development
-      const mockTaskData: TaskDetailData = {
-        id,
-        name: '用户登录API故障空间探测',
-        creator: 'admin',
-        createdAt: new Date(Date.now() - 86400000).toISOString(),
-        updatedAt: new Date(Date.now() - 3600000).toISOString(),
-        status: 'ACTIVE',
+      const details: TaskDetailData = {
+        id: String(d?.task?.id || d?.id || id),
+        name: d?.task?.name || d?.name || '-',
+        creator: d?.task?.createdBy || d?.createdBy || '-',
+        createdAt: d?.task?.createdAt || d?.createdAt || '-',
+        updatedAt: d?.task?.updatedAt || d?.updatedAt || '-',
+        status: (d?.task?.status || d?.status || 'ACTIVE') as any,
         configuration: {
           targetSystem: {
-            systemId: 'user-service',
-            systemName: '用户中心',
-            environment: '生产环境',
+            systemId: String(d?.task?.systemId || d?.systemId || ''),
+            systemName: d?.sys?.name || '',
+            environment: d?.sys?.defaultEnvironment || '',
             apiSource: {
-              syncTime: new Date(Date.now() - 7200000).toISOString(),
-              version: 'v1.2.3',
+              syncTime: d?.topology?.generatedAt || '',
+              version: d?.topology?.version || '',
             },
             selectedAPI: {
-              method: 'POST',
-              path: '/api/v1/auth/login',
-              operationId: 'loginUser',
-              summary: '用户登录',
+              method: d?.apiDefinition?.method || '',
+              path: d?.apiDefinition?.urlTemplate || '',
+              operationId: d?.apiDefinition?.operationId || '',
+              summary: d?.apiDefinition?.name || '',
             },
           },
+          // 为 ConfigurationTab 提供直接可用的拓扑与故障配置
+          topologyNodes: d?.topologyNodes || [],
+          topologyEdges: d?.topologyEdges || [],
+          faultConfigs: d?.faultConfigs || [],
           apiParameters: {
-            pathParams: {},
-            queryParams: {
-              client_id: [ 'web-app' ],
-              scope: [ 'read', 'write' ],
-            },
+            pathParams: (() => {
+              try {
+                if (typeof d?.apiDefinition?.pathParams === 'string') {
+                  return JSON.parse(d.apiDefinition.pathParams || '{}');
+                }
+                return d?.apiDefinition?.pathParams || {};
+              } catch { return {}; }
+            })(),
+            queryParams: (() => {
+              try {
+                const raw = typeof d?.apiDefinition?.queryParams === 'string'
+                  ? JSON.parse(d.apiDefinition.queryParams || '{}')
+                  : (d?.apiDefinition?.queryParams || {});
+                const out: Record<string, string[]> = {};
+                Object.entries(raw).forEach(([ key, val ]) => {
+                  if (Array.isArray(val)) out[key] = val.map(v => String(v));
+                  else if (val == null) out[key] = [];
+                  else out[key] = [ String(val) ];
+                });
+                return out;
+              } catch { return {}; }
+            })(),
             headers: {
               authType: 'TOKEN',
-              customHeaders: {
-                'X-Client-Version': '1.0.0',
-                'X-Request-ID': '{{$randomUUID}}',
-              },
+              customHeaders: (() => { try { return d?.apiDefinition?.headers ? JSON.parse(d.apiDefinition.headers) : {}; } catch { return {}; } })(),
             },
-            requestBody: JSON.stringify({
-              username: 'test@example.com',
-              password: 'password123',
-              rememberMe: true,
-            }, null, 2),
+            requestBody: (() => { try { return d?.apiDefinition?.bodyTemplate ? JSON.stringify(JSON.parse(d.apiDefinition.bodyTemplate), null, 2) : ''; } catch { return d?.apiDefinition?.bodyTemplate || ''; } })(),
           },
           traceConfig: {
             baselineTrace: {
-              dagId: 'DAG_20241225_001',
-              version: '1.0.0',
-              sampleCount: 1000,
+              dagId: d?.topology?.id ? `TOPO_${d.topology.id}` : '',
+              version: d?.topology?.version || '',
+              sampleCount: d?.task?.requestNum || 0,
               baselineMetrics: {
-                p95Latency: 156,
-                p99Latency: 234,
-                avgLatency: 89,
-                errorRate: 0.2,
+                p95Latency: d?.baselineMetrics?.p95 || 0,
+                p99Latency: d?.baselineMetrics?.p99 || 0,
+                avgLatency: d?.baselineMetrics?.avg || 0,
+                errorRate: d?.baselineMetrics?.errRate || 0,
               },
+              nodes: d?.topologyNodes || [],
+              edges: d?.topologyEdges || [],
             },
-            faultConfigurations: [
-              {
-                serviceId: 'user-service',
-                serviceName: 'User Service',
-                layer: 1,
-                faultTemplates: [
-                  {
-                    type: 'network_delay',
-                    enabled: true,
-                    parameters: {
-                      delay: 200,
-                      variance: 10,
-                    },
-                  },
-                  {
-                    type: 'cpu_stress',
-                    enabled: true,
-                    parameters: {
-                      cpuPercent: 80,
-                      duration: 60,
-                    },
-                  },
-                ],
-              },
-              {
-                serviceId: 'auth-db',
-                serviceName: 'Auth Database',
-                layer: 2,
-                faultTemplates: [
-                  {
-                    type: 'network_delay',
-                    enabled: true,
-                    parameters: {
-                      delay: 50,
-                      variance: 5,
-                    },
-                  },
-                ],
-              },
-            ],
+            faultConfigurations: (d?.faultConfigs || d?.task?.faultConfigurations || []).map((fc: any, idx: number) => ({
+              serviceId: String(fc.nodeId || fc.serviceId || idx),
+              serviceName: (d?.topologyNodes || []).find((n: any) => Number(n.id) === Number(fc.nodeId))?.name || '',
+              layer: Number((d?.topologyNodes || []).find((n: any) => Number(n.id) === Number(fc.nodeId))?.layer ?? 0),
+              faultTemplates: (() => {
+                if (fc.faultscript) {
+                  const action = fc.faultscript?.spec?.experiments?.[0]?.action || fc.faultscript?.spec?.experiments?.[0]?.target;
+                  return [ { type: action || fc.type || '', enabled: true, parameters: {} } ];
+                }
+                return [ { type: fc.type || '', enabled: true, parameters: {} } ];
+              })(),
+            })),
           },
           sloConfig: {
-            functionalAssertions: {
-              statusCodes: [ 200, 201 ],
-              jsonPathAssertions: [
-                {
-                  id: 'assertion_1',
-                  path: '$.success',
-                  operator: 'equals' as const,
-                  expectedValue: true,
-                  description: '响应成功标识',
-                },
-                {
-                  id: 'assertion_2',
-                  path: '$.data.token',
-                  operator: 'exists' as const,
-                  expectedValue: null,
-                  description: '返回访问令牌',
-                },
-              ],
-            },
+            functionalAssertions: { statusCodes: [], jsonPathAssertions: [] },
             performanceTargets: {
-              p95Limit: 200,
-              p99Limit: 500,
-              errorRateLimit: 1.0,
-              throughputThreshold: 50,
+              p95Limit: Number((d?.taskSlos || d?.task?.taskSlo || [])[0]?.p95 || 0),
+              p99Limit: Number((d?.taskSlos || d?.task?.taskSlo || [])[0]?.p99 || 0),
+              errorRateLimit: Number((d?.taskSlos || d?.task?.taskSlo || [])[0]?.errRate || 0),
+              throughputThreshold: undefined,
             },
           },
-          executionConfig: {
-            concurrency: 10,
-          },
+          executionConfig: { concurrency: 0 },
         },
-        currentExecution: Math.random() > 0.5 ? {
-          runId: 'RUN_20241225_001',
-          status: 'RUNNING',
-          progress: 65,
-          startTime: new Date(Date.now() - 300000).toISOString(),
-          estimatedEndTime: new Date(Date.now() + 180000).toISOString(),
-          currentStep: '执行故障注入 - User Service',
+        currentExecution: d?.latestExecutionStatus ? {
+          runId: String(d?.latestExecutionStatus?.runId || ''),
+          status: (d?.latestExecutionStatus?.status || 'RUNNING') as any,
+          progress: Number(d?.latestExecutionStatus?.progress || 0),
+          startTime: d?.latestExecutionStatus?.startedAt || '',
+          estimatedEndTime: d?.latestExecutionStatus?.estimatedEndTime || '',
+          currentStep: d?.latestExecutionStatus?.currentStep || '',
         } : undefined,
       };
 
-      setTaskData(mockTaskData);
+      setTaskData(details);
     } catch (error) {
       console.error('Failed to load task detail:', error);
       Message.error(i18n.t('Failed to load task detail').toString());

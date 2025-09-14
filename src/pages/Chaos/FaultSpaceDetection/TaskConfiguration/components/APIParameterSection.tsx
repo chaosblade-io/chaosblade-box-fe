@@ -24,6 +24,7 @@ interface APIParameterData {
 }
 
 interface SelectedAPI {
+  id?: number; // apiId
   method: string;
   path: string;
   operationId: string;
@@ -48,9 +49,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
   const [ pathParamSchema, setPathParamSchema ] = useState<Record<string, any>>({});
   const [ queryParamSchema, setQueryParamSchema ] = useState<Record<string, any>>({});
   const [ requestBodySchema, setRequestBodySchema ] = useState<any>(null);
-  const [ isExecutingBaseline, setIsExecutingBaseline ] = useState(false);
-  const [ baselineResponse, setBaselineResponse ] = useState<TraceResponse | null>(null);
-  const [ responsePreviewVisible, setResponsePreviewVisible ] = useState(false);
+  // Baseline request state removed per new requirements
   const [ newHeaderKey, setNewHeaderKey ] = useState('');
   const [ newHeaderValue, setNewHeaderValue ] = useState('');
 
@@ -176,56 +175,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
     });
   };
 
-  const handleSendBaseline = async () => {
-    setIsExecutingBaseline(true);
-    try {
-      // Validate required path parameters
-      const missingParams = Object.keys(pathParamSchema).filter(
-        param => pathParamSchema[param].required && !data.pathParams[param],
-      );
 
-      if (missingParams.length > 0) {
-        Message.error(i18n.t('Please fill in all required path parameters').toString());
-        return;
-      }
-
-      // TODO: Replace with actual API call
-      const correlationId = `trace_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      const mockResponse: TraceResponse = {
-        correlationId,
-        statusCode: 200,
-        duration: 156,
-        responseBody: {
-          success: true,
-          data: {
-            id: '12345',
-            name: data.pathParams.userId || 'example-user',
-            email: 'user@example.com',
-            createdAt: new Date().toISOString(),
-          },
-        },
-        traceId: `trace_${correlationId}`,
-      };
-
-      setBaselineResponse(mockResponse);
-      Message.success(i18n.t('Baseline request executed successfully').toString());
-
-      // Auto-fetch trace after successful request
-      setTimeout(() => {
-        fetchTrace(mockResponse.traceId!);
-      }, 1000);
-
-    } catch (error) {
-      console.error('Failed to execute baseline request:', error);
-      Message.error(i18n.t('Failed to execute baseline request').toString());
-    } finally {
-      setIsExecutingBaseline(false);
-    }
-  };
 
   const fetchTrace = async (traceId: string) => {
     try {
@@ -360,7 +310,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
                 background: '#f5f5f5',
                 borderRadius: 4,
               }}>
-                <code style={{ flex: 1, fontSize: 12 }}>
+                <code style={{ flex: 1, fontSize: 12, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-all', overflowWrap: 'anywhere' }}>
                   {key}: {value}
                 </code>
                 <Button
@@ -440,10 +390,10 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
         <div>
           <div className={styles.sectionTitle}>
             <span className={styles.sectionNumber}>2</span>
-            <Translation>API Parameter Configuration & Baseline Request</Translation>
+            <Translation>API Parameter Configuration</Translation>
           </div>
           <div className={styles.sectionDescription}>
-            <Translation>Configure API parameters and execute baseline request to establish trace data</Translation>
+            <Translation>Configure API parameters for the probe task</Translation>
           </div>
         </div>
       </div>
@@ -506,7 +456,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
         {renderRequestHeaders()}
       </div>
 
-      {/* Request Body */}
+      {/* Request Body (JSON Editor) */}
       {requestBodySchema && (
         <div style={{ marginBottom: 32 }}>
           <h4 style={{ fontSize: 16, fontWeight: 600, color: '#333', marginBottom: 16 }}>
@@ -517,209 +467,47 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
               <label className={styles.fieldLabel}>
                 <Translation>JSON Body</Translation>
               </label>
-              <Input.TextArea
-                value={data.requestBody}
-                onChange={value => onChange({ requestBody: value })}
-                placeholder={i18n.t('Enter JSON request body').toString()}
-                rows={8}
-                style={{ fontFamily: 'Monaco, Consolas, monospace', fontSize: 12 }}
-              />
+              <div style={{ border: '1px solid #e8e8e8', borderRadius: 6 }}>
+                <textarea
+                  value={data.requestBody}
+                  onChange={e => onChange({ requestBody: e.target.value })}
+                  placeholder={i18n.t('Enter JSON request body').toString()}
+                  rows={12}
+                  style={{ width: '100%', border: 'none', outline: 'none', resize: 'vertical', fontFamily: 'Monaco, Consolas, monospace', fontSize: 12, padding: 8 }}
+                />
+              </div>
               <div className={styles.fieldDescription}>
-                <Translation>Enter the JSON request body. Use the schema validation for guidance.</Translation>
+                <Translation>Enter the JSON request body. Validation feedback will be shown below.</Translation>
               </div>
-            </div>
-          </div>
-
-          {/* JSON Validation */}
-          {data.requestBody && (
-            <div style={{ marginTop: 12 }}>
-              {(() => {
-                try {
-                  JSON.parse(data.requestBody);
-                  return (
-                    <div style={{ color: '#52c41a', fontSize: 12 }}>
-                      <Icon type="check-circle" size="xs" style={{ marginRight: 4 }} />
-                      <Translation>Valid JSON format</Translation>
-                    </div>
-                  );
-                } catch (error) {
-                  return (
-                    <div style={{ color: '#ff4d4f', fontSize: 12 }}>
-                      <Icon type="exclamation-circle" size="xs" style={{ marginRight: 4 }} />
-                      <Translation>Invalid JSON format</Translation>: {(error as Error).message}
-                    </div>
-                  );
-                }
-              })()}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Baseline Request Execution */}
-      <div style={{
-        background: '#f9f9f9',
-        border: '1px solid #e8e8e8',
-        borderRadius: 8,
-        padding: 24,
-        marginBottom: 24,
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <div>
-            <h4 style={{ fontSize: 16, fontWeight: 600, color: '#333', marginBottom: 4 }}>
-              <Translation>Baseline Request Execution</Translation>
-            </h4>
-            <div style={{ fontSize: 14, color: '#666' }}>
-              <Translation>Execute the configured request to establish baseline performance and generate trace data</Translation>
-            </div>
-          </div>
-          <Button
-            type="primary"
-            onClick={handleSendBaseline}
-            loading={isExecutingBaseline}
-            disabled={!selectedAPI}
-          >
-            <Icon type="play" />
-            <Translation>Send & Trace</Translation>
-          </Button>
-        </div>
-
-        {/* Baseline Response Display */}
-        {baselineResponse && (
-          <div style={{
-            background: '#fff',
-            border: '1px solid #d9d9d9',
-            borderRadius: 6,
-            padding: 16,
-            marginTop: 16,
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <h5 style={{ fontSize: 14, fontWeight: 600, color: '#333', margin: 0 }}>
-                <Translation>Response Summary</Translation>
-              </h5>
-              <Button
-                type="link"
-                size="small"
-                onClick={() => setResponsePreviewVisible(true)}
-              >
-                <Translation>View Response Preview</Translation>
-              </Button>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
-              <div>
-                <div style={{ fontSize: 12, color: '#666' }}>
-                  <Translation>Status Code</Translation>
-                </div>
-                <div style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  color: baselineResponse.statusCode >= 200 && baselineResponse.statusCode < 300 ? '#52c41a' : '#ff4d4f',
-                }}>
-                  {baselineResponse.statusCode}
-                </div>
-              </div>
-              <div>
-                <div style={{ fontSize: 12, color: '#666' }}>
-                  <Translation>Duration</Translation>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 600, color: '#333' }}>
-                  {baselineResponse.duration}ms
-                </div>
-              </div>
-              <div>
-                <div style={{ fontSize: 12, color: '#666' }}>
-                  <Translation>Correlation ID</Translation>
-                </div>
-                <div style={{ fontSize: 12, fontFamily: 'Monaco, Consolas, monospace', color: '#333' }}>
-                  {baselineResponse.correlationId}
-                </div>
-              </div>
-              {baselineResponse.traceId && (
-                <div>
-                  <div style={{ fontSize: 12, color: '#666' }}>
-                    <Translation>Trace ID</Translation>
-                  </div>
-                  <div style={{ fontSize: 12, fontFamily: 'Monaco, Consolas, monospace', color: '#1890ff' }}>
-                    {baselineResponse.traceId}
-                  </div>
+              {data.requestBody && (
+                <div style={{ marginTop: 12 }}>
+                  {(() => {
+                    try {
+                      JSON.parse(data.requestBody);
+                      return (
+                        <div style={{ color: '#52c41a', fontSize: 12 }}>
+                          <Icon type="check-circle" size="xs" style={{ marginRight: 4 }} />
+                          <Translation>Valid JSON format</Translation>
+                        </div>
+                      );
+                    } catch (error) {
+                      return (
+                        <div style={{ color: '#ff4d4f', fontSize: 12 }}>
+                          <Icon type="exclamation-circle" size="xs" style={{ marginRight: 4 }} />
+                          <Translation>Invalid JSON format</Translation>: {(error as Error).message}
+                        </div>
+                      );
+                    }
+                  })()}
                 </div>
               )}
             </div>
-
-            {baselineResponse.traceId && (
-              <div style={{
-                marginTop: 12,
-                padding: 12,
-                background: '#f6ffed',
-                border: '1px solid #b7eb8f',
-                borderRadius: 4,
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Icon type="check-circle" style={{ color: '#52c41a' }} />
-                  <span style={{ color: '#52c41a', fontWeight: 500 }}>
-                    <Translation>Trace data acquired successfully</Translation>
-                  </span>
-                </div>
-                <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>
-                  <Translation>You can now proceed to configure fault injection in the next section</Translation>
-                </div>
-              </div>
-            )}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Loading State */}
-        {isExecutingBaseline && (
-          <div style={{
-            textAlign: 'center',
-            padding: '20px 0',
-            background: '#fff',
-            border: '1px solid #d9d9d9',
-            borderRadius: 6,
-            marginTop: 16,
-          }}>
-            <Loading tip={i18n.t('Executing baseline request and fetching trace data...').toString()}>
-              <div style={{ height: 60 }} />
-            </Loading>
-          </div>
-        )}
-      </div>
 
-      {/* Response Preview Dialog */}
-      <Dialog
-        visible={responsePreviewVisible}
-        title={i18n.t('Response Preview').toString()}
-        onClose={() => setResponsePreviewVisible(false)}
-        onCancel={() => setResponsePreviewVisible(false)}
-        footer={
-          <Button onClick={() => setResponsePreviewVisible(false)}>
-            <Translation>Close</Translation>
-          </Button>
-        }
-        style={{ width: 800 }}
-      >
-        {baselineResponse && (
-          <div>
-            <div style={{ marginBottom: 16 }}>
-              <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
-                <Translation>Response Body</Translation>
-              </h4>
-              <pre style={{
-                background: '#f5f5f5',
-                padding: 16,
-                borderRadius: 4,
-                fontSize: 12,
-                fontFamily: 'Monaco, Consolas, monospace',
-                maxHeight: 400,
-                overflow: 'auto',
-              }}>
-                {JSON.stringify(baselineResponse.responseBody, null, 2)}
-              </pre>
-            </div>
-          </div>
-        )}
-      </Dialog>
+
     </div>
   );
 };

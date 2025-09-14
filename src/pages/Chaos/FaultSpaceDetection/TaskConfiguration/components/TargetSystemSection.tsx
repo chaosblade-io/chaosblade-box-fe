@@ -20,18 +20,22 @@ interface TargetSystemData {
     syncTime: string;
   };
   selectedAPI: {
+    id?: number; // apiId for payload
     method: string;
     path: string;
     operationId: string;
+    baseUrl?: string;
   } | null;
 }
 
 interface APIItem {
+  id?: number;
   operationId: string;
   method: string;
   path: string;
   summary: string;
   tags: string[];
+  baseUrl?: string;
   deprecated?: boolean;
 }
 
@@ -39,9 +43,10 @@ interface TargetSystemSectionProps {
   data: TargetSystemData;
   errors?: string[];
   onChange: (data: Partial<TargetSystemData>) => void;
+  onTopologyLoaded?: (topology: { nodes: any[]; edges?: any[] }) => void;
 }
 
-const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onChange }) => {
+const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onChange, onTopologyLoaded }) => {
   const [ availableSystems, setAvailableSystems ] = useState<Array<{ id: string; name: string; environment: string }>>([]);
   const [ availableAPIs, setAvailableAPIs ] = useState<APIItem[]>([]);
   const [ filteredAPIs, setFilteredAPIs ] = useState<APIItem[]>([]);
@@ -69,14 +74,11 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
 
   const loadAvailableSystems = async () => {
     try {
-      // TODO: Replace with actual API call
-      const mockSystems = [
-        { id: 'user-service', name: '用户中心', environment: '生产环境' },
-        { id: 'order-service', name: '订单系统', environment: '测试环境' },
-        { id: 'payment-service', name: '支付系统', environment: '生产环境' },
-        { id: 'inventory-service', name: '库存系统', environment: '开发环境' },
-      ];
-      setAvailableSystems(mockSystems);
+      const { probeProxy } = await import('../../../../../services/faultSpaceDetection/probeProxy');
+      const res: any = await probeProxy.getSystems();
+      const items = res?.data?.items || res?.items || [];
+      const systems = items.map((it: any) => ({ id: String(it.id ?? it.systemKey ?? it.name), name: it.name || it.systemKey || `System-${it.id}`, environment: it.defaultEnvironment || '-' }));
+      setAvailableSystems(systems);
     } catch (error) {
       console.error('Failed to load systems:', error);
       Message.error(i18n.t('Failed to load available systems').toString());
@@ -85,60 +87,20 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
 
   const loadAvailableAPIs = async (systemId: string) => {
     try {
-      // TODO: Replace with actual API call
-      const mockAPIs: APIItem[] = [
-        {
-          operationId: 'loginUser',
-          method: 'POST',
-          path: '/api/v1/auth/login',
-          summary: '用户登录',
-          tags: [ '认证', '用户' ],
-        },
-        {
-          operationId: 'getUserProfile',
-          method: 'GET',
-          path: '/api/v1/users/{userId}',
-          summary: '获取用户信息',
-          tags: [ '用户' ],
-        },
-        {
-          operationId: 'updateUserProfile',
-          method: 'PUT',
-          path: '/api/v1/users/{userId}',
-          summary: '更新用户信息',
-          tags: [ '用户' ],
-        },
-        {
-          operationId: 'createOrder',
-          method: 'POST',
-          path: '/api/v1/orders',
-          summary: '创建订单',
-          tags: [ '订单' ],
-        },
-        {
-          operationId: 'getOrderDetails',
-          method: 'GET',
-          path: '/api/v1/orders/{orderId}',
-          summary: '获取订单详情',
-          tags: [ '订单' ],
-        },
-        {
-          operationId: 'processPayment',
-          method: 'POST',
-          path: '/api/v1/payments/process',
-          summary: '处理支付',
-          tags: [ '支付' ],
-        },
-      ];
-
-      setAvailableAPIs(mockAPIs);
-
-      // Update API source info
-      onChange({
-        apiSource: {
-          syncTime: new Date().toISOString(),
-        },
-      });
+      const { probeProxy } = await import('../../../../../services/faultSpaceDetection/probeProxy');
+      const res: any = await probeProxy.getApis(Number(systemId));
+      const items: any[] = res?.data?.items || [];
+      const apis: APIItem[] = items.map((it: any) => ({
+        id: it.id,
+        operationId: it.operationId || it.code || `${it.method} ${it.path}`,
+        method: (it.method || 'GET').toUpperCase(),
+        path: it.path || it.urlTemplate || '/',
+        summary: it.summary || it.name || '',
+        tags: Array.isArray(it.tags) ? it.tags : (it.tags ? String(it.tags).split(',').map((s: string) => s.trim()) : []),
+        baseUrl: it.baseUrl,
+      }));
+      setAvailableAPIs(apis);
+      onChange({ apiSource: { syncTime: new Date().toISOString() } });
     } catch (error) {
       console.error('Failed to load APIs:', error);
       Message.error(i18n.t('Failed to load APIs').toString());
@@ -184,14 +146,22 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
     }
   };
 
-  const handleAPISelection = (api: APIItem) => {
-    onChange({
-      selectedAPI: {
-        method: api.method,
-        path: api.path,
-        operationId: api.operationId,
-      },
-    });
+  const handleAPISelection = async (api: APIItem) => {
+    try {
+      onChange({
+        selectedAPI: { id: api.id, method: api.method, path: api.path, operationId: api.operationId, baseUrl: api.baseUrl },
+      });
+      // 获取拓扑并通过回调通知父组件
+      const { probeProxy } = await import('../../../../../services/faultSpaceDetection/probeProxy');
+      const topo = await probeProxy.getTopology(api.id);
+      const nodes = topo?.data?.nodes || [];
+      const edges = topo?.data?.edges || [];
+      onChange({ apiSource: { ...(data.apiSource || {}), topologyLoadedAt: new Date().toISOString() } });
+      onTopologyLoaded && onTopologyLoaded({ nodes, edges });
+    } catch (e) {
+      console.error('Failed to load topology:', e);
+      Message.error(i18n.t('Failed to load topology').toString());
+    }
   };
 
   const handleRefreshAPIs = async () => {
