@@ -25,7 +25,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 }) => {
   const renderNodeDetails = (node: { id: string; data: XFlowNodeData }) => {
     const { data } = node;
-    
+
     // 处理虚拟节点的特殊情况
     if (data.isVirtual) {
       return (
@@ -43,21 +43,21 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
             <Descriptions.Item label="ID">
               <code style={{ fontSize: '11px' }}>{node.id}</code>
             </Descriptions.Item>
-            
+
             <Descriptions.Item label="类型">
               <Tag color="purple">VIRTUAL</Tag>
             </Descriptions.Item>
-            
+
             <Descriptions.Item label="描述">
               代表被折叠的RPC节点组
             </Descriptions.Item>
-            
+
             <Descriptions.Item label="包含节点数">
               <Tag color="blue">
                 {data.downstreamRpcNodes?.length || 0} 个RPC节点
               </Tag>
             </Descriptions.Item>
-            
+
             <Descriptions.Item label="关联服务节点">
               <code style={{ fontSize: '11px' }}>{data.serviceNodeId}</code>
             </Descriptions.Item>
@@ -65,7 +65,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
         </Card>
       );
     }
-    
+
     // 处理普通节点
     const { entity, redMetrics, status } = data;
 

@@ -20,9 +20,9 @@ interface FilteredNode {
  * 提供按节点ID模糊搜索功能
  */
 export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect }) => {
-  const [searchText, setSearchText] = useState('');
-  const [filteredNodes, setFilteredNodes] = useState<FilteredNode[]>([]);
-  const [showResults, setShowResults] = useState(false);
+  const [ searchText, setSearchText ] = useState('');
+  const [ filteredNodes, setFilteredNodes ] = useState<FilteredNode[]>([]);
+  const [ showResults, setShowResults ] = useState(false);
 
   // 根据搜索文本过滤节点
   useEffect(() => {
@@ -44,7 +44,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
         return {
           id: node.id,
           label,
-          entityType: nodeData?.entityType || 'UNKNOWN'
+          entityType: nodeData?.entityType || 'UNKNOWN',
         };
       })
       .filter((node): node is FilteredNode => node !== null && (
@@ -55,7 +55,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
 
     setFilteredNodes(filtered);
     setShowResults(true);
-  }, [searchText, graph]);
+  }, [ searchText, graph ]);
 
   const handleSearch = () => {
     if (searchText.trim() && filteredNodes.length > 0) {
@@ -108,7 +108,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
 
       {/* 在同一图层展示过滤结果 */}
       {showResults && searchText && (
-        <div 
+        <div
           style={{
             position: 'absolute',
             top: '100%',
@@ -121,7 +121,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
             borderRadius: 4,
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
             zIndex: 1001,
-            marginTop: 4
+            marginTop: 4,
           }}
         >
           {filteredNodes.length > 0 ? (

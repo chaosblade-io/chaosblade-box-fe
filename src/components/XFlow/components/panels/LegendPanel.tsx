@@ -5,7 +5,7 @@ import React, { useState } from 'react';
  * 显示不同关系类型的图例说明
  */
 export const LegendPanel: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [ isVisible, setIsVisible ] = useState(true);
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -48,8 +48,8 @@ export const LegendPanel: React.FC = () => {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <h4 style={{ margin: 0, fontSize: '14px' }}>关系图例</h4>
-        <span 
-          style={{ fontSize: '12px', color: '#1890ff', cursor: 'pointer' }} 
+        <span
+          style={{ fontSize: '12px', color: '#1890ff', cursor: 'pointer' }}
           onClick={toggleVisibility}
         >
           隐藏
