@@ -116,7 +116,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
       <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
         {/* 过滤搜索 */}
         <FilterPanel graph={graph} onNodeSelect={onNodeSelect} />
-        
+
         {/* 统计信息按钮 */}
         <Tooltip title="查看统计信息">
           <Button
@@ -128,9 +128,9 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             统计
           </Button>
         </Tooltip>
-        
+
         {/* 图例切换按钮 */}
-        <Tooltip title={isLegendVisible ? "隐藏图例" : "显示图例"}>
+        <Tooltip title={isLegendVisible ? '隐藏图例' : '显示图例'}>
           <Button
             icon={isLegendVisible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
             onClick={onToggleLegend}

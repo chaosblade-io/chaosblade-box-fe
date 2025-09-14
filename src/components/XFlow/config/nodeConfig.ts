@@ -427,8 +427,7 @@ export const createGraphConfig = () => {
     },
     panning: {
       enabled: true,
-      // @ts-ignore - 忽略类型错误，支持运行时行为
-      eventTypes: [ 'leftMouseDown', 'mouseWheel' ],
+      eventTypes: [ 'leftMouseDown', 'mouseWheel' ] as any,
     },
     mousewheel: {
       enabled: true,
