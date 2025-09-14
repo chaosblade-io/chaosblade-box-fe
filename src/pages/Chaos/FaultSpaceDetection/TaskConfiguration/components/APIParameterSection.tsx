@@ -175,8 +175,6 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
     });
   };
 
-
-
   const fetchTrace = async (traceId: string) => {
     try {
       // TODO: Replace with actual trace fetching logic
@@ -314,7 +312,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
                   {key}: {value}
                 </code>
                 <Button
-                  type="link"
+                  text
                   size="small"
                   onClick={() => handleRemoveCustomHeader(key)}
                 >
@@ -505,8 +503,6 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
           </div>
         </div>
       )}
-
-
 
     </div>
   );

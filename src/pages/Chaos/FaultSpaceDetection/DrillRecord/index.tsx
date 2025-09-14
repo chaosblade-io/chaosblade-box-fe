@@ -171,7 +171,6 @@ const DrillRecord: FC = () => {
   };
 
 
-
   const handlePauseResume = async () => {
     // No-op: controls removed in the simplified design
   };
@@ -378,6 +377,7 @@ const DrillRecord: FC = () => {
       </Dialog>
     </div>
   );
-}
+};
 
 export default DrillRecord;
+

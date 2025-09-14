@@ -370,6 +370,7 @@ const AddDetection: FC = () => {
       };
       const { target, action } = deriveTargetAction(selected);
 
+      /* eslint-disable indent, @typescript-eslint/indent */
       const faultscript = type
         ? {
             apiVersion: 'chaosblade.io/v1alpha1',
@@ -384,10 +385,10 @@ const AddDetection: FC = () => {
                   // 构建 matchers：支持数组值，并过滤空/无效值
                   matchers: (() => {
                     const base = Object.entries(parameters)
-                      .filter(([_, v]) => v !== undefined && v !== null && !(typeof v === 'string' && v.trim() === '') && !(Array.isArray(v) && v.length === 0))
-                      .map(([k, v]) => ({
+                      .filter(([ _, v ]) => v !== undefined && v !== null && !(typeof v === 'string' && v.trim() === '') && !(Array.isArray(v) && v.length === 0))
+                      .map(([ k, v ]) => ({
                         name: String(k).replace(/_/g, '-'),
-                        value: Array.isArray(v) ? v.map((x) => String(x)) : [ String(v) ],
+                        value: Array.isArray(v) ? v.map(x => String(x)) : [ String(v) ],
                       }));
 
                     const has = (n: string) => base.some(m => m.name === n);
@@ -400,7 +401,9 @@ const AddDetection: FC = () => {
                       }
                       return undefined;
                     };
-                    const toArr = (v: any) => Array.isArray(v) ? v.map(x => String(x)) : (v !== undefined ? [ String(v) ] : []);
+                    const toArr = (v: any) => {
+                          return Array.isArray(v) ? v.map(x => String(x)) : (v !== undefined ? [ String(v) ] : []);
+                        };
 
                     if (!has('names')) {
                       const v = getParam('names', 'pod_names', 'podNames');
@@ -421,6 +424,7 @@ const AddDetection: FC = () => {
             },
           }
         : null;
+      /* eslint-enable indent, @typescript-eslint/indent */
 
       return { nodeId: isNaN(nodeId) ? 0 : nodeId, type, faultscript };
     });
@@ -428,7 +432,6 @@ const AddDetection: FC = () => {
     // Compose full URL: baseUrl + path (avoid double slashes)
     const apiPath = formData.targetSystem.selectedAPI?.path || '/';
     const baseUrl = formData.targetSystem.selectedAPI?.baseUrl || '';
-    console.log("baseUrl: ",baseUrl)
     const urlTemplate = baseUrl
       ? `${baseUrl.replace(/\/$/, '')}${apiPath.startsWith('/') ? '' : '/'}${apiPath}`
       : apiPath;
@@ -494,8 +497,6 @@ const AddDetection: FC = () => {
       setIsValidating(false);
     }
   }
-
-
 
   async function handleExecuteImmediately() {
     setIsValidating(true);
@@ -583,6 +584,7 @@ const AddDetection: FC = () => {
                 ))}
               </nav>
             </div>
+            {/* eslint-disable indent, @typescript-eslint/indent */}
         {/* Section 0: Task Basic Info */}
         <div className={styles.section}>
           <div className={styles.sectionHeader}>
@@ -601,7 +603,7 @@ const AddDetection: FC = () => {
                 value={formData.taskName}
                 maxLength={50}
                 placeholder={i18n.t('e.g. OrderAPI-PeakTest-Delay').toString()}
-                onChange={(val) => setFormData(prev => ({ ...prev, taskName: (val || '').slice(0, 50) }))}
+                onChange={val => setFormData(prev => ({ ...prev, taskName: (val || '').slice(0, 50) }))}
               />
               <div className={styles.fieldDescription}>
                 <Translation>1-50 characters; supports Chinese, letters, numbers, underscore, hyphen</Translation>
@@ -618,6 +620,7 @@ const AddDetection: FC = () => {
             </div>
           </div>
         </div>
+        {/* eslint-enable indent, @typescript-eslint/indent */}
 
           </div>
         </div>

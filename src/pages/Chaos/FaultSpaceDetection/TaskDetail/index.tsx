@@ -194,9 +194,9 @@ const TaskDetail: FC = () => {
               faultTemplates: (() => {
                 if (fc.faultscript) {
                   const action = fc.faultscript?.spec?.experiments?.[0]?.action || fc.faultscript?.spec?.experiments?.[0]?.target;
-                  return [ { type: action || fc.type || '', enabled: true, parameters: {} } ];
+                  return [{ type: action || fc.type || '', enabled: true, parameters: {} }];
                 }
-                return [ { type: fc.type || '', enabled: true, parameters: {} } ];
+                return [{ type: fc.type || '', enabled: true, parameters: {} }];
               })(),
             })),
           },

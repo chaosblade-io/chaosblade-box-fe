@@ -249,16 +249,6 @@ const DetectionTasks: FC = () => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
   const renderActions = (_: any, __: number, record: DetectionTask) => {
     return (
       <MenuButton

@@ -215,7 +215,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
             target: normTarget(target),
             action: (action || '').toLowerCase(),
             parameters: fields
-              .filter((f: any) => !['names', 'namespace', 'container_names'].includes((f.key || f.name)))
+              .filter((f: any) => ![ 'names', 'namespace', 'container_names' ].includes((f.key || f.name)))
               .map((f: any) => ({
                 name: f.key || f.name,
                 type: (String(f.type || 'string').includes('int') || String(f.type || '').includes('number')) ? 'number' : 'string',
@@ -552,17 +552,17 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
             width="100%"
             height="500"
             viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
-            onWheel={(e) => {
+            onWheel={e => {
               e.preventDefault();
               const delta = e.deltaY > 0 ? 1.1 : 0.9;
               setScale(prev => Math.min(3, Math.max(0.5, prev * delta)));
               setViewBox(v => ({ x: v.x, y: v.y, width: v.width * delta, height: v.height * delta }));
             }}
-            onMouseDown={(e) => {
+            onMouseDown={e => {
               setIsPanning(true);
               setLastPanPoint({ x: e.clientX, y: e.clientY });
             }}
-            onMouseMove={(e) => {
+            onMouseMove={e => {
               if (!isPanning) return;
               const dx = (e.clientX - lastPanPoint.x);
               const dy = (e.clientY - lastPanPoint.y);
@@ -703,7 +703,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                             const initialParams = Object.fromEntries(
                               (template.parameters || [])
                                 .filter(p => p.defaultValue !== undefined && p.defaultValue !== null && p.defaultValue !== '')
-                                .map(p => [p.name, p.defaultValue])
+                                .map(p => [ p.name, p.defaultValue ]),
                             );
                             const updatedTemplates = checked
                               ? [ ...currentConfig.faultTemplates.filter(t => t.type !== template.type), {
@@ -726,7 +726,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                             const initialParams = Object.fromEntries(
                               (template.parameters || [])
                                 .filter(p => p.defaultValue !== undefined && p.defaultValue !== null && p.defaultValue !== '')
-                                .map(p => [p.name, p.defaultValue])
+                                .map(p => [ p.name, p.defaultValue ]),
                             );
                             onChange({
                               faultConfigurations: [
@@ -773,9 +773,9 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               onChange={(val: number) => {
                                 const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
                                 if (!currentConfig) return;
-                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t =>
-                                  t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t,
-                                );
+                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t => {
+                                  return t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t;
+                                });
                                 onChange({
                                   faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
                                 });
@@ -790,9 +790,9 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               onChange={(val: string) => {
                                 const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
                                 if (!currentConfig) return;
-                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t =>
-                                  t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t,
-                                );
+                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t => {
+                                  return t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t;
+                                });
                                 onChange({
                                   faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
                                 });
@@ -808,9 +808,9 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               onChange={(val: string) => {
                                 const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
                                 if (!currentConfig) return;
-                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t =>
-                                  t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t,
-                                );
+                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t => {
+                                  return t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t;
+                                });
                                 onChange({
                                   faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
                                 });

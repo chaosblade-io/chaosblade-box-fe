@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useMemo, useRef, useState } from 'react';
 
 export interface RONode {
   id: number | string;
@@ -47,7 +47,7 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
       try {
         const ms = fc.faultscript?.spec?.experiments?.[0]?.matchers || [];
         const entries = ms
-          .filter((m: any) => !['names', 'namespace', 'container-names', 'container_names'].includes(String(m?.name)))
+          .filter((m: any) => ![ 'names', 'namespace', 'container-names', 'container_names' ].includes(String(m?.name)))
           .map((m: any) => [ String(m?.name), Array.isArray(m?.value) ? m.value.join(',') : String(m?.value) ]);
         return Object.fromEntries(entries) as Record<string, string>;
       } catch { return {}; }
@@ -72,7 +72,8 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
 
     nodeIds.forEach(id => { adj.set(String(id), []); rev.set(String(id), []); inDeg.set(String(id), 0); });
     edges.forEach(e => {
-      const u = String(e.fromNodeId), v = String(e.toNodeId);
+      const u = String(e.fromNodeId);
+      const v = String(e.toNodeId);
       if (!idSet.has(u) || !idSet.has(v)) return;
       adj.get(u)!.push(v);
       rev.get(v)!.push(u);
@@ -118,7 +119,11 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
       byLayer.get(lv)!.push(id);
     });
     const orderedLayers = Array.from(byLayer.keys()).sort((a, b) => a - b);
-    const laneWidth = 180; const laneHeight = 120; const baseX = 120; const baseY = 80; const width = 1100;
+    const laneWidth = 180;
+    const laneHeight = 120;
+    const baseX = 120;
+    const baseY = 80;
+    const width = 1100;
     const pos = new Map<string, { x: number; y: number }>();
     orderedLayers.forEach((lv, li) => {
       const ids = byLayer.get(lv)!;
@@ -152,7 +157,7 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
   const onMouseLeave: React.MouseEventHandler<SVGSVGElement> = () => { isPanningRef.current = false; };
 
   // Helpers
-  const getNode = (id: string | number) => nodes.find(n => String(n.id) === String(id));
+
   const getFaultTags = (id: string | number) => faultsByNode.get(id) || [];
 
   // Estimated height by number of layers
