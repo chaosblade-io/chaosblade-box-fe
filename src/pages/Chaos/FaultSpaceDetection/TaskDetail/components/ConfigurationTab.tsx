@@ -2,8 +2,10 @@ import React, { FC, useState } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import { Icon, Tag, Collapse } from '@alicloud/console-components';
+import { Icon, Tag, Collapse, Button, Message } from '@alicloud/console-components';
 
+import TaskTopologyViewer from './TaskTopologyViewer';
+import ReadOnlyServiceTopology from './ReadOnlyServiceTopology';
 const { Panel } = Collapse;
 
 interface ConfigurationData {
@@ -19,6 +21,7 @@ interface ConfigurationData {
       path: string;
       operationId: string;
     };
+
   };
   apiParameters: {
     pathParams: Record<string, string>;
@@ -66,10 +69,12 @@ interface ConfigurationData {
 }
 
 interface ConfigurationTabProps {
-  data: ConfigurationData;
+  data: ConfigurationData & { topologyNodes?: any[]; topologyEdges?: any[]; faultConfigs?: any[] };
 }
 
 const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
+  const [ selectedNodeId, setSelectedNodeId ] = useState<string | number | null>(null);
+  const selectedFaults = (data.faultConfigs || []).filter((fc: any) => String(fc.nodeId) === String(selectedNodeId));
   const [ expandedFaultServices, setExpandedFaultServices ] = useState<string[]>([]);
 
   const toggleFaultService = (serviceId: string) => {
@@ -117,9 +122,9 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         {renderConfigRow(i18n.t('Selected API').toString(), (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Tag color="#1890ff" style={{ fontWeight: 600 }}>
-              {data.targetSystem.selectedAPI.method}
+              {data.targetSystem.selectedAPI?.method}
             </Tag>
-            <code>{data.targetSystem.selectedAPI.path}</code>
+            <code>{data.targetSystem.selectedAPI?.path}</code>
           </div>
         ))}
         {renderConfigRow(i18n.t('Operation ID').toString(), data.targetSystem.selectedAPI.operationId, true)}
@@ -199,63 +204,105 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
     <div className={styles.configCard}>
       <div className={styles.cardHeader}>
         <div className={styles.cardTitle}>
-          <Icon type="warning" />
-          <Translation>Fault Configuration</Translation>
+          <Icon type="share-alt" />
+          <Translation>Service Topology</Translation>
         </div>
+        {console && console.log && console.log('[TaskDetail] Topology props:', {
+          nodes: data.topologyNodes || (data as any)?.traceConfig?.baselineTrace?.nodes,
+          edges: data.topologyEdges || (data as any)?.traceConfig?.baselineTrace?.edges,
+          faultConfigs: (data as any)?.faultConfigs,
+        })}
       </div>
       <div className={styles.cardContent}>
-        {data.traceConfig.faultConfigurations.length === 0 ? (
-          <em style={{ color: '#999' }}>
-            <Translation>No fault configurations defined</Translation>
-          </em>
-        ) : (
-          data.traceConfig.faultConfigurations.map(service => (
-            <div key={service.serviceId} className={styles.faultServiceCard}>
-              <div
-                className={styles.faultServiceHeader}
-                onClick={() => toggleFaultService(service.serviceId)}
-              >
-                <div className={styles.serviceInfo}>
-                  <div className={styles.serviceName}>{service.serviceName}</div>
-                  <div className={styles.serviceLayer}>Layer {service.layer}</div>
-                </div>
-                <Icon
-                  type={expandedFaultServices.includes(service.serviceId) ? 'arrow-up' : 'arrow-down'}
-                  size="xs"
-                />
-              </div>
-
-              {expandedFaultServices.includes(service.serviceId) && (
-                <div className={styles.faultTemplates}>
-                  {service.faultTemplates.filter(template => template.enabled).map((template, index) => (
-                    <div key={index} className={styles.faultTemplate}>
-                      <div className={styles.faultInfo}>
-                        <div className={styles.faultName}>{template.type}</div>
-                        <div className={styles.faultParams}>
-                          {Object.entries(template.parameters).map(([ key, value ]) => (
-                            <span key={key} style={{ marginRight: 12 }}>
-                              {key}: {value}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <div className={styles.enabledBadge}>
-                        <Translation>Enabled</Translation>
-                      </div>
-                    </div>
-                  ))}
-
-                  {service.faultTemplates.filter(template => template.enabled).length === 0 && (
-                    <em style={{ color: '#999' }}>
-                      <Translation>No fault templates enabled for this service</Translation>
-                    </em>
-                  )}
-                </div>
-              )}
-            </div>
-          ))
-        )}
+        {/* 统一与 AddDetection 的视觉风格，提供平移缩放、层级布局、内联故障标识 */}
+        <ReadOnlyServiceTopology
+          nodes={data.topologyNodes || (data as any)?.traceConfig?.baselineTrace?.nodes || []}
+          edges={data.topologyEdges || (data as any)?.traceConfig?.baselineTrace?.edges || []}
+          faultConfigs={data.faultConfigs || []}
+          showFaultIndicators={false}
+          selectedNodeId={selectedNodeId}
+          onSelectNode={(id) => setSelectedNodeId(id)}
+          height={560}
+        />
       </div>
+    {/* Fault Configuration Panel (appears when node selected) */}
+    {selectedNodeId != null && (
+      <div className={styles.configCard} style={{ marginTop: 16 }}>
+        <div className={styles.cardHeader}>
+          <div className={styles.cardTitle}>
+            <Icon type="warning" />
+            <Translation>Fault Configuration</Translation>
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <a onClick={() => setSelectedNodeId(null)}><Translation>Close</Translation></a>
+          </div>
+        </div>
+        <div className={styles.cardContent}>
+          {selectedFaults.length === 0 ? (
+            <em style={{ color: '#999' }}>
+              <Translation>No fault configurations for this service</Translation>
+            </em>
+          ) : (
+            selectedFaults.map((fc: any, idx: number) => {
+              const type = fc?.type || fc?.faultscript?.spec?.experiments?.[0]?.action || fc?.faultscript?.spec?.experiments?.[0]?.target || '-';
+              const matchers = fc?.faultscript?.spec?.experiments?.[0]?.matchers || [];
+              const params = matchers
+                .filter((m: any) => !['names', 'namespace', 'container-names', 'container_names'].includes(String(m?.name)))
+                .reduce((acc: any, m: any) => { acc[String(m.name)] = Array.isArray(m.value) ? m.value.join(',') : String(m.value); return acc; }, {} as Record<string, string>);
+              return (
+                <div key={idx} className={styles.faultTemplate} style={{ border: '1px solid #eee', borderRadius: 6, padding: 12, marginBottom: 8 }}>
+                  <div className={styles.faultInfo}>
+                    <div className={styles.faultName}>{type}</div>
+                    <div className={styles.faultParams}>
+                      {Object.keys(params).length === 0 ? (
+                        <span style={{ color: '#999' }}><Translation>No parameters</Translation></span>
+                      ) : (
+                        Object.entries(params).map(([k, v]) => (
+                          <span key={k} style={{ marginRight: 12 }}>
+                            {k}: {v as any}
+                          </span>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                    {typeof fc?.enabled === 'boolean' && (
+                      <div className={styles.enabledBadge}>
+                        {fc.enabled ? <Translation>Enabled</Translation> : <Translation>Disabled</Translation>}
+                      </div>
+                    )}
+                    <Button
+                      text
+                      size="small"
+                      onClick={() => {
+                        try {
+                          const text = JSON.stringify(fc?.faultscript ?? {}, null, 2);
+                          if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                            navigator.clipboard.writeText(text);
+                          } else {
+                            const ta = document.createElement('textarea');
+                            ta.value = text;
+                            document.body.appendChild(ta);
+                            ta.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(ta);
+                          }
+                          Message.success(i18n.t('Copied fault script JSON').toString());
+                        } catch (e) {
+                          Message.error(i18n.t('Copy failed').toString());
+                        }
+                      }}
+                    >
+                      <Translation>Copy Fault Script JSON</Translation>
+                    </Button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+    )}
     </div>
   );
 
@@ -268,47 +315,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         </div>
       </div>
       <div className={styles.cardContent}>
-        {/* Functional Assertions */}
-        <div className={styles.sloSection}>
-          <div className={styles.sloSectionTitle}>
-            <Translation>Functional Assertions</Translation>
-          </div>
-
-          {/* Status Codes */}
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 8 }}>
-              <Translation>Expected Status Codes</Translation>:
-            </div>
-            <div className={styles.statusCodeList}>
-              {data.sloConfig.functionalAssertions.statusCodes.map(code => (
-                <span key={code} className={`${styles.statusCode} ${getStatusCodeClass(code)}`}>
-                  {code}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* JSONPath Assertions */}
-          {data.sloConfig.functionalAssertions.jsonPathAssertions.length > 0 && (
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 8 }}>
-                <Translation>JSONPath Assertions</Translation>:
-              </div>
-              {data.sloConfig.functionalAssertions.jsonPathAssertions.map(assertion => (
-                <div key={assertion.id} className={styles.jsonPathAssertion}>
-                  <div className={styles.assertionPath}>
-                    {assertion.path} {assertion.operator} {assertion.expectedValue}
-                  </div>
-                  <div className={styles.assertionDescription}>
-                    {assertion.description}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Performance Targets */}
+        {/* 仅保留性能目标 */}
         <div className={styles.sloSection}>
           <div className={styles.sloSectionTitle}>
             <Translation>Performance Targets</Translation>

@@ -62,81 +62,30 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
   const loadDrillRecords = async () => {
     setLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // const result = await dispatch.faultSpaceDetection.getDrillRecords({
-      //   taskId,
-      //   page,
-      //   pageSize,
-      //   status: statusFilter,
-      //   dateRange,
-      //   searchKey,
-      // });
+      const { probeProxy } = await import('../../../../../services/faultSpaceDetection/probeProxy');
+      const res = await probeProxy.getTaskExecutions(Number(taskId), { page, size: pageSize });
+      const items = res?.data?.items || [];
+      const total = res?.data?.total || 0;
 
-      // Mock data for development
-      const mockRecords: DrillRecord[] = [
-        {
-          runId: 'RUN_20241225_001',
-          initiator: 'admin',
-          status: 'SUCCESS',
-          startTime: new Date(Date.now() - 3600000).toISOString(),
-          endTime: new Date(Date.now() - 3000000).toISOString(),
-          duration: 600,
-          resultSummary: {
-            totalRequests: 100,
-            failedRequests: 2,
-            highLatencyIncidents: 5,
-            avgLatency: 156,
-            maxLatency: 890,
-          },
+      const mapped: DrillRecord[] = items.map((it: any) => ({
+        runId: String(it.id),
+        initiator: it.initiator || it.createdBy || '-',
+        status: (it.status || 'DONE') as any,
+        startTime: it.startedAt || it.createdAt || '',
+        endTime: it.finishedAt || it.updatedAt || '',
+        duration: Number(it.durationSeconds || 0),
+        resultSummary: {
+          totalRequests: Number(it.totalRequests || 0),
+          failedRequests: Number(it.failedRequests || 0),
+          highLatencyIncidents: Number(it.highLatencyIncidents || 0),
+          avgLatency: Number(it.avgLatency || 0),
+          maxLatency: Number(it.maxLatency || 0),
         },
-        {
-          runId: 'RUN_20241224_003',
-          initiator: 'user1',
-          status: 'FAILED',
-          startTime: new Date(Date.now() - 86400000).toISOString(),
-          endTime: new Date(Date.now() - 86100000).toISOString(),
-          duration: 300,
-          resultSummary: {
-            totalRequests: 45,
-            failedRequests: 15,
-            highLatencyIncidents: 8,
-            avgLatency: 234,
-            maxLatency: 2100,
-          },
-          errorMessage: 'Target service timeout exceeded',
-        },
-        {
-          runId: 'RUN_20241224_002',
-          initiator: 'admin',
-          status: 'RUNNING',
-          startTime: new Date(Date.now() - 300000).toISOString(),
-          resultSummary: {
-            totalRequests: 30,
-            failedRequests: 1,
-            highLatencyIncidents: 2,
-            avgLatency: 178,
-            maxLatency: 567,
-          },
-        },
-        {
-          runId: 'RUN_20241224_001',
-          initiator: 'user2',
-          status: 'TERMINATED',
-          startTime: new Date(Date.now() - 172800000).toISOString(),
-          endTime: new Date(Date.now() - 172500000).toISOString(),
-          duration: 180,
-          resultSummary: {
-            totalRequests: 20,
-            failedRequests: 0,
-            highLatencyIncidents: 1,
-            avgLatency: 123,
-            maxLatency: 345,
-          },
-        },
-      ];
+        errorMessage: it.errorMsg,
+      }));
 
-      setRecords(mockRecords);
-      setTotal(mockRecords.length);
+      setRecords(mapped);
+      setTotal(total);
     } catch (error) {
       console.error('Failed to load drill records:', error);
       Message.error(i18n.t('Failed to load drill records').toString());
@@ -404,9 +353,7 @@ const DrillRecordsTab: FC<DrillRecordsTabProps> = ({ taskId }) => {
               total={total}
               pageSize={pageSize}
               onChange={setPage}
-              showTotal={(total, range) =>
-                `${range[0]}-${range[1]} of ${total} records`
-              }
+              totalRender={(total, range) => `${range[0]}-${range[1]} of ${total} records`}
             />
           </div>
         )}

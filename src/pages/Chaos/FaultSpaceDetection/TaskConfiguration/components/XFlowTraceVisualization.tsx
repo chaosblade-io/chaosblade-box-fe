@@ -1,19 +1,7 @@
-import React, { FC, useState, useEffect, useRef, useCallback } from 'react';
+import React, { FC, useState, useEffect, useCallback } from 'react';
 import Translation from 'components/Translation';
-import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import {
-  Button,
-  Message,
-  Icon,
-  Drawer,
-  Checkbox,
-  Input,
-  Select,
-  NumberPicker,
-  Tag,
-  Balloon,
-} from '@alicloud/console-components';
+import { Button, Icon, Drawer, Checkbox, Input, Select, NumberPicker, Tag } from '@alicloud/console-components';
 
 // XFlow imports - we'll use a simplified approach for now
 // In a real implementation, you would install @antv/xflow and import properly
@@ -28,6 +16,8 @@ interface TraceConfigData {
     faultTemplates: Array<{
       type: string;
       enabled: boolean;
+      target?: string;
+      action?: string;
       parameters: Record<string, any>;
     }>;
   }>;
@@ -55,6 +45,9 @@ interface FaultTemplate {
   name: string;
   description: string;
   category: 'NETWORK' | 'RESOURCE' | 'APPLICATION' | 'INFRASTRUCTURE';
+  // Standardized chaosblade identifiers
+  target?: string;
+  action?: string;
   parameters: Array<{
     name: string;
     type: 'string' | 'number' | 'boolean' | 'select';
@@ -69,72 +62,179 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
   const [ serviceNodes, setServiceNodes ] = useState<ServiceNode[]>([]);
   const [ selectedService, setSelectedService ] = useState<ServiceNode | null>(null);
   const [ faultDrawerVisible, setFaultDrawerVisible ] = useState(false);
-  const [ availableFaultTemplates ] = useState<FaultTemplate[]>([
-    {
-      type: 'NETWORK_DELAY',
-      name: 'Network Delay',
-      description: 'Inject network latency to simulate slow network conditions',
-      category: 'NETWORK',
-      parameters: [
-        { name: 'delay', type: 'number', required: true, defaultValue: 100, description: 'Delay in milliseconds' },
-        { name: 'variance', type: 'number', required: false, defaultValue: 10, description: 'Delay variance percentage' },
-      ],
-    },
-    {
-      type: 'CPU_STRESS',
-      name: 'CPU Stress',
-      description: 'Consume CPU resources to simulate high load',
-      category: 'RESOURCE',
-      parameters: [
-        { name: 'cpuPercent', type: 'number', required: true, defaultValue: 80, description: 'CPU usage percentage' },
-        { name: 'duration', type: 'number', required: true, defaultValue: 60, description: 'Duration in seconds' },
-      ],
-    },
-    {
-      type: 'MEMORY_LEAK',
-      name: 'Memory Leak',
-      description: 'Gradually consume memory to simulate memory leaks',
-      category: 'RESOURCE',
-      parameters: [
-        { name: 'memoryMB', type: 'number', required: true, defaultValue: 512, description: 'Memory to consume in MB' },
-        { name: 'rate', type: 'number', required: false, defaultValue: 10, description: 'Consumption rate MB/s' },
-      ],
-    },
-    {
-      type: 'PROCESS_KILL',
-      name: 'Process Kill',
-      description: 'Terminate service processes to test recovery',
-      category: 'APPLICATION',
-      parameters: [
-        { name: 'signal', type: 'select', required: true, defaultValue: 'SIGTERM', options: [ 'SIGTERM', 'SIGKILL' ], description: 'Kill signal' },
-      ],
-    },
-  ]);
+  const [ availableFaultTemplates, setAvailableFaultTemplates ] = useState<FaultTemplate[]>([]);
+  const [ viewBox, setViewBox ] = useState({ x: 0, y: 0, width: 1000, height: 600 });
+  const [ scale, setScale ] = useState(1);
+  const [ isPanning, setIsPanning ] = useState(false);
+  const [ lastPanPoint, setLastPanPoint ] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    generateMockServiceTopology();
-  }, []);
+    // 使用真实拓扑：由外部在选择 API 后触发 onChange 带入 data.baselineTrace 或额外 props 亦可
+    // 这里直接从后端拉取拓扑和故障类型
+    const fetchData = async () => {
+      try {
+        // 获取已选 API
+        // 由外部父组件将 nodes 注入到 data.baselineTrace?.nodes（或 data.faultConfigurations）
+        // 为保持兼容，这里仅在 data.baselineTrace?.nodes 存在时做渲染
+        const topologyNodes: any[] = (data as any).baselineTrace?.nodes || [];
+        const topologyEdges: any[] = (data as any).baselineTrace?.edges || [];
+        if (topologyNodes.length > 0) {
+          // 1) 基于边关系构建邻接表与入度/逆邻接（用于计算层级与处理环）
+          const nodeIds: number[] = topologyNodes.map(n => Number(n.id ?? n.nodeId));
+          const nodeById = new Map<number, any>();
+          topologyNodes.forEach(n => nodeById.set(Number(n.id ?? n.nodeId), n));
 
-  const generateMockServiceTopology = () => {
-    const mockNodes: ServiceNode[] = [
-      // Layer 0 (Entry point)
-      { id: 'api-gateway', name: 'API Gateway', layer: 0, protocol: 'HTTP', x: 400, y: 80, selected: false, status: 'UNTESTED' },
+          const adj = new Map<number, number[]>();
+          const rev = new Map<number, number[]>();
+          const inDeg = new Map<number, number>();
+          nodeIds.forEach(id => { adj.set(id, []); rev.set(id, []); inDeg.set(id, 0); });
+          topologyEdges.forEach(e => {
+            const u = Number(e.fromNodeId);
+            const v = Number(e.toNodeId);
+            if (!adj.has(u)) adj.set(u, []);
+            if (!rev.has(v)) rev.set(v, []);
+            adj.get(u)!.push(v);
+            rev.get(v)!.push(u);
+            inDeg.set(v, (inDeg.get(v) || 0) + 1);
+            if (!inDeg.has(u)) inDeg.set(u, inDeg.get(u) || 0);
+          });
 
-      // Layer 1 (Services)
-      { id: 'user-service', name: 'User Service', layer: 1, protocol: 'HTTP', x: 200, y: 200, selected: false, status: 'UNTESTED' },
-      { id: 'auth-service', name: 'Auth Service', layer: 1, protocol: 'gRPC', x: 400, y: 200, selected: false, status: 'UNTESTED' },
-      { id: 'order-service', name: 'Order Service', layer: 1, protocol: 'HTTP', x: 600, y: 200, selected: false, status: 'UNTESTED' },
+          // 2) 根集合：入度为 0（若无，则选择最小入度的节点集合作为“伪根”）
+          let roots: number[] = nodeIds.filter(id => (inDeg.get(id) || 0) === 0);
+          if (roots.length === 0) {
+            let minIn = Infinity;
+            nodeIds.forEach(id => { const v = inDeg.get(id) ?? 0; minIn = Math.min(minIn, v); });
+            roots = nodeIds.filter(id => (inDeg.get(id) ?? 0) === minIn);
+          }
 
-      // Layer 2 (Data stores)
-      { id: 'user-db', name: 'User Database', layer: 2, protocol: 'DB', x: 150, y: 320, selected: false, status: 'UNTESTED' },
-      { id: 'auth-db', name: 'Auth Database', layer: 2, protocol: 'DB', x: 300, y: 320, selected: false, status: 'UNTESTED' },
-      { id: 'cache', name: 'Redis Cache', layer: 2, protocol: 'DB', x: 450, y: 320, selected: false, status: 'UNTESTED' },
-      { id: 'order-db', name: 'Order Database', layer: 2, protocol: 'DB', x: 600, y: 320, selected: false, status: 'UNTESTED' },
-      { id: 'mq', name: 'Message Queue', layer: 2, protocol: 'MQ', x: 750, y: 320, selected: false, status: 'UNTESTED' },
-    ];
+          // 3) Kahn 拓扑分层（对有环图，仍可推进部分；剩余节点后续再分配）
+          const layerMap = new Map<number, number>();
+          const q: number[] = [];
+          roots.forEach(id => { layerMap.set(id, 0); q.push(id); });
+          const inDegWork = new Map(inDeg);
+          while (q.length) {
+            const u = q.shift()!;
+            const base = layerMap.get(u) ?? 0;
+            (adj.get(u) || []).forEach(v => {
+              // 子节点层级 = max(现层级, 父层级+1)
+              layerMap.set(v, Math.max(layerMap.get(v) ?? 0, base + 1));
+              inDegWork.set(v, (inDegWork.get(v) || 0) - 1);
+              if ((inDegWork.get(v) || 0) === 0) q.push(v);
+            });
+          }
 
-    setServiceNodes(mockNodes);
-  };
+          // 4) 处理环/未分配层级的节点：单次基于父层级的分配，避免大规模迭代造成卡顿
+          const processed = new Set<number>();
+          roots.forEach(r => processed.add(r));
+          // 记录在 Kahn 流程中被处理过的节点
+          layerMap.forEach((_, id) => { if ((inDeg.get(id) || 0) === 0) processed.add(id); });
+          const remaining = nodeIds.filter(id => !processed.has(id));
+          remaining.forEach(v => {
+            const parents = rev.get(v) || [];
+            let maxParentLayer = -1;
+            parents.forEach(p => { maxParentLayer = Math.max(maxParentLayer, layerMap.get(p) ?? 0); });
+            const proposed = maxParentLayer >= 0 ? maxParentLayer + 1 : 0;
+            if ((layerMap.get(v) ?? 0) < proposed) layerMap.set(v, proposed);
+          });
+
+          // 5) 按层分组并布局（自上而下、同层横向）
+          const grouped = new Map<number, number[]>();
+          layerMap.forEach((layer, id) => {
+            if (!grouped.has(layer)) grouped.set(layer, []);
+            grouped.get(layer)!.push(id);
+          });
+          const layerKeys = Array.from(grouped.keys()).sort((a, b) => a - b);
+          const laneWidth = 180; // 节点横向间距
+          const laneHeight = 120; // 节点纵向间距
+          const baseX = 120;
+          const baseY = 80;
+          const canvasWidth = viewBox.width || 900;
+          const mapped: ServiceNode[] = [];
+          layerKeys.forEach((layer, li) => {
+            const ids = grouped.get(layer)!;
+            const totalWidth = (ids.length - 1) * laneWidth;
+            const startX = baseX + Math.max(0, (canvasWidth - totalWidth) / 2);
+            ids.forEach((id, idx) => {
+              const n = nodeById.get(id) || {};
+              mapped.push({
+                id: String(id),
+                name: n.name || `Node-${id}`,
+                layer: Number(layer),
+                protocol: (n.protocol || 'HTTP'),
+                x: startX + (idx * laneWidth),
+                y: baseY + (li * laneHeight),
+                selected: false,
+                status: 'UNTESTED',
+              });
+            });
+          });
+          setServiceNodes(mapped);
+        }
+
+        // 故障类型
+        const { probeProxy } = await import('../../../../../services/faultSpaceDetection/probeProxy');
+        const faultRes: any = await probeProxy.getFaultTypes();
+        const items = faultRes?.data?.items || [];
+        const templates: FaultTemplate[] = items.map((it: any) => {
+          const code: string = it.faultCode || it.code || it.type || String(it.id || '');
+          // Parse paramConfig first to extract target/action/fields
+          let conf: any = {};
+          try {
+            conf = it.paramConfig ? JSON.parse(it.paramConfig) : {};
+          } catch {
+            conf = {};
+          }
+          // Prefer paramConfig.target/action; fallback to item fields; lastly derive from code
+          let target = String(conf.target || it.target || '');
+          let action = String(conf.action || it.action || '');
+          if (!target || !action) {
+            const parts = code.split('_');
+            if (parts.length >= 2) {
+              target = target || parts[0];
+              action = action || parts.slice(1).join('_');
+            }
+          }
+          // Normalize some common aliases
+          const normTarget = (t: string) => {
+            const x = (t || '').toLowerCase();
+            if (x === 'memory') return 'mem';
+            if (x === 'cpu') return 'cpu';
+            if (x === 'process') return 'process';
+            if (x === 'container') return 'container';
+            if (x === 'disk') return 'disk';
+            if (x === 'network' || x === 'net') return 'network';
+            if (x === 'mem') return 'mem';
+            return x || 'container';
+          };
+          const fields = Array.isArray(conf.fields) ? conf.fields : [];
+          return {
+            type: code,
+            name: it.name || code,
+            description: it.description || '',
+            category: (it.category || 'APPLICATION') as any,
+            target: normTarget(target),
+            action: (action || '').toLowerCase(),
+            parameters: fields
+              .filter((f: any) => !['names', 'namespace', 'container_names'].includes((f.key || f.name)))
+              .map((f: any) => ({
+                name: f.key || f.name,
+                type: (String(f.type || 'string').includes('int') || String(f.type || '').includes('number')) ? 'number' : 'string',
+                required: !!f.required,
+                defaultValue: f.default,
+                options: Array.isArray(f.options) ? f.options : undefined,
+                description: f.label || f.desc || '',
+              })),
+          } as FaultTemplate;
+        });
+        setAvailableFaultTemplates(templates);
+      } catch (e) {
+        console.error('Failed to fetch topology/fault types:', e);
+      }
+    };
+    fetchData();
+  }, [ data?.baselineTrace ]);
+
+  // 取消 mock 数据渲染（已接入真实数据）
 
   const handleServiceClick = useCallback((serviceId: string) => {
     const service = serviceNodes.find(node => node.id === serviceId);
@@ -346,27 +446,17 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
   };
 
   const renderConnections = () => {
-    const connections = [
-      // Layer 0 to Layer 1
-      { from: 'api-gateway', to: 'user-service' },
-      { from: 'api-gateway', to: 'auth-service' },
-      { from: 'api-gateway', to: 'order-service' },
+    const edges: Array<{ fromNodeId: number; toNodeId: number }> = (data as any)?.baselineTrace?.edges || [];
+    if (!edges || edges.length === 0) return null;
 
-      // Layer 1 to Layer 2
-      { from: 'user-service', to: 'user-db' },
-      { from: 'user-service', to: 'cache' },
-      { from: 'auth-service', to: 'auth-db' },
-      { from: 'auth-service', to: 'cache' },
-      { from: 'order-service', to: 'order-db' },
-      { from: 'order-service', to: 'mq' },
-    ];
+    // 建立 id->坐标映射（后端节点 id -> 前端节点）
+    const idToNode = new Map<string | number, ServiceNode>();
+    serviceNodes.forEach(n => idToNode.set(Number(n.id), n));
 
-    return connections.map((conn, index) => {
-      const fromNode = serviceNodes.find(node => node.id === conn.from);
-      const toNode = serviceNodes.find(node => node.id === conn.to);
-
+    return edges.map((edge, index) => {
+      const fromNode = idToNode.get(Number(edge.fromNodeId));
+      const toNode = idToNode.get(Number(edge.toNodeId));
       if (!fromNode || !toNode) return null;
-
       return (
         <line
           key={index}
@@ -458,21 +548,34 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
           background: '#fafafa',
           padding: 20,
         }}>
-          <svg width="100%" height="400" viewBox="0 0 900 400">
+          <svg
+            width="100%"
+            height="500"
+            viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
+            onWheel={(e) => {
+              e.preventDefault();
+              const delta = e.deltaY > 0 ? 1.1 : 0.9;
+              setScale(prev => Math.min(3, Math.max(0.5, prev * delta)));
+              setViewBox(v => ({ x: v.x, y: v.y, width: v.width * delta, height: v.height * delta }));
+            }}
+            onMouseDown={(e) => {
+              setIsPanning(true);
+              setLastPanPoint({ x: e.clientX, y: e.clientY });
+            }}
+            onMouseMove={(e) => {
+              if (!isPanning) return;
+              const dx = (e.clientX - lastPanPoint.x);
+              const dy = (e.clientY - lastPanPoint.y);
+              setLastPanPoint({ x: e.clientX, y: e.clientY });
+              setViewBox(v => ({ x: v.x - dx, y: v.y - dy, width: v.width, height: v.height }));
+            }}
+            onMouseUp={() => setIsPanning(false)}
+            onMouseLeave={() => setIsPanning(false)}
+          >
             {/* Arrow marker definition */}
             <defs>
-              <marker
-                id="arrowhead"
-                markerWidth="10"
-                markerHeight="7"
-                refX="9"
-                refY="3.5"
-                orient="auto"
-              >
-                <polygon
-                  points="0 0, 10 3.5, 0 7"
-                  fill="#d9d9d9"
-                />
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#d9d9d9" />
               </marker>
             </defs>
 
@@ -597,11 +700,18 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                           );
 
                           if (currentConfig) {
+                            const initialParams = Object.fromEntries(
+                              (template.parameters || [])
+                                .filter(p => p.defaultValue !== undefined && p.defaultValue !== null && p.defaultValue !== '')
+                                .map(p => [p.name, p.defaultValue])
+                            );
                             const updatedTemplates = checked
                               ? [ ...currentConfig.faultTemplates.filter(t => t.type !== template.type), {
                                 type: template.type,
                                 enabled: true,
-                                parameters: {},
+                                target: template.target,
+                                action: template.action,
+                                parameters: initialParams,
                               }]
                               : currentConfig.faultTemplates.filter(t => t.type !== template.type);
 
@@ -613,6 +723,11 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               ),
                             });
                           } else {
+                            const initialParams = Object.fromEntries(
+                              (template.parameters || [])
+                                .filter(p => p.defaultValue !== undefined && p.defaultValue !== null && p.defaultValue !== '')
+                                .map(p => [p.name, p.defaultValue])
+                            );
                             onChange({
                               faultConfigurations: [
                                 ...data.faultConfigurations,
@@ -623,7 +738,9 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                                   faultTemplates: [{
                                     type: template.type,
                                     enabled: true,
-                                    parameters: {},
+                                    target: template.target,
+                                    action: template.action,
+                                    parameters: initialParams,
                                   }],
                                 },
                               ],
@@ -653,6 +770,16 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               size="small"
                               defaultValue={param.defaultValue}
                               style={{ width: '100%' }}
+                              onChange={(val: number) => {
+                                const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
+                                if (!currentConfig) return;
+                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t =>
+                                  t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t,
+                                );
+                                onChange({
+                                  faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
+                                });
+                              }}
                             />
                           )}
                           {param.type === 'string' && (
@@ -660,6 +787,16 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               size="small"
                               defaultValue={param.defaultValue}
                               style={{ width: '100%' }}
+                              onChange={(val: string) => {
+                                const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
+                                if (!currentConfig) return;
+                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t =>
+                                  t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t,
+                                );
+                                onChange({
+                                  faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
+                                });
+                              }}
                             />
                           )}
                           {param.type === 'select' && (
@@ -668,6 +805,16 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                               defaultValue={param.defaultValue}
                               dataSource={param.options?.map(opt => ({ label: opt, value: opt }))}
                               style={{ width: '100%' }}
+                              onChange={(val: string) => {
+                                const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
+                                if (!currentConfig) return;
+                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t =>
+                                  t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t,
+                                );
+                                onChange({
+                                  faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
+                                });
+                              }}
                             />
                           )}
                           <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>

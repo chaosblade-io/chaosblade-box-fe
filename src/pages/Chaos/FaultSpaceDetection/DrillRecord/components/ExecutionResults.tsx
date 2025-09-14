@@ -1,19 +1,10 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useMemo, useRef, useState } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
-import {
-  Table,
-  Button,
-  Icon,
-  Tag,
-  MenuButton,
-  Message,
-  Balloon,
-} from '@alicloud/console-components';
-import formatDate from '../../../lib/DateUtil';
+import { Table, Button, Icon, Dialog } from '@alicloud/console-components';
 
-interface ChainFailure {
+interface TestCaseItem {
   id: string;
   number: number;
   responseStatus: number;

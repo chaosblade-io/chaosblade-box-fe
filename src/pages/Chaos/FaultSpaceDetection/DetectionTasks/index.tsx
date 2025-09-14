@@ -17,7 +17,6 @@ import {
   Checkbox,
   Icon,
   MenuButton,
-  Badge,
 } from '@alicloud/console-components';
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
@@ -30,30 +29,16 @@ const { RangePicker } = DatePicker;
 
 // TypeScript interfaces for the new data structure
 interface DetectionTask {
-  id: string;
+  id: number | string;
   name: string;
-  applicationSystem: string;
-  environment: string;
-  apiMethod: string;
-  apiPath: string;
-  dagId: string;
-  sampleCount: number;
-
-  sloTarget: {
-    p95: number;
-    p99: number;
-    errorRate: number;
-  };
-  executionResult: {
-    status: 'SUCCESS' | 'FAILED' | 'TERMINATED' | 'RUNNING';
-    duration: number;
-  };
-  lastExecutionTime: string;
-  lastExecutor: string;
+  description?: string;
+  systemId: number | string;
+  apiId: number | string;
+  createdBy?: string;
+  updatedBy?: string;
   createdAt: string;
-  creator: string;
-  status: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'PENDING';
-  tags: string[];
+  updatedAt: string;
+  requestNum: number;
 }
 
 const DetectionTasks: FC = () => {
@@ -77,7 +62,7 @@ const DetectionTasks: FC = () => {
   const [ total, setTotal ] = useState(0);
 
   // Selection and batch operations
-  const [ selectedRowKeys, setSelectedRowKeys ] = useState<string[]>([]);
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState<Array<string | number>>([]);
   const [ batchActionVisible, setBatchActionVisible ] = useState(false);
 
   // Dialog states
@@ -103,101 +88,27 @@ const DetectionTasks: FC = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      // TODO: 实际的API调用
-      // const result = await dispatch.faultSpaceDetection.getDetectionTasks({
-      //   searchKey,
-      //   statusFilter,
-      //   applicationSystemFilter,
-      //   tagsFilter,
-      //   creationDateRange,
-      //   executionDateRange,
-      //   page,
-      //   pageSize,
-      // });
+      const { probeProxy } = await import('../../../../services/faultSpaceDetection/probeProxy');
+      const res: any = await probeProxy.getDetectionTasks({ page, size: pageSize, keyword: searchKey, status: statusFilter.join(',') });
+      // 兼容两种返回结构：{ items, total, page, size } 或 { success, data: { items, total, page, size } }
+      const items = (res?.items || res?.data?.items) || [];
+      const total = Number(res?.total ?? res?.data?.total ?? items.length ?? 0);
 
-      // Enhanced mock data matching the new structure
-      const mockTasks: DetectionTask[] = [
-        {
-          id: '1',
-          name: '用户登录API故障空间探测',
-          applicationSystem: '用户中心',
-          environment: '生产环境',
-          apiMethod: 'POST',
-          apiPath: '/api/v1/auth/login',
-          dagId: 'DAG_20241225_001',
-          sampleCount: 1000,
+      const mapped: DetectionTask[] = items.map((it: any) => ({
+        id: it.id,
+        name: it.name,
+        description: it.description || '',
+        systemId: it.systemId,
+        apiId: it.apiId,
+        createdBy: it.createdBy,
+        updatedBy: it.updatedBy,
+        createdAt: it.createdAt || '',
+        updatedAt: it.updatedAt || '',
+        requestNum: Number(it.requestNum || 0),
+      }));
 
-          sloTarget: {
-            p95: 200,
-            p99: 500,
-            errorRate: 0.1,
-          },
-          executionResult: {
-            status: 'SUCCESS',
-            duration: 1800,
-          },
-          lastExecutionTime: new Date(Date.now() - 3600000).toISOString(),
-          lastExecutor: 'admin',
-          createdAt: new Date(Date.now() - 86400000).toISOString(),
-          creator: 'admin',
-          status: 'COMPLETED',
-          tags: [ '高优先级', '核心API' ],
-        },
-        {
-          id: '2',
-          name: '订单查询故障空间探测',
-          applicationSystem: '订单系统',
-          environment: '测试环境',
-          apiMethod: 'GET',
-          apiPath: '/api/v1/orders/{orderId}',
-          dagId: 'DAG_20241225_002',
-          sampleCount: 500,
-
-          sloTarget: {
-            p95: 150,
-            p99: 300,
-            errorRate: 0.05,
-          },
-          executionResult: {
-            status: 'RUNNING',
-            duration: 0,
-          },
-          lastExecutionTime: new Date().toISOString(),
-          lastExecutor: 'user1',
-          createdAt: new Date(Date.now() - 172800000).toISOString(),
-          creator: 'user1',
-          status: 'RUNNING',
-          tags: [ '订单', '查询' ],
-        },
-        {
-          id: '3',
-          name: '支付功能故障空间探测',
-          applicationSystem: '支付系统',
-          environment: '生产环境',
-          apiMethod: 'POST',
-          apiPath: '/api/v1/payment/process',
-          dagId: 'DAG_20241225_003',
-          sampleCount: 2000,
-
-          sloTarget: {
-            p95: 100,
-            p99: 200,
-            errorRate: 0.01,
-          },
-          executionResult: {
-            status: 'FAILED',
-            duration: 900,
-          },
-          lastExecutionTime: new Date(Date.now() - 7200000).toISOString(),
-          lastExecutor: 'admin',
-          createdAt: new Date(Date.now() - 259200000).toISOString(),
-          creator: 'admin',
-          status: 'FAILED',
-          tags: [ '支付', '高优先级', '核心API' ],
-        },
-      ];
-      setTasks(mockTasks);
-      setTotal(mockTasks.length);
+      setTasks(mapped);
+      setTotal(total);
     } catch (error) {
       console.error('Failed to fetch detection tasks:', error);
       Message.error(i18n.t('Failed to load data').toString());
@@ -245,7 +156,7 @@ const DetectionTasks: FC = () => {
     pushUrl(history, '/chaos/fault-space-detection/add');
   };
 
-  const handleViewTask = (taskId: string) => {
+  const handleViewTask = (taskId: string | number) => {
     pushUrl(history, `/chaos/fault-space-detection/tasks/${taskId}`);
   };
 
@@ -269,9 +180,8 @@ const DetectionTasks: FC = () => {
     if (!currentTask) return;
 
     try {
-      // TODO: 实际的API调用
-      // await dispatch.faultSpaceDetection.executeTask({ taskId: currentTask.id });
-
+      const { probeProxy } = await import('../../../../services/faultSpaceDetection/probeProxy');
+      await probeProxy.executeTask(currentTask.id);
       Message.success(i18n.t('Task execution started successfully').toString());
       setExecuteDialogVisible(false);
       setCurrentTask(null);
@@ -300,7 +210,7 @@ const DetectionTasks: FC = () => {
   };
 
   // Selection handlers
-  const handleRowSelectionChange = (selectedRowKeys: string[]) => {
+  const handleRowSelectionChange = (selectedRowKeys: Array<string | number>) => {
     setSelectedRowKeys(selectedRowKeys);
     setBatchActionVisible(selectedRowKeys.length > 0);
   };
@@ -329,82 +239,27 @@ const DetectionTasks: FC = () => {
   // Render functions
   const renderTaskName = (value: string, index: number, record: DetectionTask) => {
     return (
-      <div className={styles.taskNameCell}>
-        <span
-          className={styles.taskNameLink}
-          onClick={() => handleViewTask(record.id)}
-        >
-          {value}
-        </span>
-        <Badge
-          count={record.status}
-          style={{
-            backgroundColor: getStatusColor(record.status),
-            marginLeft: 8,
-            fontSize: 10,
-          }}
-        />
-      </div>
-    );
-  };
-
-  const renderApplicationSystem = (value: string, index: number, record: DetectionTask) => {
-    return (
-      <div>
-        <div>{value}</div>
-        <div className={styles.environmentText}>{record.environment}</div>
-      </div>
-    );
-  };
-
-  const renderAPI = (value: string, index: number, record: DetectionTask) => {
-    return (
-      <div>
-        <span className={styles.methodTag}>{record.apiMethod}</span>
-        <div className={styles.apiPath}>{record.apiPath}</div>
-      </div>
+      <span
+        className={styles.taskNameLink}
+        onClick={() => handleViewTask(record.id)}
+      >
+        {value}
+      </span>
     );
   };
 
 
-  const renderSLOTarget = (value: string, index: number, record: DetectionTask) => {
-    return (
-      <div>
-        <div>P95: {record.sloTarget.p95}ms</div>
-        <div>P99: {record.sloTarget.p99}ms</div>
-        <div>Error: {record.sloTarget.errorRate}%</div>
-      </div>
-    );
-  };
 
-  const renderExecutionResult = (value: string, index: number, record: DetectionTask) => {
-    const statusColor = getExecutionStatusColor(record.executionResult.status);
-    return (
-      <div>
-        <span style={{ color: statusColor }}>
-          {getExecutionStatusText(record.executionResult.status)}
-        </span>
-        {record.executionResult.duration > 0 && (
-          <div className={styles.duration}>
-            {Math.floor(record.executionResult.duration / 60)}m {record.executionResult.duration % 60}s
-          </div>
-        )}
-      </div>
-    );
-  };
 
-  const renderLastExecution = (value: string, index: number, record: DetectionTask) => {
-    return (
-      <div>
-        <div>{formatDate(new Date(record.lastExecutionTime).getTime())}</div>
-        <div className={styles.executor}>{record.lastExecutor}</div>
-      </div>
-    );
-  };
 
-  const renderActions = (value: any, index: number, record: DetectionTask) => {
-    const isRunning = record.status === 'RUNNING';
 
+
+
+
+
+
+
+  const renderActions = (_: any, __: number, record: DetectionTask) => {
     return (
       <MenuButton
         label={<Icon type="ellipsis" />}
@@ -413,20 +268,14 @@ const DetectionTasks: FC = () => {
         <MenuButton.Item onClick={() => handleViewTask(record.id)}>
           <Translation>Details</Translation>
         </MenuButton.Item>
-        <MenuButton.Item
-          onClick={() => handleExecuteTask(record)}
-          disabled={isRunning}
-        >
+        <MenuButton.Item onClick={() => handleExecuteTask(record)}>
           <Translation>Execute</Translation>
         </MenuButton.Item>
         <MenuButton.Item onClick={() => handleCopyTask(record)}>
           <Translation>Copy</Translation>
         </MenuButton.Item>
         <MenuButton.Divider />
-        <MenuButton.Item
-          onClick={() => handleDeleteTask(record)}
-          disabled={isRunning}
-        >
+        <MenuButton.Item onClick={() => handleDeleteTask(record)}>
           <Translation>Delete</Translation>
         </MenuButton.Item>
       </MenuButton>
@@ -434,34 +283,13 @@ const DetectionTasks: FC = () => {
   };
 
   // Helper functions
-  const getStatusColor = (status: string) => {
-    const colorMap: Record<string, string> = {
-      RUNNING: '#1890ff',
-      COMPLETED: '#52c41a',
-      FAILED: '#ff4d4f',
-      PENDING: '#faad14',
-    };
-    return colorMap[status] || '#666';
-  };
-
-  const getExecutionStatusColor = (status: string) => {
-    const colorMap: Record<string, string> = {
-      SUCCESS: '#52c41a',
-      FAILED: '#ff4d4f',
-      TERMINATED: '#faad14',
-      RUNNING: '#1890ff',
-    };
-    return colorMap[status] || '#666';
-  };
-
-  const getExecutionStatusText = (status: string) => {
-    const textMap: Record<string, string> = {
-      SUCCESS: i18n.t('Success').toString(),
-      FAILED: i18n.t('Failed').toString(),
-      TERMINATED: i18n.t('Terminated').toString(),
-      RUNNING: i18n.t('Running').toString(),
-    };
-    return textMap[status] || status;
+  const renderDate = (value: string) => {
+    if (!value) return '-';
+    try {
+      return formatDate(new Date(value).getTime());
+    } catch (e) {
+      return value;
+    }
   };
 
   // Render advanced filters
@@ -638,67 +466,77 @@ const DetectionTasks: FC = () => {
           rowSelection={{
             selectedRowKeys,
             onChange: handleRowSelectionChange,
-            getProps: (record: DetectionTask) => ({
-              disabled: record.status === 'RUNNING',
-            }),
           }}
         >
           <Table.Column
+            title={i18n.t('ID').toString()}
+            dataIndex="id"
+            width="8%"
+          />
+          <Table.Column
             title={i18n.t('Task Name').toString()}
             dataIndex="name"
+            width="16%"
+            cell={renderTaskName as any}
+          />
+          <Table.Column
+            title={i18n.t('Description').toString()}
+            dataIndex="description"
             width="18%"
-            cell={renderTaskName}
           />
           <Table.Column
-            title={i18n.t('Application System / Environment').toString()}
-            dataIndex="applicationSystem"
-            width="15%"
-            cell={renderApplicationSystem}
+            title={i18n.t('System ID').toString()}
+            dataIndex="systemId"
+            width="10%"
           />
           <Table.Column
-            title={i18n.t('API').toString()}
-            dataIndex="apiMethod"
-            width="20%"
-            cell={renderAPI}
+            title={i18n.t('API ID').toString()}
+            dataIndex="apiId"
+            width="10%"
           />
-
-
           <Table.Column
-            title={i18n.t('SLO Target').toString()}
-            dataIndex="sloTarget"
+            title={i18n.t('Request Num').toString()}
+            dataIndex="requestNum"
+            width="10%"
+          />
+          <Table.Column
+            title={i18n.t('Created By').toString()}
+            dataIndex="createdBy"
+            width="10%"
+          />
+          <Table.Column
+            title={i18n.t('Updated By').toString()}
+            dataIndex="updatedBy"
+            width="10%"
+          />
+          <Table.Column
+            title={i18n.t('Created At').toString()}
+            dataIndex="createdAt"
             width="12%"
-            cell={renderSLOTarget}
+            cell={renderDate as any}
           />
           <Table.Column
-            title={i18n.t('Latest Execution Result').toString()}
-            dataIndex="executionResult"
-            width="13%"
-            cell={renderExecutionResult}
-          />
-          <Table.Column
-            title={i18n.t('Last Execution Time / Executor').toString()}
-            dataIndex="lastExecutionTime"
-            width="15%"
-            cell={renderLastExecution}
+            title={i18n.t('Updated At').toString()}
+            dataIndex="updatedAt"
+            width="12%"
+            cell={renderDate as any}
           />
           <Table.Column
             title={i18n.t('Operation').toString()}
             dataIndex="actions"
             width="8%"
-            cell={renderActions}
+            cell={renderActions as any}
           />
         </Table>
 
-        {total > pageSize && (
-          <Pagination
-            current={page}
-            total={total}
-            pageSize={pageSize}
-            onChange={handlePageChange}
-            style={{ marginTop: 16, textAlign: 'right' }}
-            locale={locale().Pagination}
-          />
-        )}
+        <Pagination
+          current={page}
+          total={total}
+          pageSize={pageSize}
+          onChange={handlePageChange}
+          style={{ marginTop: 16, textAlign: 'right' }}
+          locale={locale().Pagination}
+        />
       </div>
 
       {/* Dialogs */}
