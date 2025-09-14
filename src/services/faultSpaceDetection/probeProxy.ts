@@ -27,10 +27,10 @@ export interface ApiItem {
   headersTemplate?: string; // JSON string with placeholders
   authType?: string;
   authTemplate?: string; // JSON string
-  pathParams?: string;    // JSON string
-  queryParams?: string;   // JSON string
-  bodyTemplate?: string;  // JSON string
-  variables?: string;     // JSON string
+  pathParams?: string; // JSON string
+  queryParams?: string; // JSON string
+  bodyTemplate?: string; // JSON string
+  variables?: string; // JSON string
 }
 
 export interface TopologyResponse {
@@ -70,7 +70,7 @@ export interface CreateProbeTaskPayload {
     name?: string;
     method: string;
     urlTemplate: string;
-    headers?: string;     // JSON string
+    headers?: string; // JSON string
     queryParams?: string; // JSON string
     bodyMode?: string;
     contentType?: string;
@@ -85,7 +85,7 @@ const BASE_PREFIX = ''; // devServer proxies /api -> starter-host
 async function handleResponse(res: Response) {
   const text = await res.text();
   // Try JSON first
-  let parsed: any = undefined;
+  let parsed: any;
   try { parsed = text ? JSON.parse(text) : undefined; } catch (_) { /* ignore */ }
   if (!res.ok) {
     const err = new Error(parsed?.message || text || res.statusText);
@@ -96,11 +96,11 @@ async function handleResponse(res: Response) {
   return parsed ?? text;
 }
 
-const commonHeaders = { 'Accept': 'application/json' } as const;
+const commonHeaders = { Accept: 'application/json' } as const;
 
 export const probeProxy = {
   async getSystems(params: PageQuery = {}) {
-    const url = new URL(`/chaos/systems`, window.location.origin);
+    const url = new URL('/chaos/systems', window.location.origin);
     if (params.page) url.searchParams.set('page', String(params.page));
     if (params.size) url.searchParams.set('size', String(params.size));
     const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
@@ -113,7 +113,7 @@ export const probeProxy = {
 
   async getApis(systemId: number, query: Record<string, any> = {}) {
     const url = new URL(`/chaos/systems/${encodeURIComponent(systemId)}/apis`, window.location.origin);
-    Object.entries(query).forEach(([k, v]) => v != null && url.searchParams.set(k, String(v)));
+    Object.entries(query).forEach(([ k, v ]) => v != null && url.searchParams.set(k, String(v)));
     const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
       method: 'GET', headers: commonHeaders, credentials: 'include',
     });
@@ -129,7 +129,7 @@ export const probeProxy = {
   },
 
   async getFaultTypes() {
-    const url = new URL(`/chaos/fault-types`, window.location.origin);
+    const url = new URL('/chaos/fault-types', window.location.origin);
     const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
       method: 'GET', headers: commonHeaders, credentials: 'include',
     });
@@ -137,7 +137,7 @@ export const probeProxy = {
   },
 
   async createProbeTask(payload: CreateProbeTaskPayload) {
-    const url = new URL(`/chaos/probe-tasks`, window.location.origin);
+    const url = new URL('/chaos/probe-tasks', window.location.origin);
     const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...commonHeaders },
@@ -149,7 +149,7 @@ export const probeProxy = {
 
   // Detection Tasks APIs
   async getDetectionTasks(params: { page?: number; size?: number; keyword?: string; status?: string } = {}) {
-    const url = new URL(`/chaos/detection-tasks`, window.location.origin);
+    const url = new URL('/chaos/detection-tasks', window.location.origin);
     if (params.page) url.searchParams.set('page', String(params.page));
     if (params.size) url.searchParams.set('size', String(params.size));
     if (params.keyword) url.searchParams.set('keyword', params.keyword);
@@ -181,8 +181,8 @@ export const probeProxy = {
 
   // Execution Proxy APIs with '/chaos' path (consistent with other endpoints)
   async listTaskExecutions(params: { taskId?: number; status?: string; namespace?: string; startDate?: string; endDate?: string; page?: number; size?: number } = {}) {
-    const url = new URL(`/chaos/task-executions`, window.location.origin);
-    Object.entries(params).forEach(([k, v]) => {
+    const url = new URL('/chaos/task-executions', window.location.origin);
+    Object.entries(params).forEach(([ k, v ]) => {
       if (v !== undefined && v !== null && v !== '') url.searchParams.set(k, String(v));
     });
     const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {

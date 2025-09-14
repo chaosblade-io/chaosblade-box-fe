@@ -83,7 +83,7 @@ const TestCasesResults: FC<TestCasesResultsProps> = ({ testCases, onExport }) =>
         return (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {faults.map((f, i) => {
-              const name = `${f.scope || ''}-${f.action || ''}`.replace(/^-/,'');
+              const name = `${f.scope || ''}-${f.action || ''}`.replace(/^-/, '');
               return (
                 <Button key={i} size="small" onClick={() => {
                   setFaultsByCase(prev => ({ ...prev, [record.id]: faults }));
@@ -131,7 +131,7 @@ const TestCasesResults: FC<TestCasesResultsProps> = ({ testCases, onExport }) =>
               total={total}
               pageSize={pageSize}
               pageSizeSelector="dropdown"
-              pageSizeList={[10, 20, 50]}
+              pageSizeList={[ 10, 20, 50 ]}
               onChange={setPage}
               onPageSizeChange={(size: number) => { setPageSize(size); setPage(1); }}
             />

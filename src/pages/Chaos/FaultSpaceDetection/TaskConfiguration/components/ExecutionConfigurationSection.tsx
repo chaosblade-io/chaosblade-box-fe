@@ -65,7 +65,7 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
 
       {errors && Object.keys(errors).length > 0 && (
         <div className={styles.errorList}>
-          {Object.entries(errors).map(([field, error]: any, index) => (
+          {Object.entries(errors).map(([ field, error ]: any, index) => (
             <div key={index} className={styles.errorItem}>
               <Icon type="exclamation-circle" size="xs" />
               {error as any}
