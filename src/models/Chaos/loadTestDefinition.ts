@@ -250,12 +250,40 @@ class LoadTestDefinition extends BaseModel {
   *listAllLoadTestDefinitions(payload: IListAllLoadTestDefinitionsReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('ListAllLoadTestDefinitions'), payload);
-      yield this.effects.put(this.setDefinitions(Data || [], Data?.length || 0));
-      callback && callback(Data);
-      return Data;
+
+      // 兼容不同网关返回格式，且防御性处理避免解构 undefined
+      const req: any = {
+        ...(payload || {}),
+        // 兼容大小写 Namespace/NameSpace
+        Namespace: (payload as any)?.Namespace || (payload as any)?.NameSpace || getActiveNamespace(),
+        Lang: (payload as any)?.Lang || (getLanguage() === 'zh' ? 'zh' : 'en'),
+      };
+
+      const resp = yield this.effects.call(createServiceChaos('ListAllLoadTestDefinitions'), req);
+
+      let list: any[] = [];
+      if (resp?.Data) {
+        list = resp.Data;
+      } else if (resp?.result) {
+        list = resp.result;
+      } else if (Array.isArray(resp)) {
+        list = resp;
+      } else if (resp?.data) {
+        list = resp.data;
+      }
+
+      // 兜底
+      if (!Array.isArray(list)) {
+        list = [];
+      }
+
+      yield this.effects.put(this.setDefinitions(list, list.length));
+      callback && callback(list);
+      return list;
     } catch (error) {
       console.error('Failed to list all load test definitions:', error);
+      // 失败时也不要打爆页面，置空状态
+      yield this.effects.put(this.setDefinitions([], 0));
       throw error;
     } finally {
       yield this.effects.put(this.setLoading(false));
@@ -271,7 +299,11 @@ class LoadTestDefinition extends BaseModel {
       const formData = new FormData();
       formData.append('file', payload.file);
       formData.append('endpoint', payload.endpoint);
-      formData.append('namespace', getActiveNamespace());
+      // 兼容不同服务端大小写命名空间字段
+      const ns = getActiveNamespace();
+      formData.append('namespace', ns);
+      formData.append('Namespace', ns);
+      formData.append('NameSpace', ns);
       formData.append('Lang', getLanguage() === 'zh' ? 'zh' : 'en');
 
       // 直接使用fetch进行文件上传
@@ -287,21 +319,39 @@ class LoadTestDefinition extends BaseModel {
 
       const data = yield this.effects.call(response.json.bind(response));
 
-      console.log('Upload API response:', data);
-      console.log('Upload API result.Data:', data.result);
+      console.log('Upload API raw response:', data);
 
-      if (data.success && data.result) {
-        callback && callback(data.result);
-        return data.result;
+      // 统一提取返回的文件信息（兼容 result / Data / 直接对象）
+      let result: any = null;
+      if (data?.success === true) {
+        result = data?.result ?? data?.Data ?? data;
+      } else {
+        result = data?.result ?? data?.Data ?? (data && typeof data === 'object' ? data : null);
       }
 
-      if (data.success) {
-        console.warn('Upload successful but no Data field in response:', data);
-        callback && callback(data);
-        return data;
+      // 兼容后端返回字符串路径的情况：包装为预期对象结构
+      if (typeof result === 'string') {
+        result = {
+          uploadPath: result,
+          accessUrl: result,
+          fileName: payload.file?.name,
+          originalFileName: payload.file?.name,
+          fileType: payload.file?.type,
+          fileSize: payload.file?.size,
+          uploadTime: Date.now(),
+          uploadDate: new Date().toISOString(),
+        };
       }
 
-      throw new Error('Upload failed');
+      // 如果看起来是有效的文件响应对象，则返回
+      if (result && (result.uploadPath || result.accessUrl || result.fileName || result.originalFileName)) {
+        callback && callback(result);
+        return result;
+      }
+
+      // 到这里说明响应结构不符合预期，给出更可诊断的错误
+      console.warn('Unexpected upload response shape:', data);
+      throw new Error(data?.message || 'Upload failed');
 
     } catch (error) {
       console.error('Failed to upload JMX file:', error);
