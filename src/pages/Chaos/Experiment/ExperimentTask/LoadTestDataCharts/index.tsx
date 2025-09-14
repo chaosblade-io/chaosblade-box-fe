@@ -82,6 +82,8 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
   const [ downloadUrl, setDownloadUrl ] = useState('');
   const [ downloadType, setDownloadType ] = useState('');
 
+  const [ actionMode, setActionMode ] = useState<'download' | 'view'>('download');
+
   useEffect(() => {
     if (taskId) {
       // 只调用 fetchLoadTestData，它会内部调用 fetchLoadTestTasks
@@ -235,10 +237,11 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
     }
   };
 
-  // 处理下载确认
-  const handleDownloadConfirm = (url: string, type: string) => {
+  // 处理下载/查看 确认
+  const handleDownloadConfirm = (url: string, type: string, mode: 'download' | 'view' = 'download') => {
     setDownloadUrl(url);
     setDownloadType(type);
+    setActionMode(mode);
     setDownloadConfirmVisible(true);
   };
 
@@ -297,8 +300,8 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
       return null;
     }
 
-    const { endpoint, logPath, reportUrl, reportPath } = loadTestResults;
-    console.log('Rendering results with:', { endpoint, logPath, reportUrl, reportPath });
+    const { endpoint, logPath, reportUrl, reportPath, resultUrl } = loadTestResults;
+    console.log('Rendering results with:', { endpoint, logPath, reportUrl, reportPath, resultUrl });
 
     return (
       <div className={styles.resultsSection}>
@@ -332,7 +335,7 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
             <Button
               type="primary"
               size="small"
-              onClick={() => handleDownloadConfirm(`${endpoint}${reportUrl}`, 'Test Report')}
+              onClick={() => handleDownloadConfirm(`${endpoint}${reportUrl}`, 'Test Report', 'view')}
             >
               <Icon type="eye" />
               <Translation>View Report</Translation>
@@ -346,7 +349,7 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
             <Button
               type="primary"
               size="small"
-              onClick={() => handleDownloadConfirm(`${endpoint}/${reportPath}`, 'Raw Results')}
+              onClick={() => handleDownloadConfirm(`${endpoint}${resultUrl}`, 'Raw Results')}
             >
               <Icon type="download" />
               <Translation>Download</Translation>
@@ -1073,17 +1076,25 @@ const LoadTestDataCharts: FC<LoadTestDataChartsProps> = ({ taskId }) => {
 
       {/* 下载确认对话框 */}
       <Dialog
-        title={i18n.t('Confirm Download').toString()}
+        title={actionMode === 'view' ? i18n.t('Confirm View').toString() : i18n.t('Confirm Download').toString()}
         visible={downloadConfirmVisible}
         onOk={handleDownload}
         onCancel={handleDownloadCancel}
         onClose={handleDownloadCancel}
-        okProps={{ children: i18n.t('Download').toString() }}
+        okProps={{ children: actionMode === 'view' ? i18n.t('View').toString() : i18n.t('Download').toString() }}
         cancelProps={{ children: i18n.t('Cancel').toString() }}
       >
-        <p>{i18n.t('Are you sure you want to download the {type}?', { type: downloadType }).toString()}</p>
+        <p>
+          {actionMode === 'view'
+            ? i18n.t('Are you sure you want to open the {type}?', { type: downloadType }).toString()
+            : i18n.t('Are you sure you want to download the {type}?', { type: downloadType }).toString()
+          }
+        </p>
         <p style={{ fontSize: '12px', color: '#666', marginTop: '8px' }}>
-          {i18n.t('The file will open in a new tab for download.').toString()}
+          {actionMode === 'view'
+            ? i18n.t('The report will open in a new tab.').toString()
+            : i18n.t('The file will open in a new tab for download.').toString()
+          }
         </p>
       </Dialog>
 
