@@ -72,6 +72,26 @@ function StepTwo(props: StepTwoProps) {
   const [ existingStrategies, setExistingStrategies ] = useState<ILoadTestStrategy[]>([]); // 现有的压测策略
   const workspaceId = getParams('workspaceId');
 
+  // 计算时间线所需的派生数据，确保与 Auto recovery time 联动
+  const timelineCalc = React.useMemo(() => {
+    const preStartSec = loadTestConfig.preStartUnit === 'minute'
+      ? (loadTestConfig.preStartTime || 0) * 60
+      : (loadTestConfig.preStartTime || 0);
+    const durationSec = loadTestConfig.durationUnit === 'minute'
+      ? (loadTestConfig.duration || 0) * 60
+      : (loadTestConfig.duration || 0);
+    const autoRecoverySec = timeUnit === 'hour'
+      ? (timeOut || 0) * 3600
+      : (timeOut || 0) * 60; // minute
+
+    const totalRangeSec = Math.max(preStartSec + durationSec, autoRecoverySec, 1);
+    const loadWidthPct = Math.max(10, (durationSec / totalRangeSec) * 100);
+    const faultMarginLeftPct = Math.max(0, (preStartSec / totalRangeSec) * 100);
+    const faultWidthPct = Math.max(0, ((autoRecoverySec - preStartSec) / totalRangeSec) * 100);
+
+    return { preStartSec, durationSec, autoRecoverySec, totalRangeSec, loadWidthPct, faultMarginLeftPct, faultWidthPct };
+  }, [ loadTestConfig.preStartTime, loadTestConfig.preStartUnit, loadTestConfig.duration, loadTestConfig.durationUnit, timeOut, timeUnit ]);
+
   // 加载压测定义列表
   useEffect(() => {
     dispatch.loadTestDefinition.listAllLoadTestDefinitions({});
@@ -362,13 +382,16 @@ function StepTwo(props: StepTwoProps) {
           {loadTestConfig.selectedDefinitions.length > 0 && (
             <div className={styles.timelinePreview}>
               <div className={styles.previewTitle}><Translation>Timeline Preview</Translation>:</div>
-              <div className={styles.timeline}>
+              <div
+                className={styles.timeline}
+                key={`tl-${timelineCalc.preStartSec}-${timelineCalc.durationSec}-${timelineCalc.autoRecoverySec}`}
+              >
                 <div className={styles.timelineItem}>
                   <div
                     className={styles.timelineBar}
                     style={{
                       backgroundColor: '#52c41a',
-                      width: `${Math.max(30, (loadTestConfig.duration / (loadTestConfig.duration + loadTestConfig.preStartTime + 10)) * 100)}%`,
+                      width: `${timelineCalc.loadWidthPct}%`,
                     }}
                   >
                     <span><Translation>Load Test</Translation></span>
@@ -379,8 +402,8 @@ function StepTwo(props: StepTwoProps) {
                     className={styles.timelineBar}
                     style={{
                       backgroundColor: '#ff4d4f',
-                      width: '40%',
-                      marginLeft: `${(loadTestConfig.preStartTime / (loadTestConfig.duration + loadTestConfig.preStartTime + 10)) * 100}%`,
+                      width: `${timelineCalc.faultWidthPct}%`,
+                      marginLeft: `${timelineCalc.faultMarginLeftPct}%`,
                     }}
                   >
                     <span><Translation>Fault Injection</Translation></span>
