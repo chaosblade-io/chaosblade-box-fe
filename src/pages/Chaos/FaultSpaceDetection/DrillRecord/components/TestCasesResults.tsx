@@ -107,7 +107,7 @@ const TestCasesResults: FC<TestCasesResultsProps> = ({ testCases, onExport }) =>
     { title: i18n.t('Case Type').toString(), dataIndex: 'caseType', width: 120 },
     { title: i18n.t('Targets').toString(), dataIndex: 'targetCount', width: 100 },
     { title: i18n.t('Created At').toString(), dataIndex: 'createdAt', width: 180 },
-    { title: 'P50 (ms)', dataIndex: 'p50', width: 140, cell: (v: any) => renderMetricCell(v, 'ms') },
+    // { title: 'P50 (ms)', dataIndex: 'p50', width: 140, cell: (v: any) => renderMetricCell(v, 'ms') },
     { title: 'P95 (ms)', dataIndex: 'p95', width: 140, cell: (v: any) => renderMetricCell(v, 'ms') },
     { title: 'P99 (ms)', dataIndex: 'p99', width: 140, cell: (v: any) => renderMetricCell(v, 'ms') },
     { title: i18n.t('Error Rate').toString(), dataIndex: 'errRate', width: 160, cell: (v: any) => renderMetricCell(v, '%') },
