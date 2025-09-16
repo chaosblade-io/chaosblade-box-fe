@@ -22,6 +22,8 @@ import ExecutionLogs from './components/ExecutionLogs';
 import TestCasesResults from './components/TestCasesResults';
 import BusinessServiceChain, { RealtimeSummary } from './components/BusinessServiceChain';
 
+import MarkD from 'components/MarkD';
+
 // Types for new API structure
 interface ApiBasicInfo {
   id: number | string;
@@ -45,6 +47,7 @@ interface DrillRecordParams {
   runId: string;
 }
 
+interface MetricObj { value?: number; meetsSlo?: boolean }
 interface TestCaseItem {
   id: number;
   taskId: number;
@@ -53,10 +56,10 @@ interface TestCaseItem {
   faultsJson: string;
   createdAt: string;
   executionId: number;
-  p50: number;
-  p95: number;
-  p99: number;
-  errRate: number;
+  p50: MetricObj | {};
+  p95: MetricObj | {};
+  p99: MetricObj | {};
+  errRate: MetricObj | {};
 }
 
 const DrillRecord: FC = () => {
@@ -70,6 +73,8 @@ const DrillRecord: FC = () => {
   const [ testCases, setTestCases ] = useState<TestCaseItem[]>([]);
   const [ realtime, setRealtime ] = useState<RealtimeSummary | null>(null);
   const [ loading, setLoading ] = useState(true);
+  const [ modelConclusion, setModelConclusion ] = useState<string | null>(null);
+
   const [ terminateDialogVisible, setTerminateDialogVisible ] = useState(false);
   const [ exportDialogVisible, setExportDialogVisible ] = useState(false);
 
@@ -160,6 +165,8 @@ const DrillRecord: FC = () => {
       setLogs(logData);
       setTestCases(cases);
       setRealtime(realtimeData);
+      setModelConclusion(typeof d?.modelConclusion === 'string' ? d.modelConclusion : null);
+
     } catch (error) {
       console.error('Failed to load drill record:', error);
       if (!opts.silent) {
@@ -197,36 +204,6 @@ const DrillRecord: FC = () => {
       console.error('Failed to export report:', error);
       Message.error(i18n.t('Failed to export report').toString());
     }
-  };
-  // Build plain text summary for this drill execution
-  const buildSummaryText = (): string[] => {
-    const lines: string[] = [];
-    if (basic) {
-      lines.push(`任务：${basic.taskName || '-'}（ID：${basic.id}）`);
-      lines.push(`状态：${basic.currentStatus || '-'}`);
-    }
-    if (realtime) {
-      lines.push(`用例：${realtime.completedTestCases}/${realtime.totalTestCases} 已完成`);
-      lines.push(`服务：${realtime.completedServices}/${realtime.totalServices} 已完成`);
-    }
-    if (Array.isArray(testCases) && testCases.length > 0) {
-      const len = testCases.length;
-      const sum = testCases.reduce((acc, it) => {
-        return {
-          p95: acc.p95 + Number(it.p95 || 0),
-          p99: acc.p99 + Number(it.p99 || 0),
-          err: acc.err + Number(it.errRate || 0),
-        };
-      }, { p95: 0, p99: 0, err: 0 });
-      const avgP95 = Math.round(sum.p95 / len);
-      const avgP99 = Math.round(sum.p99 / len);
-      const avgErr = Number((sum.err / len).toFixed(2));
-      lines.push(`性能：平均P95=${avgP95}ms，平均P99=${avgP99}ms，平均错误率=${avgErr}%`);
-    }
-    const status = String(basic?.currentStatus || '').toUpperCase();
-    const statusHint = status === 'RUNNING' || status === 'PENDING' ? '在进行中' : (status ? '已结束' : '');
-    lines.push(`摘要：本次演练${statusHint || ''}，请结合上方日志与结果判断是否达到预期。`);
-    return lines;
   };
 
 
@@ -288,17 +265,21 @@ const DrillRecord: FC = () => {
         onExport={handleExportReport}
       />
 
-      {/* Section 5: Summary (plain text) */}
+      {/* Section 5: Summary (Markdown from backend) */}
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionTitle}>
-            <Translation>测试总结</Translation>
+            <Translation>测试总结(由模型自动生成)</Translation>
           </div>
         </div>
         <div className={styles.sectionContent}>
-          {buildSummaryText().map((line, idx) => (
-            <p key={idx} style={{ margin: 0, color: '#333' }}>{line}</p>
-          ))}
+          {modelConclusion ? (
+            <MarkD content={modelConclusion} styles={{ fontSize: 14, lineHeight: '1.7', color: '#333' }} />
+          ) : (
+            <div style={{ color: '#999' }}>
+              <Translation>No summary available</Translation>
+            </div>
+          )}
         </div>
       </div>
 
