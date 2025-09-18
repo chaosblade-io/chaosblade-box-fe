@@ -136,7 +136,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
                 >
                   <List.Item.Meta
                     title={<span style={{ fontSize: 12 }}>{node.label}</span>}
-                    description={<span style={{ fontSize: 11 }}>ID: {node.id} | 类型: {node.entityType}</span>}
+                    description={<span style={{ fontSize: 11 }}>ID: {node.id} | {t('Type')}: {node.entityType}</span>}
                   />
                 </List.Item>
               )}

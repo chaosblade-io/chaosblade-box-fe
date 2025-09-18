@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Graph } from '@antv/x6';
 import { message, Modal, Spin } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { ToolbarPanel } from './panels/ToolbarPanel';
 import { PropertyPanel } from './panels/PropertyPanel';
 import { LegendPanel } from './panels/LegendPanel';
@@ -20,6 +21,7 @@ import type {
  * 主要的 XFlow 拓扑组件
  */
 export const TopologyXFlow: React.FC = () => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<Graph | null>(null);
 
@@ -725,36 +727,30 @@ export const TopologyXFlow: React.FC = () => {
     if (!topologyData) return;
 
     Modal.info({
-      title: '拓扑统计信息',
+      title: t('Topology Statistics'),
       width: 600,
       content: (
         <div>
-          <p><strong>节点总数:</strong> {topologyData.statistics.nodeCount}</p>
-          <p><strong>边总数:</strong> {topologyData.statistics.edgeCount}</p>
+          <p><strong>{t('Total Nodes')}:</strong> {topologyData.statistics.nodeCount}</p>
+          <p><strong>{t('Total Edges')}:</strong> {topologyData.statistics.edgeCount}</p>
 
-          <h4>节点类型分布:</h4>
+          <h4>{t('Node Type Distribution')}:</h4>
           <ul>
             {Object.entries(topologyData.statistics.nodeTypeCount).map(([ type, count ]) => (
               <li key={type}>{type}: {count}</li>
             ))}
           </ul>
 
-          <h4>关系类型分布:</h4>
+          <h4>{t('Relationship Type Distribution')}:</h4>
           <ul>
             {Object.entries(topologyData.statistics.edgeTypeCount).map(([ type, count ]) => (
               <li key={type}>{type}: {count}</li>
             ))}
           </ul>
-
-          <h4>元数据:</h4>
-          <p><strong>标题:</strong> {topologyData.metadata.title}</p>
-          <p><strong>描述:</strong> {topologyData.metadata.description}</p>
-          <p><strong>版本:</strong> {topologyData.metadata.version}</p>
-          <p><strong>创建时间:</strong> {new Date(topologyData.metadata.createdAt).toLocaleString()}</p>
         </div>
       ),
     });
-  }, [ topologyData ]);
+  }, [ topologyData, t ]);
 
   // 切换图例可见性
   const handleToggleLegend = useCallback(() => {
@@ -818,9 +814,9 @@ export const TopologyXFlow: React.FC = () => {
         flexDirection: 'column',
         color: '#ff4d4f',
       }}>
-        <h3>加载失败</h3>
+        <h3>{t('Loading Failed')}</h3>
         <p>{error}</p>
-        <button onClick={handleRefresh}>重试</button>
+        <button onClick={handleRefresh}>{t('Retry')}</button>
       </div>
     );
   }
@@ -872,7 +868,7 @@ export const TopologyXFlow: React.FC = () => {
             justifyContent: 'center',
             zIndex: 1000,
           }}>
-            <Spin size="large" tip="加载中...">
+            <Spin size="large" tip={t('Loading...')}>
               <div />
             </Spin>
           </div>
@@ -892,7 +888,7 @@ export const TopologyXFlow: React.FC = () => {
             zIndex: 100,
           }}
         >
-          Ctrl + 滚轮缩放
+          {t('Ctrl + Scroll to zoom')}
         </div>
 
         {/* 图例面板 */}

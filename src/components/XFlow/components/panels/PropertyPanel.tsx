@@ -56,7 +56,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 
             <Descriptions.Item label={t('Contains RPC nodes')}>
               <Tag color="blue">
-                {data.downstreamRpcNodes?.length || 0} 个RPC节点
+                {data.downstreamRpcNodes?.length || 0} {t('RPC nodes')}
               </Tag>
             </Descriptions.Item>
 
@@ -119,20 +119,20 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 
           <Descriptions.Item label={t('Status')}>
             <Tag color={getStatusColor(status)}>
-              {status === 'success' ? '正常' :
-                status === 'warning' ? '警告' :
-                  status === 'error' ? '错误' : '未知'}
+              {status === 'success' ? t('Normal') :
+                status === 'warning' ? t('Warning') :
+                  status === 'error' ? t('Error') : t('Unknown')}
             </Tag>
           </Descriptions.Item>
 
           {entity.regionId && (
-            <Descriptions.Item label="区域">
+            <Descriptions.Item label={t('Region')}>
               {entity.regionId}
             </Descriptions.Item>
           )}
 
           {entity.appId && (
-            <Descriptions.Item label="应用ID">
+            <Descriptions.Item label={t('Application ID')}>
               <code style={{ fontSize: '11px' }}>{entity.appId}</code>
             </Descriptions.Item>
           )}
@@ -140,13 +140,13 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 
         <Divider orientation="left" orientationMargin={0}>
           <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-            📊 RED 指标
+            📊 {t('RED Metrics')}
           </span>
         </Divider>
 
         <div style={{ marginBottom: '12px' }}>
           <div style={{ marginBottom: '8px' }}>
-            <span style={{ fontSize: '12px', color: '#666' }}>成功率:</span>
+            <span style={{ fontSize: '12px', color: '#666' }}>{t('Success Rate')}:</span>
             <Progress
               percent={redMetrics.successRate}
               size="small"
@@ -157,7 +157,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
           </div>
 
           <div style={{ marginBottom: '8px' }}>
-            <span style={{ fontSize: '12px', color: '#666' }}>错误率:</span>
+            <span style={{ fontSize: '12px', color: '#666' }}>{t('Error Rate')}:</span>
             <Progress
               percent={redMetrics.errorRate}
               size="small"
@@ -168,26 +168,26 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
         </div>
 
         <Descriptions size="small" column={2}>
-          <Descriptions.Item label="总请求">
+          <Descriptions.Item label={t('Total Requests')}>
             <Tag>{redMetrics.count}</Tag>
           </Descriptions.Item>
 
-          <Descriptions.Item label="错误数">
+          <Descriptions.Item label={t('Error Count')}>
             <Tag color={redMetrics.error > 0 ? 'red' : 'green'}>
               {redMetrics.error}
             </Tag>
           </Descriptions.Item>
 
-          <Descriptions.Item label="响应时间">
+          <Descriptions.Item label={t('Response Time')}>
             <Tag color={redMetrics.rt > 1000 ? 'red' :
               redMetrics.rt > 500 ? 'orange' : 'green'}>
               {redMetrics.rt}ms
             </Tag>
           </Descriptions.Item>
 
-          <Descriptions.Item label="健康状态">
+          <Descriptions.Item label={t('Health Status')}>
             <Tag color={redMetrics.healthy ? 'success' : 'error'}>
-              {redMetrics.healthy ? '健康' : '异常'}
+              {redMetrics.healthy ? t('Healthy') : t('Unhealthy')}
             </Tag>
           </Descriptions.Item>
         </Descriptions>
@@ -196,7 +196,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
           <>
             <Divider orientation="left" orientationMargin={0}>
               <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-                🏷️ 属性信息
+                🏷️ {t('Attribute Information')}
               </span>
             </Divider>
             <Descriptions size="small" column={1}>
@@ -213,14 +213,14 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 
         <Divider orientation="left" orientationMargin={0}>
           <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-            ⏰ 时间信息
+            ⏰ {t('Time Information')}
           </span>
         </Divider>
         <Descriptions size="small" column={1}>
-          <Descriptions.Item label="首次发现">
+          <Descriptions.Item label={t('First Seen')}>
             {new Date(entity.firstSeen).toLocaleString()}
           </Descriptions.Item>
-          <Descriptions.Item label="最后更新">
+          <Descriptions.Item label={t('Last Seen')}>
             {new Date(entity.lastSeen).toLocaleString()}
           </Descriptions.Item>
         </Descriptions>
@@ -243,11 +243,11 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 
     const getRelationName = (type: string) => {
       switch (type) {
-        case 'DEPENDS_ON': return '依赖关系';
-        case 'CONTAINS': return '包含关系';
-        case 'INVOKES': return '调用关系';
-        case 'RUNS_ON': return '运行关系';
-        default: return '未知关系';
+        case 'DEPENDS_ON': return t('Dependency Relationship');
+        case 'CONTAINS': return t('Contains Relationship');
+        case 'INVOKES': return t('Invocation Relationship');
+        case 'RUNS_ON': return t('Running Relationship');
+        default: return t('Unknown Relationship');
       }
     };
 
@@ -259,7 +259,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
             <span style={{ marginRight: '8px' }}>
               {getRelationIcon(data.type)}
             </span>
-            边详情
+            {t('Edge Details')}
           </div>
         }
         style={{ marginBottom: '16px' }}
@@ -269,7 +269,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
             <code style={{ fontSize: '11px' }}>{edge.id}</code>
           </Descriptions.Item>
 
-          <Descriptions.Item label="关系类型">
+          <Descriptions.Item label={t('Relationship Type')}>
             <Tag color="purple">{getRelationName(data.type)}</Tag>
           </Descriptions.Item>
         </Descriptions>
@@ -278,29 +278,29 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
           <>
             <Divider orientation="left" orientationMargin={0}>
               <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-                📊 调用指标
+                📊 {t('Call Metrics')}
               </span>
             </Divider>
 
             <Descriptions size="small" column={2}>
-              <Descriptions.Item label="调用次数">
+              <Descriptions.Item label={t('Call Count')}>
                 <Tag>{redMetrics.count}</Tag>
               </Descriptions.Item>
 
-              <Descriptions.Item label="错误次数">
+              <Descriptions.Item label={t('Error Count')}>
                 <Tag color={redMetrics.error > 0 ? 'red' : 'green'}>
                   {redMetrics.error}
                 </Tag>
               </Descriptions.Item>
 
-              <Descriptions.Item label="平均响应时间">
+              <Descriptions.Item label={t('Average Response Time')}>
                 <Tag color={redMetrics.rt > 1000 ? 'red' :
                   redMetrics.rt > 500 ? 'orange' : 'green'}>
                   {redMetrics.rt}ms
                 </Tag>
               </Descriptions.Item>
 
-              <Descriptions.Item label="成功率">
+              <Descriptions.Item label={t('Success Rate')}>
                 <Tag color={redMetrics.successRate >= 95 ? 'success' :
                   redMetrics.successRate >= 90 ? 'warning' : 'error'}>
                   {redMetrics.successRate}%
