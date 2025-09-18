@@ -10,6 +10,7 @@ import {
   EyeOutlined,
   EyeInvisibleOutlined,
 } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import type { LayoutAlgorithm, LayoutDirection } from '../../types/xflow';
 import { FilterPanel } from './FilterPanel';
 import type { Graph } from '@antv/x6';
@@ -50,6 +51,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
   statistics,
   isLegendVisible,
 }) => {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -65,7 +67,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
     >
       <Space size="small">
         {/* 数据操作 */}
-        <Tooltip title="刷新数据">
+        <Tooltip title={t('Refresh data')}>
           <Button
             type="primary"
             icon={<ReloadOutlined />}
@@ -73,14 +75,14 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
             loading={loading}
             size="small"
           >
-            刷新
+            {t('Refresh')}
           </Button>
         </Tooltip>
 
         <Divider type="vertical" />
 
         {/* 视图操作 */}
-        <Tooltip title="放大">
+        <Tooltip title={t('Zoom in')}>
           <Button
             icon={<ZoomInOutlined />}
             onClick={onZoomIn}
@@ -88,7 +90,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
           />
         </Tooltip>
 
-        <Tooltip title="缩小">
+        <Tooltip title={t('Zoom out')}>
           <Button
             icon={<ZoomOutOutlined />}
             onClick={onZoomOut}
@@ -96,7 +98,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
           />
         </Tooltip>
 
-        <Tooltip title="适应视图">
+        <Tooltip title={t('Fit view')}>
           <Button
             icon={<ExpandOutlined />}
             onClick={onFitView}
@@ -104,7 +106,7 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
           />
         </Tooltip>
 
-        <Tooltip title="全屏">
+        <Tooltip title={t('Fullscreen')}>
           <Button
             icon={<FullscreenOutlined />}
             onClick={onFullscreen}
@@ -118,19 +120,19 @@ export const ToolbarPanel: React.FC<ToolbarPanelProps> = ({
         <FilterPanel graph={graph} onNodeSelect={onNodeSelect} />
 
         {/* 统计信息按钮 */}
-        <Tooltip title="查看统计信息">
+        <Tooltip title={t('View statistics')}>
           <Button
             icon={<InfoCircleOutlined />}
             onClick={onShowStatistics}
             size="small"
             style={{ marginLeft: '8px' }}
           >
-            统计
+            {t('Statistics')}
           </Button>
         </Tooltip>
 
         {/* 图例切换按钮 */}
-        <Tooltip title={isLegendVisible ? '隐藏图例' : '显示图例'}>
+        <Tooltip title={isLegendVisible ? t('Hide legend') : t('Show legend')}>
           <Button
             icon={isLegendVisible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
             onClick={onToggleLegend}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Descriptions, Tag, Progress, Divider, Empty } from 'antd';
+import { useTranslation } from 'react-i18next';
 import type { XFlowNodeData, XFlowEdgeData } from '../../types/xflow';
 
 interface PropertyPanelProps {
@@ -23,6 +24,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
   selectedEdge,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const renderNodeDetails = (node: { id: string; data: XFlowNodeData }) => {
     const { data } = node;
 
@@ -34,7 +36,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
           title={
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span style={{ marginRight: '8px' }}>🌐</span>
-              虚拟节点详情
+              {t('Virtual Node Details')}
             </div>
           }
           style={{ marginBottom: '16px' }}
@@ -44,21 +46,21 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
               <code style={{ fontSize: '11px' }}>{node.id}</code>
             </Descriptions.Item>
 
-            <Descriptions.Item label="类型">
-              <Tag color="purple">VIRTUAL</Tag>
+            <Descriptions.Item label={t('Type')}>
+              <Tag color="purple">{t('VIRTUAL')}</Tag>
             </Descriptions.Item>
 
-            <Descriptions.Item label="描述">
-              代表被折叠的RPC节点组
+            <Descriptions.Item label={t('Description')}>
+              {t('Represents collapsed RPC node group')}
             </Descriptions.Item>
 
-            <Descriptions.Item label="包含节点数">
+            <Descriptions.Item label={t('Contains RPC nodes')}>
               <Tag color="blue">
                 {data.downstreamRpcNodes?.length || 0} 个RPC节点
               </Tag>
             </Descriptions.Item>
 
-            <Descriptions.Item label="关联服务节点">
+            <Descriptions.Item label={t('Associated Service Node')}>
               <code style={{ fontSize: '11px' }}>{data.serviceNodeId}</code>
             </Descriptions.Item>
           </Descriptions>
@@ -97,7 +99,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
             <span style={{ marginRight: '8px' }}>
               {getEntityTypeIcon(data.entityType)}
             </span>
-            节点详情
+            {t('Node Details')}
           </div>
         }
         style={{ marginBottom: '16px' }}
@@ -107,15 +109,15 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
             <code style={{ fontSize: '11px' }}>{node.id}</code>
           </Descriptions.Item>
 
-          <Descriptions.Item label="名称">
+          <Descriptions.Item label={t('Name')}>
             {entity.displayName}
           </Descriptions.Item>
 
-          <Descriptions.Item label="类型">
+          <Descriptions.Item label={t('Type')}>
             <Tag color="blue">{data.entityType}</Tag>
           </Descriptions.Item>
 
-          <Descriptions.Item label="状态">
+          <Descriptions.Item label={t('Status')}>
             <Tag color={getStatusColor(status)}>
               {status === 'success' ? '正常' :
                 status === 'warning' ? '警告' :
@@ -326,7 +328,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
         }}
       >
         <Empty
-          description="请选择节点或边查看详情"
+          description={t('Select nodes or edges to view details')}
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
       </div>

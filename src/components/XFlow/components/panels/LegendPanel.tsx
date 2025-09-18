@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * 图例面板组件
  * 显示不同关系类型的图例说明
  */
 export const LegendPanel: React.FC = () => {
+  const { t } = useTranslation();
   const [ isVisible, setIsVisible ] = useState(true);
 
   const toggleVisibility = () => {
@@ -27,7 +29,7 @@ export const LegendPanel: React.FC = () => {
         }}
         onClick={toggleVisibility}
       >
-        <span style={{ fontSize: '12px', color: '#666' }}>显示图例</span>
+        <span style={{ fontSize: '12px', color: '#666' }}>{t('Show legend')}</span>
       </div>
     );
   }
@@ -47,12 +49,12 @@ export const LegendPanel: React.FC = () => {
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-        <h4 style={{ margin: 0, fontSize: '14px' }}>关系图例</h4>
+        <h4 style={{ margin: 0, fontSize: '14px' }}>{t('Relationship Legend')}</h4>
         <span
           style={{ fontSize: '12px', color: '#1890ff', cursor: 'pointer' }}
           onClick={toggleVisibility}
         >
-          隐藏
+          {t('Hide')}
         </span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}>
@@ -64,7 +66,7 @@ export const LegendPanel: React.FC = () => {
             </marker>
           </defs>
         </svg>
-        <span style={{ fontSize: '12px' }}>依赖关系</span>
+        <span style={{ fontSize: '12px' }}>{t('Dependency Relationship')}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}>
         <svg width="30" height="20" style={{ marginRight: '8px' }}>
@@ -75,7 +77,7 @@ export const LegendPanel: React.FC = () => {
             </marker>
           </defs>
         </svg>
-        <span style={{ fontSize: '12px' }}>包含关系</span>
+        <span style={{ fontSize: '12px' }}>{t('Contains Relationship')}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}>
         <svg width="30" height="20" style={{ marginRight: '8px' }}>
@@ -86,7 +88,7 @@ export const LegendPanel: React.FC = () => {
             </marker>
           </defs>
         </svg>
-        <span style={{ fontSize: '12px' }}>调用关系</span>
+        <span style={{ fontSize: '12px' }}>{t('Invocation Relationship')}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}>
         <svg width="30" height="20" style={{ marginRight: '8px' }}>
@@ -97,7 +99,7 @@ export const LegendPanel: React.FC = () => {
             </marker>
           </defs>
         </svg>
-        <span style={{ fontSize: '12px' }}>运行关系</span>
+        <span style={{ fontSize: '12px' }}>{t('Running Relationship')}</span>
       </div>
     </div>
   );

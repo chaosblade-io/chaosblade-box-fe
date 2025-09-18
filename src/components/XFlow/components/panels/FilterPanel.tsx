@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input, List, Button, Space, Empty } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import type { Graph } from '@antv/x6';
 import type { XFlowNode } from '../../types/xflow';
 
@@ -20,6 +21,7 @@ interface FilteredNode {
  * 提供按节点ID模糊搜索功能
  */
 export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect }) => {
+  const { t } = useTranslation();
   const [ searchText, setSearchText ] = useState('');
   const [ filteredNodes, setFilteredNodes ] = useState<FilteredNode[]>([]);
   const [ showResults, setShowResults ] = useState(false);
@@ -79,7 +81,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
     <div style={{ position: 'relative' }}>
       <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
         <Input
-          placeholder="搜索节点 (按 nodeId)"
+          placeholder={t('Search node (by nodeId)')}
           value={searchText}
           onChange={e => setSearchText(e.target.value)}
           onPressEnter={handleSearch}
@@ -141,7 +143,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ graph, onNodeSelect })
             />
           ) : (
             <div style={{ padding: 20 }}>
-              <Empty description="未找到匹配的节点" imageStyle={{ height: 30 }} />
+              <Empty description={t('No matching nodes found')} imageStyle={{ height: 30 }} />
             </div>
           )}
         </div>
