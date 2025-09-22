@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import Translation from 'components/Translation';
+import i18n from '../../../../../i18n';
+
 import styles from '../index.css';
 import { Icon } from '@alicloud/console-components';
 import formatDate from '../../../lib/DateUtil';
@@ -25,7 +27,7 @@ const ExecutionLogs: FC<ExecutionLogsProps> = ({ logs = [], title }) => {
       <div className={styles.sectionHeader}>
         <div className={styles.sectionTitle}>
           <Icon type="list" />
-          <Translation>{title || 'Execution Logs'}</Translation>
+          {title || i18n.t('Execution Logs').toString()}
         </div>
       </div>
 

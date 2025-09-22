@@ -345,7 +345,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <label className={styles.fieldLabel} style={{ marginBottom: 0 }}>
-          <Translation>Performance Targets</Translation>
+          {i18n.t('Performance Targets').toString()}
         </label>
         <Button size="small" onClick={applyDefaultSuggestions}>
           <Icon type="magic-wand" />
@@ -356,7 +356,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       <div className={styles.formRow}>
         <div className={styles.formCol}>
           <label className={styles.fieldLabel}>
-            <Translation>P95 Latency Limit</Translation>
+            {i18n.t('P95 Latency Limit').toString()}
           </label>
           <NumberPicker
             value={data.performanceTargets.p95Limit}
@@ -368,13 +368,13 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
             innerAfter={<span>ms</span>}
           />
           <div className={styles.fieldDescription}>
-            <Translation>95th percentile response time should not exceed this value</Translation>
+            {i18n.t('95th percentile response time should not exceed this value').toString()}
           </div>
         </div>
 
         <div className={styles.formCol}>
           <label className={styles.fieldLabel}>
-            <Translation>P99 Latency Limit</Translation>
+            {i18n.t('P99 Latency Limit').toString()}
           </label>
           <NumberPicker
             value={data.performanceTargets.p99Limit}
@@ -386,7 +386,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
             innerAfter={<span>ms</span>}
           />
           <div className={styles.fieldDescription}>
-            <Translation>99th percentile response time should not exceed this value</Translation>
+            {i18n.t('99th percentile response time should not exceed this value').toString()}
           </div>
         </div>
       </div>
@@ -394,7 +394,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       <div className={styles.formRow}>
         <div className={styles.formCol}>
           <label className={styles.fieldLabel}>
-            <Translation>Error Rate Limit</Translation>
+            {i18n.t('Error Rate Limit').toString()}
           </label>
           <NumberPicker
             value={data.performanceTargets.errorRateLimit}
@@ -407,7 +407,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
             innerAfter={<span>%</span>}
           />
           <div className={styles.fieldDescription}>
-            <Translation>Percentage of requests that can fail without violating SLO</Translation>
+            {i18n.t('Percentage of requests that can fail without violating SLO').toString()}
           </div>
         </div>
       </div>
@@ -421,7 +421,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
         marginTop: 16,
       }}>
         <h5 style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>
-          <Translation>SLO Summary</Translation>
+          {i18n.t('SLO Summary').toString()}
         </h5>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
           <div>
@@ -464,7 +464,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
             <Translation>SLO Configuration</Translation>
           </div>
           <div className={styles.sectionDescription}>
-            <Translation>Define Service Level Objectives for performance targets</Translation>
+            {i18n.t('Define Service Level Objectives for performance targets').toString()}
           </div>
         </div>
       </div>
@@ -485,7 +485,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       {/* Performance Targets */}
       <div>
         <h4 style={{ fontSize: 18, fontWeight: 600, color: '#333', marginBottom: 20 }}>
-          <Translation>Performance Targets</Translation>
+          {i18n.t('Performance Targets').toString()}
         </h4>
         {renderPerformanceTargets()}
       </div>

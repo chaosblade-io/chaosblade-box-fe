@@ -1,5 +1,4 @@
 import React, { FC, useMemo, useState } from 'react';
-import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
 import { Table, Button, Icon, Dialog, Pagination } from '@alicloud/console-components';
@@ -146,7 +145,7 @@ const TestCasesResults: FC<TestCasesResultsProps> = ({ testCases, onExport }) =>
       <div className={styles.sectionHeader}>
         <div className={styles.sectionTitle}>
           <Icon type="chart" />
-          <Translation>Execution Results</Translation>
+          {i18n.t('Execution Results').toString()}
         </div>
         <div>
           <Button onClick={() => onExport('HTML')} style={{ marginRight: 8 }}>

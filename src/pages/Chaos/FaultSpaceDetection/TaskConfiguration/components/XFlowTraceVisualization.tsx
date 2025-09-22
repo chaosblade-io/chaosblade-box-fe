@@ -1,5 +1,7 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
 import Translation from 'components/Translation';
+import i18n from '../../../../../i18n';
+
 import styles from '../index.css';
 import { Button, Icon, Drawer, Checkbox, Input, Select, NumberPicker, Tag } from '@alicloud/console-components';
 
@@ -481,7 +483,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
             <Translation>Trace Visualization & Fault Configuration</Translation>
           </div>
           <div className={styles.sectionDescription}>
-            <Translation>Visualize service topology and configure fault injection scenarios</Translation>
+            {i18n.t('Visualize service topology and configure fault injection scenarios').toString()}
           </div>
         </div>
       </div>
@@ -535,7 +537,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                   lineHeight: '12px',
                   fontWeight: 'bold',
                 }}>!</span>
-                <Translation>Fault Configured</Translation>
+                {i18n.t('Fault Configured').toString()}
               </span>
             </div>
           </div>

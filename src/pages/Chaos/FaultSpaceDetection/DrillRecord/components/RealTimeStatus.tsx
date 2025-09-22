@@ -474,7 +474,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
           </div>
         )}
 
-        {/* Business Service Chain Visualization */}
+        {/* Test Case Info Visualization */}
         <div style={{ marginBottom: 24 }}>
           <div style={{
             display: 'flex',
@@ -484,7 +484,7 @@ const RealTimeStatus: FC<RealTimeStatusProps> = ({
           }}>
             <h4 style={{ fontSize: 14, fontWeight: 600, color: '#333', margin: 0 }}>
               <Icon type="share-alt" style={{ marginRight: 8 }} />
-              <Translation>Business Service Chain</Translation>
+              {i18n.t('Test Case Info').toString()}
             </h4>
             <div style={{ fontSize: 12, color: '#666', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
               <span><Translation>Click services to view testing details</Translation></span>

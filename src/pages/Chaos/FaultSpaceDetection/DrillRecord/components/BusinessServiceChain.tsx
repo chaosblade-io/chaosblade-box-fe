@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import Translation from 'components/Translation';
+import i18n from '../../../../../i18n';
+
 import styles from '../index.css';
 import { Icon } from '@alicloud/console-components';
 
@@ -23,7 +25,7 @@ const BusinessServiceChain: FC<BusinessServiceChainProps> = ({ realtime }) => {
       <div className={styles.sectionHeader}>
         <div className={styles.sectionTitle}>
           <Icon type="share" />
-          <Translation>Business Service Chain</Translation>
+          {i18n.t('Test Case Info').toString()}
         </div>
       </div>
 
