@@ -5,3 +5,6 @@ build
 *.css.d.ts
 .DS_Store
 .idea/
+
+# Local env config (ignored)
+config/env.local.js

@@ -15,7 +15,7 @@ const MarkD: FC<IPorps> = ({ content, styles = {} }) => {
     ...styles,
   };
 
-  const commonInline = { wordBreak: 'break-word', overflowWrap: 'anywhere' as const };
+  const commonInline = { wordBreak: 'break-word' as const, overflowWrap: 'anywhere' as const };
   const commonBlock = { wordBreak: 'break-word' as const, overflowWrap: 'anywhere' as const, whiteSpace: 'pre-wrap' as const };
 
   return (
