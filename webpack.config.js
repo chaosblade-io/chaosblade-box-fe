@@ -3,6 +3,24 @@
 
 const path = require('path')
 const webpack = require('webpack')
+const fs = require('fs')
+// 尝试加载本地环境变量配置（不会提交到仓库）
+try {
+  const envLocalPath = path.resolve(__dirname, 'config/env.local.js')
+  if (fs.existsSync(envLocalPath)) {
+    const localEnv = require(envLocalPath)
+    if (localEnv && typeof localEnv === 'object') {
+      Object.keys(localEnv).forEach(k => {
+        if (process.env[k] == null) process.env[k] = localEnv[k]
+      })
+    }
+  }
+} catch (e) {
+  console.warn('[env.local] 加载失败:', e && e.message)
+}
+// 供 devServer 代理使用的 API 目标地址
+const DEV_API_TARGET = process.env.DEV_API_TARGET || 'http://localhost:7001'
+
 const chalk = require('chalk')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
@@ -66,7 +84,7 @@ module.exports = options => {
         }
       },
       preProcessor
-    ].filter(Boolean) 
+    ].filter(Boolean)
     return result
   }
   const runtimeNamespace = getRuntimeNamespace(getEnv())
@@ -96,7 +114,7 @@ module.exports = options => {
         },
         // 通用 API 代理配置
         '/api': {
-          target: 'http://1.94.151.57:7001',
+          target: DEV_API_TARGET,
           pathRewrite: {'^/api' : ''},
         }
       }
@@ -163,12 +181,12 @@ module.exports = options => {
             { test: /\.css$/,
               include: path.resolve(__dirname, './src'),
               // exclude: /node_modules/,
-              use: [ 
+              use: [
                 { loader: "style-loader" },  // to inject the result into the DOM as a style block
                 'css-modules-typescript-loader',  // to generate a .d.ts module next to the .scss file (also requires a declaration.d.ts with "declare modules '*.scss';" in it to tell TypeScript that "import styles from './styles.scss';" means to load the module "./styles.scss.d.td")
-                { 
-                  loader: "css-loader", 
-                  options: { 
+                {
+                  loader: "css-loader",
+                  options: {
                     modules: {
                       localIdentName: "[name]__[local]__[hash:base64:5]",
                     },
