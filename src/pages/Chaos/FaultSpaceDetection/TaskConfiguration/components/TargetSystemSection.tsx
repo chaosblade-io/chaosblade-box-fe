@@ -285,10 +285,10 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
         <div>
           <div className={styles.sectionTitle}>
             <span className={styles.sectionNumber}>1</span>
-            <Translation>Target System Selection & API Discovery</Translation>
+            {i18n.t('Target System Selection & API Discovery').toString()}
           </div>
           <div className={styles.sectionDescription}>
-            <Translation>Select the target system and choose the API endpoint for fault injection testing</Translation>
+            {i18n.t('Select the target system and choose the API endpoint for fault injection testing').toString()}
           </div>
         </div>
       </div>
@@ -323,7 +323,7 @@ const TargetSystemSection: FC<TargetSystemSectionProps> = ({ data, errors, onCha
             }))}
           />
           <div className={styles.fieldDescription}>
-            <Translation>Choose the system where fault injection will be performed</Translation>
+            {i18n.t('Choose the system where fault injection will be performed').toString()}
           </div>
         </div>
 

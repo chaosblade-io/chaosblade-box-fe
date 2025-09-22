@@ -656,7 +656,7 @@ const ExecutionResults: FC<ExecutionResultsProps> = ({
       <div className={styles.sectionHeader}>
         <div className={styles.sectionTitle}>
           <Icon type="chart" />
-          <Translation>Execution Results</Translation>
+          {i18n.t('Execution Results').toString()}
         </div>
         <MenuButton
           label={

@@ -44,7 +44,7 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
       <div className={styles.sectionHeader}>
         <div className={styles.sectionTitle}>
           <Icon type="play" />
-          <Translation>Execution Basic Information</Translation>
+          {i18n.t('Execution Basic Information').toString()}
         </div>
         <div className={styles.controlButtons}>
           <Button onClick={onExport}>
@@ -83,7 +83,7 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
 
           <div className={styles.infoItem}>
             <div className={styles.infoLabel}>
-              <Translation>Initiator</Translation>
+              {i18n.t('Initiator').toString()}
             </div>
             <div className={styles.infoValue}>{data.initiator || '-'}</div>
           </div>
@@ -97,14 +97,14 @@ const ExecutionBasicInfo: FC<ExecutionBasicInfoProps> = ({
 
           <div className={styles.infoItem}>
             <div className={styles.infoLabel}>
-              <Translation>Current Status</Translation>
+              {i18n.t('Current Status').toString()}
             </div>
             <div className={styles.infoValue}>{data.currentStatus || '-'}</div>
           </div>
 
           <div className={styles.infoItem}>
             <div className={styles.infoLabel}>
-              <Translation>Cumulative Duration</Translation>
+              {i18n.t('Cumulative Duration').toString()}
             </div>
             <div className={styles.infoValue} style={{ fontFamily: 'Monaco, Consolas, monospace' }}>
               {formatDuration(Number(data.cumulativeDuration || 0))}

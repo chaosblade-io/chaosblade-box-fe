@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
 import { NumberPicker, Icon } from '@alicloud/console-components';
@@ -20,13 +19,13 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
   const renderRequestConfig = () => (
     <div>
       <h5 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>
-        <Translation>Request Configuration</Translation>
+        {i18n.t('Request Configuration').toString()}
       </h5>
 
       <div className={styles.formRow}>
         <div className={styles.formCol}>
           <label className={`${styles.fieldLabel} ${styles.required}`}>
-            <Translation>Total Request Number</Translation>
+            {i18n.t('Total Request Number').toString()}
           </label>
           <NumberPicker
             value={data?.requestNum || 20}
@@ -37,7 +36,7 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
             style={{ width: '100%' }}
           />
           <div className={styles.fieldDescription}>
-            <Translation>Total number of requests to send in this probe task (payload requestNum)</Translation>
+            {i18n.t('Total number of requests to send in this probe task (payload requestNum)').toString()}
           </div>
           {errors?.requestNum && (
             <div style={{ color: '#ff4d4f', fontSize: 12, marginTop: 4 }}>
@@ -55,10 +54,10 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
         <div>
           <div className={styles.sectionTitle}>
             <span className={styles.sectionNumber}>5</span>
-            <Translation>Request Execution Configuration</Translation>
+            {i18n.t('Request Execution Configuration').toString()}
           </div>
           <div className={styles.sectionDescription}>
-            <Translation>Configure total request number for this probe task</Translation>
+            {i18n.t('Configure total request number for this probe task').toString()}
           </div>
         </div>
       </div>

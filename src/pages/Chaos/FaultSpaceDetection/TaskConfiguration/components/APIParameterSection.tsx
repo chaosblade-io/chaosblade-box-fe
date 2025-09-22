@@ -279,9 +279,9 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
             })}
             style={{ width: '100%' }}
           >
-            <Select.Option value="TOKEN">Token Authentication</Select.Option>
-            <Select.Option value="COOKIE">Cookie Authentication</Select.Option>
-            <Select.Option value="PROFILE">Profile Authentication</Select.Option>
+            <Select.Option value="TOKEN"><Translation>Token Authentication</Translation></Select.Option>
+            <Select.Option value="COOKIE"><Translation>Cookie Authentication</Translation></Select.Option>
+            <Select.Option value="PROFILE"><Translation>Profile Authentication</Translation></Select.Option>
           </Select>
           <div className={styles.fieldDescription}>
             <Translation>Choose the authentication method for API requests</Translation>
@@ -358,7 +358,7 @@ const APIParameterSection: FC<APIParameterSectionProps> = ({ data, selectedAPI, 
           <div>
             <div className={styles.sectionTitle}>
               <span className={styles.sectionNumber}>2</span>
-              <Translation>API Parameter Configuration & Baseline Request</Translation>
+              {i18n.t('API Parameter Configuration & Baseline Request').toString()}
             </div>
             <div className={styles.sectionDescription}>
               <Translation>Please select an API in the previous section first</Translation>
