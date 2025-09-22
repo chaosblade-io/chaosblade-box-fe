@@ -14,7 +14,7 @@ import type {
  * 负责与后端 XFlow 接口进行通信
  */
 class XFlowApiService implements IXFlowApiService {
-  private baseURL = '/api/xflow';
+  private baseURL = '/api/chaos/xflow';
 
   /**
    * 创建 axios 实例
