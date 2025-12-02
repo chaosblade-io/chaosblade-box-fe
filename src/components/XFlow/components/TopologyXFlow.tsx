@@ -546,6 +546,45 @@ export const TopologyXFlow: React.FC = () => {
     }
   }, []);
 
+  // 映射节点 shape 到已注册的节点类型
+  const mapNodeShape = useCallback((shape: string, entityType?: string): string => {
+    // 如果 shape 已经是已注册的类型，直接返回
+    const registeredShapes = [
+      'custom-service',
+      'custom-namespace',
+      'custom-rpc',
+      'custom-rpc-group',
+      'custom-host',
+    ];
+
+    if (registeredShapes.includes(shape)) {
+      return shape;
+    }
+
+    // 根据 entityType 映射到对应的 shape
+    if (entityType) {
+      const entityTypeUpper = entityType.toUpperCase();
+      if (entityTypeUpper.includes('NAMESPACE')) {
+        return 'custom-namespace';
+      }
+      if (entityTypeUpper.includes('RPC_GROUP')) {
+        return 'custom-rpc-group';
+      }
+      if (entityTypeUpper.includes('RPC')) {
+        return 'custom-rpc';
+      }
+      if (entityTypeUpper.includes('HOST')) {
+        return 'custom-host';
+      }
+      if (entityTypeUpper.includes('SERVICE')) {
+        return 'custom-service';
+      }
+    }
+
+    // 默认返回 custom-service
+    return 'custom-service';
+  }, []);
+
   // 渲染拓扑图
   const renderTopology = useCallback((data: XFlowData) => {
     if (!graphRef.current || !data) return;
@@ -572,8 +611,10 @@ export const TopologyXFlow: React.FC = () => {
       // 使用id字段作为节点ID
       const nodeId = nodeData.id || '';
 
-      // 确保必要字段存在
-      const nodeShape = nodeData.shape || 'custom-service';
+      // 映射节点 shape 到已注册的类型
+      const originalShape = nodeData.shape || 'custom-service';
+      const nodeShape = mapNodeShape(originalShape, nodeData.entityType);
+
       const nodeWidth = nodeData.width || 120;
       const nodeHeight = nodeData.height || 60;
       const nodeX = nodeData.x || 0;
@@ -663,7 +704,7 @@ export const TopologyXFlow: React.FC = () => {
     setTimeout(() => {
       graph.zoomToFit({ padding: 20, maxScale: 1 });
     }, 100);
-  }, [ autoCollapseRpcNodes ]);
+  }, [ autoCollapseRpcNodes, mapNodeShape ]);
 
   // 刷新数据
   const handleRefresh = useCallback(async () => {
