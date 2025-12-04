@@ -77,6 +77,16 @@ const menuConfig = [
     ],
   },
   {
+    key: '/chaos/risk-detection',
+    label: i18n.t('Risk Detection'),
+    to: `/chaos/risk-detection?${commonUrlStr}`,
+    activePathPatterns: [
+      '/chaos/risk-detection',
+      '/chaos/risk-detection/analysis',
+      '/chaos/risk-detection/drill-results',
+    ],
+  },
+  {
     key: '/chaos/dataAdmin',
     label: i18n.t('Data Management'),
     items: [
@@ -179,4 +189,7 @@ export const activeKeys: {[key: string]: string} = {
   '/chaos/fault-space-detection/add': '/chaos/fault-space-detection',
   '/chaos/fault-space-detection/records': '/chaos/fault-space-detection',
   '/chaos/topology-perception': '/chaos/topology-perception',
+  '/chaos/risk-detection': '/chaos/risk-detection',
+  '/chaos/risk-detection/analysis': '/chaos/risk-detection',
+  '/chaos/risk-detection/drill-results': '/chaos/risk-detection',
 };

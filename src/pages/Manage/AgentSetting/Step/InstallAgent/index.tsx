@@ -52,7 +52,7 @@ const InstallAgent: FC = () => {
   };
 
   function handleBackArrowClick() {
-    const { pathname } = location || '';
+    const pathname = typeof location === 'object' && location ? location.pathname : '';
     if (/\/chaos\/agentmanage/.test(pathname)) {
       pushUrl(history, '/chaos/experiment/scope/control');
     } else {

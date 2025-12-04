@@ -33,6 +33,8 @@ const Overview = lazy(() => import('./Overview'));
 const FaultSpaceDetection = lazy(() => import('./FaultSpaceDetection'));
 /** 拓扑感知 */
 const TopologyPerception = lazy(() => import('./TopologyPerception'));
+/** 风险探测 */
+const RiskDetection = lazy(() => import('./RiskDetection'));
 
 const { Switch, Route, useRouteMatch } = router;
 const Arch: FC = () => {
@@ -71,6 +73,7 @@ const Arch: FC = () => {
       <Route exact path={`${path}/overview`} component={Overview} />
       <Route path={`${path}/fault-space-detection`} component={FaultSpaceDetection} />
       <Route exact path={`${path}/topology-perception`} component={TopologyPerception} />
+      <Route path={`${path}/risk-detection`} component={RiskDetection} />
     </Switch>
   );
 };

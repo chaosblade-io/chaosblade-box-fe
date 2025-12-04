@@ -79,6 +79,7 @@ const KubTable: FC<IPorps> = props => {
     }
   }
   function expandedRowRender(record: any): JSX.Element {
+    // @ts-ignore
     return <K8sRowRender data={record} getData={getData}></K8sRowRender>;
   }
   const renderAgentVersion: any = (value: boolean) => {

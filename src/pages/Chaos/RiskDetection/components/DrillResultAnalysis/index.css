@@ -1,0 +1,269 @@
+.dialog {
+  :global {
+    .next-dialog-body {
+      padding: 0;
+    }
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+}
+
+/* 概览标签页 */
+.overview {
+  padding: 20px;
+}
+
+.statsRow {
+  margin-bottom: 20px;
+}
+
+.statCard {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.statIcon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.statLabel {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.statValue {
+  margin-bottom: 8px;
+}
+
+.statDetail {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.metricsCard {
+  margin-bottom: 20px;
+}
+
+.metricItem {
+  text-align: center;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 6px;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: #6B7280;
+  margin-bottom: 8px;
+}
+
+.metricValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.summaryCard {
+  margin-bottom: 20px;
+}
+
+.summaryText {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* 验证结果标签页 */
+.validation {
+  padding: 20px;
+}
+
+.validationHeader {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.validationList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.validationItem {
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+}
+
+.validationItemHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.validationName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.validationDescription {
+  font-size: 13px;
+  color: #6B7280;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.validationDetail {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.detailLabel {
+  color: #6B7280;
+  margin-right: 6px;
+}
+
+.detailValue {
+  color: #374151;
+  font-weight: 500;
+}
+
+/* 影响分析标签页 */
+.impact {
+  padding: 20px;
+}
+
+.impactCard {
+  margin-bottom: 20px;
+}
+
+.serviceList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metricsChangeCard {
+  margin-bottom: 20px;
+}
+
+.metricsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.metricChangeItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 6px;
+}
+
+.metricName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.metricChange {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.metricBefore {
+  color: #6B7280;
+}
+
+.metricAfter {
+  color: #1F2937;
+  font-weight: 600;
+}
+
+.descriptionCard {
+  margin-bottom: 20px;
+}
+
+.impactDescription {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* 建议标签页 */
+.recommendations {
+  padding: 20px;
+}
+
+.timeline {
+  :global {
+    .next-timeline-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1F2937;
+    }
+  }
+}
+
+.recommendationContent {
+  margin-top: 8px;
+}
+
+.recommendationDescription {
+  font-size: 13px;
+  color: #6B7280;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.actionItems {
+  background: #F9FAFB;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 3px solid #3B82F6;
+}
+
+.actionItemsTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.actionItemsList {
+  margin: 0;
+  padding-left: 20px;
+
+  li {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.8;
+    margin-bottom: 4px;
+  }
+}
+

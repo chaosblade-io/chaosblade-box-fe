@@ -235,9 +235,11 @@ const ScopesControlDetail: FC = () => {
         <div className={styles.title}><Translation>Drill data</Translation></div>
         <div className={styles.info}>
           <div className={styles.heatmap}>
+            {/* @ts-ignore */}
             <HeatMap />
           </div>
           <div className={styles.ringChart}>
+            {/* @ts-ignore */}
             <RingChart />
           </div>
         </div>
