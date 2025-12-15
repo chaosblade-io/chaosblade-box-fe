@@ -19,7 +19,7 @@ try {
   console.warn('[env.local] 加载失败:', e && e.message)
 }
 // 供 devServer 代理使用的 API 目标地址
-const DEV_API_TARGET = 'http://localhost:7001'
+const DEV_API_TARGET = 'http://116.63.51.45:7001'
 
 const chalk = require('chalk')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
