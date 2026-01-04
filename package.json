@@ -65,9 +65,7 @@
     "react-dom": "^16.12.0",
     "react-draggable-tags": "^0.4.1-beta.1",
     "react-i18next": "11.13.0",
-    "react-markdown": "^7.1.1",
     "reflect-metadata": "^0.1.13",
-    "remark-gfm": "^3.0.1",
     "rimraf": "^3.0.2",
     "sass-loader": "^12.1.0",
     "style-loader": "^2.0.0",
@@ -103,13 +101,14 @@
     "@babel/runtime": "^7.4.3",
     "@babel/runtime-corejs2": "^7.4.3",
     "@types/lodash": "^4.14.168",
+    "@types/node": "^12.20.55",
     "autoprefixer": "^9.8.8",
     "babel-loader": "^8.0.0",
     "babel-plugin-import": "^1.13.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "cross-env": "^7.0.3",
     "css-url-relative-plugin": "^1.1.0",
-    "esbuild": "^0.15.0",
+    "esbuild": "^0.8.57",
     "esbuild-webpack-plugin": "^1.1.0",
     "eslint": "^6.8.0",
     "fork-ts-checker-webpack-plugin": "^6.0.0",
@@ -137,6 +136,6 @@
     "pre-commit": "npm run lint"
   },
   "overrides": {
-    "esbuild": "^0.15.0"
+    "esbuild": "^0.8.57"
   }
 }

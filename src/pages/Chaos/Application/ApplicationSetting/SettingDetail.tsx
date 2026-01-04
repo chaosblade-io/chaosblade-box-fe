@@ -83,7 +83,7 @@ const SettingDetail: FC<IPorps> = props => {
           <div className={styles.label}><Translation>Configuration value</Translation></div>
           <div className={styles.valueComponent}>
             <ActivityParameterEditor
-              parameter={_.get(_.set(currentRecord, 'component.value', _.get(currentRecord, 'value', '')), 'component', {})}
+              parameter={_.get(_.set(currentRecord, 'component.value', _.get(currentRecord, 'value', '')), 'component', {}) as any}
               onChange={handleChange}
             />
           </div>

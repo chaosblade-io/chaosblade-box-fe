@@ -2,7 +2,7 @@ import _ from 'lodash';
 import createServiceChaos from 'utils/createServiceChaos';
 import { BaseModel, dvaModel, effect, reducer } from 'utils/libs/sre-utils-dva';
 import { IBasicInfo, IExpertise, IExpertiseId, ITems } from 'config/interfaces/Chaos/expertiseEditor';
-import { ICronExpression, IFlowGroup, INode } from 'config/interfaces/Chaos/experiment';
+import { ICronExpression, IFlow, IFlowGroup, INode } from 'config/interfaces/Chaos/experiment';
 import { NODE_TYPE } from 'pages/Chaos/lib/FlowConstants';
 import { convertFlow, convertNode } from './experimentInit';
 import { v4 as uuidv4 } from 'uuid';
@@ -108,7 +108,7 @@ class ExpertiseEditor extends BaseModel {
     const evaluationInfo = _.get(result, 'evaluation_info', { items: [] });
 
     const runTime = _.get(result, 'executable_info.run_time', {});
-    const exResult = convertFlow(observerNodes, recoverNodes, flow, true);
+    const exResult = convertFlow(observerNodes, recoverNodes, flow as IFlow, true);
     const observerNodesList = _.get(exResult, 'observerNodes', []);
     const recoverNodesList = _.get(exResult, 'recoverNodes', []);
 
@@ -160,7 +160,7 @@ class ExpertiseEditor extends BaseModel {
       flowGroup.id = uuidv4();
     }
 
-    let flowGroups = _.get(expertise, 'executable_info.flow.flowGroups', []);
+    let flowGroups = _.get(expertise, 'executable_info.flow.flowGroups', []) as IFlowGroup[];
     const exist = _.filter(flowGroups, (fg: IFlowGroup) => fg.id === flowGroup.id);
     if (!_.isEmpty(exist)) {
       flowGroups = _.map(flowGroups, (fg: IFlowGroup) => {
@@ -213,7 +213,7 @@ class ExpertiseEditor extends BaseModel {
     const { observerNodes, recoverNodes } = expertise;
 
     // 这个时候 experiment.flow.guardConf.guards已设置过，无需担心undefined问题
-    let guards = _.get(expertise, 'executable_info.flow.guardConf.guards', []);
+    let guards = _.get(expertise, 'executable_info.flow.guardConf.guards', []) as INode[];
 
     if (node.id) {
       // 先删除原始节点
@@ -262,7 +262,7 @@ class ExpertiseEditor extends BaseModel {
     }
 
     const { observerNodes, recoverNodes } = expertise;
-    let guards = _.get(expertise, 'executable_info.flow.guardConf.guards', []);
+    let guards = _.get(expertise, 'executable_info.flow.guardConf.guards', []) as INode[];
     // 如果没有id，生成1个
     // 注意：这里不能直接用node.functionId，因为可以添加functionId相同的节点，甚至参数也可以一样
     if (!node.id) {
@@ -306,9 +306,9 @@ class ExpertiseEditor extends BaseModel {
           return convertNode(node);
         }
         return n;
-      });
+      }) as INode[];
     } else {
-      guards = [ ...guards, convertNode(node) ];
+      guards = [ ...guards, convertNode(node) ] as INode[];
     }
 
     _.set(expertise, 'executable_info.flow.guardConf.guards', guards);
@@ -345,22 +345,22 @@ class ExpertiseEditor extends BaseModel {
       item.id = uuidv4();
     }
 
-    let evaluationInfos = _.get(expertise, 'evaluation_info.items', [{}]);
+    let evaluationInfos = _.get(expertise, 'evaluation_info.items', [{}]) as ITems[];
     if (!_.isEmpty(item)) {
       if (!_.isEmpty(evaluationInfos)) {
         const exit = _.find(evaluationInfos, (e: ITems) => e.id === item.id);
         if (exit) {
-          evaluationInfos.map((e: ITems) => {
+          evaluationInfos = evaluationInfos.map((e: ITems) => {
             if (e.id === item.id) {
               e.desc = item.desc;
             }
             return e;
           });
         } else {
-          evaluationInfos = _.concat(evaluationInfos, item);
+          evaluationInfos = _.concat(evaluationInfos, item) as ITems[];
         }
       } else {
-        evaluationInfos = _.concat(evaluationInfos, item);
+        evaluationInfos = _.concat(evaluationInfos, item) as ITems[];
       }
       expertise.evaluation_info.items = evaluationInfos;
       return {

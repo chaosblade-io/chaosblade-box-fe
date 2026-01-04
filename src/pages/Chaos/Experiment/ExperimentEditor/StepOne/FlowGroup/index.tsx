@@ -82,7 +82,7 @@ function FlowGroup(props: FlowGroupProps) {
       }
       if (appName) {
         setExperimentObj(APPLICATION_TYPE.APPLICATION);
-        setK8sResourceType(appType);
+        setK8sResourceType(Number(appType) || 0);
         setScopeType(scopeType!);
         setOsType(nextOsType!);
         isEdit && setAppDisabled(true);
@@ -387,7 +387,7 @@ function FlowGroup(props: FlowGroupProps) {
 
   function renderScopeDisableChange() {
     const scopeType = _.get(flowGroup, 'scopeType', '');
-    if (scopeType === SCOPE_TYPE.HOST) {
+    if (String(scopeType) === String(SCOPE_TYPE.HOST)) {
       return i18n.t('Host');
     }
     return i18n.t('Kubernetes');
@@ -511,7 +511,7 @@ function FlowGroup(props: FlowGroupProps) {
       // 添加insertBefore和insertAfter便捷方法插入新节点
       node.insertBefore = (newNode: INode) => {
         const { stage } = newNode as INode;
-        const stageNodes = _.get(flow, stage as string, []);
+        const stageNodes = _.get(flow, stage as string, []) as INode[];
         if (stage === node.stage) {
           const index = _.findIndex(stageNodes, (n: INode) => n.id === node.id);
           stageNodes.splice(index, 0, newNode);
@@ -527,7 +527,7 @@ function FlowGroup(props: FlowGroupProps) {
 
       node.insertAfter = newNode => {
         const { stage } = newNode;
-        const stageNodes = _.get(flow, stage as string, []);
+        const stageNodes = _.get(flow, stage as string, []) as INode[];
         if (stage === node.stage) {
           const index = _.findIndex(stageNodes, (n: INode) => n.id === node.id);
           stageNodes.splice(index + 1, 0, newNode);

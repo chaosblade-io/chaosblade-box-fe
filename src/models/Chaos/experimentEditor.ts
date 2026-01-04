@@ -199,7 +199,7 @@ class ExperimentEditor extends BaseModel {
       });
     }
 
-    let flowGroups = _.get(experiment, 'flow.flowGroups', []);
+    let flowGroups = _.get(experiment, 'flow.flowGroups', []) as IFlowGroup[];
     const exist = _.filter(flowGroups, (fg: IFlowGroup) => fg.id === flowGroup.id);
     if (!_.isEmpty(exist)) {
       flowGroups = _.map(flowGroups, (fg: IFlowGroup) => {
@@ -227,8 +227,8 @@ class ExperimentEditor extends BaseModel {
       return;
     }
 
-    const flows = _.get(payload, 'flows', []);
-    flows.forEach(it => {
+    const flows = _.get(payload, 'flows', []) as any[];
+    flows.forEach((it: any) => {
       it.id = uuidv4(); it.flowId = '';
       dealCopyNode(it.attack);
       dealCopyNode(it.check);
@@ -356,7 +356,7 @@ class ExperimentEditor extends BaseModel {
 
     const { observerNodes, recoverNodes } = experiment;
 
-    let guards = _.get(experiment, 'flow.guardConf.guards', []);
+    let guards = _.get(experiment, 'flow.guardConf.guards', []) as INode[];
     // 如果没有id，生成1个
     // 注意：这里不能直接用node.functionId，因为可以添加functionId相同的节点，甚至参数也可以一样
     if (!node.id) {
@@ -398,9 +398,9 @@ class ExperimentEditor extends BaseModel {
           return convertNode(node);
         }
         return n;
-      });
+      }) as INode[];
     } else {
-      guards = [ ...guards, convertNode(node) ];
+      guards = [ ...guards, convertNode(node) ] as INode[];
     }
 
     _.set(experiment, 'flow.guardConf.guards', guards);
