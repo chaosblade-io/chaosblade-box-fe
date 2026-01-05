@@ -259,10 +259,12 @@ module.exports = options => {
       // typescript lint 检查
       new ForkTsCheckerWebpackPlugin({
         typescript: {
-          configFile: paths.appTsConfig,
-          build: true // 启用构建模式，忽略类型错误
+          configFile: paths.appTsConfig
         },
-        async: true // 改为异步，不阻塞构建
+        async: false,
+        eslint: {
+          files: `${paths.appSrc}/**/*.{ts,tsx,js,jsx}`
+        }
       }),
       new HtmlWebpackPlugin({
         title: 'Chaos 社区',
@@ -281,7 +283,7 @@ module.exports = options => {
       hints: false
     },
     // 定义 sourcemap 配置
-    devtool: env.raw.NODE_ENV === 'production' ? false : 'cheap-module-source-map',
+    devtool: 'cheap-module-source-map',
     // 自定义externals
     externals: Object.assign({}, options.externals),
     optimization: {
@@ -396,10 +398,7 @@ module.exports = options => {
      *
      * For details, please refer: https://github.com/evanw/esbuild
      */
-    config.optimization.minimizer = [new ESBuildWebpackPlugin({
-      target: 'es6',
-      sourcemap: false
-    })]
+    config.optimization.minimizer = [new ESBuildWebpackPlugin({target: 'es6'})]
 
     // 添加 CSS 压缩
     config.plugins.push(

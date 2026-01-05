@@ -2,7 +2,6 @@ import _ from 'lodash';
 import createServiceChaos from 'utils/createServiceChaos';
 import { BaseModel, dvaModel, effect, reducer } from 'utils/libs/sre-utils-dva';
 import { IExpertiseAdminActionAndDetail, IExpertiseCom, IGetListUserTagsByType, ISearchExpertiseRes } from 'config/interfaces/Chaos/expertises';
-import { IFlow } from 'config/interfaces/Chaos/experiment';
 import { convertFlow } from './experimentInit';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -78,7 +77,7 @@ class Expertises extends BaseModel {
     const evaluationInfo = _.get(result, 'evaluation_info', { items: [] });
 
     const runTime = _.get(result, 'executable_info.run_time', {});
-    const exResult = convertFlow(observerNodes, recoverNodes, flow as IFlow, true);
+    const exResult = convertFlow(observerNodes, recoverNodes, flow, true);
     const observerNodesList = _.get(exResult, 'observerNodes', []);
     const recoverNodesList = _.get(exResult, 'recoverNodes', []);
 

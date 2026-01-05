@@ -479,20 +479,20 @@ export default function ExperimentTask() {
 
   function renderDialogFooter() {
     const source = _.get(experimentTask, 'source', '');
-    if (Number(source) === 1) {
+    if (source === 1) {
       return <Button.Group>
         <Button type="primary" onClick={() => handleSubmitFeebBack(true)}><Translation>OK, return to strong and weak dependency governance</Translation></Button>
         <Button type="normal" className={styles.normalBtn} onClick={() => handleSubmitFeebBack(false)}><Translation>Ok, stay on this page</Translation></Button>
       </Button.Group>;
     }
-    if (Number(source) === 2) {
+    if (source === 2) {
       return <Button.Group>
         <Button type="primary" onClick={() => handleSubmitFeebBack(true)}><Translation>OK, return to message walkthrough</Translation></Button>
         <Button type="normal" className={styles.normalBtn} onClick={() => handleSubmitFeebBack(false)}><Translation>Ok, stay on this page</Translation></Button>
         <Button type="normal" className={styles.normalBtn} onClick={() => setDependenceVisible(false)}><Translation>Cancel, next feedback</Translation></Button>
       </Button.Group>;
     }
-    if (Number(source) === 3) {
+    if (source === 3) {
       return <Button.Group>
         <Button type="primary" onClick={() => handleSubmitFeebBack(true)}><Translation>OK, return to disaster recovery drill</Translation></Button>
         <Button type="normal" className={styles.normalBtn} onClick={() => handleSubmitFeebBack(false)}><Translation>Ok, stay on this page</Translation></Button>
@@ -676,7 +676,7 @@ export default function ExperimentTask() {
         </div>
       </div>
     </div>
-    {(Number(feedbackStatus) === 1 || isFeedbackStatus) && <div className={styles.feedBack}>
+    {(feedbackStatus === 1 || isFeedbackStatus) && <div className={styles.feedBack}>
       <div className={styles.feedTitle}><Translation>Result feedback</Translation></div>
       <div className={styles.feedItem}>
         <div className={styles.label}><Translation>Business impact</Translation></div>
@@ -723,7 +723,7 @@ export default function ExperimentTask() {
           data={experimentTask!}
           value={dependenceSubmit}
           onFormChange={handleFormChange}
-          specialDom={(Number(source) === 1 || Number(source) === 2) && renderSpecialDom}
+          specialDom={(source === 1 || source === 2) && renderSpecialDom}
         />
       </div>
     </Dialog>

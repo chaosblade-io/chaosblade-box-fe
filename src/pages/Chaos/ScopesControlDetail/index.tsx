@@ -235,10 +235,10 @@ const ScopesControlDetail: FC = () => {
         <div className={styles.title}><Translation>Drill data</Translation></div>
         <div className={styles.info}>
           <div className={styles.heatmap}>
-            {React.createElement(HeatMap as any)}
+            <HeatMap />
           </div>
           <div className={styles.ringChart}>
-            {React.createElement(RingChart as any)}
+            <RingChart />
           </div>
         </div>
       </>
