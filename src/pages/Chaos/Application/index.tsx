@@ -44,7 +44,7 @@ const Application: FC = () => {
         const { Data = false } = await dispatch.application.getUserApplications({ page, size: 12, filterDisabled });
         if (Data) {
           setDataSource(_.get(Data, 'data', []));
-          setTotal(_.get(Data, 'total', []));
+          setTotal(_.get(Data, 'total', 0));
           setIsSearch(false);
         }
       } else {

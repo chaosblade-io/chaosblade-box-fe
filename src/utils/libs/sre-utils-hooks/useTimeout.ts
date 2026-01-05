@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
  * @param {number|null} delay 间隔时长
  */
 export const useTimeout = (callback: () => any, delay: number | null) => {
-  const savedCallback = useRef();
+  const savedCallback = useRef<(() => any) | undefined>(undefined);
 
   // Remember the latest callback.
   useEffect(() => {

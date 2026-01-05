@@ -17,8 +17,8 @@ export default function ChartContainer(props: any) {
   const [ fullscreen, setFullscreen ] = useState(false);
   const [ stateKey, setStateKey ] = useState('');
   const [ reload, setReload ] = useState(false);
-  const chart: any = useRef<any>();
-  const refreshTask = useRef<any>();
+  const chart: any = useRef<any>(undefined);
+  const refreshTask = useRef<any>(undefined);
 
 
   useEffect(() => {

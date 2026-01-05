@@ -175,7 +175,7 @@ function ExperimentDetail() {
 
   function handleStartExperiment() {
     const flow = _.get(experiment, 'flow', {});
-    const preCheckInfo = _.get(experiment, 'preCheckInfo', {});
+    const preCheckInfo = _.get(experiment, 'preCheckInfo', {}) as any;
     if (!_.isEmpty(flow)) {
       const experimentId = _.get(flow, 'experimentId', '');
       const state = _.get(flow, 'state', '');
@@ -207,7 +207,7 @@ function ExperimentDetail() {
           onCancel: noop,
         });
       } else {
-        if (preCheckInfo && preCheckInfo.opLevel === OPLEVEL.YELLOW) {
+        if (preCheckInfo && (preCheckInfo as any).opLevel === OPLEVEL.YELLOW) {
           const content = _.get(_.find(_.get(preCheckInfo, 'points', []), (p: any) => p.type === 0), 'content', '');
           Dialog.show({
             title: i18n.t('Start the exercise').toString(),
@@ -370,13 +370,13 @@ function ExperimentDetail() {
     return <div>
       <div className={styles.actionContent}>
         <div className={styles.actionLeft}>
-          {preCheckInfo && preCheckInfo.opLevel === OPLEVEL.RED && renderHelpIcon()}
+          {preCheckInfo && (preCheckInfo as any).opLevel === OPLEVEL.RED && renderHelpIcon()}
           {state && state === ExperimentConstants.EXPERIMENT_STATE_RUNNING ?
             <Button type="primary" onClick={handleHrefTask}>
               <Translation>In drill</Translation>
               <Icon type="loading" />
             </Button> :
-            <Button type="primary" loading={runLoading} onClick={handlePaidCheck} disabled={(preCheckInfo && preCheckInfo.opLevel === OPLEVEL.RED || !handleIsAdmin(experiment.permission as number, 4))}>
+            <Button type="primary" loading={runLoading} onClick={handlePaidCheck} disabled={((preCheckInfo && (preCheckInfo as any).opLevel === OPLEVEL.RED) || !handleIsAdmin(experiment.permission as number, 4))}>
               <Translation>Drill</Translation>
             </Button>}
           <Select
@@ -390,7 +390,7 @@ function ExperimentDetail() {
           </Select>
         </div>
         <div style={{ float: 'right' }} >
-          {source === 1 ? <Button type="primary" onClick={handleEditExperiment} ><Translation>Editing Walkthrough</Translation></Button> :
+          {Number(source) === 1 ? <Button type="primary" onClick={handleEditExperiment} ><Translation>Editing Walkthrough</Translation></Button> :
             <Button type="primary" disabled={!handleIsAdmin(experiment.permission as number, 2)} onClick={handleEditExperiment}><Translation>Editing Walkthrough</Translation></Button>
           }
           &nbsp;&nbsp;
@@ -443,7 +443,7 @@ function ExperimentDetail() {
           <NumberPicker
             className={styles.timeNumber}
             disabled
-            value={ duration / 60 }
+            value={ Number(duration) / 60 }
             precision={0}
             min={1}
           />

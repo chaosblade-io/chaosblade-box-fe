@@ -75,11 +75,11 @@ const ExpertiseDetail: FC = () => {
     setActivityEditorVisible(false);
   }
 
-  const basicInfo = _.get(expertiseInfo, 'basic_info', null);
-  const executableInfo = _.get(expertiseInfo, 'executable_info', null);
-  const evaluationInfo = _.get(expertiseInfo, 'evaluation_info', { items: [] });
+  const basicInfo = _.get(expertiseInfo, 'basic_info', null) as any;
+  const executableInfo = _.get(expertiseInfo, 'executable_info', null) as any;
+  const evaluationInfo = _.get(expertiseInfo, 'evaluation_info', { items: [] }) as any;
   const runMode = _.get(executableInfo, 'flow.runMode', '');
-  const runTime = _.get(executableInfo, 'run_time', '');
+  const runTime = _.get(executableInfo, 'run_time', '') as any;
   return (
     <div className={styles.warp}>
       <div className={styles.baseInfo}>
