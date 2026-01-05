@@ -87,9 +87,9 @@ export default function CreateExpertiseInfo(props: CreateExpertiseInfoProps) {
   function handleCreateFinish() {
     const { isEdit } = props;
     const baseInfo = getActiveDraftBaseInfo();
-    const items = _.get(expertise, 'evaluation_info.items', [{}]) as ITems[];
+    const items = _.get(expertise, 'evaluation_info.items', [{}]);
     const runTime = _.get(expertise, 'executable_info.run_time.items', []);
-    const flow = _.get(expertise, 'executable_info.flow', {}) as any;
+    const flow = _.get(expertise, 'executable_info.flow', {});
 
     if (!baseInfo.name || !baseInfo.function_desc || !baseInfo.tags || baseInfo.tags && !baseInfo.tags.length) {
       return Message.error(i18n.t('Please fill in the complete basic information'));
@@ -193,7 +193,7 @@ export default function CreateExpertiseInfo(props: CreateExpertiseInfoProps) {
           />
         </div>
       </div>
-      {(items as ITems[]).map((eva: ITems, idx: number) => {
+      {items.map((eva: ITems, idx: number) => {
         return <div className={styles.infoItem} key={eva.id}>
           <div className={styles.label}>
             {idx === 0 ? <span className={styles.required}>*</span> : null}

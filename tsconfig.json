@@ -19,7 +19,7 @@
     "declaration": true, // 生成相应的.d.ts文件
     "experimentalDecorators": true, // 启用装饰器
     "emitDecoratorMetadata": true, // 装饰器
-    "jsx": "react",
+    "jsx": "preserve",
     // "preserveSymlinks": true, // 不把符号链接解析为其真实路径
     "skipLibCheck": true,
     "skipDefaultLibCheck": true, // 忽略库的默认声明文件的类型检查
@@ -27,10 +27,8 @@
     "resolveJsonModule": true,
     "lib": [
       "es2018",
-      "dom",
-      "dom.iterable"
-    ],
-    "types": ["react", "react-dom", "node"]
+      "dom"
+    ]
   },
   "include": [
     "src"

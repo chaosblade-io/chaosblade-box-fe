@@ -54,10 +54,10 @@ class ExperimentScene extends BaseModel {
       return { ...this.state };
     }
 
-    const exist = _.find(guardRules, (guardRule: IGuardRule) => String(guardRule.functionId) === String(functionId));
+    const exist = _.find(guardRules, (guardRule: IGuardRule) => guardRule.functionId === functionId);
     if (exist) {
       guardRules = _.map(guardRules, (guardRule: IGuardRule) => {
-        if (String(guardRule.functionId) === String(functionId)) {
+        if (guardRule.functionId === functionId) {
           return {
             functionId,
             rules,

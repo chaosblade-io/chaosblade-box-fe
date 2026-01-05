@@ -46,7 +46,7 @@ function FeedBack(props: FeedBackProps) {
 
   function renderOptions(option: any) {
     const { description, format, value = '' } = option;
-    const type = _.get(format, 'type', '') as string;
+    const type = _.get(format, 'type', '');
     const { required = false, options = [], writable = false, defaultValue = '', placeholder = '' } = format || {};
     if (type === 'text') {
       return <FormItem label={description}>

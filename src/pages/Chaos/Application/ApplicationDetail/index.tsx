@@ -47,7 +47,7 @@ const ApplicationDetail: FC = () => {
 
   function renderType() {
     const appType = _.get(basic, 'app_type', '');
-    if (String(appType) === String(SCOPE_TYPE.HOST)) {
+    if (appType === SCOPE_TYPE.HOST) {
       return i18n.t('Host');
     }
     return 'Kubernetes';

@@ -29,7 +29,7 @@ const List: FC = () => {
   const [ tab, setTab ] = useState(AGENT_SCOPE_TYPE.HOST);
   const [ K8SHost, setK8SHost ] = useState(false);
 
-  const timer = useRef<any>(undefined);
+  const timer = useRef<any>();
 
   useEffect(() => {
     if (location.pathname && location.pathname === '/manage/setting') {

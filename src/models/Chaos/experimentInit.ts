@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const initExperimentFlow = (experiment: any) => {
   const observerNodes = _.get(experiment, 'observerNodes', []);
   const recoverNodes = _.get(experiment, 'recoverNodes', []);
-  const flow = _.get(experiment, 'flow', {}) as IFlow;
+  const flow = _.get(experiment, 'flow', {});
 
   if (!flow.experimentId) {
     flow.experimentId = experiment.experimentId;
