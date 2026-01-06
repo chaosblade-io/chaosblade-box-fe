@@ -49,7 +49,12 @@ function createServiceChaos(
       ignoreError,
       description: description || action,
     }).catch((e: Error) => {
-      Message.error(e.message);
+      // 如果 ignoreError 为 true，不显示错误消息
+      if (!ignoreError) {
+        Message.error(e.message);
+      }
+      // 即使 ignoreError 为 true，也抛出错误，让调用方可以处理
+      throw e;
     });
   };
 }

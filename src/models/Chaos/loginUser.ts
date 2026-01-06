@@ -21,12 +21,14 @@ class LoginUser extends BaseModel {
   }
   @effect()
   *getLoginUser() {
-    const res = yield this.effects.call(createServiceChaos('LoginUserInfo'));
+    // 使用 ignoreError 选项，未登录时不报错
+    const service = createServiceChaos('LoginUserInfo', { ignoreError: true });
+    const res = yield this.effects.call(service);
     const { code, Data = {} } = res || {};
     if (code === 200) {
       yield this.effects.put(this.setLoginUser(Data));
     }
-    return Data;
+    return Data || {};
   }
 
   @effect()

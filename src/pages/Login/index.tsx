@@ -30,7 +30,23 @@ const Login: FC = () => {
   const action = Number(getParams('type'));
 
   useEffect(() => {
-    dispatch.loginUser.setLoginUser({} as any); // 兼容手动输入login页面
+    // 检查是否已登录，如果已登录则跳转到 /index
+    const checkLoginStatus = async () => {
+      try {
+        const res = await dispatch.loginUser.getLoginUser();
+        if (res && res.userId) {
+          // 已登录，跳转到首页
+          pushUrl(history, '/index');
+        } else {
+          // 未登录，清空用户信息
+          dispatch.loginUser.setLoginUser({} as any);
+        }
+      } catch (e) {
+        // 获取用户信息失败，说明未登录，清空用户信息
+        dispatch.loginUser.setLoginUser({} as any);
+      }
+    };
+    checkLoginStatus();
     return () => {
       removeParams('id');
     };

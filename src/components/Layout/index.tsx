@@ -31,6 +31,10 @@ const Layout: FC = ({ children }: PropsWithChildren<any>) => {
   const [ menuHearder, setMenuHeader ] = useState<ReactNode | string>(i18n.t('Apply high availability services').toString());
   const [ openKeys, setOpenKeys ] = useState<string[]>(defaultOpenKeys);
   useEffect(() => {
+    // 在登录页面时不调用 getLoginUser，避免未登录时显示错误
+    if (location.pathname === '/login') {
+      return;
+    }
     const getUserInfo = async () => {
       const res = await dispatch.loginUser.getLoginUser(); // 获取用户权限;
       if (_.isEmpty(res.userId)) {

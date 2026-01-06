@@ -4,3 +4,5 @@ coverage
 build
 *.css.d.ts
 .DS_Store
+.idea
+dist
