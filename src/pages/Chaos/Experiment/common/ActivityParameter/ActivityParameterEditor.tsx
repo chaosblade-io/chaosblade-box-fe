@@ -8,7 +8,7 @@ import RemotelySelectEditor from './RemotelySelectEditor';
 import SearchEditor from './SearchEditor';
 import SelectEditor from './SelectEditor';
 import TimePickerEditor from './TimePickerEditor';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import styles from './ActivityParameterEditor.css';
 import { FunctionParameterConstants } from 'config/constants/Chaos/FunctionParameterConstants';
 import { IArgs, IComponent, IHost, IParamter } from 'config/interfaces/Chaos/experiment';

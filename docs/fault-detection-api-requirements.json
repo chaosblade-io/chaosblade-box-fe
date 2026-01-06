@@ -1,0 +1,277 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Fault Detection Module APIs",
+    "version": "1.0.0",
+    "description": "APIs for Fault Space Detection - fault types, topology nodes, configurations, and execution status."
+  },
+  "servers": [
+    {"url": "/api", "description": "Base API path"}
+  ],
+  "security": [{"bearerAuth": []}],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
+    },
+    "schemas": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {"type": "boolean"},
+          "data": {},
+          "error": {"$ref": "#/components/schemas/Error"},
+          "traceId": {"type": "string"}
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "example": "VALIDATION_ERROR"},
+          "message": {"type": "string"},
+          "details": {"type": "object"}
+        }
+      },
+      "System": {
+        "type": "object",
+        "properties": {
+          "systemId": {"type": "integer", "format": "int64"},
+          "name": {"type": "string"},
+          "environments": {"type": "array", "items": {"type": "string", "example": "prod"}},
+          "apiSource": {"type": "object", "properties": {"syncTime": {"type": "string", "format": "date-time"}}},
+          "latestTopologyId": {"type": "integer", "format": "int64"}
+        }
+      },
+      "TopologySummary": {
+        "type": "object",
+        "properties": {
+          "topologyId": {"type": "integer", "format": "int64"},
+          "discoveredAt": {"type": "string", "format": "date-time"},
+          "totalServices": {"type": "integer"},
+          "totalEdges": {"type": "integer"},
+          "totalCalls": {"type": "integer"}
+        }
+      },
+      "TopologyNode": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer", "format": "int64"},
+          "topologyId": {"type": "integer", "format": "int64"},
+          "nodeKey": {"type": "string"},
+          "name": {"type": "string"},
+          "layer": {"type": "integer"},
+          "protocol": {"type": "string", "enum": ["HTTP","gRPC","DB","MQ","OTHER"]}
+        }
+      },
+      "FaultType": {
+        "type": "object",
+        "properties": {
+          "faultTypeId": {"type": "integer", "format": "int64"},
+          "faultCode": {"type": "string"},
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "category": {"type": "string"},
+          "enabled": {"type": "boolean"},
+          "displayOrder": {"type": "integer"},
+          "paramConfig": {"type": "object", "additionalProperties": true}
+        }
+      },
+      "FaultConfig": {
+        "type": "object",
+        "properties": {
+          "configId": {"type": "integer", "format": "int64"},
+          "taskId": {"type": "integer", "format": "int64"},
+          "nodeId": {"type": "integer", "format": "int64"},
+          "faultTypeId": {"type": "integer", "format": "int64"},
+          "paramValues": {"type": "object", "additionalProperties": true},
+          "status": {"type": "string", "enum": ["PENDING","RUNNING","COMPLETED","FAILED","CANCELLED","DRAFT"]},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "FaultConfigCreateRequest": {
+        "type": "object",
+        "required": ["taskId","nodeId","faultTypeId","paramValues"],
+        "properties": {
+          "taskId": {"type": "integer", "format": "int64"},
+          "nodeId": {"type": "integer", "format": "int64"},
+          "faultTypeId": {"type": "integer", "format": "int64"},
+          "paramValues": {"type": "object", "additionalProperties": true},
+          "executeNow": {"type": "boolean", "default": false},
+          "labels": {"type": "array", "items": {"type": "string"}}
+        }
+      },
+      "FaultConfigUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "paramValues": {"type": "object", "additionalProperties": true},
+          "enabled": {"type": "boolean"},
+          "status": {"type": "string", "enum": ["PENDING","RUNNING","COMPLETED","FAILED","CANCELLED","DRAFT"]}
+        }
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "page": {"type": "integer"},
+          "size": {"type": "integer"},
+          "total": {"type": "integer"}
+        }
+      }
+    }
+  },
+  "paths": {
+    "/systems": {
+      "get": {
+        "summary": "获取被测系统列表",
+        "parameters": [
+          {"in": "query", "name": "page", "schema": {"type": "integer", "default": 1}},
+          {"in": "query", "name": "size", "schema": {"type": "integer", "default": 20}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"type": "object", "properties": {"items": {"type": "array", "items": {"$ref": "#/components/schemas/System"}}, "page": {"$ref": "#/components/schemas/Page"}}}, "error": {"$ref": "#/components/schemas/Error"}}}}}
+        }
+      }
+    },
+    "/systems/{systemId}": {
+      "get": {
+        "summary": "获取被测系统详情",
+        "parameters": [
+          {"in": "path", "name": "systemId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiResponse"}}}},
+          "404": {"description": "Not Found"}
+        }
+      }
+    },
+    "/systems/{systemId}/topologies/latest": {
+      "get": {
+        "summary": "获取系统最新拓扑摘要",
+        "parameters": [
+          {"in": "path", "name": "systemId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"$ref": "#/components/schemas/TopologySummary"}, "error": {"$ref": "#/components/schemas/Error"}}}}}},
+          "404": {"description": "Not Found"}
+        }
+      }
+    },
+    "/topologies/{topologyId}/nodes": {
+      "get": {
+        "summary": "获取拓扑节点列表（用于故障注入目标选择）",
+        "parameters": [
+          {"in": "path", "name": "topologyId", "required": true, "schema": {"type": "integer", "format": "int64"}},
+          {"in": "query", "name": "serviceName", "schema": {"type": "string"}},
+          {"in": "query", "name": "layer", "schema": {"type": "integer"}},
+          {"in": "query", "name": "protocol", "schema": {"type": "string"}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"type": "array", "items": {"$ref": "#/components/schemas/TopologyNode"}}, "error": {"$ref": "#/components/schemas/Error"}}}}}}
+        }
+      }
+    },
+    "/fault-types": {
+      "get": {
+        "summary": "获取故障类型列表及参数配置",
+        "parameters": [
+          {"in": "query", "name": "enabled", "schema": {"type": "boolean"}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"type": "array", "items": {"$ref": "#/components/schemas/FaultType"}}, "error": {"$ref": "#/components/schemas/Error"}}}}}}
+        }
+      }
+    },
+    "/fault-configs": {
+      "get": {
+        "summary": "查询故障配置列表",
+        "parameters": [
+          {"in": "query", "name": "taskId", "schema": {"type": "integer", "format": "int64"}},
+          {"in": "query", "name": "nodeId", "schema": {"type": "integer", "format": "int64"}},
+          {"in": "query", "name": "status", "schema": {"type": "string"}},
+          {"in": "query", "name": "page", "schema": {"type": "integer", "default": 1}},
+          {"in": "query", "name": "size", "schema": {"type": "integer", "default": 20}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"type": "object", "properties": {"items": {"type": "array", "items": {"$ref": "#/components/schemas/FaultConfig"}}, "page": {"$ref": "#/components/schemas/Page"}}}, "error": {"$ref": "#/components/schemas/Error"}}}}}}
+        }
+      },
+      "post": {
+        "summary": "创建故障配置（与taskId和api_topology_nodes绑定）",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json": {"schema": {"$ref": "#/components/schemas/FaultConfigCreateRequest"}}}
+        },
+        "responses": {
+          "201": {"description": "Created", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"$ref": "#/components/schemas/FaultConfig"}, "error": {"$ref": "#/components/schemas/Error"}}}}}},
+          "400": {"description": "Bad Request"}
+        }
+      }
+    },
+    "/fault-configs/{configId}": {
+      "get": {
+        "summary": "获取故障配置详情",
+        "parameters": [
+          {"in": "path", "name": "configId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiResponse"}}}},
+          "404": {"description": "Not Found"}
+        }
+      },
+      "patch": {
+        "summary": "更新故障配置（参数/启用状态/手工状态调整）",
+        "parameters": [
+          {"in": "path", "name": "configId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/FaultConfigUpdateRequest"}}}},
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiResponse"}}}},
+          "400": {"description": "Bad Request"},
+          "404": {"description": "Not Found"}
+        }
+      },
+      "delete": {
+        "summary": "删除故障配置",
+        "parameters": [
+          {"in": "path", "name": "configId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {"204": {"description": "No Content"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/fault-configs/{configId}/status": {
+      "get": {
+        "summary": "查询故障执行状态",
+        "parameters": [
+          {"in": "path", "name": "configId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {
+          "200": {"description": "OK", "content": {"application/json": {"schema": {"type": "object", "properties": {"success": {"type": "boolean"}, "data": {"type": "object", "properties": {"configId": {"type": "integer"}, "status": {"type": "string"}, "executedAt": {"type": "string", "format": "date-time"}, "completedAt": {"type": "string", "format": "date-time"}, "lastError": {"type": "string"}}}, "error": {"$ref": "#/components/schemas/Error"}}}}}},
+          "404": {"description": "Not Found"}
+        }
+      }
+    },
+    "/fault-configs/{configId}/execute": {
+      "post": {
+        "summary": "立即执行单个故障配置",
+        "parameters": [
+          {"in": "path", "name": "configId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {
+          "202": {"description": "Accepted", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiResponse"}}}},
+          "409": {"description": "Conflict - already running"}
+        }
+      }
+    },
+    "/tasks/{taskId}/fault-configs/execute": {
+      "post": {
+        "summary": "批量执行某任务下的所有故障配置",
+        "parameters": [
+          {"in": "path", "name": "taskId", "required": true, "schema": {"type": "integer", "format": "int64"}}
+        ],
+        "responses": {
+          "202": {"description": "Accepted", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ApiResponse"}}}}
+        }
+      }
+    }
+  }
+  }
+}

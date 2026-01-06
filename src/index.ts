@@ -1,3 +1,4 @@
+
 import './i18n';
 import './index.css';
 import '@alicloud/console-components/dist/wind.css';
@@ -10,7 +11,9 @@ import { createBrowserHistory } from 'history';
 
 
 const app = dva({
-  history: createBrowserHistory(),
+  history: createBrowserHistory({
+    basename: '/chaos-blade', // 设置为你的部署路径
+  }),
   namespacePrefixWarning: false,
   onError(e: Error) {
     console.error(e.stack);

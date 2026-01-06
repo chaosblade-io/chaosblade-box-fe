@@ -1,6 +1,6 @@
 import React from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import styles from './index.css';
 import { Balloon, Icon, Tag } from '@alicloud/console-components';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TaskChart from './TaskChart';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import styles from './index.css';
 import { IExperimentSummaryInfo } from 'config/interfaces/Chaos/workspace';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
@@ -18,10 +18,10 @@ const TaskInfoDistribute = () => {
     (async function() {
       const { Data = false } = await dispatch.workspace.getExperimentSummaryDays();
       if (Data) {
-        setExperimentSummaryInfoList(_.get(Data, 'experimentSummaryInfoList', []));
-        setSuccessSize(_.get(Data, 'successSize', 0));
-        setTotalSize(_.get(Data, 'totalSize', 0));
-        setUnexpectedSize(_.get(Data, 'unexpectedSize', 0));
+        setExperimentSummaryInfoList((Data as any)?.experimentSummaryInfoList ?? []);
+        setSuccessSize((Data as any)?.successSize ?? 0);
+        setTotalSize((Data as any)?.totalSize ?? 0);
+        setUnexpectedSize((Data as any)?.unexpectedSize ?? 0);
       }
     })();
   }, []);

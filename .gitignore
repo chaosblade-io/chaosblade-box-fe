@@ -4,3 +4,8 @@ coverage
 build
 *.css.d.ts
 .DS_Store
+.idea/
+dist/
+
+# Local env config (ignored)
+config/env.local.js

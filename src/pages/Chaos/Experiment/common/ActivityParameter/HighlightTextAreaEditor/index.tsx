@@ -1,7 +1,7 @@
 import AceEditor from 'react-ace';
 import React, { FC, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import i18n from '../../../../../../i18n';
 import locale from 'utils/locale';

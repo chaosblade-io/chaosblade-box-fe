@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 import Translation from 'components/Translation';
 import styles from './index.css';
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import locale from 'utils/locale';
 import { Dialog, Icon } from '@alicloud/console-components';
@@ -17,8 +17,8 @@ export default function ChartContainer(props: any) {
   const [ fullscreen, setFullscreen ] = useState(false);
   const [ stateKey, setStateKey ] = useState('');
   const [ reload, setReload ] = useState(false);
-  const chart: any = useRef<any>();
-  const refreshTask = useRef<any>();
+  const chart: any = useRef<any>(null);
+  const refreshTask = useRef<any>(null);
 
 
   useEffect(() => {

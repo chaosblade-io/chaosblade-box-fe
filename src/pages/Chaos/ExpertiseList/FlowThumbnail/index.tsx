@@ -1,5 +1,5 @@
 import React, { FC, useLayoutEffect, useRef, useState } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import styles from './index.css';
 import { Balloon, Icon } from '@alicloud/console-components';
 

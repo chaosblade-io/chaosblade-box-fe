@@ -2,7 +2,7 @@ import InvalidHostsDialog from './InvalidHostsDialog';
 import ListSelect from 'pages/Chaos/common/ListSelect';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../../../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';

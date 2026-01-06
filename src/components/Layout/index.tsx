@@ -4,7 +4,7 @@ import Page from '@alicloud/console-components-page';
 import React, { FC, PropsWithChildren, ReactNode, useEffect, useMemo, useState } from 'react';
 import RoutableMenu from '@alicloud/console-components-console-menu/RoutableMenu';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../i18n';
 import { activeKeys, pathNameList, returnMenuList, setMenuConfig } from 'config/constants';
 

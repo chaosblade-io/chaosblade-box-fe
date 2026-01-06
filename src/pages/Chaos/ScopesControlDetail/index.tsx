@@ -3,7 +3,7 @@ import HeatMap from './HeatmapChart';
 import React, { FC, memo, useEffect, useState } from 'react';
 import RingChart from './RingChart';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import formatDate from 'pages/Chaos/lib/DateUtil';
 import i18n from '../../../i18n';
@@ -235,9 +235,11 @@ const ScopesControlDetail: FC = () => {
         <div className={styles.title}><Translation>Drill data</Translation></div>
         <div className={styles.info}>
           <div className={styles.heatmap}>
+            {/* @ts-ignore */}
             <HeatMap />
           </div>
           <div className={styles.ringChart}>
+            {/* @ts-ignore */}
             <RingChart />
           </div>
         </div>

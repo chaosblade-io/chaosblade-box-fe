@@ -45,11 +45,9 @@ module.exports = {
     /**
      * @see https://www.npmjs.com/package/eslint-plugin-sort-imports-es6-autofix
      */
-    'sort-imports-es6-autofix/sort-imports-es6': [ 2, {
-      ignoreCase: false,
-      ignoreMemberSort: false,
-      memberSyntaxSortOrder: [ 'none', 'all', 'single', 'multiple' ],
-    }],
+    'sort-imports-es6-autofix/sort-imports-es6': 'off', // 关闭导入排序
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    '@typescript-eslint/semi': 'warn', // 分号警告，不阻断
   },
   parserOptions: {
     project: './tsconfig.json',

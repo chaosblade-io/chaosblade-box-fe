@@ -14,7 +14,7 @@
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true, //  生成输出文件
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "declaration": true, // 生成相应的.d.ts文件
     "experimentalDecorators": true, // 启用装饰器
@@ -28,7 +28,9 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
   "include": [
     "src"

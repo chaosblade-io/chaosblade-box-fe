@@ -1,0 +1,292 @@
+/* Trace Panel 样式 */
+.tracePanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 工具栏 */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #E2E8F0;
+  background: #F8FAFC;
+}
+
+/* RED 指标 */
+.redMetrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.metricItem {
+  text-align: center;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: #64748B;
+  margin-bottom: 4px;
+}
+
+.metricValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1E293B;
+}
+
+/* Trace 列表 */
+.traceList {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+}
+
+/* Trace Dialog */
+.traceDialog {
+  max-width: 90vw !important;
+  max-height: 85vh !important;
+}
+
+.traceDialog :global(.next-dialog-body) {
+  padding: 0;
+  max-height: calc(85vh - 60px);
+  overflow-y: auto;
+}
+
+/* 瀑布图 */
+.waterfallChart {
+  padding: 16px;
+}
+
+.waterfallChart.compact {
+  padding: 12px;
+}
+
+/* Trace 基本信息 */
+.traceInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px;
+  background: #F8FAFC;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.traceInfoItem {
+  font-size: 12px;
+}
+
+.traceInfoLabel {
+  color: #64748B;
+  margin-right: 4px;
+}
+
+/* 时间线标尺 */
+.timelineRuler {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 200px 8px 200px;
+  border-bottom: 1px solid #E2E8F0;
+  margin-bottom: 8px;
+}
+
+.rulerLabel {
+  font-size: 11px;
+  color: #64748B;
+}
+
+/* Span 列表 */
+.spanList {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.waterfallChart.compact .spanList {
+  max-height: 300px;
+}
+
+/* Span 行 */
+.spanRow {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  border-bottom: 1px solid #F1F5F9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.spanRow:hover {
+  background: #F8FAFC;
+}
+
+.spanRowSelected {
+  background: #EFF6FF !important;
+  border-left: 3px solid #3B82F6;
+}
+
+/* Span 信息 */
+.spanInfo {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.serviceName {
+  font-size: 11px;
+  font-weight: 600;
+  color: #3B82F6;
+  margin-right: 6px;
+  white-space: nowrap;
+}
+
+.operationName {
+  font-size: 11px;
+  color: #64748B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 6px;
+}
+
+.spanKind {
+  font-size: 10px;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+/* 时间线 */
+.spanTimeline {
+  flex: 1;
+  position: relative;
+  height: 20px;
+  background: #F8FAFC;
+  border-radius: 2px;
+  margin: 0 8px;
+}
+
+.spanBar {
+  position: absolute;
+  height: 100%;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.spanBar:hover {
+  opacity: 0.8;
+}
+
+/* 持续时间 */
+.spanDuration {
+  width: 80px;
+  text-align: right;
+  font-size: 11px;
+  color: #64748B;
+  flex-shrink: 0;
+}
+
+/* Span 详情面板 */
+.spanDetailPanel {
+  border-top: 2px solid #E2E8F0;
+  background: #fff;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.spanDetailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #E2E8F0;
+  background: #F8FAFC;
+}
+
+.spanDetailHeader h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
+}
+
+.spanDetailContent {
+  padding: 16px;
+}
+
+.spanDetailSection {
+  margin-bottom: 16px;
+}
+
+.spanDetailSectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 8px;
+}
+
+.spanDetailRow {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.spanDetailLabel {
+  color: #64748B;
+  font-weight: 500;
+  min-width: 100px;
+}
+
+.spanDetailValue {
+  color: #1E293B;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.eventItem {
+  padding: 8px;
+  background: #F8FAFC;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.eventTime {
+  font-size: 11px;
+  color: #64748B;
+  margin-bottom: 4px;
+}
+
+.eventFields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.eventField {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.eventFieldKey {
+  color: #64748B;
+  font-weight: 500;
+}
+
+.eventFieldValue {
+  color: #1E293B;
+  font-family: monospace;
+}
+

@@ -243,3 +243,69 @@
 .content {
   min-height: 500px;
 }
+
+/* 压测策略样式 */
+.loadTestStrategies {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.strategyItem {
+  padding: 16px;
+  background: #fafbfc;
+  border-radius: 6px;
+  border: 1px solid #e1e4e8;
+  transition: all 0.2s ease;
+}
+
+.strategyItem:hover {
+  border-color: #d0d7de;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.strategyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.strategyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.strategyName {
+  font-weight: 600;
+  color: #24292f;
+  font-size: 14px;
+}
+
+.strategyStatus {
+  font-size: 12px;
+}
+
+.strategyDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.strategyDetail {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.detailLabel {
+  min-width: 120px;
+  color: #656d76;
+  font-weight: 500;
+}
+
+.detailValue {
+  color: #24292f;
+  font-weight: 400;
+}

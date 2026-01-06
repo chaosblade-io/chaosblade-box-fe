@@ -1,7 +1,7 @@
 import ApplicationCard from './ApplicationCard';
 import React, { FC, useEffect, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import i18n from '../../../i18n';
 import locale from 'utils/locale';
 import styles from './index.css';

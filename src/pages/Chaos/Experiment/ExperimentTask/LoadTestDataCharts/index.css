@@ -1,0 +1,461 @@
+.loadTestDataSection {
+  margin-top: 24px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sectionTitle::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: #1890ff;
+  margin-right: 8px;
+  border-radius: 2px;
+  position: absolute;
+  left: -12px;
+  top: 2px;
+}
+
+.sectionTitle {
+  position: relative;
+  padding-left: 12px;
+}
+
+.sectionSubtitle {
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+  margin-top: 4px;
+}
+
+.sectionControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.chartContainer {
+  background: #fafafa;
+  border-radius: 6px;
+  padding: 16px;
+  border: 1px solid #e8e8e8;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.chartTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.chartControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 响应式布局 */
+@media (min-width: 1200px) {
+  .chartsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .chartContainer:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* 压测数据区域与其他模块的间距 */
+.loadTestDataSection {
+  border-top: 1px solid #e8e8e8;
+}
+
+/* 图表标题图标 */
+/* .chartTitle::before {
+  content: '📊';
+  margin-right: 6px;
+  font-size: 14px;
+} */
+
+/* 图表样式覆盖 */
+.chartContainer :global(.bizcharts-tooltip) {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+}
+
+.chartContainer :global(.bizcharts-legend) {
+  font-size: 12px;
+}
+
+.chartContainer :global(.bizcharts-axis-label) {
+  font-size: 11px;
+  color: #666;
+}
+
+/* 加载状态 */
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #999;
+}
+
+/* 空状态 */
+.emptyContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #999;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: 14px;
+}
+
+/* 图表工具栏 */
+.chartToolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.toolbarButton {
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.toolbarButton:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.toolbarButton.active {
+  background: #1890ff;
+  border-color: #1890ff;
+  color: #fff;
+}
+
+/* 指标卡片 */
+.metricsCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metricCard {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+}
+
+.metricValue {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: #666;
+}
+
+.metricTrend {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.metricTrend.up {
+  color: #52c41a;
+}
+
+.metricTrend.down {
+  color: #ff4d4f;
+}
+
+.metricTrend.stable {
+  color: #faad14;
+}
+
+/* 时间范围选择器 */
+.timeRangeSelector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.timeRangeLabel {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* 图表容器动画 */
+.chartContainer {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 错误状态 */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #ff4d4f;
+}
+
+.errorIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.errorText {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.retryButton {
+  padding: 8px 16px;
+  background: #1890ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.retryButton:hover {
+  background: #40a9ff;
+}
+
+/* 压测状态控制样式 */
+.statusControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e8e8e8;
+}
+
+.statusInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statusTag {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.statusDetails {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.statusDetail {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.stopButton {
+  background: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: #fff !important;
+  font-size: 12px;
+  height: 28px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stopButton:hover {
+  background: #ff7875 !important;
+  border-color: #ff7875 !important;
+}
+
+.stopButton:active {
+  background: #d9363e !important;
+  border-color: #d9363e !important;
+}
+
+.startButton {
+  background: #52c41a !important;
+  border-color: #52c41a !important;
+  color: #fff !important;
+  font-size: 12px;
+  height: 28px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.startButton:hover {
+  background: #73d13d !important;
+  border-color: #73d13d !important;
+}
+
+.startButton:active {
+  background: #389e0d !important;
+  border-color: #389e0d !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+  .statusControls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .statusDetails {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .sectionControls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* 压测结果样式 */
+.resultsSection {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e8e8e8;
+}
+
+.resultsSectionHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.resultsSectionTitle {
+  margin-left: 8px;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  transition: all 0.2s ease;
+}
+
+.resultItem:hover {
+  border-color: #1890ff;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.1);
+}
+
+.resultLabel {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.resultLabel i {
+  margin-right: 8px;
+  color: #1890ff;
+}

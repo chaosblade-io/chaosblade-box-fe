@@ -47,6 +47,46 @@ const menuConfig = [
     ],
   },
   {
+    key: '/chaos/topology-perception',
+    label: i18n.t('Topo Visualization'),
+    to: `/chaos/topology-perception?${commonUrlStr}`,
+    activePathPatterns: [ '/chaos/topology-perception' ],
+  },
+  {
+    key: '/chaos/fault-space-detection',
+    label: i18n.t('Fault Space Detection'),
+    items: [
+      {
+        key: '/chaos/fault-space-detection/tasks',
+        label: i18n.t('Detection Tasks'),
+        to: `/chaos/fault-space-detection/tasks?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/tasks' ],
+      },
+      {
+        key: '/chaos/fault-space-detection/add',
+        label: i18n.t('Add Detection'),
+        to: `/chaos/fault-space-detection/add?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/add' ],
+      },
+      {
+        key: '/chaos/fault-space-detection/records',
+        label: i18n.t('Detection Records'),
+        to: `/chaos/fault-space-detection/records?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/records' ],
+      },
+    ],
+  },
+  {
+    key: '/chaos/risk-detection',
+    label: i18n.t('Risk Detection'),
+    to: `/chaos/risk-detection?${commonUrlStr}`,
+    activePathPatterns: [
+      '/chaos/risk-detection',
+      '/chaos/risk-detection/analysis',
+      '/chaos/risk-detection/drill-results',
+    ],
+  },
+  {
     key: '/chaos/dataAdmin',
     label: i18n.t('Data Management'),
     items: [
@@ -55,6 +95,12 @@ const menuConfig = [
         label: i18n.t('Expertise Management'),
         to: `/chaos/expertise/admin?${commonUrlStr}`,
         activePathPatterns: [ '/chaos/expertise/editor' ],
+      },
+      {
+        key: '/chaos/loadtest/admin',
+        label: i18n.t('Load Testing Management'),
+        to: `/chaos/loadtest/admin?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/loadtest/admin' ],
       },
     ],
   },
@@ -66,6 +112,10 @@ export const pathNameList = [
     index: '/chaos/application/',
     value: 'chaosApplicationMenu',
   },
+  {
+    index: '/chaos/fault-space-detection/',
+    value: 'faultSpaceDetectionMenu',
+  },
 ];
 
 // 从二级导航返回哪个菜单
@@ -73,6 +123,10 @@ export const returnMenuList = [
   {
     key: 'chaosApplicationMenu',
     value: '/chaos/application',
+  },
+  {
+    key: 'faultSpaceDetectionMenu',
+    value: '/chaos/fault-space-detection',
   },
 ];
 
@@ -105,10 +159,37 @@ export function setMenuConfig(key: string) {
       },
     ];
   }
+  if (key === 'faultSpaceDetectionMenu') {
+    return [
+      {
+        key: '/chaos/fault-space-detection/tasks',
+        label: i18n.t('Detection Tasks'),
+        to: `/chaos/fault-space-detection/tasks?${commonUrlStr}`,
+      },
+      {
+        key: '/chaos/fault-space-detection/add',
+        label: i18n.t('Add Detection'),
+        to: `/chaos/fault-space-detection/add?${commonUrlStr}`,
+      },
+      {
+        key: '/chaos/fault-space-detection/records',
+        label: i18n.t('Detection Records'),
+        to: `/chaos/fault-space-detection/records?${commonUrlStr}`,
+      },
+    ];
+  }
 }
 
 // 激活菜单
 export const activeKeys: {[key: string]: string} = {
   '/chaos/expertise/admin': '/chaos/dataAdmin',
   '/chaos/scene/list': '/chaos/dataAdmin',
+  '/chaos/loadtest/admin': '/chaos/dataAdmin',
+  '/chaos/fault-space-detection/tasks': '/chaos/fault-space-detection',
+  '/chaos/fault-space-detection/add': '/chaos/fault-space-detection',
+  '/chaos/fault-space-detection/records': '/chaos/fault-space-detection',
+  '/chaos/topology-perception': '/chaos/topology-perception',
+  '/chaos/risk-detection': '/chaos/risk-detection',
+  '/chaos/risk-detection/analysis': '/chaos/risk-detection',
+  '/chaos/risk-detection/drill-results': '/chaos/risk-detection',
 };

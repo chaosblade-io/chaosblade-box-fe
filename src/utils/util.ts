@@ -19,7 +19,7 @@ export function scrollToAnchor() {
 // 根据环境获取请求前缀
 export const getRequirePrefix = () => {
   const isDev = process.env.NODE_ENV === 'development';
-  return isDev ? '/api/chaos' : '/chaos';
+  return isDev ? '/api/chaos' : '/chaos-blade/api/chaos';
 };
 
 export function getLanguage() {

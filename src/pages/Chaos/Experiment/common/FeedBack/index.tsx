@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import locale from 'utils/locale';
 import { Balloon, Form, Input, Radio, Select } from '@alicloud/console-components';
 

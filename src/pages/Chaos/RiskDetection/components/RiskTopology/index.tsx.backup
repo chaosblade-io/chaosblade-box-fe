@@ -1,0 +1,495 @@
+import React, { FC, useEffect, useState, useRef, useCallback } from 'react';
+import { Graph, Edge } from '@antv/x6';
+import { Button, Loading, Message, Icon } from '@alicloud/console-components';
+import { useHistory } from 'dva';
+import Translation from 'components/Translation';
+import { riskDetectionService } from '../../services/riskDetectionService';
+import { RiskTopologyNode, RiskTopologyEdge, K8sResourceType, K8sRelationType } from '../../types';
+import RiskSidePanel from '../RiskSidePanel';
+import styles from './index.css';
+
+// K8s 资源类型样式配置
+const nodeStyleConfig: Record<K8sResourceType, { fill: string; icon: string; iconBg: string }> = {
+  NAMESPACE: { fill: '#E0F2FE', icon: 'NS', iconBg: '#0EA5E9' },
+  DEPLOYMENT: { fill: '#ECFDF5', icon: 'DP', iconBg: '#10B981' },
+  REPLICASET: { fill: '#F0FDF4', icon: 'RS', iconBg: '#22C55E' },
+  POD: { fill: '#FEF3C7', icon: 'PO', iconBg: '#F59E0B' },
+  SERVICE: { fill: '#EDE9FE', icon: 'SV', iconBg: '#8B5CF6' },
+  CONFIGMAP: { fill: '#FCE7F3', icon: 'CM', iconBg: '#EC4899' },
+  SECRET: { fill: '#FEE2E2', icon: 'SC', iconBg: '#EF4444' },
+  PVC: { fill: '#E0E7FF', icon: 'PV', iconBg: '#6366F1' },
+  INGRESS: { fill: '#CFFAFE', icon: 'IG', iconBg: '#06B6D4' },
+  STATEFULSET: { fill: '#D1FAE5', icon: 'SS', iconBg: '#059669' },
+  DAEMONSET: { fill: '#DBEAFE', icon: 'DS', iconBg: '#3B82F6' },
+};
+
+// 关系类型样式配置
+const relationStyleConfig: Record<K8sRelationType, { stroke: string; dashArray: string }> = {
+  contains: { stroke: '#0EA5E9', dashArray: '' },
+  manages: { stroke: '#10B981', dashArray: '' },
+  creates: { stroke: '#22C55E', dashArray: '5,3' },
+  selects: { stroke: '#8B5CF6', dashArray: '8,4' },
+  mounts: { stroke: '#EC4899', dashArray: '3,3' },
+  claims: { stroke: '#6366F1', dashArray: '6,3' },
+};
+
+// 状态颜色配置
+const statusColors: Record<string, { border: string; bg: string }> = {
+  healthy: { border: '#10B981', bg: 'rgba(16, 185, 129, 0.1)' },
+  warning: { border: '#F59E0B', bg: 'rgba(245, 158, 11, 0.1)' },
+  error: { border: '#EF4444', bg: 'rgba(239, 68, 68, 0.1)' },
+  unknown: { border: '#6B7280', bg: 'rgba(107, 114, 128, 0.1)' },
+};
+
+// 动画帧ID引用
+let animationFrameId: number | null = null;
+
+const RiskTopology: FC = () => {
+  const history = useHistory();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const graphRef = useRef<Graph | null>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [nodes, setNodes] = useState<RiskTopologyNode[]>([]);
+  const [edges, setEdges] = useState<RiskTopologyEdge[]>([]);
+  const [selectedNode, setSelectedNode] = useState<RiskTopologyNode | null>(null);
+  const [showPanel, setShowPanel] = useState(false);
+
+  // 加载拓扑数据
+  const loadTopologyData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await riskDetectionService.getTopologyData();
+      setNodes(data.nodes);
+      setEdges(data.edges);
+    } catch (error) {
+      Message.error('加载拓扑数据失败');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // 获取节点边框颜色
+  const getNodeBorderColor = (node: RiskTopologyNode): string => {
+    if (node.riskCount > 0) {
+      return node.riskCount >= 2 ? statusColors.error.border : statusColors.warning.border;
+    }
+    return statusColors[node.status]?.border || statusColors.unknown.border;
+  };
+
+  // 获取关系类型样式
+  const getRelationStyle = (type: K8sRelationType) => {
+    return relationStyleConfig[type] || { stroke: '#d9d9d9', dashArray: '' };
+  };
+
+  // 启动边的流动动画
+  const startEdgeAnimation = (graph: Graph, targetEdges: Edge[]) => {
+    let offset = 0;
+    const animate = () => {
+      offset = (offset + 1) % 20;
+      targetEdges.forEach(edge => {
+        edge.attr('line/strokeDashoffset', -offset);
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+  };
+
+  // 停止动画
+  const stopEdgeAnimation = () => {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  };
+
+  // 高亮节点及其依赖链路 - 显示数据流向动画
+  const highlightNodeEdges = (graph: Graph, clickedNode: any) => {
+    stopEdgeAnimation();
+    const nodeData = clickedNode.getData() as RiskTopologyNode;
+    const connectedEdges = graph.getConnectedEdges(clickedNode);
+    const connectedNodeIds = new Set<string>([nodeData.id]);
+
+    // 收集相关节点
+    connectedEdges.forEach(edge => {
+      connectedNodeIds.add(edge.getSourceCellId());
+      connectedNodeIds.add(edge.getTargetCellId());
+    });
+
+    // 降低无关节点透明度
+    graph.getNodes().forEach(node => {
+      const nData = node.getData() as RiskTopologyNode;
+      if (connectedNodeIds.has(nData.id)) {
+        node.attr('body/opacity', 1);
+        if (nData.id === nodeData.id) {
+          node.attr('body/strokeWidth', 3);
+          node.attr('body/stroke', '#1890ff');
+        }
+      } else {
+        node.attr('body/opacity', 0.3);
+      }
+    });
+
+    // 设置边的高亮和动画
+    graph.getEdges().forEach(edge => {
+      const isConnected = connectedEdges.includes(edge);
+      if (isConnected) {
+        edge.attr('line/strokeWidth', 3);
+        edge.attr('line/stroke', '#1890ff');
+        edge.attr('line/strokeDasharray', '10,5');
+        edge.attr('line/opacity', 1);
+      } else {
+        edge.attr('line/opacity', 0.2);
+      }
+    });
+
+    // 启动流动动画
+    startEdgeAnimation(graph, connectedEdges);
+  };
+
+  // 清除高亮和动画
+  const clearHighlights = (graph: Graph) => {
+    stopEdgeAnimation();
+    graph.getNodes().forEach(node => {
+      const nodeData = node.getData() as RiskTopologyNode;
+      node.attr('body/stroke', getNodeBorderColor(nodeData));
+      node.attr('body/strokeWidth', 2);
+      node.attr('body/opacity', 1);
+    });
+    graph.getEdges().forEach(edge => {
+      const edgeData = edge.getData() as { type: K8sRelationType };
+      const style = getRelationStyle(edgeData?.type);
+      edge.attr('line/stroke', style.stroke);
+      edge.attr('line/strokeWidth', 1.5);
+      edge.attr('line/strokeDasharray', style.dashArray);
+      edge.attr('line/strokeDashoffset', 0);
+      edge.attr('line/opacity', 1);
+    });
+  };
+
+  // 初始化图形
+  const initGraph = useCallback(() => {
+    if (!containerRef.current) return;
+
+    const graph = new Graph({
+      container: containerRef.current,
+      width: containerRef.current.clientWidth,
+      height: containerRef.current.clientHeight,
+      background: { color: '#fafafa' },
+      grid: { visible: true, type: 'dot', size: 10, args: { color: '#e0e0e0' } },
+      panning: { enabled: true },
+      mousewheel: { enabled: true, zoomAtMousePosition: true, modifiers: 'ctrl', minScale: 0.1, maxScale: 5 },
+      connecting: { anchor: 'center', connectionPoint: 'boundary' },
+    } as any);
+
+    // 节点点击事件
+    graph.on('node:click', ({ node }) => {
+      const nodeData = node.getData() as RiskTopologyNode;
+      setSelectedNode(nodeData);
+      setShowPanel(true);
+      highlightNodeEdges(graph, node);
+    });
+
+    // 画布点击清除选择
+    graph.on('blank:click', () => {
+      setSelectedNode(null);
+      setShowPanel(false);
+      clearHighlights(graph);
+    });
+
+    // 节点悬停效果
+    graph.on('node:mouseenter', ({ node }) => {
+      node.attr('body/strokeWidth', 3);
+      node.attr('body/filter', 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))');
+    });
+
+    graph.on('node:mouseleave', ({ node }) => {
+      const nodeData = node.getData() as RiskTopologyNode;
+      if (selectedNode?.id !== nodeData.id) {
+        node.attr('body/strokeWidth', 2);
+        node.attr('body/filter', 'none');
+      }
+    });
+
+    graphRef.current = graph;
+    return graph;
+  }, [selectedNode]);
+
+  // 渲染拓扑
+  const renderTopology = useCallback(() => {
+    if (!graphRef.current || nodes.length === 0) return;
+    const graph = graphRef.current;
+    graph.clearCells();
+
+    // 添加节点 - 使用 HTML 渲染确保元素对齐
+    nodes.forEach((node) => {
+      const typeStyle = nodeStyleConfig[node.type] || { fill: '#f5f5f5', icon: 'ND', iconBg: '#999' };
+      const hasRisk = node.riskCount > 0;
+      const borderColor = getNodeBorderColor(node);
+
+      graph.addNode({
+        id: node.id,
+        x: node.position.x,
+        y: node.position.y,
+        width: 180,
+        height: 60,
+        data: node,
+        shape: 'html',
+        html: () => {
+          const container = document.createElement('div');
+          container.className = styles.nodeContainer;
+          container.style.cssText = `
+            width: 180px;
+            height: 60px;
+            background: ${typeStyle.fill};
+            border: 2px solid ${borderColor};
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            box-sizing: border-box;
+            cursor: pointer;
+            position: relative;
+          `;
+
+          // 图标
+          const iconEl = document.createElement('div');
+          iconEl.style.cssText = `
+            width: 36px;
+            height: 36px;
+            background: ${typeStyle.iconBg};
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+          `;
+          iconEl.textContent = typeStyle.icon;
+          container.appendChild(iconEl);
+
+          // 文本区域
+          const textArea = document.createElement('div');
+          textArea.style.cssText = `
+            margin-left: 10px;
+            flex: 1;
+            overflow: hidden;
+          `;
+
+          const nameEl = document.createElement('div');
+          nameEl.style.cssText = `
+            font-size: 13px;
+            font-weight: 500;
+            color: #1a1a1a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          `;
+          nameEl.textContent = node.name;
+          nameEl.title = node.name;
+          textArea.appendChild(nameEl);
+
+          const typeEl = document.createElement('div');
+          typeEl.style.cssText = `
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+          `;
+          typeEl.textContent = node.type;
+          textArea.appendChild(typeEl);
+
+          container.appendChild(textArea);
+
+          // 风险徽章
+          if (hasRisk) {
+            const badge = document.createElement('div');
+            badge.style.cssText = `
+              position: absolute;
+              top: -8px;
+              right: -8px;
+              width: 20px;
+              height: 20px;
+              background: ${node.riskCount >= 2 ? '#EF4444' : '#F59E0B'};
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-size: 11px;
+              font-weight: 600;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            `;
+            badge.textContent = String(node.riskCount);
+            container.appendChild(badge);
+          }
+
+          return container;
+    });
+
+    // 添加边 - 带动态流线效果
+    edges.forEach((edge) => {
+      const style = getRelationStyle(edge.type);
+      graph.addEdge({
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+        data: { type: edge.type, label: edge.label },
+        attrs: {
+          line: {
+            stroke: style.stroke,
+            strokeWidth: 1.5,
+            strokeDasharray: style.dashArray,
+            targetMarker: {
+              name: 'block',
+              size: 6,
+              fill: style.stroke,
+            },
+          },
+        },
+        labels: edge.label ? [{
+          attrs: {
+            label: {
+              text: edge.label,
+              fontSize: 10,
+              fill: '#666',
+            },
+            body: {
+              fill: '#fff',
+              stroke: '#e8e8e8',
+              strokeWidth: 1,
+              rx: 3,
+              ry: 3,
+            },
+          },
+          position: 0.5,
+        }] : [],
+        router: { name: 'manhattan', args: { padding: 20 } },
+        connector: { name: 'rounded', args: { radius: 8 } },
+      });
+    });
+
+    graph.zoomToFit({ padding: 60, maxScale: 1 });
+  }, [nodes, edges]);
+
+  // 风险分析
+  const handleAnalyze = async () => {
+    try {
+      setAnalyzing(true);
+      await riskDetectionService.analyzeRisks();
+      history.push('/chaos/risk-detection/analysis');
+    } catch (error) {
+      Message.error('风险分析失败');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  // 缩放操作
+  const handleZoomIn = () => graphRef.current?.zoom(0.1);
+  const handleZoomOut = () => graphRef.current?.zoom(-0.1);
+  const handleFitView = () => graphRef.current?.zoomToFit({ padding: 40, maxScale: 1 });
+
+  useEffect(() => {
+    initGraph();
+    loadTopologyData();
+    return () => graphRef.current?.dispose();
+  }, [initGraph, loadTopologyData]);
+
+  useEffect(() => {
+    renderTopology();
+  }, [renderTopology]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (graphRef.current && containerRef.current) {
+        graphRef.current.resize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
+          <Button onClick={loadTopologyData} disabled={loading}>
+            <Icon type="refresh" style={{ marginRight: 4 }} />
+            <Translation>刷新</Translation>
+          </Button>
+        </div>
+        <div className={styles.headerRight}>
+          <Button type="primary" onClick={handleAnalyze} loading={analyzing}>
+            <Translation>风险分析</Translation>
+          </Button>
+          <Button onClick={() => history.push('/chaos/risk-detection/drill-results')}>
+            <Translation>演练结果</Translation>
+          </Button>
+        </div>
+      </div>
+
+      <div className={styles.toolbar}>
+        <div className={styles.zoomControls}>
+          <Button size="small" onClick={handleZoomIn}><Icon type="add" /></Button>
+          <Button size="small" onClick={handleZoomOut}><Icon type="minus" /></Button>
+          <Button size="small" onClick={handleFitView}><Icon type="fullscreen" /></Button>
+        </div>
+        <div className={styles.legend}>
+          <span className={styles.legendTitle}>状态：</span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendDot} style={{ background: '#EF4444' }} />
+            异常
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendDot} style={{ background: '#F59E0B' }} />
+            警告
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendDot} style={{ background: '#10B981' }} />
+            正常
+          </span>
+          <span className={styles.legendDivider}>|</span>
+          <span className={styles.legendTitle}>关系：</span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendLine} style={{ background: '#0EA5E9' }} />
+            包含
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendLine} style={{ background: '#10B981' }} />
+            管理
+          </span>
+          <span className={styles.legendItem}>
+            <span className={styles.legendLine} style={{ background: '#8B5CF6', borderStyle: 'dashed' }} />
+            选择
+          </span>
+        </div>
+        <div className={styles.hint}>Ctrl + 滚轮缩放 | 点击节点查看依赖链路</div>
+      </div>
+
+      <div className={styles.mainContent}>
+        <div className={styles.canvasWrapper}>
+          {loading && (
+            <div className={styles.loadingOverlay}>
+              <Loading tip="加载中..." />
+            </div>
+          )}
+          <div ref={containerRef} className={styles.canvas} />
+        </div>
+
+        {showPanel && selectedNode && (
+          <RiskSidePanel
+            node={selectedNode}
+            onClose={() => { setShowPanel(false); setSelectedNode(null); if (graphRef.current) clearHighlights(graphRef.current); }}
+            onViewAnalysis={() => history.push('/chaos/risk-detection/analysis')}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default RiskTopology;
+

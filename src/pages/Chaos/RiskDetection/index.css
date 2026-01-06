@@ -1,0 +1,177 @@
+/* 风险探测模块样式 */
+
+.riskDetectionContainer {
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  background: #f5f7fa;
+}
+
+.pageHeader {
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pageTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pageTitle h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.pageActions {
+  display: flex;
+  gap: 12px;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.topologyContainer {
+  flex: 1;
+  position: relative;
+  background: #fafafa;
+  overflow: hidden;
+}
+
+.topologyCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 侧边面板 */
+.sidePanel {
+  width: 360px;
+  background: #fff;
+  border-left: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidePanelHeader {
+  padding: 16px;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidePanelHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sidePanelContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* 风险卡片 */
+.riskCard {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.riskCard:hover {
+  border-color: #1890ff;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+}
+
+.riskCard.selected {
+  border-color: #1890ff;
+  background: #f0f7ff;
+}
+
+.riskCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.riskCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.riskCardDescription {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.riskCardMeta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 严重程度标签 */
+.severityBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.severityBadge.critical {
+  background: #fff1f0;
+  color: #cf1322;
+  border: 1px solid #ffa39e;
+}
+
+.severityBadge.high {
+  background: #fff7e6;
+  color: #d46b08;
+  border: 1px solid #ffd591;
+}
+
+.severityBadge.medium {
+  background: #fffbe6;
+  color: #d4b106;
+  border: 1px solid #ffe58f;
+}
+
+.severityBadge.low {
+  background: #f6ffed;
+  color: #389e0d;
+  border: 1px solid #b7eb8f;
+}
+
+/* 类别标签 */
+.categoryBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  background: #f0f0f0;
+  color: #666;
+}
+

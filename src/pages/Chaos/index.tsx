@@ -9,6 +9,7 @@ const ExpertiseAdmin = lazy(() => import('./ExpertiseAdmin'));
 const ExpertiseList = lazy(() => import('./ExpertiseList'));
 const ExpertiseDetail = lazy(() => import('./ExpertiseList/ExpertiseDetail'));
 const ExpertiseEditor = lazy(() => import('./ExpertiseAdmin/ExpertiseEditor'));
+const LoadTestAdmin = lazy(() => import('./LoadTestAdmin'));
 const AppLication = lazy(() => import('./Application'));
 const ApplicationDetail = lazy(() => import('./Application/ApplicationDetail'));
 const ScopeList = lazy(() => import('./Application/ScopeList'));
@@ -28,6 +29,12 @@ const WorkspaceDetail = lazy(() => import('./WorkspaceDetail'));
 
 const SceneFunction = lazy(() => import('./SceneFunction'));
 const Overview = lazy(() => import('./Overview'));
+/** 故障空间探测 */
+const FaultSpaceDetection = lazy(() => import('./FaultSpaceDetection'));
+/** 拓扑感知 */
+const TopologyPerception = lazy(() => import('./TopologyPerception'));
+/** 风险探测 */
+const RiskDetection = lazy(() => import('./RiskDetection'));
 
 const { Switch, Route, useRouteMatch } = router;
 const Arch: FC = () => {
@@ -45,6 +52,7 @@ const Arch: FC = () => {
       <Route exact path={`${path}/expertise/editor`} component={ExpertiseEditor} />
       <Route exact path={`${path}/expertise/list`} component={ExpertiseList} />
       <Route exact path={`${path}/expertise/detail`} component={ExpertiseDetail} />
+      <Route exact path={`${path}/loadtest/admin`} component={LoadTestAdmin} />
       <Route exact path={`${path}/application`} component={AppLication} />
       <Route exact path={`${path}/application/detail`} component={ApplicationDetail} />
       <Route exact path={`${path}/application/scopelist`} component={ScopeList} />
@@ -63,6 +71,9 @@ const Arch: FC = () => {
       <Route exact path={`${path}/expertises`} component={ExpertiseList} />
       <Route exact path={`${path}/scenes`} component={SceneFunction} />
       <Route exact path={`${path}/overview`} component={Overview} />
+      <Route path={`${path}/fault-space-detection`} component={FaultSpaceDetection} />
+      <Route exact path={`${path}/topology-perception`} component={TopologyPerception} />
+      <Route path={`${path}/risk-detection`} component={RiskDetection} />
     </Switch>
   );
 };

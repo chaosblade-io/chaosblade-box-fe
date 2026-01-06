@@ -1,7 +1,7 @@
 import HeatmapChartItem from './HeatmapChartItem';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import Translation from 'components/Translation';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import classnames from 'classnames';
 import moment from 'moment';
 import styles from './index.css';
@@ -54,14 +54,9 @@ function HeatmapChart() {
 
   const monthData = _.groupBy(dataSource, 'month');
   const key = _.sortBy(Object.keys(monthData));
-  let firstMonth: IScopeControlHeatmapChartData[] = [];
-  let sedMonth: IScopeControlHeatmapChartData[] = [];
-  let thirdMonth: IScopeControlHeatmapChartData[] = [];
-  _.forEach(monthData, () => {
-    firstMonth = _.concat(monthData[key[0]]);
-    sedMonth = _.concat(monthData[key[1]]);
-    thirdMonth = _.concat(monthData[key[2]]);
-  });
+  const firstMonth: IScopeControlHeatmapChartData[] = monthData[key[0]] || [];
+  const sedMonth: IScopeControlHeatmapChartData[] = monthData[key[1]] || [];
+  const thirdMonth: IScopeControlHeatmapChartData[] = monthData[key[2]] || [];
 
   return (
     <>

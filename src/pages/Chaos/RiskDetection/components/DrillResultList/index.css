@@ -1,0 +1,23 @@
+.container {
+  padding: 20px;
+}
+
+.riskTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.emptyText {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #6B7280;
+}
