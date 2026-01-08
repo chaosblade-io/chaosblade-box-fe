@@ -92,6 +92,10 @@ module.exports = options => {
         }
       }
     },
+    watchOptions: {
+      poll: 1000,
+      ignored: /node_modules/,
+    },
     resolve: {
       // 模块查找顺序:
       // - node_modules
