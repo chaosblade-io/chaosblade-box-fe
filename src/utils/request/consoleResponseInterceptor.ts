@@ -88,9 +88,16 @@ const CommonRes = (response: any) => {
   } else if (apiResponseData.message) {
     handleRefresh(apiResponseData);
     if (!ignoreError) {
-      const errMes = `${ERROR_CODE[apiResponseData.code] || i18n.t('Request failed')}: ${
-        ERROR_MESSAGE[apiResponseData.message] || apiResponseData.message
-      }`;
+      // 对于权限错误，直接使用后端返回的错误信息，不添加前缀
+      const isPermissionError = apiResponseData.code === '3001' ||
+        apiResponseData.code === 3001 ||
+        apiResponseData.code === '3101' ||
+        apiResponseData.code === 3101;
+      const errMes = isPermissionError
+        ? (ERROR_MESSAGE[apiResponseData.message] || apiResponseData.message)
+        : `${ERROR_CODE[apiResponseData.code] || i18n.t('Request failed')}: ${
+          ERROR_MESSAGE[apiResponseData.message] || apiResponseData.message
+        }`;
       // Message.error(errMes);
       throw new Error(errMes);
     }

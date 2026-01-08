@@ -933,5 +933,10 @@
   "Practice scenarios": "演练场景",
   "Previous step":"上一步",
   "Stop all":"全部停止",
-  "Expertise Management": "经验库管理"
+  "Expertise Management": "经验库管理",
+  "Select architecture": "选择架构",
+  "Please select the architecture that matches your Kubernetes cluster nodes": "请选择与您的 Kubernetes 集群节点匹配的架构",
+  "Please select the architecture that matches your host system": "请选择与您的主机系统匹配的架构",
+  "AMD64 (x86_64)": "AMD64 (x86_64)",
+  "ARM64 (aarch64)": "ARM64 (aarch64)"
 }
