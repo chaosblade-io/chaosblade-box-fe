@@ -57,6 +57,12 @@ class LoginUser extends BaseModel {
     const { code } = res || {};
     return code === 200;
   }
+  @effect()
+  *changePassword(payload) {
+    const res: any = yield this.effects.call(createServiceChaos('ChangePassword'), payload);
+    const { code } = res || {};
+    return code === 200;
+  }
 }
 
 export default new LoginUser().model;
