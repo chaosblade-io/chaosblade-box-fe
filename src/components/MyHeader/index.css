@@ -57,3 +57,72 @@
   }
   
 }
+
+/* 修改密码弹窗样式 */
+.changePasswordDialog {
+  :global(.next-dialog-body) {
+    padding: 24px 32px !important;
+  }
+
+  :global(.next-dialog-header) {
+    padding: 20px 32px 16px !important;
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+}
+
+.dialogContent {
+  padding: 8px 0;
+}
+
+.passwordInput {
+  :global(.next-input) {
+    border-radius: 4px;
+    transition: all 0.3s;
+
+    &:hover {
+      border-color: #0070cc;
+    }
+
+    &:focus {
+      border-color: #0070cc;
+      box-shadow: 0 0 0 2px rgba(0, 112, 204, 0.1);
+    }
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cancelButton {
+  min-width: 88px;
+  height: 32px;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: #0070cc;
+    color: #0070cc;
+  }
+}
+
+.confirmButton {
+  min-width: 88px;
+  height: 32px;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 112, 204, 0.3);
+  }
+}
