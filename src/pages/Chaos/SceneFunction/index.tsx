@@ -153,7 +153,7 @@ export default function SceneFunctions() {
           <Button type={scopeType === SCOPE_TYPE.K8S + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.K8S })}>Kubernetes</Button>
           <Button type={scopeType === SCOPE_TYPE.HOST + '' ? 'primary' : 'normal'} onClick={() => pushUrl(history, '/chaos/scenes', { scopeType: SCOPE_TYPE.HOST })}><Translation>Host</Translation></Button>
         </Button.Group>&nbsp;&nbsp;
-        <Search placeholder={i18n.t('please input')}
+        <Search placeholder={i18n.t('Use English keywords related to the problem, such as host, node, cpu, container, network, etc.').toString()}
           onSearch={value => setSearchKey(value)}
           style={{ width: '400px', marginRight: 8 }}
           onChange={value => setSearchKey(value)}

@@ -578,7 +578,7 @@
   "Recovery strategy": "恢复策略",
   "Confirm selection of applet": "确认选择小程序",
   "Deselect applet": "取消选择小程序",
-  "Search for fault titles": "搜索故障标题",
+  "Use English keywords related to the problem, such as host, node, cpu, container, network, etc.": "使用英文故障关键词，如host、node、cpu、container、network等",
   "Search": "搜索",
   "There is no scene in the current category": "当前分类暂无场景",
   "Click the applet": "点击小程序",
