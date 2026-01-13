@@ -33,22 +33,44 @@ const K8s: FC = () => {
     const cmd = Data && Data.command_install;
     if (verison === 'v2') {
       setV2(cmd);
-      // Generate arm64 command by replacing image repository
-      // Replace both --set images.chaos.repository= and ,images.chaos.repository= patterns
+      // Generate arm64 command by replacing image version tag
+      // For arm64 architecture, add -arm64 suffix to version tag
+      // Repository name remains the same: ghcr.io/chaosblade-io/chaosblade-box-agent
       if (cmd) {
         const arm64Cmd = cmd
-          .replace(/--set images\.chaos\.repository=chaosbladeio\/chaosblade-agent/g, '--set images.chaos.repository=chaosbladeio/chaosblade-agent-arm64')
-          .replace(/,images\.chaos\.repository=chaosbladeio\/chaosblade-agent/g, ',images.chaos.repository=chaosbladeio/chaosblade-agent-arm64');
+          // Replace --set images.chaos.version= pattern
+          .replace(/--set images\.chaos\.version=([^,\s]+)/g, (match, version) => {
+            // Add -arm64 suffix to version for arm64 architecture, but avoid duplicate suffix
+            const versionWithoutSuffix = version.replace(/-arm64$/, '');
+            return `--set images.chaos.version=${versionWithoutSuffix}-arm64`;
+          })
+          // Replace ,images.chaos.version= pattern (for helm v3 style)
+          .replace(/,images\.chaos\.version=([^,\s]+)/g, (match, version) => {
+            // Add -arm64 suffix to version for arm64 architecture, but avoid duplicate suffix
+            const versionWithoutSuffix = version.replace(/-arm64$/, '');
+            return `,images.chaos.version=${versionWithoutSuffix}-arm64`;
+          });
         setV2Arm64(arm64Cmd);
       }
     } else {
       setV3(cmd);
-      // Generate arm64 command by replacing image repository
-      // Replace both --set images.chaos.repository= and ,images.chaos.repository= patterns
+      // Generate arm64 command by replacing image version tag
+      // For arm64 architecture, add -arm64 suffix to version tag
+      // Repository name remains the same: ghcr.io/chaosblade-io/chaosblade-box-agent
       if (cmd) {
         const arm64Cmd = cmd
-          .replace(/--set images\.chaos\.repository=chaosbladeio\/chaosblade-agent/g, '--set images.chaos.repository=chaosbladeio/chaosblade-agent-arm64')
-          .replace(/,images\.chaos\.repository=chaosbladeio\/chaosblade-agent/g, ',images.chaos.repository=chaosbladeio/chaosblade-agent-arm64');
+          // Replace --set images.chaos.version= pattern
+          .replace(/--set images\.chaos\.version=([^,\s]+)/g, (match, version) => {
+            // Add -arm64 suffix to version for arm64 architecture, but avoid duplicate suffix
+            const versionWithoutSuffix = version.replace(/-arm64$/, '');
+            return `--set images.chaos.version=${versionWithoutSuffix}-arm64`;
+          })
+          // Replace ,images.chaos.version= pattern (for helm v3 style)
+          .replace(/,images\.chaos\.version=([^,\s]+)/g, (match, version) => {
+            // Add -arm64 suffix to version for arm64 architecture, but avoid duplicate suffix
+            const versionWithoutSuffix = version.replace(/-arm64$/, '');
+            return `,images.chaos.version=${versionWithoutSuffix}-arm64`;
+          });
         setV3Arm64(arm64Cmd);
       }
     }
@@ -57,10 +79,16 @@ const K8s: FC = () => {
   async function fetchHelmPackageAddress() {
     const { Data = '' } = await dispatch.agentSetting.getQueryHelmPackageAddress();
     setInstallHelmPackageAddr(Data);
-    // Generate arm64 helm package address
-    // Note: If helm charts are separate, this might need backend support
-    // For now, we'll use the same chart (helm charts typically support multi-arch via image selection)
-    setInstallHelmPackageAddrArm64(Data);
+    // Generate arm64 helm package address by replacing architecture suffix
+    // Replace -helm_amd64.tgz with -helm_arm64.tgz in both URL and output filename
+    if (Data) {
+      const arm64Addr = Data
+        .replace(/-helm_amd64\.tgz/g, '-helm_arm64.tgz')
+        .replace(/chaosblade-box-agent-([\d.]+)-helm_amd64\.tgz/g, 'chaosblade-box-agent-$1-helm_arm64.tgz');
+      setInstallHelmPackageAddrArm64(arm64Addr);
+    } else {
+      setInstallHelmPackageAddrArm64(Data);
+    }
   }
 
   function copyManualCmd(verison?: string, code?: string) {
