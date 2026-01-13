@@ -82,7 +82,24 @@ function FlowGroup(props: FlowGroupProps) {
       }
       if (appName) {
         setExperimentObj(APPLICATION_TYPE.APPLICATION);
-        setK8sResourceType(appType);
+        // 修复：当资源类型是 K8S 时，不应该将 appType 设置为 k8sResourceType
+        // 如果已有机器，根据机器的 deviceType 来设置；否则不设置（显示所有 K8S 场景）
+        if (scopeType === SCOPE_TYPE.K8S) {
+          if (!_.isEmpty(hosts) && hosts[0] && hosts[0].deviceType !== undefined) {
+            const firstHost = hosts[0];
+            if (firstHost.deviceType === 1) { // CONTAINER
+              setK8sResourceType(1); // K8_RESOURCE_TYPE_CONTAINER
+            } else if (firstHost.deviceType === 2) { // POD
+              setK8sResourceType(3); // K8_RESOURCE_TYPE_POD
+            } else {
+              setK8sResourceType(NaN);
+            }
+          } else {
+            setK8sResourceType(NaN); // 不设置，让后端显示所有 K8S 场景
+          }
+        } else {
+          setK8sResourceType(appType);
+        }
         setScopeType(scopeType!);
         setOsType(nextOsType!);
         isEdit && setAppDisabled(true);
@@ -162,6 +179,38 @@ function FlowGroup(props: FlowGroupProps) {
     }
     return () => { isUnmount = true; };
   }, []);
+
+  /**
+   * 更新 K8S 参数（故障场景添加时调用）
+   * 参数在 initMiniFlow 返回时就已经在 node.arguments 中了，可以直接更新
+   */
+  function updateK8sParametersForNewFlow(flow: IFlow, hosts: IHost[]) {
+    if (scopeType !== SCOPE_TYPE.K8S || experimentObj !== APPLICATION_TYPE.APPLICATION || _.isEmpty(hosts)) {
+      return;
+    }
+
+    // 直接更新参数，因为 initMiniFlow 返回的 flow 中已经包含了 arguments
+    const updatedFlow = updateK8sFlowParametersForFlow(flow, hosts) as IFlow;
+
+    // 更新 flowGroup 中的 flow
+    setFlowGroup((prevFlowGroup: IFlowGroup) => {
+      const flows = _.get(prevFlowGroup, 'flows', []) as IFlow[];
+      const flowIndex = flows.findIndex((f: IFlow) => f.id === flow.id);
+      if (flowIndex >= 0) {
+        const newFlows = [ ...flows ];
+        newFlows[flowIndex] = updatedFlow;
+        return {
+          ...prevFlowGroup,
+          flows: newFlows,
+        };
+      }
+      return prevFlowGroup;
+    });
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('故障场景添加时自动填充 K8S 参数:', { flowId: flow.id, hostsCount: hosts.length });
+    }
+  }
 
   // 应用与非应用切换
   function handleApplicationChange(value: any) {
@@ -425,15 +474,240 @@ function FlowGroup(props: FlowGroupProps) {
     });
   }
 
+  /**
+   * 更新单个 flow 的 K8S 演练场景参数
+   */
+  function updateK8sFlowParametersForFlow(flow: IFlow, hosts: IHost[]) {
+    if (_.isEmpty(flow) || _.isEmpty(hosts)) {
+      return flow;
+    }
+
+    // 收集所有机器的 deviceName，使用英文逗号分隔
+    const deviceNames = hosts
+      .filter((host: IHost) => host.deviceName)
+      .map((host: IHost) => host.deviceName)
+      .join(',');
+
+    // 获取第一个机器的 kubNamespace（假设所有机器在同一个 namespace）
+    const firstHost = hosts[0];
+    const kubNamespace = firstHost?.kubNamespace || '';
+
+    if (!deviceNames && !kubNamespace) {
+      return flow;
+    }
+
+    const updatedFlow = _.cloneDeep(flow);
+    const nodes = getNodes(updatedFlow);
+    let hasUpdated = false;
+
+    nodes.forEach((node: INode) => {
+      // 优先使用 node.arguments（initMiniFlow 返回时参数在这里）
+      // 如果没有，再使用 node.args（ActivityEditor 同步后的参数）
+      const argsToUpdate = node.arguments || node.args;
+      if (argsToUpdate && argsToUpdate.length > 0) {
+        // 创建新的 args 数组，确保 React 能检测到变化
+        const updatedArgs = argsToUpdate.map((arg: any) => {
+          if (arg.argumentList && arg.argumentList.length > 0) {
+            // 创建新的 argumentList 数组
+            const updatedArgumentList = arg.argumentList.map((param: any) => {
+              // 更新 names 参数
+              if (param.alias === 'names' && deviceNames) {
+                hasUpdated = true;
+                if (process.env.NODE_ENV === 'development') {
+                  console.log('更新 names 参数:', { alias: param.alias, oldValue: param.value, newValue: deviceNames });
+                }
+                return { ...param, value: deviceNames };
+              }
+              // 更新 namespace 参数
+              if (param.alias === 'namespace' && kubNamespace) {
+                hasUpdated = true;
+                if (process.env.NODE_ENV === 'development') {
+                  console.log('更新 namespace 参数:', { alias: param.alias, oldValue: param.value, newValue: kubNamespace });
+                }
+                return { ...param, value: kubNamespace };
+              }
+              return param;
+            });
+            return { ...arg, argumentList: updatedArgumentList };
+          }
+          return arg;
+        });
+        // 更新节点的 arguments 和 args（同时更新，确保兼容）
+        if (node.arguments) {
+          node.arguments = updatedArgs;
+        }
+        if (node.args) {
+          node.args = updatedArgs;
+        }
+      }
+    });
+
+    // 调试：打印所有参数的 alias，帮助排查问题
+    if (process.env.NODE_ENV === 'development' && !hasUpdated) {
+      const allAliases: string[] = [];
+      nodes.forEach((node: INode) => {
+        // 优先检查 arguments（initMiniFlow 返回时参数在这里）
+        const argsToCheck = node.arguments || node.args;
+        if (argsToCheck && argsToCheck.length > 0) {
+          argsToCheck.forEach((arg: any) => {
+            if (arg.argumentList && arg.argumentList.length > 0) {
+              arg.argumentList.forEach((param: any) => {
+                allAliases.push(param.alias);
+              });
+            }
+          });
+        }
+      });
+      console.log('所有参数的 alias:', allAliases, '期望找到: names, namespace');
+      // 打印节点信息，帮助排查
+      nodes.forEach((node: INode) => {
+        console.log('节点信息:', {
+          nodeId: node.id,
+          hasArgs: !!node.args,
+          argsLength: node.args?.length || 0,
+          hasArguments: !!node.arguments,
+          argumentsLength: node.arguments?.length || 0,
+        });
+      });
+    }
+
+    if (hasUpdated && process.env.NODE_ENV === 'development') {
+      console.log('K8S 参数自动填充:', { deviceNames, kubNamespace, flowId: flow.id });
+    }
+
+    return updatedFlow;
+  }
+
+
+  /**
+   * 使用指定的 flowGroup 更新 K8S 演练场景参数
+   */
+  function updateK8sFlowParametersWithFlowGroup(targetFlowGroup: IFlowGroup, hosts: IHost[]) {
+    // 只在资源类型是 K8S 且演练对象是应用的情况下执行
+    if (scopeType !== SCOPE_TYPE.K8S || experimentObj !== APPLICATION_TYPE.APPLICATION) {
+      return;
+    }
+
+    const flows = _.get(targetFlowGroup, 'flows', []) as IFlow[];
+    if (_.isEmpty(flows)) {
+      return;
+    }
+
+    // 如果没有选择机器，清空参数值
+    if (_.isEmpty(hosts)) {
+      const clearedFlows = flows.map((flow: IFlow) => {
+        const updatedFlow = _.cloneDeep(flow);
+        const nodes = getNodes(updatedFlow);
+        nodes.forEach((node: INode) => {
+          // 同时处理 node.args 和 node.arguments
+          const argsToUpdate = node.args || node.arguments;
+          if (argsToUpdate && argsToUpdate.length > 0) {
+            // 创建新的 args 数组，确保 React 能检测到变化
+            const updatedArgs = argsToUpdate.map((arg: any) => {
+              if (arg.argumentList && arg.argumentList.length > 0) {
+                // 创建新的 argumentList 数组
+                const updatedArgumentList = arg.argumentList.map((param: any) => {
+                  // 清空 names 和 namespace 参数
+                  if (param.alias === 'names' || param.alias === 'namespace') {
+                    return { ...param, value: '' };
+                  }
+                  return param;
+                });
+                return { ...arg, argumentList: updatedArgumentList };
+              }
+              return arg;
+            });
+            // 更新节点的 args 或 arguments（优先更新 args）
+            if (node.args) {
+              node.args = updatedArgs;
+            }
+            if (node.arguments) {
+              node.arguments = updatedArgs;
+            }
+          }
+        });
+        return updatedFlow;
+      });
+      setFlowGroup({
+        ...targetFlowGroup,
+        flows: clearedFlows,
+      });
+      return;
+    }
+
+    // 更新所有 flows 中的参数
+    const updatedFlows = flows.map((flow: IFlow) => {
+      return updateK8sFlowParametersForFlow(flow, hosts);
+    });
+
+    // 更新 flowGroup - 使用展开运算符确保创建新对象
+    const newFlowGroup = {
+      ...targetFlowGroup,
+      flows: [ ...updatedFlows ],
+    };
+    setFlowGroup(newFlowGroup);
+
+    // 如果 ActivityEditor 正在显示某个节点，也需要更新它
+    if (currentNode) {
+      const updatedFlow = _.find(updatedFlows, (f: IFlow) => {
+        const nodes = getNodes(f);
+        return nodes.some((n: INode) => n.id === currentNode.id);
+      });
+      if (updatedFlow) {
+        const nodes = getNodes(updatedFlow);
+        const updatedNode = nodes.find((n: INode) => n.id === currentNode.id);
+        if (updatedNode) {
+          // 使用 handleNodeUpdate 来更新节点，确保 ActivityEditor 能检测到变化
+          handleNodeUpdate(updatedNode);
+        }
+      }
+    }
+  }
+
   function handleScopeChange(value: IHost[]) {
-    setFlowGroup({
+    const newFlowGroup = {
       ...flowGroup,
       hosts: _.uniq(value),
-    });
+    };
+    setFlowGroup(newFlowGroup);
+
     if (!_.isEmpty(value)) {
       setValidateApp('success');
+      // 修复：当资源类型是 K8S 且选择了机器后，根据机器的 deviceType 来设置 k8sResourceType
+      // DeviceType: CONTAINER=1, POD=2
+      // K8S 资源类型: CONTAINER=1, NODE=2, POD=3
+      if (scopeType === SCOPE_TYPE.K8S) {
+        const firstHost = value[0];
+        if (firstHost && firstHost.deviceType !== undefined) {
+          // 根据 deviceType 映射到 k8sResourceType
+          // DeviceType.CONTAINER(1) -> K8_RESOURCE_TYPE_CONTAINER(1)
+          // DeviceType.POD(2) -> K8_RESOURCE_TYPE_POD(3)
+          // 如果没有匹配的，保持 NaN（显示所有 K8S 场景）
+          if (firstHost.deviceType === 1) { // CONTAINER
+            setK8sResourceType(1); // K8_RESOURCE_TYPE_CONTAINER
+          } else if (firstHost.deviceType === 2) { // POD
+            setK8sResourceType(3); // K8_RESOURCE_TYPE_POD
+          } else {
+            // 其他类型或未定义，不设置 k8sResourceType，显示所有 K8S 场景
+            setK8sResourceType(NaN);
+          }
+        }
+        // 更新 K8S 演练场景参数，机器选择变更时直接更新（此时参数应该已经加载了）
+        if (scopeType === SCOPE_TYPE.K8S && experimentObj === APPLICATION_TYPE.APPLICATION) {
+          // 直接更新所有 flow 的参数，因为此时参数应该已经加载了
+          updateK8sFlowParametersWithFlowGroup(newFlowGroup, value);
+        }
+      }
     } else {
       setValidateApp('error');
+      // 清空机器时，如果资源类型是 K8S，重置 k8sResourceType
+      if (scopeType === SCOPE_TYPE.K8S) {
+        setK8sResourceType(NaN);
+        // 清空参数值
+        if (experimentObj === APPLICATION_TYPE.APPLICATION) {
+          updateK8sFlowParametersWithFlowGroup(newFlowGroup, []);
+        }
+      }
     }
   }
 
@@ -551,13 +825,25 @@ function FlowGroup(props: FlowGroupProps) {
 
   function handleFunctionSelect(data: INode) {
     const appCode = _.get(data, 'code', '');
-    const appId = _.get(flowGroup, 'appId', '');
+    let appId = _.get(flowGroup, 'appId', '');
     const nodeGroups = _.get(flowGroup, 'appGroups', []);
+
+    // 确保appId是有效的，空字符串会导致后端无法识别
+    if (!appId || appId === '') {
+      appId = undefined as any;
+    }
+
     if (appCode) {
       const source = experimentObj === APPLICATION_TYPE.APPLICATION ? 1 : 0;
       // 根据选择的小程序code，初始化微流程
+      // 传递appId和nodeGroups以触发自动填充参数
       (async function() {
-        await dispatch.experimentDataSource.initMiniFlow({ appCode, source, appId, nodeGroups }, (flow: IFlow) => {
+        await dispatch.experimentDataSource.initMiniFlow({
+          appCode,
+          source,
+          appId: appId || undefined,
+          nodeGroups: nodeGroups || [],
+        }, (flow: IFlow) => {
           if (process.env.NODE_ENV === 'development') {
             // 由于接口对象层级较深，会修改到mock接口导出的结果
             // 避免问题这里先deepclone，仅限于线下开发
@@ -569,15 +855,159 @@ function FlowGroup(props: FlowGroupProps) {
           if (!_.isEmpty(flow)) {
             const flows = _.get(flowGroup, 'flows', []) as IFlow[];
             flows.push(flow);
-            setFlowGroup({
+            const newFlowGroup = {
               ...flowGroup,
               flows: [ ...flows ] as IFlow[],
               scopeType,
-            });
+            };
+            setFlowGroup(newFlowGroup);
+
+            // 如果是 K8S 资源类型且演练对象是应用，自动填充参数
+            // 参数在 initMiniFlow 返回时就已经在 node.arguments 中了，可以直接更新
+            const currentHosts = _.get(newFlowGroup, 'hosts', []) as IHost[];
+            if (scopeType === SCOPE_TYPE.K8S && experimentObj === APPLICATION_TYPE.APPLICATION && !_.isEmpty(currentHosts)) {
+              // 使用 setTimeout 确保 flow 已经添加到 flowGroup 后再更新
+              setTimeout(() => {
+                updateK8sParametersForNewFlow(flow, currentHosts);
+              }, 0);
+            }
           }
         });
       })();
     }
+  }
+
+  /**
+   * 刷新已有演练场景的参数，根据当前应用和机器分组自动填充参数
+   */
+  function refreshExistingFlowParameters(currentFlowGroup?: IFlowGroup) {
+    const targetFlowGroup = currentFlowGroup || flowGroup;
+    const flows = _.get(targetFlowGroup, 'flows', []) as IFlow[];
+    if (_.isEmpty(flows)) {
+      return;
+    }
+
+    const appId = _.get(targetFlowGroup, 'appId', '');
+    const nodeGroups = _.get(targetFlowGroup, 'appGroups', []);
+    const source = experimentObj === APPLICATION_TYPE.APPLICATION ? 1 : 0;
+
+    // 确保appId是有效的，空字符串会导致后端无法识别
+    if (!appId || appId === '') {
+      return;
+    }
+
+    // 遍历所有已有的flows，刷新每个flow的参数
+    const refreshPromises = flows.map((existingFlow: IFlow) => {
+      return new Promise<IFlow>(resolve => {
+        const nodes = getNodes(existingFlow);
+        if (_.isEmpty(nodes)) {
+          resolve(existingFlow);
+          return;
+        }
+
+        // 获取第一个节点的appCode（同一个flow中所有节点应该有相同的appCode）
+        const firstNode = nodes[0];
+        const appCode = _.get(firstNode, 'code', '') || _.get(firstNode, 'app_code', '');
+
+        if (!appCode) {
+          resolve(existingFlow);
+          return;
+        }
+
+        // 重新初始化flow以获取更新后的参数
+        // 传递appId和nodeGroups以触发自动填充参数
+        dispatch.experimentDataSource.initMiniFlow({
+          appCode,
+          source,
+          appId: appId || undefined,
+          nodeGroups: nodeGroups || [],
+        }, (newFlow: IFlow) => {
+          if (process.env.NODE_ENV === 'development') {
+            newFlow = _.cloneDeep(newFlow);
+          }
+
+          newFlow = decorateFlow(newFlow) as IFlow;
+
+          if (_.isEmpty(newFlow)) {
+            resolve(existingFlow);
+            return;
+          }
+
+          // 合并新flow的参数到现有flow，保留用户已填写的值
+          const existingNodesMap = new Map<string, INode>();
+          nodes.forEach((node: INode) => {
+            if (node.id) {
+              existingNodesMap.set(node.id, node);
+            }
+          });
+
+          // 创建更新后的flow
+          const updatedFlow = _.cloneDeep(existingFlow);
+
+          // 更新每个stage的节点参数
+          [ 'prepare', 'attack', 'check', 'recover' ].forEach((stage: string) => {
+            if (newFlow[stage]) {
+              const newStageNodes = newFlow[stage] as INode[];
+              const existingStageNodes = (updatedFlow[stage] as INode[]) || [];
+
+              // 更新每个节点的参数
+              newStageNodes.forEach((newNode: INode) => {
+                const existingNode = existingNodesMap.get(newNode.id || '');
+                if (existingNode && existingNode.args && newNode.args) {
+                  // 合并参数：保留用户已填写的值，使用新参数的默认值
+                  const mergedArgs = newNode.args.map((newArg: any, argIndex: number) => {
+                    const existingArg = existingNode.args[argIndex];
+                    const existingArgAny = existingArg as any;
+                    const newArgAny = newArg as any;
+                    if (existingArg && existingArgAny.argumentList && newArgAny.argumentList) {
+                      const mergedArgumentList = newArgAny.argumentList.map((newParam: any, paramIndex: number) => {
+                        const existingParam = existingArgAny.argumentList[paramIndex];
+                        if (existingParam && existingParam.value !== undefined && existingParam.value !== '') {
+                          // 保留用户已填写的值
+                          return {
+                            ...newParam,
+                            value: existingParam.value,
+                          };
+                        }
+                        return newParam;
+                      });
+                      return {
+                        ...newArg,
+                        argumentList: mergedArgumentList,
+                      };
+                    }
+                    return newArg;
+                  });
+
+                  // 更新现有节点的参数
+                  const nodeIndex = existingStageNodes.findIndex((n: INode) => n.id === newNode.id);
+                  if (nodeIndex >= 0) {
+                    existingStageNodes[nodeIndex] = {
+                      ...existingStageNodes[nodeIndex],
+                      args: mergedArgs,
+                    };
+                  }
+                }
+              });
+
+              updatedFlow[stage] = existingStageNodes;
+            }
+          });
+
+          resolve(updatedFlow);
+        });
+      });
+    });
+
+    // 等待所有异步操作完成
+    Promise.all(refreshPromises).then((updatedFlows: IFlow[]) => {
+      setFlowGroup(prevFlowGroup => ({
+        ...prevFlowGroup,
+        flows: updatedFlows,
+      }));
+    }).catch(error => {
+      console.error('刷新演练场景参数失败:', error);
+    });
   }
 
   function handleAppFocus() {
@@ -637,7 +1067,7 @@ function FlowGroup(props: FlowGroupProps) {
           osType: item && item.osType,
         });
       } else {
-        setFlowGroup({
+        const newFlowGroup = {
           ...flowGroup,
           appName: item && item.label,
           appId: value,
@@ -647,7 +1077,15 @@ function FlowGroup(props: FlowGroupProps) {
           flows: update ? [] : flowGroup.flows,
           scopeType: item && item.scopesType,
           osType: item && item.osType,
-        });
+        };
+        setFlowGroup(newFlowGroup);
+        // 如果已有演练场景且未清空，刷新参数
+        if (!update && !_.isEmpty(flowGroup.flows)) {
+          // 直接传递新的flowGroup，避免state异步更新问题
+          setTimeout(() => {
+            refreshExistingFlowParameters(newFlowGroup);
+          }, 0);
+        }
       }
     } else {
       setFlowGroup({
@@ -659,7 +1097,15 @@ function FlowGroup(props: FlowGroupProps) {
         scopeType,
       });
     }
-    setK8sResourceType(item && item.appType);
+    // 修复：当资源类型是 K8S 时，不应该将 appType 设置为 k8sResourceType
+    // appType 是应用类型（HOST=0, CLUSTER=1），不是 K8S 资源类型（CONTAINER=1, NODE=2, POD=3）
+    // 如果资源类型是 K8S，不设置 k8sResourceType，让后端根据场景的 function_code 来过滤所有 K8S 场景
+    // 或者根据选择的机器来确定 k8sResourceType（在 handleScopeChange 中处理）
+    if (item && item.scopesType === SCOPE_TYPE.K8S) {
+      setK8sResourceType(NaN); // 不设置，让后端显示所有 K8S 场景
+    } else {
+      setK8sResourceType(item && item.appType);
+    }
     setScopeType(item && item.scopesType);
     setOsType(item && item.osType);
   }
@@ -677,11 +1123,19 @@ function FlowGroup(props: FlowGroupProps) {
     })();
     // }
     if (!isExpertise) {
-      setFlowGroup({
+      const newFlowGroup = {
         ...flowGroup,
         appGroups: value,
         hosts: _.isEmpty(value) ? [] : hosts,
-      });
+      };
+      setFlowGroup(newFlowGroup);
+      // 如果已有演练场景，刷新参数
+      if (!_.isEmpty(flowGroup.flows)) {
+        // 直接传递新的flowGroup，避免state异步更新问题
+        setTimeout(() => {
+          refreshExistingFlowParameters(newFlowGroup);
+        }, 0);
+      }
       // setShowScopes(true);
     } else {
       setFlowGroup({

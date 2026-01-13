@@ -196,22 +196,46 @@ export default function TaskInfo(props: TaskInfoProps): any {
               <>
                 <div className={styles.infoTitle}><Translation>Basic Information</Translation></div>
                 <div className={styles.detailInfo}>
-                  <div><span><Translation>Machine name</Translation>: </span>
-                    {hostDetail.deviceName}
+                  <div>
+                    <span><Translation>Machine name</Translation>: </span>
+                    <span>{hostDetail.deviceName || '-'}</span>
                   </div>
-                  <div><span><Translation>IP address</Translation>: </span>
-                    {hostDetail.deviceType === 0 &&
-                      <a target="_blank" href={ `${location.origin}/chaos/experiment/scope/detail?id=${hostDetail.deviceConfigurationId}`}>{hostDetail.ip} <Icon type="external-link" size="xs" /></a> || hostDetail.ip
-                    }
+                  <div>
+                    <span><Translation>IP address</Translation>: </span>
+                    <span>
+                      {hostDetail.deviceType === 0 ? (
+                        <a target="_blank" href={ `${location.origin}/chaos/experiment/scope/detail?id=${hostDetail.deviceConfigurationId}`}>{hostDetail.ip} <Icon type="external-link" size="xs" /></a>
+                      ) : (hostDetail.ip || hostDetail.privateIp || '-')}
+                    </span>
                   </div>
-                  <div><span><Translation>Container name</Translation>: </span>
-                    {hostDetail.ip}
+                  <div>
+                    <span><Translation>Container name</Translation>: </span>
+                    <span>{hostDetail.deviceType === 1 ? (hostDetail.deviceName || hostDetail.hostName || '-') : '-'}</span>
                   </div>
-                  <div><span><Translation>Machine type</Translation>: </span>{hostDetail.type}</div>
-                  {hostDetail.clusterName && <div><span><Translation>Cluster</Translation>: </span>{hostDetail.clusterName}</div>}
-                  {hostDetail.kubNamespace && <div><span>namepace: </span>{hostDetail.kubNamespace}</div>}
-                  <div><span><Translation>Start time</Translation>: </span>{formatDate(startTime)}</div>
-                  {endTime && <div><span><Translation>End Time</Translation>: </span>{formatDate(endTime)}</div>}
+                  <div>
+                    <span><Translation>Machine type</Translation>: </span>
+                    <span>{hostDetail.type || '-'}</span>
+                  </div>
+                  <div>
+                    <span><Translation>Start time</Translation>: </span>
+                    <span>{formatDate(startTime) || '-'}</span>
+                  </div>
+                  <div>
+                    <span><Translation>End Time</Translation>: </span>
+                    <span>{endTime ? formatDate(endTime) : '-'}</span>
+                  </div>
+                  {hostDetail.clusterName && (
+                    <div>
+                      <span><Translation>Cluster</Translation>: </span>
+                      <span>{hostDetail.clusterName}</span>
+                    </div>
+                  )}
+                  {hostDetail.kubNamespace && (
+                    <div>
+                      <span>namepace: </span>
+                      <span>{hostDetail.kubNamespace}</span>
+                    </div>
+                  )}
                 </div>
               </>
             }
