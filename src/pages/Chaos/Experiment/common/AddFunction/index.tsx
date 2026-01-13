@@ -341,7 +341,7 @@ function AddFunction(props: AddFunctionProps): JSX.Element {
             value={searchKey}
             onChange={handleOnSearchChange}
             onSearch={handleOnSearch}
-            placeholder={i18n.t('Search for fault titles').toString()}
+            placeholder={i18n.t('Use English keywords related to the problem, such as host, node, cpu, container, network, etc.').toString()}
             searchText={i18n.t('Search').toString()}
             hasIcon={false}
           />
