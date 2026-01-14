@@ -72,10 +72,16 @@ export default function InputEditor(props: InputEditorProps) {
 
   // 报错信息
   const errorMessage = _.get(parameter, 'errorMessage', '');
+  // 对于 script-content 参数，使用多行文本输入框
+  const parameterAlias = _.get(parameter, 'alias', '');
+  const isScriptContent = parameterAlias === 'script-content';
+  const inputType = isScriptContent ? 'textarea' : undefined;
+
   return (
     <div className={isSwitch ? styles.paramesItem : ''}>
       <TextInput
         value={inputValue as string}
+        type={inputType}
         htmlType={htmlType!}
         direction="vertical"
         label={parameter && parameter.name}
@@ -91,7 +97,7 @@ export default function InputEditor(props: InputEditorProps) {
           onChange && onChange(parameter.parameterId!, parameter.type!, parameter.alias!, value, parameter.component!);
         }}
         className={isSwitch ? styles.switchEditStyle : ''}
-        alias={_.get(parameter, 'alias', '')}
+        alias={parameterAlias}
       />
       {isSwitch ?
         <span className={styles.paramesContro}>

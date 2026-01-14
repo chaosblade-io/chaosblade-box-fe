@@ -60,7 +60,7 @@ function ApplicationGroup(props: ApplicationGroupProps) {
   }
 
   return (
-    <Form {...formItemLayout}>
+    <Form {...formItemLayout} component="div">
       {!disableAppSel &&
         <FormItem label={<Translation>{i18n.t('Drill application').toString()}</Translation>} className={styles.itemLine}>
           <CustomSelect params={{ filterDisabled: true, appType: scopeType, osType }} appInfo={data} value={appId} placeholder={renderPlaceholder()} onChange={props.onAppChange} />

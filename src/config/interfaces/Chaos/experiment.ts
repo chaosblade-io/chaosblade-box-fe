@@ -127,6 +127,7 @@ export interface IHost {
   content?: string;
   invalid?: boolean; // 是否是失效机器，true失效
   authMessage: string; // 不可以原因
+  kubNamespace?: string; // kubernetes namespace
 }
 
 export interface IStage {
@@ -406,7 +407,7 @@ export interface IFunctionParamterId extends CommonReq{
 export interface IInitMiniFlowByAppCode extends CommonReq{
   appCode: string;
   source: number;
-  appId: string;
+  appId?: string;
   nodeGroups: string[];
 }
 

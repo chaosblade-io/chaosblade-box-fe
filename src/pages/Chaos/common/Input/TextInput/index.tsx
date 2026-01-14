@@ -95,7 +95,7 @@ export default function TextInput(props: ITextInputProps) {
               ? (
                 <Input
                   hasClear={!icon || !_.isNumber(props.maxLength) || Number(props.maxLength) <= 0}
-                  {...props}
+                  {..._.omit(props, [ 'labelStyle', 'wrapperStyle', 'labelPlacement', 'direction', 'label', 'tip', 'icon', 'iconTip', 'onClickIcon', 'textbefore', 'autoheight', 'alias' ])}
                   defaultValue={defaultValue}
                   label=''
                   addonTextBefore={textbefore}
@@ -120,7 +120,7 @@ export default function TextInput(props: ITextInputProps) {
               ? (
                 <Input.TextArea
                   autoHeight={_.defaultTo(autoheight, { minRows: 6, maxRows: 6 })}
-                  {..._.omit(props, 'hasClear')}
+                  {..._.omit(props, [ 'hasClear', 'labelStyle', 'wrapperStyle', 'labelPlacement', 'direction', 'label', 'tip', 'icon', 'iconTip', 'onClickIcon', 'textbefore', 'autoheight', 'alias' ])}
                 />
               ) : ''
           }

@@ -144,17 +144,31 @@
     flex-wrap: wrap;
     > div {
       width: 50%;
-      height: 26px;
+      min-height: 26px;
       line-height: 26px;
-      span {
-        width: 70px;
+      padding-right: 16px;
+      padding-bottom: 4px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: flex-start;
+      > span:first-child {
+        min-width: 110px;
+        flex-shrink: 0;
         display: inline-block;
+        white-space: nowrap;
+        margin-right: 4px;
       }
-      .link {
-        color: #0064C8;
-        cursor: pointer;
-        &:hover {
-          color: #015396;
+      > span:last-child {
+        flex: 1 1 0%;
+        flex-grow: 1;
+        word-break: break-word;
+        min-width: 0;
+        a {
+          color: #0064C8;
+          cursor: pointer;
+          &:hover {
+            color: #015396;
+          }
         }
       }
     }
