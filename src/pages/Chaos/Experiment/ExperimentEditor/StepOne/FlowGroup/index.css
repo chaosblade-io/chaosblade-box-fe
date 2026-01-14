@@ -168,3 +168,25 @@
   color: #888;
   position: absolute;
 }
+
+.machineListChangeTip {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.tipText {
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tipText:hover {
+  color: #006CD2;
+}
+
+.tipContent {
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 300px;
+}

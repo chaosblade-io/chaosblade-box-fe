@@ -1466,6 +1466,26 @@ function FlowGroup(props: FlowGroupProps) {
       <FormItem label={i18n.t('Drill content').toString()} required >
         {renderFlowGroup()}
         {
+          /* 机器列表变更提示 - 只在资源类型是 Kubernetes 且演练对象是应用时显示 */
+          scopeType === SCOPE_TYPE.K8S && experimentObj === APPLICATION_TYPE.APPLICATION && flows.length > 0 && (
+            <div className={styles.machineListChangeTip}>
+              <Balloon
+                trigger={
+                  <span className={styles.tipText}>
+                    {i18n.t('When the machine list changes').toString()}
+                  </span>
+                }
+                align="l"
+                closable={false}
+              >
+                <div className={styles.tipContent}>
+                  {i18n.t('When the machine list changes, you need to click the following fault injection nodes to automatically update the machine parameters').toString()}
+                </div>
+              </Balloon>
+            </div>
+          )
+        }
+        {
           /* flow */
           _.map(flows as IFlow[], (flow: IFlow) => {
             flow = decorateFlow(flow)!;

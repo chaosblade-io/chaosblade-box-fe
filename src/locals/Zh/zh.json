@@ -676,6 +676,8 @@
   "Keep adding": "继续添加",
   "Can not be empty": "不能为空",
   "Drill content": "演练内容",
+  "When the machine list changes, you need to click the following fault injection nodes to automatically update the machine parameters": "当选择机器列表变更时，需要点击以下故障注入节点以便自动更新机器参数",
+  "When the machine list changes": "当选择机器列表变更时...",
   "Choose a walkthrough failure": "选择演练故障",
   "Save": "保存",
   "Save walkthrough groups": "保存演练分组",
