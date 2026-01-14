@@ -14,5 +14,7 @@
   "Please enter old password": "Please enter old password",
   "Please enter new password": "Please enter new password",
   "Password changed successfully": "Password changed successfully",
-  "Failed to change password": "Failed to change password"
+  "Failed to change password": "Failed to change password",
+  "When the machine list changes, you need to click the following fault injection nodes to automatically update the machine parameters": "When the machine list changes, you need to click the following fault injection nodes to automatically update the machine parameters",
+  "When the machine list changes": "When the machine list changes..."
 }
