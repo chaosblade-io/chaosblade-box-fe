@@ -176,27 +176,31 @@ class ExperimentDataSource extends BaseModel {
 
   @effect()
   *getTags(payload: ISearchKey) {
-    const { Data: tags } = yield this.effects.call(createServiceChaos('SearchTags'), payload);
+    const res = yield this.effects.call(createServiceChaos('SearchTags'), payload);
+    const { Data: tags } = res || {};
     yield this.effects.put(this.setTags(tags));
   }
 
   // @effect()
   // *getWorkSpaces() {
-  //   const { Data: workSpaces } = yield this.effects.call(createServiceChaos('ListUserWorkspaces'));
+  //   const res = yield this.effects.call(createServiceChaos('ListUserWorkspaces'));
+  //   const { Data: workSpaces } = res || {};
   //   yield this.effects.put(this.setWorkSpaces(workSpaces));
   // }
 
   // 应用
   @effect()
   *getApplication(payload?: IGetApp) {
-    const { Data } = yield this.effects.call(createServiceChaos('GetUserApplications'), payload);
-    yield this.effects.put(this.setApplication(Data.data));
+    const res = yield this.effects.call(createServiceChaos('GetUserApplications'), payload);
+    const { Data } = res || {};
+    yield this.effects.put(this.setApplication(Data?.data));
     return Data;
   }
 
   @effect()
   *getApplicationGroup(payload: IApplicationGroup) {
-    const { Data: groups } = yield this.effects.call(createServiceChaos('GetUserApplicationGroups'), payload);
+    const res = yield this.effects.call(createServiceChaos('GetUserApplicationGroups'), payload);
+    const { Data: groups } = res || {};
     yield this.effects.put(this.setApplicationGroup(groups));
     return groups;
   }
@@ -205,7 +209,8 @@ class ExperimentDataSource extends BaseModel {
   *getScopeByApplication(payload: IGetScopeByApplication, callback: (scopes: any) => void) {
     const { app_group, app_id } = payload;
     if (app_group?.length !== 0 && app_id) {
-      const { Data: scopes } = yield this.effects.call(createServiceChaos('GetScopesByApplication'), payload);
+      const res = yield this.effects.call(createServiceChaos('GetScopesByApplication'), payload);
+      const { Data: scopes } = res || {};
       yield this.effects.put(this.setScopesByApp(scopes));
       callback && callback(scopes);
     } else {
@@ -216,7 +221,8 @@ class ExperimentDataSource extends BaseModel {
 
   @effect()
   *getScopeNoApplication(payload: IGetScopeNoApplication, callback: (scopes: any) => void) {
-    const { Data: scopes } = yield this.effects.call(createServiceChaos('UserScope'), payload);
+    const res = yield this.effects.call(createServiceChaos('UserScope'), payload);
+    const { Data: scopes } = res || {};
     yield this.effects.put(this.setScopesNoApp(scopes));
     callback && callback(scopes);
   }
@@ -224,7 +230,8 @@ class ExperimentDataSource extends BaseModel {
   // 云服务实例
   @effect()
   *getCloudServiceInstanceList(payload: IGetCloudServiceInstanceList, callback: (scopes: any) => void) {
-    const { Data: list } = yield this.effects.call(createServiceChaos('GetCloudServiceInstanceList'), payload);
+    const res = yield this.effects.call(createServiceChaos('GetCloudServiceInstanceList'), payload);
+    const { Data: list } = res || {};
     yield this.effects.put(this.cloudInstanceList(list));
     callback && callback(list);
   }
@@ -232,31 +239,36 @@ class ExperimentDataSource extends BaseModel {
   // 微流程
   @effect()
   *initMiniFlow(payload: IInitMiniFlowByAppCode, callback?: (Data: IFlow) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('InitMiniFlowByAppCode'), payload);
+    const res = yield this.effects.call(createServiceChaos('InitMiniFlowByAppCode'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *checkActivityGroupDefinition(payload: IFlowGroup, callback?: (Data: ICheckResult) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('CheckActivityGroupDefinition'), payload);
+    const res = yield this.effects.call(createServiceChaos('CheckActivityGroupDefinition'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getSearchDeviceTags(payload: IDeviceTags, callback?: (Data: string[]) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('SearchDeviceTags'), payload);
+    const res = yield this.effects.call(createServiceChaos('SearchDeviceTags'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getSearchK8sNamespaceTags(payload: IDeviceTags, callback?: (Data: string[]) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('SearchClusterNamespace'), payload);
+    const res = yield this.effects.call(createServiceChaos('SearchClusterNamespace'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getSearchClusterNameTags(payload: IDeviceTags, callback?: (Data: string[]) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('SearchClusterNames'), payload);
+    const res = yield this.effects.call(createServiceChaos('SearchClusterNames'), payload);
+    const { Data } = res || {};
     if (Data) {
       const result: any = [];
       for (const i in Data) {

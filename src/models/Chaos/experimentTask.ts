@@ -171,19 +171,22 @@ class ExperimentTask extends BaseModel {
 
   @effect()
   *getExperimentTask(payload: ITask, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExperimentTask'), payload);
+    const res = yield this.effects.call(createServiceChaos('QueryExperimentTask'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getExperiementTaskGuardInfo(payload: ITask, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExperimentTaskGuardInfo'), payload);
+    const res = yield this.effects.call(createServiceChaos('QueryExperimentTaskGuardInfo'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getActivityTask(payload: IActivityTaskId, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryActivityTask'), payload);
+    const res = yield this.effects.call(createServiceChaos('QueryActivityTask'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
   @effect()
@@ -203,45 +206,52 @@ class ExperimentTask extends BaseModel {
   }
   @effect()
   *getTaskMetric(payload: IActivityTaskId, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryActivityTaskMetric'), payload);
+    const res = yield this.effects.call(createServiceChaos('QueryActivityTaskMetric'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *retryActivityTask(payload: IActivityTaskId, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('RetryActivityTask'), payload);
+    const res = yield this.effects.call(createServiceChaos('RetryActivityTask'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *queryExperimentTaskConsumedAmount(payload: IExperimentTaskId, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExperimentTaskConsumedAmount'), payload);
+    const res = yield this.effects.call(createServiceChaos('QueryExperimentTaskConsumedAmount'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *runExperiment(payload: IExperimentId) {
-    const { Data } = yield this.effects.call(createServiceChaos('RunExperiment'), payload);
+    const res = yield this.effects.call(createServiceChaos('RunExperiment'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setReStartTaskId(Data));
   }
 
   @effect()
   *stopExperimentTask(payload: ITask) {
-    const { Data } = yield this.effects.call(createServiceChaos('StopExperimentTask'), payload);
+    const res = yield this.effects.call(createServiceChaos('StopExperimentTask'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setStopTaskId(Data));
     return Data;
   }
 
   @effect()
   *getExperimentTaskFeedback(payload: ITask, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('GetExperimentTaskFeedback'), payload);
+    const res = yield this.effects.call(createServiceChaos('GetExperimentTaskFeedback'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setTaskFeedback(Data));
     callback && callback(Data);
   }
 
   @effect()
   *submitExperimentTaskFeedback(payload: ISubmitFeedback, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('SubmitExperimentTaskFeedback'), payload);
+    const res = yield this.effects.call(createServiceChaos('SubmitExperimentTaskFeedback'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 

@@ -84,33 +84,38 @@ class ExperimentScene extends BaseModel {
 
   @effect()
   *getGuardCategories(callback?: (cates: any[]) => void) {
-    const { Data: cates } = yield this.effects.call(createServiceChaos('QueryGlobalGuardSceneFunctionCategories'));
+    const res = yield this.effects.call(createServiceChaos('QueryGlobalGuardSceneFunctionCategories'));
+    const { Data: cates } = res || {};
     callback && callback(cates);
   }
 
   @effect()
   *getGlobalCategories(callback?: (cates: any[]) => void) {
-    const { Data: cates } = yield this.effects.call(createServiceChaos('QueryGlobalMonitorSceneFunctionCategories'));
+    const res = yield this.effects.call(createServiceChaos('QueryGlobalMonitorSceneFunctionCategories'));
+    const { Data: cates } = res || {};
     callback && callback(cates);
   }
 
   /** 根据输入框搜索 */
   @effect()
   *searchFunctions(payload: ISearchFunctions, callback?: (data: IFunctionsResult) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('SearchSceneFunctions'), payload);
+    const res = yield this.effects.call(createServiceChaos('SearchSceneFunctions'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   /** 根据类目查 列表 */
   @effect()
   *getFunctionsByCategoryId(payload: ISearchFunctions, callback?: (data: IFunctionsResult) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QuerySceneFunctionByCategoryId'), payload);
+    const res = yield this.effects.call(createServiceChaos('QuerySceneFunctionByCategoryId'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getFunctionParameters(payload: IFunctionParamterId, callback?: (err: null, data: IFunctionsResult) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QuerySceneFunctionParameters'), payload);
+    const res = yield this.effects.call(createServiceChaos('QuerySceneFunctionParameters'), payload);
+    const { Data } = res || {};
 
     const result: any = [{
       argumentList: Data,
@@ -124,7 +129,8 @@ class ExperimentScene extends BaseModel {
 
   @effect()
   *getGuardSceneRules(payload: IFunctionParamterId, callback?: (err: null, data: IFunctionsResult) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryGuardSceneFunctionRules'), payload);
+    const res = yield this.effects.call(createServiceChaos('QueryGuardSceneFunctionRules'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setGuardSceneRules(payload, Data));
     callback && callback(null, Data);
   }

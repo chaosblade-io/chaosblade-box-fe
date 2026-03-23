@@ -20,7 +20,8 @@ class FunctionParameters extends BaseModel {
 
   @effect()
   *getSearchOPtions(url: string, payload: ISearchEditor, callback: (Data: string[]) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos(url), payload);
+    const res = yield this.effects.call(createServiceChaos(url), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 

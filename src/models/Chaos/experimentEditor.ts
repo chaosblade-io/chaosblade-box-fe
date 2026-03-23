@@ -501,8 +501,9 @@ class ExperimentEditor extends BaseModel {
 
   @effect()
   *getExperiment(payload: IExperimentId, callback: (res: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExperiment'), payload);
-    if (Data.flowInfo?.guardConf?.guards) {
+    const res = yield this.effects.call(createServiceChaos('QueryExperiment'), payload);
+    const { Data } = res || {};
+    if (Data?.flowInfo?.guardConf?.guards) {
       Data.flowInfo.guardConf.guards?.map((item: any) => {
         if (item.actionType === 0) {
           item.arguments = [{
@@ -519,8 +520,9 @@ class ExperimentEditor extends BaseModel {
 
   @effect()
   *getExperimentByExpertise(payload: IExpertiseId) {
-    const { Data } = yield this.effects.call(createServiceChaos('InitExperimentByExpertise'), payload);
-    if (Data.flowInfo?.guardConf?.guards) {
+    const res = yield this.effects.call(createServiceChaos('InitExperimentByExpertise'), payload);
+    const { Data } = res || {};
+    if (Data?.flowInfo?.guardConf?.guards) {
       Data.flowInfo.guardConf.guards.map((item: any) => {
         if (item.actionType === 0) {
           item.arguments = [{
@@ -536,7 +538,8 @@ class ExperimentEditor extends BaseModel {
 
   @effect()
   *getExperimentByAppCode(payload: IAppCode) {
-    const { Data } = yield this.effects.call(createServiceChaos('InitExperimentByAppCode'), payload);
+    const res = yield this.effects.call(createServiceChaos('InitExperimentByAppCode'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setExperimentByAppCode(Data));
   }
 
@@ -548,7 +551,8 @@ class ExperimentEditor extends BaseModel {
       }
       return item;
     });
-    const { Data } = yield this.effects.call(createServiceChaos('CreateExperiment'), payload);
+    const res = yield this.effects.call(createServiceChaos('CreateExperiment'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setCreateExperimentId(Data));
     Data && callback && callback(Data);
   }
@@ -561,7 +565,8 @@ class ExperimentEditor extends BaseModel {
       }
       return item;
     });
-    const { success } = yield this.effects.call(createServiceChaos('UpdateExperimentFlowDefinition'), payload);
+    const res = yield this.effects.call(createServiceChaos('UpdateExperimentFlowDefinition'), payload);
+    const { success } = res || {};
     success && callback && callback();
   }
 
@@ -579,7 +584,8 @@ class ExperimentEditor extends BaseModel {
       }
       return item;
     });
-    const { Data } = yield this.effects.call(createServiceChaos('workspaceCreateExperiment'), payload);
+    const res = yield this.effects.call(createServiceChaos('workspaceCreateExperiment'), payload);
+    const { Data } = res || {};
     yield this.effects.put(this.setCreateExperimentId(Data));
     Data && callback && callback(Data);
   }

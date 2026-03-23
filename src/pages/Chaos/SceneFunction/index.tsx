@@ -97,7 +97,7 @@ export default function SceneFunctions() {
   }
 
   const handleCreateByFunction = () => {
-    const { code = '' } = selectedFun;
+    const { code = '' } = selectedFun || {};
     dispatch.experimentEditor.setClearExperiment();
     code && pushUrl(history, '/chaos/experiment/editor', {
       code,

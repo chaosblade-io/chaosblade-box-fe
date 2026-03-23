@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Graph, Edge } from '@antv/x6';
+import { register } from "@antv/x6-react-shape";
 import { Button, Loading, Message, Icon, Select, Tab, Input, Tag } from '@alicloud/console-components';
 import { useHistory } from 'dva';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
@@ -447,17 +448,23 @@ const RiskTopology: FC = () => {
     });
 
     // 降低无关节点透明度
-    graph.getNodes().forEach(node => {
+    graphRef.current.getNodes().forEach(node => {
       const nData = node.getData() as RiskTopologyNode;
-      if (connectedNodeIds.has(nData.id)) {
-        node.attr('body/opacity', 1);
-        if (nData.id === nodeData.id) {
-          node.attr('body/strokeWidth', 3);
-          node.attr('body/stroke', '#1890ff');
-        }
-      } else {
-        node.attr('body/opacity', 0.3);
-      }
+      node.setData({
+        ...nData,
+        selectedNodeId: nodeData.id,
+        connectedNodeIds
+      })
+      // const nData = node.getData() as RiskTopologyNode;
+      // if (connectedNodeIds.has(nData.id)) {
+      //   node.attr('body/opacity', 1);
+      //   if (nData.id === nodeData.id) {
+      //     node.attr('body/strokeWidth', 3);
+      //     node.attr('body/stroke', '#1890ff');
+      //   }
+      // } else {
+      //   node.attr('body/opacity', 0.3);
+      // }
     });
 
     // 设置边的高亮和动画
@@ -480,11 +487,19 @@ const RiskTopology: FC = () => {
   // 清除高亮和动画
   const clearHighlights = (graph: Graph) => {
     stopEdgeAnimation();
-    graph.getNodes().forEach(node => {
-      const nodeData = node.getData() as RiskTopologyNode;
-      node.attr('body/stroke', getNodeBorderColor(nodeData));
-      node.attr('body/strokeWidth', 2);
-      node.attr('body/opacity', 1);
+    // graph.getNodes().forEach(node => {
+    //   const nodeData = node.getData() as RiskTopologyNode;
+    //   node.attr('body/stroke', getNodeBorderColor(nodeData));
+    //   node.attr('body/strokeWidth', 2);
+    //   node.attr('body/opacity', 1);
+    // });
+    graphRef.current.getNodes().forEach(node => {
+      const nData = node.getData() as RiskTopologyNode;
+      node.setData({
+        ...nData,
+        selectedNodeId: null,
+        connectedEdges: null
+      })
     });
     graph.getEdges().forEach(edge => {
       const edgeData = edge.getData() as { type: K8sRelationType };
@@ -670,6 +685,7 @@ const RiskTopology: FC = () => {
 
     // 节点点击事件
     graph.on('node:click', ({ node }) => {
+      clearHighlights(graph);
       const nodeData = node.getData() as RiskTopologyNode;
       setSelectedNode(nodeData);
       setShowPanel(true);
@@ -690,16 +706,16 @@ const RiskTopology: FC = () => {
     });
 
     // 节点悬停效果
-    graph.on('node:mouseenter', ({ node }) => {
-      node.attr('body/strokeWidth', 3);
-      node.attr('body/filter', 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))');
-    });
+    // graph.on('node:mouseenter', ({ node }) => {
+    //   node.attr('body/strokeWidth', 3);
+    //   node.attr('body/filter', 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))');
+    // });
 
-    graph.on('node:mouseleave', ({ node }) => {
-      // 移除悬停效果（不依赖 selectedNode 状态）
-      node.attr('body/strokeWidth', 2);
-      node.attr('body/filter', 'none');
-    });
+    // graph.on('node:mouseleave', ({ node }) => {
+    //   // 移除悬停效果（不依赖 selectedNode 状态）
+    //   node.attr('body/strokeWidth', 2);
+    //   node.attr('body/filter', 'none');
+    // });
 
     graphRef.current = graph;
     return graph;
@@ -839,12 +855,12 @@ const RiskTopology: FC = () => {
 
     // 添加节点 - 使用 rect 节点，增大尺寸以完全包含文字
     filteredNodes.forEach((node) => {
-      const typeStyle = nodeStyleConfig[node.type] || { fill: '#f5f5f5', icon: 'ND', iconBg: '#999', domain: 'unknown' };
-      const hasRisk = node.riskCount > 0;
-      const borderColor = getNodeBorderColor(node);
+      // const typeStyle = nodeStyleConfig[node.type] || { fill: '#f5f5f5', icon: 'ND', iconBg: '#999', domain: 'unknown' };
+      // const hasRisk = node.riskCount > 0;
+      // const borderColor = getNodeBorderColor(node);
 
-      // 不截断名称，让节点自适应
-      const displayName = node.name;
+      // // 不截断名称，让节点自适应
+      // const displayName = node.name;
 
       graph.addNode({
         id: node.id,
@@ -853,124 +869,124 @@ const RiskTopology: FC = () => {
         width: 200,  // 增大宽度
         height: 70,  // 增大高度
         data: node,
-        shape: 'rect',
-        attrs: {
-          body: {
-            fill: typeStyle.fill,
-            stroke: borderColor,
-            strokeWidth: 2,
-            rx: 8,
-            ry: 8,
-          },
-        },
-        markup: [
-          {
-            tagName: 'rect',
-            selector: 'body',
-          },
-          {
-            tagName: 'rect',
-            selector: 'icon-bg',
-          },
-          {
-            tagName: 'text',
-            selector: 'icon-text',
-          },
-          {
-            tagName: 'text',
-            selector: 'name-text',
-          },
-          {
-            tagName: 'text',
-            selector: 'type-text',
-          },
-          ...(hasRisk ? [
-            {
-              tagName: 'circle',
-              selector: 'risk-badge',
-            },
-            {
-              tagName: 'text',
-              selector: 'risk-count',
-            },
-          ] : []),
-        ] as any,
+        shape: 'custom-react-node',
+        // attrs: {
+        //   body: {
+        //     fill: typeStyle.fill,
+        //     stroke: borderColor,
+        //     strokeWidth: 2,
+        //     rx: 8,
+        //     ry: 8,
+        //   },
+        // },
+        // markup: [
+        //   {
+        //     tagName: 'rect',
+        //     selector: 'body',
+        //   },
+        //   {
+        //     tagName: 'rect',
+        //     selector: 'icon-bg',
+        //   },
+        //   {
+        //     tagName: 'text',
+        //     selector: 'icon-text',
+        //   },
+        //   {
+        //     tagName: 'text',
+        //     selector: 'name-text',
+        //   },
+        //   {
+        //     tagName: 'text',
+        //     selector: 'type-text',
+        //   },
+        //   ...(hasRisk ? [
+        //     {
+        //       tagName: 'circle',
+        //       selector: 'risk-badge',
+        //     },
+        //     {
+        //       tagName: 'text',
+        //       selector: 'risk-count',
+        //     },
+        //   ] : []),
+        // ] as any,
       });
 
       // 更新节点的详细样式
-      const cell = graph.getCellById(node.id);
-      if (cell) {
-        cell.attr({
-          'icon-bg': {
-            width: 40,
-            height: 40,
-            x: 15,
-            y: 15,
-            fill: typeStyle.iconBg,
-            rx: 6,
-            ry: 6,
-          },
-          'icon-text': {
-            text: typeStyle.icon,
-            fill: '#fff',
-            fontSize: 13,
-            fontWeight: 600,
-            x: 35,
-            y: 35,
-            textAnchor: 'middle',
-            textVerticalAnchor: 'middle',
-            refX: null,  // 移除默认的 refX
-            refY: null,  // 移除默认的 refY
-          },
-          'name-text': {
-            text: displayName,
-            fill: '#1a1a1a',
-            fontSize: 13,
-            fontWeight: 500,
-            x: 65,
-            y: 28,
-            textAnchor: 'start',
-            refX: null,  // 移除默认的 refX
-            refY: null,  // 移除默认的 refY
-          },
-          'type-text': {
-            text: node.type,
-            fill: '#666',
-            fontSize: 11,
-            x: 65,
-            y: 45,
-            textAnchor: 'start',
-            refX: null,  // 移除默认的 refX
-            refY: null,  // 移除默认的 refY
-          },
-        });
+      // const cell = graph.getCellById(node.id);
+      // if (cell) {
+      //   cell.attr({
+      //     'icon-bg': {
+      //       width: 40,
+      //       height: 40,
+      //       x: 15,
+      //       y: 15,
+      //       fill: typeStyle.iconBg,
+      //       rx: 6,
+      //       ry: 6,
+      //     },
+      //     'icon-text': {
+      //       text: typeStyle.icon,
+      //       fill: '#fff',
+      //       fontSize: 13,
+      //       fontWeight: 600,
+      //       x: 35,
+      //       y: 35,
+      //       textAnchor: 'middle',
+      //       textVerticalAnchor: 'middle',
+      //       refX: null,  // 移除默认的 refX
+      //       refY: null,  // 移除默认的 refY
+      //     },
+      //     'name-text': {
+      //       text: displayName,
+      //       fill: '#1a1a1a',
+      //       fontSize: 13,
+      //       fontWeight: 500,
+      //       x: 65,
+      //       y: 28,
+      //       textAnchor: 'start',
+      //       refX: null,  // 移除默认的 refX
+      //       refY: null,  // 移除默认的 refY
+      //     },
+      //     'type-text': {
+      //       text: node.type,
+      //       fill: '#666',
+      //       fontSize: 11,
+      //       x: 65,
+      //       y: 45,
+      //       textAnchor: 'start',
+      //       refX: null,  // 移除默认的 refX
+      //       refY: null,  // 移除默认的 refY
+      //     },
+      //   });
 
-        if (hasRisk) {
-          cell.attr({
-            'risk-badge': {
-              cx: 185,
-              cy: 15,
-              r: 10,
-              fill: node.riskCount >= 2 ? '#EF4444' : '#F59E0B',
-              stroke: '#fff',
-              strokeWidth: 2,
-            },
-            'risk-count': {
-              text: String(node.riskCount),
-              fill: '#fff',
-              fontSize: 11,
-              fontWeight: 600,
-              x: 185,
-              y: 15,
-              textAnchor: 'middle',
-              textVerticalAnchor: 'middle',
-            },
-          });
-        }
+      //   if (hasRisk) {
+      //     cell.attr({
+      //       'risk-badge': {
+      //         cx: 185,
+      //         cy: 15,
+      //         r: 10,
+      //         fill: node.riskCount >= 2 ? '#EF4444' : '#F59E0B',
+      //         stroke: '#fff',
+      //         strokeWidth: 2,
+      //       },
+      //       'risk-count': {
+      //         text: String(node.riskCount),
+      //         fill: '#fff',
+      //         fontSize: 11,
+      //         fontWeight: 600,
+      //         x: 185,
+      //         y: 15,
+      //         textAnchor: 'middle',
+      //         textVerticalAnchor: 'middle',
+      //       },
+      //     });
+      //   }
 
-        // 添加光点环绕效果
-        addGlowingOrbitEffect(cell, node);
-      }
+      //   // 添加光点环绕效果
+      //   addGlowingOrbitEffect(cell, node);
+      // }
     });
 
     // 添加边 - 使用流线型线条（smooth connector）
@@ -1053,15 +1069,26 @@ const RiskTopology: FC = () => {
     setIsResizingDetail(true);
   }, []);
 
+  const siderRef = useRef<HTMLDivElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
+  const [isTransition, setIsTransition] = useState(true);
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      setIsTransition(false)
       if (isResizingSidebar) {
-        // 修复：使用 e.clientX 作为新宽度（支持双向拖拽）
-        const newWidth = Math.max(200, Math.min(600, e.clientX));
+        const sider = siderRef.current;
+        if (!sider) return;
+        const rect = sider.getBoundingClientRect();
+        let newWidth = e.clientX - rect.left;
+        newWidth = Math.max(200, Math.min(600, newWidth));
         setSidebarWidth(newWidth);
       }
       if (isResizingDetail) {
-        const newWidth = Math.max(300, Math.min(800, window.innerWidth - e.clientX));
+        const detail = detailRef.current;
+        if (!detail) return;
+        const rect = detail.getBoundingClientRect();
+        const newWidth = Math.max(300, Math.min(800, window.innerWidth - e.clientX - (window.innerWidth - rect.right)));
         setDetailPanelWidth(newWidth);
       }
     };
@@ -1134,6 +1161,40 @@ const RiskTopology: FC = () => {
     localStorage.setItem('riskTopology_sidebarCollapsed', String(collapsed));
   }, []);
 
+  // 渲染自定义节点
+  const CustomNode = ({ node }) => {
+    const typeStyle = nodeStyleConfig[node.data.type] || { fill: '#f5f5f5', icon: 'ND', iconBg: '#999', domain: 'unknown' };
+    const hasRisk = node.data.riskCount > 0;
+    const borderColor = getNodeBorderColor(node.data);
+    const displayName = node.data.name;
+    const isActive = showPanel && node.data.selectedNodeId===node.data.id ? true : false
+    let isOpacity = showPanel && (node.data.connectedNodeIds && node.data.connectedNodeIds.has(node.data.id)) ? true : false
+    return (
+      <div className={styles.customNode} style={{ opacity: !showPanel||(isOpacity) ? 1 : 0.3 }}>
+        <div className={styles.flowLine} style={{ background: isActive ? '' : borderColor, animation: isActive ? '' : 'none'}}></div>
+        <div className={styles.customNodeInner} style={{ background: typeStyle.fill }}>
+          <div className={styles.customNodeLeft} style={{ background: typeStyle.iconBg }}>
+            <span>{typeStyle.icon}</span>
+          </div>
+          <div className={styles.customNodeRight}>
+            <span>{displayName}</span>
+            <p>{node.data.type}</p>
+          </div>
+        </div>
+        <div style={{ display: hasRisk ? 'block' : 'none', background: node.data.riskCount >= 2 ? '#EF4444' : '#F59E0B' }} className={styles.riskBadge}>{node.data.riskCount}</div>
+      </div>
+    )
+  }
+
+  // 注册自定义节点
+  register({
+    shape: "custom-react-node",
+    width: 200,
+    height: 70,
+    effect: ['data'],
+    component: CustomNode,
+  });
+
   // 渲染左侧边栏
   const renderSidebar = () => {
     if (sidebarCollapsed) {
@@ -1152,7 +1213,7 @@ const RiskTopology: FC = () => {
     }
 
     return (
-      <div className={styles.sidebar} style={{ width: sidebarWidth }}>
+      <div ref={siderRef} className={styles.sidebar} style={{ width: sidebarWidth, transition: isTransition ? '' : 'none' }}>
         {/* 头部标题 */}
         <div className={styles.sidebarHeader}>
           <div className={styles.logoTitle}>
@@ -1444,7 +1505,7 @@ const RiskTopology: FC = () => {
     const isService = selectedNode.type === 'SERVICE';
 
     return (
-      <div className={styles.detailPanel} style={{ width: detailPanelWidth }}>
+      <div ref={detailRef} className={styles.detailPanel} style={{ width: detailPanelWidth, transition: isTransition ? '' : 'none' }}>
         {/* 拖拽手柄 */}
         <div
           className={styles.resizeHandle}

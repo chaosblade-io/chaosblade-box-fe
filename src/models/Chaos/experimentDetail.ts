@@ -126,8 +126,9 @@ class ExperimentDetail extends BaseModel {
 
   @effect()
   *getExperiment(payload: IExperimentId, callback: (res: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExperiment'), payload);
-    if (Data.flowInfo?.guardConf?.guards) {
+    const res = yield this.effects.call(createServiceChaos('QueryExperiment'), payload);
+    const { Data } = res || {};
+    if (Data?.flowInfo?.guardConf?.guards) {
       Data.flowInfo.guardConf.guards?.map((item: any) => {
         if (item.actionType === 0) {
           item.arguments = [{
@@ -144,41 +145,47 @@ class ExperimentDetail extends BaseModel {
 
   @effect()
   *getExperimentBaseInfo(payload?: IExperimentId, callback?: (res: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExperimentBasicInfo'),
+    const res = yield this.effects.call(createServiceChaos('QueryExperimentBasicInfo'),
       payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *updateExperimentBasicInfo(payload: IBaseInfo, callback?: (res: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('UpdateExperimentBasicInfo'),
+    const res = yield this.effects.call(createServiceChaos('UpdateExperimentBasicInfo'),
       payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getListOperationLogs(payload: any, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('ListExperimentOperationLogs'), payload);
+    const res = yield this.effects.call(createServiceChaos('ListExperimentOperationLogs'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   @effect()
   *getExperimentTaskPageable(payload: any, callback?: (data: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('ExperimentTaskSummaryPageableQuery'), payload);
+    const res = yield this.effects.call(createServiceChaos('ExperimentTaskSummaryPageableQuery'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   /** 演练保存为经验 */
   @effect()
   *saveExperience(payload?: IExperimentId) {
-    const { Data } = yield this.effects.call(createServiceChaos('ConvertExperimentToExpertise'), payload);
+    const res = yield this.effects.call(createServiceChaos('ConvertExperimentToExpertise'), payload);
+    const { Data } = res || {};
     return Data;
   }
 
   /** 演练保存为经验 */
   @effect()
   *UpdateExperimentHost(payload?: IExperimentId) {
-    const { Data } = yield this.effects.call(createServiceChaos('UpdateExperimentHost'), payload);
+    const res = yield this.effects.call(createServiceChaos('UpdateExperimentHost'), payload);
+    const { Data } = res || {};
     return Data;
   }
 }

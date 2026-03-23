@@ -62,14 +62,16 @@ class Application extends BaseModel {
   // 单条增加标签
   @effect()
   *updateApplicationTag(payload: IUpdateApplicationTag, callback: (success: boolean) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('UpdateApplicationTag'), payload);
+    const res = yield this.effects.call(createServiceChaos('UpdateApplicationTag'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   // 批量增加标签
   @effect()
   *batchAddApplicationTag(payload: IUpdateApplicationTag, callback: (success: boolean) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('BatchAddApplicationTag'), payload);
+    const res = yield this.effects.call(createServiceChaos('BatchAddApplicationTag'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 

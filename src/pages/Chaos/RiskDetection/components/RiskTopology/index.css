@@ -728,3 +728,90 @@
     stroke-dashoffset: 0;
   }
 }
+
+.customNode {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  padding: 2px;
+  position: relative;
+  border-radius: 4px;
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+.customNode:hover {
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+.customNodeInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.customNodeLeft {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-size: 13px;
+  margin-left: 15px;
+  margin-right: 6px;
+  border-radius: 4px;
+}
+.customNodeRight span {
+  display: block;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 14px;
+  color: #1a1a1a;
+  font-weight: 500;
+  width: 125px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.customNodeRight p {
+  font-size: 12px;
+  line-height: 12px;
+  color: #666;
+  margin: 0;
+  margin-top: 4px;
+}
+.riskBadge {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  color: #fff;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  font-weight: bold;
+  line-height: 16px;
+  text-align: center;
+}
+
+.flowLine {
+  position: absolute;
+  padding-bottom: calc(100% * 1.41421356);
+  width: calc(100% * 1.41421356);
+  left: 50%;
+  top: 50%;
+  border-radius: 100%;
+  z-index: -1;
+  background: conic-gradient(from -160deg at 50% 50%, #2a3ae9, #a853ba, #2a8af6, #2a8af600 360deg);
+  animation: globalSpinner 4s linear infinite;
+  transform: translate(-50%, -50%) rotate(0);
+}
+
+@keyframes globalSpinner {
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}

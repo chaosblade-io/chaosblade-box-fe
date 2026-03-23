@@ -168,7 +168,8 @@ class LoadTestDefinition extends BaseModel {
   *createLoadTestDefinition(payload: ICreateLoadTestDefinitionReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('CreateLoadTestDefinition'), payload);
+      const res = yield this.effects.call(createServiceChaos('CreateLoadTestDefinition'), payload);
+      const { Data } = res || {};
       callback && callback(Data);
       return Data;
     } catch (error) {
@@ -183,7 +184,8 @@ class LoadTestDefinition extends BaseModel {
   *updateLoadTestDefinition(payload: IUpdateLoadTestDefinitionReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('UpdateLoadTestDefinition'), payload);
+      const res = yield this.effects.call(createServiceChaos('UpdateLoadTestDefinition'), payload);
+      const { Data } = res || {};
       callback && callback(Data);
       return Data;
     } catch (error) {
@@ -200,7 +202,8 @@ class LoadTestDefinition extends BaseModel {
       yield this.effects.put(this.setLoading(true));
       // 将参数拼接到URL后面，而不是放在请求体内
       const url = `DeleteLoadTestDefinition?id=${payload.id}&namespace=${payload.Namespace || 'default'}`;
-      const { Data } = yield this.effects.call(createServiceChaos(url), {});
+      const res = yield this.effects.call(createServiceChaos(url), {});
+      const { Data } = res || {};
       yield this.effects.put(this.removeDefinition(payload.id));
       callback && callback(Data);
       return Data;
@@ -218,7 +221,8 @@ class LoadTestDefinition extends BaseModel {
       yield this.effects.put(this.setLoading(true));
       const url = `GetLoadTestDefinition?id=${payload.id}&namespace=${payload.Namespace || 'default'}`;
 
-      const { Data } = yield this.effects.call(createServiceChaos(url), {});
+      const res = yield this.effects.call(createServiceChaos(url), {});
+      const { Data } = res || {};
       yield this.effects.put(this.setCurrentDefinition(Data));
       callback && callback(Data);
       return Data;
@@ -234,8 +238,9 @@ class LoadTestDefinition extends BaseModel {
   *queryLoadTestDefinitions(payload: IQueryLoadTestDefinitionsReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('QueryLoadTestDefinitions'), payload);
-      yield this.effects.put(this.setDefinitions(Data.data || [], Data.total || 0));
+      const res = yield this.effects.call(createServiceChaos('QueryLoadTestDefinitions'), payload);
+      const { Data } = res || {};
+      yield this.effects.put(this.setDefinitions(Data?.data || [], Data?.total || 0));
       callback && callback(Data);
       return Data;
     } catch (error) {
@@ -365,7 +370,8 @@ class LoadTestDefinition extends BaseModel {
   *createLoadTestStrategy(payload: ICreateLoadTestStrategyReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('CreateLoadTestStrategy'), payload);
+      const res = yield this.effects.call(createServiceChaos('CreateLoadTestStrategy'), payload);
+      const { Data } = res || {};
 
       if (Data) {
         // 创建成功后，可以选择性地添加到本地状态
@@ -449,7 +455,8 @@ class LoadTestDefinition extends BaseModel {
   *deleteLoadTestStrategy(payload: IDeleteLoadTestStrategyReq, callback?: (data: any) => void) {
     try {
       yield this.effects.put(this.setLoading(true));
-      const { Data } = yield this.effects.call(createServiceChaos('DeleteLoadTestStrategy'), payload);
+      const res = yield this.effects.call(createServiceChaos('DeleteLoadTestStrategy'), payload);
+      const { Data } = res || {};
       callback && callback(Data);
       return Data;
     } catch (error) {

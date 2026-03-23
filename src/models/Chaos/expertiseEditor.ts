@@ -391,8 +391,9 @@ class ExpertiseEditor extends BaseModel {
 
   @effect()
   *getExpertise(payload: IExpertiseId, callback: (res: any) => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('QueryExpertiseDetails'), payload);
-    if (Data.executable_info?.flow?.guardConf?.guards) {
+    const res = yield this.effects.call(createServiceChaos('QueryExpertiseDetails'), payload);
+    const { Data } = res || {};
+    if (Data?.executable_info?.flow?.guardConf?.guards) {
       Data.executable_info.flow.guardConf.guards.map((item: any) => {
         if (item.actionType === 0) {
           item.arguments = [{
@@ -415,7 +416,8 @@ class ExpertiseEditor extends BaseModel {
       }
       return item;
     });
-    const { Data } = yield this.effects.call(createServiceChaos('UpdateExpertise'), payload);
+    const res = yield this.effects.call(createServiceChaos('UpdateExpertise'), payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
@@ -427,16 +429,18 @@ class ExpertiseEditor extends BaseModel {
       }
       return item;
     });
-    const { Data } = yield this.effects.call(createServiceChaos('CreateExpertise'),
+    const res = yield this.effects.call(createServiceChaos('CreateExpertise'),
       payload);
+    const { Data } = res || {};
     callback && callback(Data);
   }
 
   // 拷贝经验
   @effect()
   *cloneExperience(payload: any, callback: () => void) {
-    const { Data } = yield this.effects.call(createServiceChaos('CloneExpertise'),
+    const res = yield this.effects.call(createServiceChaos('CloneExpertise'),
       payload);
+    const { Data } = res || {};
     callback && callback();
     yield this.effects.put(this.setExpertise(Data));
   }

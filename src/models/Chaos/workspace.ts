@@ -61,7 +61,7 @@ class WorkSpace extends BaseModel {
   @effect()
   *getGeneralWorkSpaceBaseInfo(payload: IWorkspaceIdReq) {
     const data = yield this.effects.call(createServiceChaos('GetGeneralWorkSpaceBaseInfo'), payload);
-    yield this.effects.put(this.setWorkspaceInfo(data && data.Data));
+    yield this.effects.put(this.setWorkspaceInfo(data?.Data));
     return data;
   }
 

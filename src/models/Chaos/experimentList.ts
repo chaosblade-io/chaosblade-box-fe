@@ -95,7 +95,8 @@ class ExperimentList extends BaseModel {
 
   @effect()
   *getExperimentList(payload: IGetExperimentListReq) {
-    const { Data: { content, total } } = yield this.effects.call(createServiceChaos('PageableQueryUserExperiments'), payload);
+    const res = yield this.effects.call(createServiceChaos('PageableQueryUserExperiments'), payload);
+    const { Data: { content, total } = {} } = res || {};
     yield this.effects.put(this.setExperimens({ data: content, total }));
   }
 
@@ -142,7 +143,8 @@ class ExperimentList extends BaseModel {
 
   @effect()
   *getPageableGeneralExperiments(payload: any) {
-    const { Data: { pageQueryResponse, permission } } = yield this.effects.call(createServiceChaos('PageableGeneralExperiments'), payload);
+    const res = yield this.effects.call(createServiceChaos('PageableGeneralExperiments'), payload);
+    const { Data: { pageQueryResponse, permission } = {} } = res || {};
     yield this.effects.put(this.setExperimens({ data: _.get(pageQueryResponse, 'content', []), total: _.get(pageQueryResponse, 'total', 0), permission }));
     return permission;
   }
