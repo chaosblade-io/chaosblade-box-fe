@@ -6,6 +6,7 @@ const AddDetection = lazy(() => import('./AddDetection'));
 const DetectionRecords = lazy(() => import('./DetectionRecords'));
 const TaskDetail = lazy(() => import('./TaskDetail'));
 const DrillRecord = lazy(() => import('./DrillRecord'));
+const SystemManagement = lazy(() => import('./SystemManagement'));
 
 const { Switch, Route, useRouteMatch } = router;
 
@@ -19,6 +20,7 @@ const FaultSpaceDetection: FC = () => {
       <Route exact path={`${path}/tasks`} component={DetectionTasks} />
       <Route exact path={`${path}/add`} component={AddDetection} />
       <Route exact path={`${path}/records`} component={DetectionRecords} />
+      <Route exact path={`${path}/systems`} component={SystemManagement} />
       {/* 默认重定向到任务列表 */}
       <Route exact path={path} component={DetectionTasks} />
     </Switch>

@@ -3,7 +3,7 @@ import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 
 import styles from '../index.css';
-import { Button, Icon, Drawer, Checkbox, Input, Select, NumberPicker, Tag } from '@alicloud/console-components';
+import { Button, Icon, Drawer, Checkbox, Input, Select, NumberPicker, Tag, Message } from '@alicloud/console-components';
 
 // XFlow imports - we'll use a simplified approach for now
 // In a real implementation, you would install @antv/xflow and import properly
@@ -47,9 +47,9 @@ interface FaultTemplate {
   name: string;
   description: string;
   category: 'NETWORK' | 'RESOURCE' | 'APPLICATION' | 'INFRASTRUCTURE';
-  // Standardized chaosblade identifiers
-  target?: string;
-  action?: string;
+  target: string;
+  action: string;
+  scope: string;
   parameters: Array<{
     name: string;
     type: 'string' | 'number' | 'boolean' | 'select';
@@ -57,6 +57,9 @@ interface FaultTemplate {
     defaultValue?: any;
     options?: string[];
     description: string;
+    unit?: string;
+    min?: number;
+    max?: number;
   }>;
 }
 
@@ -173,61 +176,88 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
           setServiceNodes(mapped);
         }
 
-        // 故障类型
-        const { probeProxy } = await import('../../../../../services/faultSpaceDetection/probeProxy');
-        const faultRes: any = await probeProxy.getFaultTypes();
-        const items = faultRes?.data?.items || [];
-        const templates: FaultTemplate[] = items.map((it: any) => {
-          const code: string = it.faultCode || it.code || it.type || String(it.id || '');
-          // Parse paramConfig first to extract target/action/fields
-          let conf: any = {};
-          try {
-            conf = it.paramConfig ? JSON.parse(it.paramConfig) : {};
-          } catch {
-            conf = {};
-          }
-          // Prefer paramConfig.target/action; fallback to item fields; lastly derive from code
-          let target = String(conf.target || it.target || '');
-          let action = String(conf.action || it.action || '');
-          if (!target || !action) {
-            const parts = code.split('_');
-            if (parts.length >= 2) {
-              target = target || parts[0];
-              action = action || parts.slice(1).join('_');
-            }
-          }
-          // Normalize some common aliases
-          const normTarget = (t: string) => {
-            const x = (t || '').toLowerCase();
-            if (x === 'memory') return 'mem';
-            if (x === 'cpu') return 'cpu';
-            if (x === 'process') return 'process';
-            if (x === 'container') return 'container';
-            if (x === 'disk') return 'disk';
-            if (x === 'network' || x === 'net') return 'network';
-            if (x === 'mem') return 'mem';
-            return x || 'container';
-          };
-          const fields = Array.isArray(conf.fields) ? conf.fields : [];
-          return {
-            type: code,
-            name: it.name || code,
-            description: it.description || '',
-            category: (it.category || 'APPLICATION') as any,
-            target: normTarget(target),
-            action: (action || '').toLowerCase(),
-            parameters: fields
-              .filter((f: any) => ![ 'names', 'namespace', 'container_names' ].includes((f.key || f.name)))
-              .map((f: any) => ({
-                name: f.key || f.name,
-                type: (String(f.type || 'string').includes('int') || String(f.type || '').includes('number')) ? 'number' : 'string',
-                required: !!f.required,
-                defaultValue: f.default,
-                options: Array.isArray(f.options) ? f.options : undefined,
-                description: f.label || f.desc || '',
-              })),
-          } as FaultTemplate;
-        });
+        // 硬编码 5 种故障模板，参数名严格对齐 ChaosBlade v1.8.0 spec
+        const templates: FaultTemplate[] = [
+          {
+            type: 'cpu_fullload',
+            name: 'CPU 满载',
+            description: 'blade create cpu fullload — 对 Pod 注入 CPU 满载故障',
+            category: 'RESOURCE',
+            target: 'cpu',
+            action: 'fullload',
+            scope: 'pod',
+            parameters: [
+              { name: 'cpu-percent', type: 'number', required: false, defaultValue: 100, description: 'CPU 负载百分比 (0-100)', unit: '%', min: 1, max: 100 },
+              { name: 'cpu-count', type: 'number', required: false, defaultValue: 0, description: 'CPU 核心数 (0=全部)', min: 0, max: 128 },
+              { name: 'climb-time', type: 'number', required: false, defaultValue: 0, description: '爬升时间 (秒)', unit: 's', min: 0, max: 600 },
+              { name: 'timeout', type: 'string', required: false, defaultValue: '', description: '持续时间(秒)' },
+            ],
+          },
+          {
+            type: 'mem_load',
+            name: '内存占用',
+            description: 'blade create mem load — 对 Pod 注入内存占用故障',
+            category: 'RESOURCE',
+            target: 'mem',
+            action: 'load',
+            scope: 'pod',
+            parameters: [
+              { name: 'mem-percent', type: 'number', required: false, defaultValue: 80, description: '内存占用百分比 (0-100)', unit: '%', min: 1, max: 100 },
+              { name: 'mode', type: 'select', required: false, defaultValue: 'ram', options: [ 'ram', 'cache' ], description: '模式：ram 或 cache' },
+              { name: 'rate', type: 'number', required: false, defaultValue: 100, description: '内存填充速率 (MB/s)', unit: 'MB/s', min: 1, max: 10000 },
+              { name: 'timeout', type: 'string', required: false, defaultValue: '', description: '持续时间(秒)' },
+            ],
+          },
+          {
+            type: 'network_delay',
+            name: '网络延迟',
+            description: 'blade create network delay — 对 Pod 注入网络延迟故障',
+            category: 'NETWORK',
+            target: 'network',
+            action: 'delay',
+            scope: 'pod',
+            parameters: [
+              { name: 'time', type: 'number', required: true, defaultValue: 3000, description: '延迟时间 (ms)', unit: 'ms', min: 1, max: 60000 },
+              { name: 'interface', type: 'string', required: true, defaultValue: 'eth0', description: '网络接口 (如 eth0)' },
+              { name: 'offset', type: 'number', required: false, defaultValue: 0, description: '延迟偏移量 (ms)', unit: 'ms', min: 0, max: 10000 },
+              { name: 'local-port', type: 'string', required: false, defaultValue: '', description: '本地端口 (逗号分隔或范围如 80,8000-8080)' },
+              { name: 'remote-port', type: 'string', required: false, defaultValue: '', description: '远程端口' },
+              { name: 'destination-ip', type: 'string', required: false, defaultValue: '', description: '目标 IP (支持 CIDR)' },
+              { name: 'timeout', type: 'string', required: false, defaultValue: '', description: '持续时间(秒)' },
+            ],
+          },
+          {
+            type: 'network_loss',
+            name: '网络丢包',
+            description: 'blade create network loss — 对 Pod 注入网络丢包故障',
+            category: 'NETWORK',
+            target: 'network',
+            action: 'loss',
+            scope: 'pod',
+            parameters: [
+              { name: 'percent', type: 'number', required: true, defaultValue: 50, description: '丢包百分比 (0-100)', unit: '%', min: 1, max: 100 },
+              { name: 'interface', type: 'string', required: true, defaultValue: 'eth0', description: '网络接口 (如 eth0)' },
+              { name: 'local-port', type: 'string', required: false, defaultValue: '', description: '本地端口' },
+              { name: 'remote-port', type: 'string', required: false, defaultValue: '', description: '远程端口' },
+              { name: 'destination-ip', type: 'string', required: false, defaultValue: '', description: '目标 IP (支持 CIDR)' },
+              { name: 'timeout', type: 'string', required: false, defaultValue: '', description: '持续时间(秒)' },
+            ],
+          },
+          {
+            type: 'pod_delete',
+            name: 'K8s Pod 删除',
+            description: 'blade create k8s pod-pod delete — 删除 Kubernetes Pod',
+            category: 'INFRASTRUCTURE',
+            target: 'pod',
+            action: 'delete',
+            scope: 'pod',
+            parameters: [
+              { name: 'names', type: 'string', required: false, defaultValue: '', description: 'Pod 名称 (逗号分隔)' },
+              { name: 'labels', type: 'string', required: false, defaultValue: '', description: '标签选择器 (如 app=nginx)' },
+              { name: 'evict-count', type: 'number', required: false, defaultValue: 1, description: '驱逐数量', min: 1, max: 100 },
+            ],
+          },
+        ];
         setAvailableFaultTemplates(templates);
       } catch (e) {
         console.error('Failed to fetch topology/fault types:', e);
@@ -479,7 +509,7 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
       <div className={styles.sectionHeader}>
         <div>
           <div className={styles.sectionTitle}>
-            <span className={styles.sectionNumber}>3</span>
+            <span className={styles.sectionNumber}>2</span>
             <Translation>Trace Visualization & Fault Configuration</Translation>
           </div>
           <div className={styles.sectionDescription}>
@@ -760,73 +790,101 @@ const XFlowTraceVisualization: FC<XFlowTraceVisualizationProps> = ({ data, error
                       {template.description}
                     </div>
 
-                    {/* Parameter Configuration */}
-                    <div style={{ marginLeft: 24 }}>
-                      {template.parameters.map((param, paramIndex) => (
-                        <div key={paramIndex} style={{ marginBottom: 8 }}>
-                          <label style={{ fontSize: 12, color: '#333', marginBottom: 4, display: 'block' }}>
-                            {param.name} {param.required && <span style={{ color: '#ff4d4f' }}>*</span>}
-                          </label>
-                          {param.type === 'number' && (
-                            <NumberPicker
-                              size="small"
-                              defaultValue={param.defaultValue}
-                              style={{ width: '100%' }}
-                              onChange={(val: number) => {
-                                const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
-                                if (!currentConfig) return;
-                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t => {
-                                  return t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t;
-                                });
-                                onChange({
-                                  faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
-                                });
-                              }}
-                            />
-                          )}
-                          {param.type === 'string' && (
-                            <Input
-                              size="small"
-                              defaultValue={param.defaultValue}
-                              style={{ width: '100%' }}
-                              onChange={(val: string) => {
-                                const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
-                                if (!currentConfig) return;
-                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t => {
-                                  return t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t;
-                                });
-                                onChange({
-                                  faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
-                                });
-                              }}
-                            />
-                          )}
-                          {param.type === 'select' && (
-                            <Select
-                              size="small"
-                              defaultValue={param.defaultValue}
-                              dataSource={param.options?.map(opt => ({ label: opt, value: opt }))}
-                              style={{ width: '100%' }}
-                              onChange={(val: string) => {
-                                const currentConfig = data.faultConfigurations.find(c => c.serviceId === selectedService.id);
-                                if (!currentConfig) return;
-                                const updatedTemplates = (currentConfig.faultTemplates || []).map(t => {
-                                  return t.type === template.type ? { ...t, parameters: { ...t.parameters, [param.name]: val } } : t;
-                                });
-                                onChange({
-                                  faultConfigurations: data.faultConfigurations.map(c => (c.serviceId === selectedService.id ? { ...c, faultTemplates: updatedTemplates } : c)),
-                                });
-                              }}
-                            />
-                          )}
-                          <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
-                            {param.description}
-                          </div>
-                        </div>
-                      ))}
+                    {/* 可编辑参数 */}
+                    <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
+                      {template.parameters
+                        .filter(p => p.defaultValue !== undefined && p.defaultValue !== null && p.defaultValue !== '')
+                        .map((param, paramIndex) => {
+                          const currentConfig = data.faultConfigurations.find(
+                            config => config.serviceId === selectedService?.id,
+                          );
+                          const currentTemplate = currentConfig?.faultTemplates?.find(t => t.type === template.type);
+                          const currentValue = currentTemplate?.parameters?.[param.name] ?? param.defaultValue;
+                          const isEnabled = currentTemplate?.enabled || false;
+
+                          return (
+                            <div key={paramIndex} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                              <span style={{ fontSize: 12, color: '#333', minWidth: 100, fontWeight: 500 }}>
+                                {param.name}{param.unit ? ` (${param.unit})` : ''}
+                              </span>
+                              <Input
+                                size="small"
+                                style={{ width: 120 }}
+                                value={String(currentValue)}
+                                disabled={!isEnabled}
+                                onChange={(val: string) => {
+                                  if (!currentConfig || !currentTemplate) return;
+                                  const updatedTemplates = currentConfig.faultTemplates.map(t =>
+                                    t.type === template.type
+                                      ? { ...t, parameters: { ...t.parameters, [param.name]: val } }
+                                      : t,
+                                  );
+                                  onChange({
+                                    faultConfigurations: data.faultConfigurations.map(config =>
+                                      config.serviceId === selectedService?.id
+                                        ? { ...config, faultTemplates: updatedTemplates }
+                                        : config,
+                                    ),
+                                  });
+                                }}
+                              />
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Apply to All Nodes */}
+            <div style={{
+              background: '#f9f9f9',
+              borderRadius: 6,
+              padding: 16,
+              marginBottom: 16,
+            }}>
+              <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>
+                全局操作
+              </h4>
+              <Button
+                size="small"
+                type="primary"
+                style={{ backgroundColor: '#722ed1', borderColor: '#722ed1' }}
+                onClick={() => {
+                  if (!selectedService) {
+                    Message.warning(i18n.t('Please select a service node first').toString());
+                    return;
+                  }
+                  const currentConfig = data.faultConfigurations.find(
+                    config => config.serviceId === selectedService.id,
+                  );
+                  const enabledFaults = currentConfig?.faultTemplates.filter(t => t.enabled) || [];
+                  if (enabledFaults.length === 0) {
+                    Message.warning(i18n.t('Please enable at least one fault template on the current node first').toString());
+                    return;
+                  }
+                  // Deep copy current node's faultTemplates to ALL nodes
+                  const updatedConfigurations = serviceNodes.map(node => ({
+                    serviceId: node.id,
+                    serviceName: node.name,
+                    layer: node.layer,
+                    faultTemplates: currentConfig!.faultTemplates.map(t => ({
+                      ...t,
+                      parameters: { ...t.parameters },
+                    })),
+                  }));
+                  onChange({ faultConfigurations: updatedConfigurations });
+                  Message.success(
+                    i18n.t('Fault configuration applied to all ${count} service nodes').toString()
+                      .replace('${count}', String(serviceNodes.length)),
+                  );
+                }}
+              >
+                应用到全部节点
+              </Button>
+              <div style={{ fontSize: 11, color: '#999', marginTop: 6 }}>
+                将当前节点的故障配置复制到拓扑中所有服务节点
               </div>
             </div>
 

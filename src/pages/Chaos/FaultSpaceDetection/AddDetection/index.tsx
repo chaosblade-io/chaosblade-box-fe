@@ -17,7 +17,6 @@ import { useHistory } from 'dva';
 
 // Import section components from TaskConfiguration
 import TargetSystemSection from '../TaskConfiguration/components/TargetSystemSection';
-import APIParameterSection from '../TaskConfiguration/components/APIParameterSection';
 import XFlowTraceVisualization from '../TaskConfiguration/components/XFlowTraceVisualization';
 import SLOConfigurationSection from '../TaskConfiguration/components/SLOConfigurationSection';
 import ExecutionConfigurationSection from '../TaskConfiguration/components/ExecutionConfigurationSection';
@@ -103,7 +102,6 @@ const AddDetection: FC = () => {
 
   // Refs for section scrolling
   const targetSystemRef = useRef<HTMLDivElement>(null);
-  const apiParameterRef = useRef<HTMLDivElement>(null);
   const traceVisualizationRef = useRef<HTMLDivElement>(null);
   const sloConfigurationRef = useRef<HTMLDivElement>(null);
   const executionConfigurationRef = useRef<HTMLDivElement>(null);
@@ -155,6 +153,15 @@ const AddDetection: FC = () => {
   const [ isValidating, setIsValidating ] = useState(false);
   const [ isSaving, setIsSaving ] = useState(false);
   const [ executeDialogVisible, setExecuteDialogVisible ] = useState(false);
+  const [ isExecuteDisabled, setIsExecuteDisabled ] = useState(false);
+  const executeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (executeTimerRef.current) clearTimeout(executeTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     // Set page title and breadcrumb
@@ -172,12 +179,6 @@ const AddDetection: FC = () => {
       title: i18n.t('Target System Selection').toString(),
       ref: targetSystemRef,
       hasErrors: validationErrors.targetSystem && validationErrors.targetSystem.length > 0,
-    },
-    {
-      id: 'apiParameters',
-      title: i18n.t('API Parameter Configuration').toString(),
-      ref: apiParameterRef,
-      hasErrors: validationErrors.apiParameters && validationErrors.apiParameters.length > 0,
     },
     {
       id: 'traceVisualization',
@@ -320,14 +321,6 @@ const AddDetection: FC = () => {
     const apiId = formData.targetSystem.selectedAPI?.id || 0;
     const systemIdNum = Number(formData.targetSystem.systemId) || 0;
 
-    const headersStr = JSON.stringify({
-      ...(formData.apiParameters.headers.authType === 'TOKEN' ? { Authorization: 'Bearer {{token}}' } : {}),
-      ...formData.apiParameters.headers.customHeaders,
-      Accept: 'application/json',
-    });
-    const queryStr = JSON.stringify(formData.apiParameters.queryParams || {});
-    const bodyStr = formData.apiParameters.requestBody || '';
-
     const taskSlo = [
       {
         node_id: 12,
@@ -337,27 +330,27 @@ const AddDetection: FC = () => {
       },
     ];
 
-    const faultConfigurations = formData.traceConfig.faultConfigurations.map(fc => {
-      // serviceId 是渲染时的 String(id)，需转 number；若无法解析，保持 0 触发后端校验
-      const nodeId = Number(fc.serviceId);
-      // 构造最小 CRD 结构，由后端进行自动补全（names/namespace/container_names）
-      // 根据选择的 faultTemplates 中 enabled=true 的项转换
-      const enabledFaults = (fc.faultTemplates || []).filter(t => t.enabled);
-      // 取第一个故障类型作为示例（若支持多个，可扩展为分多条 faultConfigurations）
-      const selected = enabledFaults[0] || {} as any;
-      const type = selected?.type || '';
-      const parameters = selected?.parameters || {};
+    // 从 URL 参数获取 namespace（如 ?ns=default）
+    const urlParams = new URLSearchParams(window.location.search);
+    const namespace = urlParams.get('ns') || 'default';
 
-      // Derive target/action from template or type (faultCode like "cpu_fullload")
-      const deriveTargetAction = (tpl: any) => {
-        let target = (tpl?.target || '').toString();
-        let action = (tpl?.action || '').toString();
+    // 为每个节点的每个 enabled fault 生成单独的 faultConfiguration 条目
+    const faultConfigurations = formData.traceConfig.faultConfigurations.flatMap(fc => {
+      const nodeId = Number(fc.serviceId);
+      const enabledFaults = (fc.faultTemplates || []).filter(t => t.enabled);
+
+      return enabledFaults.map(selected => {
+        const type = selected?.type || '';
+        const parameters = selected?.parameters || {};
+
+        // Derive target/action
+        let target = (selected?.target || '').toString();
+        let action = (selected?.action || '').toString();
         if (!target || !action) {
-          const code: string = (tpl?.type || '').toString();
-          const parts = code.split('_');
+          const parts = type.split('_');
           if (parts.length >= 2) {
-            target = parts[0];
-            action = parts.slice(1).join('_');
+            target = target || parts[0];
+            action = action || parts.slice(1).join('_');
           }
         }
         const normTarget = (t: string) => {
@@ -366,76 +359,46 @@ const AddDetection: FC = () => {
           if (x === 'net') return 'network';
           return x;
         };
-        return { target: normTarget(target), action: (action || '').toLowerCase() };
-      };
-      const { target, action } = deriveTargetAction(selected);
+        target = normTarget(target);
+        action = (action || '').toLowerCase();
 
-      /* eslint-disable indent, @typescript-eslint/indent */
-      const faultscript = type
-        ? {
+        // 构建 matchers：所有参数 + namespace，过滤空值
+        const matchers: Array<{ name: string; value: string[] }> = [];
+
+        // namespace 必填
+        matchers.push({ name: 'namespace', value: [ namespace ] });
+
+        // 添加所有非空参数
+        Object.entries(parameters).forEach(([ k, v ]) => {
+          if (v === undefined || v === null) return;
+          if (typeof v === 'string' && v.trim() === '') return;
+          if (k === 'namespace') return; // 已添加
+          matchers.push({ name: k, value: [ String(v) ] });
+        });
+
+        const faultscript = type
+          ? {
             apiVersion: 'chaosblade.io/v1alpha1',
             kind: 'ChaosBlade',
             metadata: { name: `auto-${type}-${Date.now()}` },
             spec: {
               experiments: [
                 {
-                  scope: 'container',
+                  scope: 'pod',
                   target,
                   action,
-                  // 构建 matchers：支持数组值，并过滤空/无效值
-                  matchers: (() => {
-                    const base = Object.entries(parameters)
-                      .filter(([ _, v ]) => v !== undefined && v !== null && !(typeof v === 'string' && v.trim() === '') && !(Array.isArray(v) && v.length === 0))
-                      .map(([ k, v ]) => ({
-                        name: String(k).replace(/_/g, '-'),
-                        value: Array.isArray(v) ? v.map(x => String(x)) : [ String(v) ],
-                      }));
-
-                    const has = (n: string) => base.some(m => m.name === n);
-                    const getParam = (...keys: string[]) => {
-                      for (const key of keys) {
-                        const val = (parameters as any)[key];
-                        if (val !== undefined && val !== null && !(typeof val === 'string' && val.trim() === '') && !(Array.isArray(val) && val.length === 0)) {
-                          return val;
-                        }
-                      }
-                      return undefined;
-                    };
-                    const toArr = (v: any) => {
-                          return Array.isArray(v) ? v.map(x => String(x)) : (v !== undefined ? [ String(v) ] : []);
-                        };
-
-                    if (!has('names')) {
-                      const v = getParam('names', 'pod_names', 'podNames');
-                      base.push({ name: 'names', value: toArr(v) });
-                    }
-                    if (!has('namespace')) {
-                      const v = getParam('namespace', 'ns');
-                      base.push({ name: 'namespace', value: toArr(v) });
-                    }
-                    if (!has('container-names')) {
-                      const v = getParam('container-names', 'container_names', 'containerNames');
-                      base.push({ name: 'container-names', value: toArr(v) });
-                    }
-                    return base;
-                  })(),
+                  matchers,
                 },
               ],
             },
           }
-        : null;
-      /* eslint-enable indent, @typescript-eslint/indent */
+          : null;
 
-      return { nodeId: isNaN(nodeId) ? 0 : nodeId, type, faultscript };
+        return { nodeId: isNaN(nodeId) ? 0 : nodeId, type, faultscript };
+      });
     });
 
-    // Compose full URL: baseUrl + path (avoid double slashes)
-    const apiPath = formData.targetSystem.selectedAPI?.path || '/';
-    const baseUrl = formData.targetSystem.selectedAPI?.baseUrl || '';
-    const urlTemplate = baseUrl
-      ? `${baseUrl.replace(/\/$/, '')}${apiPath.startsWith('/') ? '' : '/'}${apiPath}`
-      : apiPath;
-
+    // 不再构建 apiDefinition，后端通过 apiId 自动查找预定义的 http_req_def
     return {
       name: (formData.taskName || '').trim() || getDefaultTaskName(),
       description: 'Created via AddDetection UI',
@@ -445,18 +408,6 @@ const AddDetection: FC = () => {
       updatedBy: 'frontend',
       faultConfigurations,
       taskSlo,
-      apiDefinition: {
-        code: generateUniqueCode(),
-        name: formData.targetSystem.selectedAPI?.operationId || 'API',
-        method: formData.targetSystem.selectedAPI?.method || 'GET',
-        urlTemplate,
-        headers: headersStr,
-        queryParams: queryStr,
-        bodyMode: 'JSON',
-        contentType: 'application/json',
-        bodyTemplate: bodyStr,
-        apiId,
-      },
       requestNum: formData.executionConfig.requestNum || 20,
     };
   }
@@ -499,6 +450,12 @@ const AddDetection: FC = () => {
   }
 
   async function handleExecuteImmediately() {
+    // Debounce: prevent double-clicks by disabling for 3 seconds
+    if (isExecuteDisabled) return;
+    setIsExecuteDisabled(true);
+    if (executeTimerRef.current) clearTimeout(executeTimerRef.current);
+    executeTimerRef.current = setTimeout(() => setIsExecuteDisabled(false), 3000);
+
     setIsValidating(true);
     try {
       const errors = validateForm();
@@ -584,12 +541,11 @@ const AddDetection: FC = () => {
                 ))}
               </nav>
             </div>
-            {/* eslint-disable indent, @typescript-eslint/indent */}
-        {/* Section 0: Task Basic Info */}
+            {/* Main content sections */}
+        {/* Section 1: Task Basic Info */}
         <div className={styles.section}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionTitle}>
-              <span className={styles.sectionNumber}>0</span>
               <Translation>Task Basic Info</Translation>
             </div>
           </div>
@@ -634,17 +590,7 @@ const AddDetection: FC = () => {
           />
         </div>
 
-        {/* Section 2: API Parameter Configuration */}
-        <div ref={apiParameterRef} className={styles.section}>
-          <APIParameterSection
-            data={formData.apiParameters}
-            selectedAPI={formData.targetSystem.selectedAPI}
-            errors={validationErrors.apiParameters}
-            onChange={updateAPIParameters}
-          />
-        </div>
-
-        {/* Section 3: Trace Visualization & Fault Configuration */}
+        {/* Section 2: Trace Visualization & Fault Configuration */}
         <div ref={traceVisualizationRef} className={styles.section}>
           <XFlowTraceVisualization
             data={formData.traceConfig}
@@ -653,7 +599,7 @@ const AddDetection: FC = () => {
           />
         </div>
 
-        {/* Section 4: SLO Configuration */}
+        {/* Section 3: SLO Configuration */}
         <div ref={sloConfigurationRef} className={styles.section}>
           <SLOConfigurationSection
             data={formData.sloConfig}
@@ -662,7 +608,7 @@ const AddDetection: FC = () => {
           />
         </div>
 
-        {/* Section 5: Execution Configuration */}
+        {/* Section 4: Execution Configuration */}
         <div ref={executionConfigurationRef} className={styles.section}>
           <ExecutionConfigurationSection
             data={formData.executionConfig}
@@ -699,7 +645,7 @@ const AddDetection: FC = () => {
             type="primary"
             onClick={handleExecuteImmediately}
             loading={isValidating}
-            disabled={isSaving}
+            disabled={isSaving || isExecuteDisabled}
             style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
           >
             <Translation>Execute Immediately</Translation>

@@ -74,6 +74,12 @@ const menuConfig = [
         to: `/chaos/fault-space-detection/records?${commonUrlStr}`,
         activePathPatterns: [ '/chaos/fault-space-detection/records' ],
       },
+      {
+        key: '/chaos/fault-space-detection/systems',
+        label: i18n.t('Target Systems'),
+        to: `/chaos/fault-space-detection/systems?${commonUrlStr}`,
+        activePathPatterns: [ '/chaos/fault-space-detection/systems' ],
+      },
     ],
   },
   {
@@ -176,6 +182,11 @@ export function setMenuConfig(key: string) {
         label: i18n.t('Detection Records'),
         to: `/chaos/fault-space-detection/records?${commonUrlStr}`,
       },
+      {
+        key: '/chaos/fault-space-detection/systems',
+        label: i18n.t('Target Systems'),
+        to: `/chaos/fault-space-detection/systems?${commonUrlStr}`,
+      },
     ];
   }
 }
@@ -188,6 +199,7 @@ export const activeKeys: {[key: string]: string} = {
   '/chaos/fault-space-detection/tasks': '/chaos/fault-space-detection',
   '/chaos/fault-space-detection/add': '/chaos/fault-space-detection',
   '/chaos/fault-space-detection/records': '/chaos/fault-space-detection',
+  '/chaos/fault-space-detection/systems': '/chaos/fault-space-detection',
   '/chaos/topology-perception': '/chaos/topology-perception',
   '/chaos/risk-detection': '/chaos/risk-detection',
   '/chaos/risk-detection/analysis': '/chaos/risk-detection',

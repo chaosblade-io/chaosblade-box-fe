@@ -180,6 +180,8 @@ const TestCasesResults: FC<TestCasesResultsProps> = ({ testCases, onExport }) =>
       <Dialog
         visible={visible}
         onClose={() => setVisible(false)}
+        onOk={() => setVisible(false)}
+        onCancel={() => setVisible(false)}
         title={i18n.t('Injected Fault Details').toString()}
       >
         {!currentCaseId || currentFaults.length === 0 ? (

@@ -13,6 +13,7 @@ import {
 import { CHAOS_DEFAULT_BREADCRUMB_ITEM as chaosDefaultBreadCrumb } from 'config/constants/Chaos/chaos';
 import { useDispatch } from 'utils/libs/sre-utils-dva';
 import { pushUrl } from 'utils/libs/sre-utils';
+import probeProxy from '../../../../services/faultSpaceDetection/probeProxy';
 import { useHistory, useParams } from 'dva';
 
 
@@ -184,9 +185,18 @@ const DrillRecord: FC = () => {
 
   const handleTerminate = async () => {
     try {
-      // TODO: Terminate drill execution via API if available
+      const taskId = basic?.taskId || basic?.id;
+      if (!taskId) {
+        Message.error('Task ID not found');
+        return;
+      }
+      await probeProxy.cancelTask(taskId);
       setTerminateDialogVisible(false);
       Message.success(i18n.t('Drill execution terminated').toString());
+      // Refresh data after termination
+      if (runId) {
+        setTimeout(() => fetchDrillRecord(runId, { silent: true }), 1000);
+      }
     } catch (error) {
       console.error('Failed to terminate drill:', error);
       Message.error(i18n.t('Failed to terminate drill execution').toString());
@@ -274,7 +284,14 @@ const DrillRecord: FC = () => {
         </div>
         <div className={styles.sectionContent}>
           {modelConclusion ? (
-            <MarkD content={modelConclusion} styles={{ fontSize: 14, lineHeight: '1.7', color: '#333', wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }} />
+            <div className={styles.markdownSummary}>
+              <MarkD content={modelConclusion
+                .replace(/\r\n/g, '\n')
+                .replace(/\n[ \t]*\n[ \t]*\n/g, '\n\n')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim()
+              } />
+            </div>
           ) : (
             <div style={{ color: '#999' }}>
               <Translation>No summary available</Translation>

@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'utils/libs/sre-utils-dva';
 import { pushUrl } from 'utils/libs/sre-utils';
 import { useHistory } from 'dva';
 import formatDate from '../../lib/DateUtil';
+import probeProxy from '../../../../services/faultSpaceDetection/probeProxy';
 
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
@@ -88,7 +89,7 @@ const DetectionTasks: FC = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const { probeProxy } = await import('../../../../services/faultSpaceDetection/probeProxy');
+      // probeProxy is statically imported at the top of the file
       const res: any = await probeProxy.getDetectionTasks({ page, size: pageSize, keyword: searchKey, status: statusFilter.join(',') });
       // 兼容两种返回结构：{ items, total, page, size } 或 { success, data: { items, total, page, size } }
       const items = (res?.items || res?.data?.items) || [];
@@ -180,7 +181,7 @@ const DetectionTasks: FC = () => {
     if (!currentTask) return;
 
     try {
-      const { probeProxy } = await import('../../../../services/faultSpaceDetection/probeProxy');
+      // probeProxy is statically imported at the top of the file
       await probeProxy.executeTask(currentTask.id);
       Message.success(i18n.t('Task execution started successfully').toString());
       setExecuteDialogVisible(false);
@@ -196,13 +197,11 @@ const DetectionTasks: FC = () => {
     if (!currentTask) return;
 
     try {
-      // TODO: 实际的API调用
-      // await dispatch.faultSpaceDetection.deleteTask({ taskId: currentTask.id });
-
+      await probeProxy.deleteTask(currentTask.id);
       Message.success(i18n.t('Task deleted successfully').toString());
       setDeleteDialogVisible(false);
       setCurrentTask(null);
-      fetchTasks(); // 刷新列表
+      fetchTasks();
     } catch (error) {
       console.error('Failed to delete task:', error);
       Message.error(i18n.t('Failed to delete task').toString());
@@ -221,13 +220,11 @@ const DetectionTasks: FC = () => {
       content: i18n.t('Are you sure you want to delete the selected tasks?').toString(),
       onOk: async () => {
         try {
-          // TODO: 实际的API调用
-          // await dispatch.faultSpaceDetection.batchDeleteTasks({ taskIds: selectedRowKeys });
-
+          await Promise.all(selectedRowKeys.map(id => probeProxy.deleteTask(id)));
           Message.success(i18n.t('Tasks deleted successfully').toString());
           setSelectedRowKeys([]);
           setBatchActionVisible(false);
-          fetchTasks(); // 刷新列表
+          fetchTasks();
         } catch (error) {
           console.error('Failed to batch delete tasks:', error);
           Message.error(i18n.t('Failed to delete tasks').toString());

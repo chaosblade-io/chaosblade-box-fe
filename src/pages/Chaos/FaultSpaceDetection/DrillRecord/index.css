@@ -417,6 +417,174 @@
   color: #666;
 }
 
+/* Markdown Summary Styles */
+.markdownSummary {
+  background: #fafbfc;
+  border: 1px solid #e8ecf0;
+  border-radius: 6px;
+  padding: 20px 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.markdownSummary h1,
+.markdownSummary h2,
+.markdownSummary h3,
+.markdownSummary h4,
+.markdownSummary h5,
+.markdownSummary h6 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.35;
+}
+
+.markdownSummary h1:first-child,
+.markdownSummary h2:first-child,
+.markdownSummary h3:first-child,
+.markdownSummary h4:first-child {
+  margin-top: 0;
+}
+
+.markdownSummary h1 { font-size: 20px; }
+.markdownSummary h2 { font-size: 18px; }
+.markdownSummary h3 { font-size: 16px; }
+.markdownSummary h4 { font-size: 15px; }
+.markdownSummary h5 { font-size: 14px; }
+.markdownSummary h6 { font-size: 13px; color: #555; }
+
+.markdownSummary p {
+  margin: 0 0 6px 0;
+  line-height: 1.6;
+}
+
+.markdownSummary p:empty,
+.markdownSummary br {
+  display: none;
+}
+
+.markdownSummary p + p:empty,
+.markdownSummary div:empty {
+  display: none;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.markdownSummary p:last-child {
+  margin-bottom: 0;
+}
+
+.markdownSummary ul,
+.markdownSummary ol {
+  margin: 4px 0 10px 0;
+  padding-left: 22px;
+}
+
+.markdownSummary li {
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.markdownSummary li > ul,
+.markdownSummary li > ol {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.markdownSummary strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.markdownSummary em {
+  font-style: italic;
+  color: #555;
+}
+
+.markdownSummary code {
+  background: #eef1f5;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 13px;
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+  color: #d14;
+}
+
+.markdownSummary pre {
+  background: #f4f6f8;
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 8px 0 12px 0;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.markdownSummary pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+}
+
+.markdownSummary blockquote {
+  margin: 8px 0 12px 0;
+  padding: 8px 16px;
+  border-left: 3px solid #1890ff;
+  background: #f0f7ff;
+  color: #444;
+  border-radius: 0 4px 4px 0;
+}
+
+.markdownSummary blockquote p {
+  margin-bottom: 0;
+}
+
+.markdownSummary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 12px 0;
+  font-size: 13px;
+}
+
+.markdownSummary th,
+.markdownSummary td {
+  border: 1px solid #e0e4e8;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.markdownSummary th {
+  background: #f0f2f5;
+  font-weight: 600;
+  color: #333;
+}
+
+.markdownSummary tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.markdownSummary hr {
+  border: none;
+  border-top: 1px solid #e8ecf0;
+  margin: 14px 0;
+}
+
+.markdownSummary a {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.markdownSummary a:hover {
+  text-decoration: underline;
+}
+
 /* Dialog Styles */
 .terminateDialogContent {
   padding: 16px 0;

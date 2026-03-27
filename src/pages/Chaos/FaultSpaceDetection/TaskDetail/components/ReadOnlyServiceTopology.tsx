@@ -169,8 +169,18 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
     return Math.max(height, 80 + L * 120);
   }, [ nodes, layout.orderedLayers, height ]);
 
+  const protocolColor = (proto?: string) => {
+    switch ((proto || 'HTTP').toUpperCase()) {
+      case 'HTTP': return { bg: '#e6f7ff', border: '#91d5ff', accent: '#1890ff', text: '#096dd9' };
+      case 'GRPC': return { bg: '#f9f0ff', border: '#d3adf7', accent: '#722ed1', text: '#531dab' };
+      case 'DB': return { bg: '#fff7e6', border: '#ffd591', accent: '#fa8c16', text: '#d46b08' };
+      case 'MQ': return { bg: '#f6ffed', border: '#b7eb8f', accent: '#52c41a', text: '#389e0d' };
+      default: return { bg: '#f5f5f5', border: '#d9d9d9', accent: '#8c8c8c', text: '#595959' };
+    }
+  };
+
   return (
-    <div style={{ border: '1px solid #eee', borderRadius: 8, overflow: 'hidden' }}>
+    <div style={{ border: '1px solid #e8e8e8', borderRadius: 8, overflow: 'hidden', background: '#fafbfc' }}>
       <svg
         width="100%"
         height={estHeight}
@@ -179,12 +189,15 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseLeave}
-        style={{ cursor: isPanningRef.current ? 'grabbing' : 'default', background: '#fff' }}
+        style={{ cursor: isPanningRef.current ? 'grabbing' : 'default' }}
       >
         <defs>
-          <marker id="arrow-gray" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L8,4 L0,8 z" fill="#bbb" />
+          <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,1 L10,5 L0,9 z" fill="#91d5ff" />
           </marker>
+          <filter id="node-shadow" x="-10%" y="-10%" width="120%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.1" />
+          </filter>
         </defs>
 
         <g transform={`translate(${pan.x}, ${pan.y}) scale(${scale})`}>
@@ -196,13 +209,12 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
             return (
               <line
                 key={String(e.id || idx)}
-                x1={from.x}
-                y1={from.y}
-                x2={to.x}
-                y2={to.y}
-                stroke="#d9d9d9"
+                x1={from.x} y1={from.y}
+                x2={to.x} y2={to.y}
+                stroke="#b5c4d4"
                 strokeWidth={1.5}
-                markerEnd="url(#arrow-gray)"
+                strokeDasharray={e.metadata && String(e.metadata).includes('gRPC') ? '6 3' : 'none'}
+                markerEnd="url(#arrow-blue)"
               />
             );
           })}
@@ -214,25 +226,43 @@ const ReadOnlyServiceTopology: FC<ReadOnlyServiceTopologyProps> = ({ nodes, edge
             const faults = getFaultTags(n.id);
             const hasFault = faults.length > 0;
             const isSelected = selectedNodeId != null && String(selectedNodeId) === String(n.id);
+            const colors = protocolColor(n.protocol);
+            const w = 150, h = 56;
             return (
-              <g key={String(n.id)} transform={`translate(${p.x - 60}, ${p.y - 25})`} onClick={() => onSelectNode && onSelectNode(n.id, n)} style={{ cursor: 'pointer' }}>
-                <rect x={-10} y={-6} width={140} height={62} rx={8} ry={8} fill="#fff" stroke={isSelected ? '#1890ff' : '#e8e8e8'} strokeWidth={isSelected ? 2 : 1} />
-                <text x={60} y={18} textAnchor="middle" dominantBaseline="middle" fill="#333" style={{ fontSize: 12, fontWeight: 600 }}>{n.name}</text>
-                {/* protocol */}
-                <text x={60} y={38} textAnchor="middle" dominantBaseline="middle" fill="#666" style={{ fontSize: 10 }}>{n.protocol || 'HTTP'}</text>
-                {/* optional indicator */}
+              <g key={String(n.id)} transform={`translate(${p.x - w / 2}, ${p.y - h / 2})`} onClick={() => onSelectNode && onSelectNode(n.id, n)} style={{ cursor: 'pointer' }}>
+                <rect x={0} y={0} width={w} height={h} rx={8} ry={8}
+                  fill={isSelected ? colors.bg : '#fff'}
+                  stroke={isSelected ? colors.accent : colors.border}
+                  strokeWidth={isSelected ? 2.5 : 1}
+                  filter="url(#node-shadow)"
+                />
+                {/* protocol color bar */}
+                <rect x={0} y={0} width={w} height={5} rx={8} ry={8} fill={colors.accent} />
+                <rect x={0} y={3} width={w} height={2} fill={colors.accent} />
+                {/* service name */}
+                <text x={w / 2} y={24} textAnchor="middle" dominantBaseline="middle" fill="#262626" style={{ fontSize: 12, fontWeight: 600 }}>{n.name}</text>
+                {/* protocol badge */}
+                <rect x={w / 2 - 18} y={34} width={36} height={16} rx={8} fill={colors.bg} stroke={colors.border} strokeWidth={0.5} />
+                <text x={w / 2} y={42} textAnchor="middle" dominantBaseline="middle" fill={colors.text} style={{ fontSize: 9, fontWeight: 500 }}>{n.protocol || 'HTTP'}</text>
+                {/* fault indicator */}
                 {showFaultIndicators && hasFault && (
                   <g>
-                    <circle cx={118} cy={-6} r={8} fill="#fa8c16" />
-                    <text x={118} y={-6} textAnchor="middle" dominantBaseline="middle" fill="#fff" style={{ fontSize: 10 }}>F</text>
+                    <circle cx={w - 4} cy={0} r={8} fill="#ff4d4f" />
+                    <text x={w - 4} y={0} textAnchor="middle" dominantBaseline="middle" fill="#fff" style={{ fontSize: 9, fontWeight: 700 }}>F</text>
                   </g>
                 )}
-                {/* no inline tags in initial state per requirements */}
               </g>
             );
           })}
         </g>
       </svg>
+      {/* Legend */}
+      <div style={{ display: 'flex', gap: 16, padding: '8px 16px', borderTop: '1px solid #f0f0f0', background: '#fff', fontSize: 11, color: '#8c8c8c' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 10, height: 3, background: '#1890ff', display: 'inline-block' }} />HTTP</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 10, height: 3, background: '#722ed1', display: 'inline-block' }} />gRPC</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 10, height: 3, background: '#fa8c16', display: 'inline-block' }} />DB</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 10, height: 3, background: '#52c41a', display: 'inline-block' }} />MQ</span>
+      </div>
     </div>
   );
 };

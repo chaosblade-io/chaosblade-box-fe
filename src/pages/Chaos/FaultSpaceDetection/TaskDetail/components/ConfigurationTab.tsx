@@ -286,7 +286,7 @@ const ConfigurationTab: FC<ConfigurationTabProps> = ({ data }) => {
         />
       </div>
       {/* Fault Configuration Panel (appears when node selected) */}
-      /* eslint-disable indent, @typescript-eslint/indent */
+      {/* Fault details */}
       {selectedNodeId != null && (
         <div className={styles.configCard} style={{ marginTop: 16 }}>
           <div className={styles.cardHeader}>

@@ -201,10 +201,92 @@ export const probeProxy = {
     return handleResponse(res) as Promise<{ success?: boolean; data?: any }>;
   },
 
+  // System CRUD
+  async createSystem(data: any) {
+    const url = new URL('/chaos/systems', window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...commonHeaders },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res);
+  },
+
+  async updateSystem(systemId: number, data: any) {
+    const url = new URL(`/chaos/systems/${encodeURIComponent(systemId)}`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...commonHeaders },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res);
+  },
+
+  async deleteSystem(systemId: number) {
+    const url = new URL(`/chaos/systems/${encodeURIComponent(systemId)}`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'DELETE',
+      headers: commonHeaders,
+      credentials: 'include',
+    });
+    return handleResponse(res);
+  },
+
+  // API CRUD
+  async createApi(systemId: number, data: any) {
+    const url = new URL(`/chaos/systems/${encodeURIComponent(systemId)}/apis`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...commonHeaders },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res);
+  },
+
+  async updateApi(apiId: number, data: any) {
+    const url = new URL(`/chaos/apis/${encodeURIComponent(apiId)}`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...commonHeaders },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(res);
+  },
+
+  async deleteApi(apiId: number) {
+    const url = new URL(`/chaos/apis/${encodeURIComponent(apiId)}`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'DELETE',
+      headers: commonHeaders,
+      credentials: 'include',
+    });
+    return handleResponse(res);
+  },
+
   async executeTask(taskId: number | string, body: any = { options: { dryRun: false } }) {
     const url = new URL(`/chaos/detection-tasks/${encodeURIComponent(taskId)}/execute`, window.location.origin);
     const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
       method: 'POST', headers: { 'Content-Type': 'application/json', ...commonHeaders }, credentials: 'include', body: JSON.stringify(body),
+    });
+    return handleResponse(res);
+  },
+
+  async cancelTask(taskId: number | string) {
+    const url = new URL(`/chaos/detection-tasks/${encodeURIComponent(taskId)}/cancel`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...commonHeaders }, credentials: 'include',
+    });
+    return handleResponse(res);
+  },
+
+  async deleteTask(taskId: number | string) {
+    const url = new URL(`/chaos/detection-tasks/${encodeURIComponent(taskId)}`, window.location.origin);
+    const res = await fetch(url.toString().replace(window.location.origin, BASE_PREFIX + '/api'), {
+      method: 'DELETE', headers: commonHeaders, credentials: 'include',
     });
     return handleResponse(res);
   },

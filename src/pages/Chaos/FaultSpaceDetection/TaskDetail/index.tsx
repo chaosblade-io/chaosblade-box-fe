@@ -322,13 +322,7 @@ const TaskDetail: FC = () => {
                 <Icon type="edit" size="xs" />
                 <Translation>Updated</Translation> {formatDate(new Date(taskData.updatedAt).getTime())}
               </span>
-              <Tag color={
-                taskData.status === 'ACTIVE' ? '#52c41a' :
-                  taskData.status === 'DRAFT' ? '#faad14' :
-                    taskData.status === 'PAUSED' ? '#1890ff' : '#666'
-              }>
-                {taskData.status}
-              </Tag>
+              {/* Status tag removed per UI requirements */}
             </div>
           </div>
 
@@ -353,32 +347,7 @@ const TaskDetail: FC = () => {
         </div>
       </div>
 
-      {/* Running Status Banner */}
-      {taskData.currentExecution && (
-        <div className={styles.runningBanner}>
-          <div className={styles.bannerContent}>
-            <div className={styles.statusInfo}>
-              <Icon type="loading" className={styles.spinningIcon} />
-              <div>
-                <div className={styles.statusText}>
-                  <Translation>Drill Execution in Progress</Translation>
-                  <Tag color="#1890ff" style={{ marginLeft: 8 }}>
-                    {taskData.currentExecution.status}
-                  </Tag>
-                </div>
-                <div className={styles.progressInfo}>
-                  <Translation>Progress</Translation>: {taskData.currentExecution.progress}% |
-                  <Translation>Current Step</Translation>: {taskData.currentExecution.currentStep} |
-                  <Translation>ETA</Translation>: {formatDate(new Date(taskData.currentExecution.estimatedEndTime).getTime())}
-                </div>
-              </div>
-            </div>
-            <Button type="primary" size="small" onClick={handleViewDrill}>
-              <Translation>View Drill</Translation>
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Running Status Banner removed per UI requirements */}
 
       {/* Tab Content */}
       <div className={styles.tabContainer}>

@@ -299,6 +299,9 @@ const TaskConfiguration: FC = () => {
             data={formData.targetSystem}
             errors={validationErrors.targetSystem}
             onChange={updateTargetSystem}
+            onTopologyLoaded={(topo: any) => {
+              updateTraceConfig({ baselineTrace: topo });
+            }}
           />
         </div>
 

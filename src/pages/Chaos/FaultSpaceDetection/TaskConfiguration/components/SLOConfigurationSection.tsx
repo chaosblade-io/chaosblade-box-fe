@@ -460,7 +460,7 @@ const SLOConfigurationSection: FC<SLOConfigurationSectionProps> = ({ data, error
       <div className={styles.sectionHeader}>
         <div>
           <div className={styles.sectionTitle}>
-            <span className={styles.sectionNumber}>4</span>
+            <span className={styles.sectionNumber}>3</span>
             <Translation>SLO Configuration</Translation>
           </div>
           <div className={styles.sectionDescription}>

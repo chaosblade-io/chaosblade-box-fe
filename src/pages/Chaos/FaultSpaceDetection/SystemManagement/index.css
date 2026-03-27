@@ -1,0 +1,166 @@
+.container {
+  padding: 16px;
+  background: #fff;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.searchSection {
+  display: flex;
+  align-items: center;
+}
+
+.tableContainer {
+  background: #fff;
+  border-radius: 4px;
+}
+
+.systemNameLink {
+  color: #1890ff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.systemNameLink:hover {
+  text-decoration: underline;
+}
+
+.expandedRow {
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+.apiListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.apiListTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Method tag color styles */
+.methodTagGET {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.methodTagPOST {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.methodTagPUT {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #fff7e6;
+  color: #fa8c16;
+  border: 1px solid #ffd591;
+}
+
+.methodTagDELETE {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #fff2f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.methodTagPATCH {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #f9f0ff;
+  color: #722ed1;
+  border: 1px solid #d3adf7;
+}
+
+.methodTagDefault {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #f0f0f0;
+  color: #666;
+  border: 1px solid #d9d9d9;
+}
+
+.formItem {
+  margin-bottom: 16px;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.formLabelRequired::after {
+  content: ' *';
+  color: #ff4d4f;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.environmentTag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  background: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.apiPath {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  color: #333;
+}
+
+.emptyText {
+  text-align: center;
+  padding: 24px;
+  color: #999;
+  font-size: 14px;
+}

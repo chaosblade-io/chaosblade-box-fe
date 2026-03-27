@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, { FC, useState, useEffect, useRef, useMemo } from 'react';
 import Translation from 'components/Translation';
 import i18n from '../../../../../i18n';
 import styles from '../index.css';
@@ -14,6 +14,7 @@ import {
   Tag,
   Balloon,
 } from '@alicloud/console-components';
+import ReadOnlyServiceTopology from '../../TaskDetail/components/ReadOnlyServiceTopology';
 
 interface TraceConfigData {
   baselineTrace: any;
@@ -43,6 +44,8 @@ interface ServiceNode {
   x: number;
   y: number;
   selected: boolean;
+  p95Latency?: number;
+  callCount?: number;
 }
 
 interface FaultTemplate {
@@ -62,14 +65,30 @@ interface FaultTemplate {
 }
 
 const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, errors, onChange }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [ serviceNodes, setServiceNodes ] = useState<ServiceNode[]>([]);
   const [ selectedService, setSelectedService ] = useState<ServiceNode | null>(null);
   const [ faultDrawerVisible, setFaultDrawerVisible ] = useState(false);
-  const [ canvasScale, setCanvasScale ] = useState(1);
-  const [ canvasOffset, setCanvasOffset ] = useState({ x: 0, y: 0 });
-  const [ isDragging, setIsDragging ] = useState(false);
-  const [ dragStart, setDragStart ] = useState({ x: 0, y: 0 });
+
+  // Convert baselineTrace data to RONode[]/ROEdge[] for ReadOnlyServiceTopology
+  const topoNodes = useMemo(() => {
+    const raw = data?.baselineTrace?.nodes || [];
+    return raw.map((n: any) => ({
+      id: n.id ?? n.nodeKey ?? n.name,
+      name: n.name || n.nodeKey || String(n.id),
+      layer: n.layer,
+      protocol: n.protocol || 'HTTP',
+    }));
+  }, [data?.baselineTrace?.nodes]);
+
+  const topoEdges = useMemo(() => {
+    const raw = data?.baselineTrace?.edges || [];
+    return raw.map((e: any) => ({
+      id: e.id,
+      fromNodeId: e.fromNodeId ?? e.source,
+      toNodeId: e.toNodeId ?? e.target,
+    }));
+  }, [data?.baselineTrace?.edges]);
+
+  const hasTopology = topoNodes.length > 0;
 
   // Fault templates configuration
   const faultTemplates: FaultTemplate[] = [
@@ -154,181 +173,22 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
     },
   ];
 
-  useEffect(() => {
-    // Generate mock trace visualization data
-    generateMockTraceData();
-  }, []);
-
-  useEffect(() => {
-    // Redraw canvas when data changes
-    drawTraceVisualization();
-  }, [ serviceNodes, selectedService, canvasScale, canvasOffset ]);
-
-  const generateMockTraceData = () => {
-    const mockNodes: ServiceNode[] = [
-      // Layer 0 (Root)
-      { id: 'api-gateway', name: 'API Gateway', layer: 0, protocol: 'HTTP', x: 400, y: 50, selected: false },
-
-      // Layer 1
-      { id: 'user-service', name: 'User Service', layer: 1, protocol: 'HTTP', x: 200, y: 150, selected: false },
-      { id: 'auth-service', name: 'Auth Service', layer: 1, protocol: 'gRPC', x: 600, y: 150, selected: false },
-
-      // Layer 2
-      { id: 'user-db', name: 'User Database', layer: 2, protocol: 'DB', x: 100, y: 250, selected: false },
-      { id: 'cache-redis', name: 'Redis Cache', layer: 2, protocol: 'DB', x: 300, y: 250, selected: false },
-      { id: 'auth-db', name: 'Auth Database', layer: 2, protocol: 'DB', x: 500, y: 250, selected: false },
-      { id: 'message-queue', name: 'Message Queue', layer: 2, protocol: 'MQ', x: 700, y: 250, selected: false },
-    ];
-
-    setServiceNodes(mockNodes);
-  };
-
-  const drawTraceVisualization = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Apply transformations
-    ctx.save();
-    ctx.scale(canvasScale, canvasScale);
-    ctx.translate(canvasOffset.x, canvasOffset.y);
-
-    // Draw connections between layers
-    drawConnections(ctx);
-
-    // Draw service nodes
-    serviceNodes.forEach(node => {
-      drawServiceNode(ctx, node);
-    });
-
-    ctx.restore();
-  };
-
-  const drawConnections = (ctx: CanvasRenderingContext2D) => {
-    ctx.strokeStyle = '#d9d9d9';
-    ctx.lineWidth = 2;
-
-    // Draw connections from layer to layer
-    for (let layer = 0; layer < 2; layer++) {
-      const currentLayerNodes = serviceNodes.filter(n => n.layer === layer);
-      const nextLayerNodes = serviceNodes.filter(n => n.layer === layer + 1);
-
-      currentLayerNodes.forEach(currentNode => {
-        nextLayerNodes.forEach(nextNode => {
-          ctx.beginPath();
-          ctx.moveTo(currentNode.x, currentNode.y + 30);
-          ctx.lineTo(nextNode.x, nextNode.y - 30);
-          ctx.stroke();
-        });
+  const handleNodeSelect = (nodeId: string | number, node?: any) => {
+    if (node) {
+      setSelectedService({
+        id: String(nodeId),
+        name: node.name || String(nodeId),
+        layer: node.layer ?? 0,
+        protocol: node.protocol || 'HTTP',
+        x: 0, y: 0, selected: true,
       });
-    }
-  };
-
-  const drawServiceNode = (ctx: CanvasRenderingContext2D, node: ServiceNode) => {
-    const nodeWidth = 120;
-    const nodeHeight = 60;
-    const x = node.x - nodeWidth / 2;
-    const y = node.y - nodeHeight / 2;
-
-    // Node background
-    ctx.fillStyle = node.selected ? '#e6f7ff' : '#fff';
-    ctx.strokeStyle = node.selected ? '#1890ff' : '#d9d9d9';
-    ctx.lineWidth = node.selected ? 3 : 1;
-
-    ctx.fillRect(x, y, nodeWidth, nodeHeight);
-    ctx.strokeRect(x, y, nodeWidth, nodeHeight);
-
-    // Protocol indicator
-    const protocolColors = {
-      HTTP: '#52c41a',
-      gRPC: '#1890ff',
-      DB: '#faad14',
-      MQ: '#722ed1',
-    };
-
-    ctx.fillStyle = protocolColors[node.protocol];
-    ctx.fillRect(x, y, nodeWidth, 8);
-
-    // Service name
-    ctx.fillStyle = '#333';
-    ctx.font = '12px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(node.name, node.x, node.y - 5);
-
-    // Protocol type indicator
-    ctx.font = '10px Arial';
-    ctx.fillStyle = '#666';
-    ctx.fillText(node.protocol, node.x, node.y + 10);
-
-
-  };
-
-  const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const x = (event.clientX - rect.left - canvasOffset.x) / canvasScale;
-    const y = (event.clientY - rect.top - canvasOffset.y) / canvasScale;
-
-    // Find clicked service node
-    const clickedNode = serviceNodes.find(node => {
-      const nodeWidth = 120;
-      const nodeHeight = 60;
-      const nodeX = node.x - nodeWidth / 2;
-      const nodeY = node.y - nodeHeight / 2;
-
-      return x >= nodeX && x <= nodeX + nodeWidth && y >= nodeY && y <= nodeY + nodeHeight;
-    });
-
-    if (clickedNode) {
-      // Update selected state
-      setServiceNodes(prev => prev.map(node => ({
-        ...node,
-        selected: node.id === clickedNode.id,
-      })));
-
-      setSelectedService(clickedNode);
       setFaultDrawerVisible(true);
-    } else {
-      // Deselect all
-      setServiceNodes(prev => prev.map(node => ({ ...node, selected: false })));
-      setSelectedService(null);
     }
-  };
-
-  const handleCanvasWheel = (event: React.WheelEvent<HTMLCanvasElement>) => {
-    event.preventDefault();
-    const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
-    setCanvasScale(prev => Math.max(0.5, Math.min(2, prev * scaleFactor)));
-  };
-
-  const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    setIsDragging(true);
-    setDragStart({ x: event.clientX - canvasOffset.x, y: event.clientY - canvasOffset.y });
-  };
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDragging) return;
-
-    setCanvasOffset({
-      x: event.clientX - dragStart.x,
-      y: event.clientY - dragStart.y,
-    });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
   };
 
   const updateFaultConfiguration = (serviceId: string, faultTemplates: any[]) => {
     const existingConfig = data.faultConfigurations.find(f => f.serviceId === serviceId);
-    const service = serviceNodes.find(s => s.id === serviceId);
+    const service = topoNodes.find((s: any) => String(s.id) === serviceId);
 
     if (!service) return;
 
@@ -546,7 +406,7 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
       <div className={styles.sectionHeader}>
         <div>
           <div className={styles.sectionTitle}>
-            <span className={styles.sectionNumber}>3</span>
+            <span className={styles.sectionNumber}>2</span>
             <Translation>Trace Visualization & Fault Configuration</Translation>
           </div>
           <div className={styles.sectionDescription}>
@@ -567,108 +427,35 @@ const TraceVisualizationSection: FC<TraceVisualizationSectionProps> = ({ data, e
         </div>
       )}
 
-      {/* Trace Visualization Canvas */}
-      <div style={{
-        border: '1px solid #e8e8e8',
-        borderRadius: 8,
-        background: '#fafafa',
-        marginBottom: 24,
-        position: 'relative',
-      }}>
-        {/* Canvas Controls */}
-        <div style={{
-          position: 'absolute',
-          top: 16,
-          right: 16,
-          zIndex: 10,
-          display: 'flex',
-          gap: 8,
-        }}>
-          <Balloon
-            trigger={
-              <Button size="small">
-                <Icon type="zoom-in" />
-              </Button>
-            }
-            closable={false}
-          >
-            <Translation>Zoom In</Translation>
-          </Balloon>
-
-          <Balloon
-            trigger={
-              <Button size="small">
-                <Icon type="zoom-out" />
-              </Button>
-            }
-            closable={false}
-          >
-            <Translation>Zoom Out</Translation>
-          </Balloon>
-
-          <Balloon
-            trigger={
-              <Button size="small">
-                <Icon type="refresh" />
-              </Button>
-            }
-            closable={false}
-          >
-            <Translation>Reset View</Translation>
-          </Balloon>
-        </div>
-
-        {/* Canvas */}
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={400}
-          style={{
-            width: '100%',
-            height: 400,
-            cursor: isDragging ? 'grabbing' : 'grab',
-            display: 'block',
-          }}
-          onClick={handleCanvasClick}
-          onWheel={handleCanvasWheel}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        />
-
-        {/* Legend */}
-        <div style={{
-          position: 'absolute',
-          bottom: 16,
-          left: 16,
-          background: 'rgba(255, 255, 255, 0.9)',
-          padding: 12,
-          borderRadius: 6,
-          fontSize: 12,
-        }}>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>
-            <Translation>Protocol Legend</Translation>
-          </div>
-          <div style={{ display: 'flex', gap: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 12, height: 4, background: '#52c41a' }} />
-              <span>HTTP</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 12, height: 4, background: '#1890ff' }} />
-              <span>gRPC</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 12, height: 4, background: '#faad14' }} />
-              <span>Database</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <div style={{ width: 12, height: 4, background: '#722ed1' }} />
-              <span>Message Queue</span>
+      {/* Trace Visualization */}
+      <div style={{ marginBottom: 24 }}>
+        {hasTopology ? (
+          <ReadOnlyServiceTopology
+            nodes={topoNodes}
+            edges={topoEdges}
+            faultConfigs={[]}
+            height={400}
+            showFaultIndicators={false}
+            selectedNodeId={selectedService?.id || null}
+            onSelectNode={handleNodeSelect}
+          />
+        ) : (
+          <div style={{
+            border: '1px solid #e8e8e8',
+            borderRadius: 8,
+            background: '#fafafa',
+            height: 300,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#999',
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <Icon type="chart-pie" size="xl" style={{ color: '#d9d9d9', marginBottom: 12 }} />
+              <div><Translation>Select an API to load its service topology</Translation></div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Instructions */}

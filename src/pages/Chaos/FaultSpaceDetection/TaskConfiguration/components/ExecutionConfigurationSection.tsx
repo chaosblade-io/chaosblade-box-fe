@@ -53,7 +53,7 @@ const ExecutionConfigurationSection: FC<ExecutionConfigurationSectionProps> = ({
       <div className={styles.sectionHeader}>
         <div>
           <div className={styles.sectionTitle}>
-            <span className={styles.sectionNumber}>5</span>
+            <span className={styles.sectionNumber}>4</span>
             {i18n.t('Request Execution Configuration').toString()}
           </div>
           <div className={styles.sectionDescription}>
